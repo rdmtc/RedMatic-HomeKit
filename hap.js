@@ -92,7 +92,7 @@ module.exports = class Hap extends EventEmitter {
             }
         }
         if (this.homematicDevices[type] && typeof this.homematicDevices[type] === 'function') {
-            this.bridge.addBridgedAccessory(new this.homematicDevices[type](acc, this));
+            new this.homematicDevices[type](acc, this);
         } else {
             this.log.warn('invalid homematic-devices/' + type);
             this.homematicInvalidDevices.push(type);

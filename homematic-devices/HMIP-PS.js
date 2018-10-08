@@ -1,6 +1,6 @@
 module.exports = class HMIPPS {
     constructor(config, iface) {
-        const {hap, log} = iface;
+        const {bridge, hap, log} = iface;
         const uuid = hap.uuid.generate(config.description.ADDRESS);
         log.info('creating Homematic Device ' + config.description.TYPE + ' ' + config.name + ' ' + uuid);
         const acc = new hap.Accessory(config.name, uuid, hap.Accessory.Categories.OTHER);
