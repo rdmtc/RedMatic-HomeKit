@@ -14,14 +14,14 @@ module.exports = class HMIPPS {
             .setCharacteristic(hap.Characteristic.FirmwareRevision, config.description.FIRMWARE);
 
         acc.on('identify', (paired, callback) => {
-            log.info('hap identify ' + config.name + ' ' + config.description.TYPE + ' ' + config.description.ADDRESS);
+            log.info('[homekit] hap identify ' + config.name + ' ' + config.description.TYPE + ' ' + config.description.ADDRESS);
             callback();
         });
 
         acc.addService(hap.Service.Switch, config.name, '0')
             .getCharacteristic(hap.Characteristic.On)
             .on('set', (value, callback) => {
-                log.debug('< hap set', config.name, 'On', value);
+                log.trace('[homekit] < hap ', config.name, 'On', value);
                 iface.emit('setValue', {address: config.description.ADDRESS + ':3', datapoint: 'STATE', value});
                 callback();
             });
@@ -32,7 +32,7 @@ module.exports = class HMIPPS {
                     case 'SWITCH_VIRTUAL_RECEIVER':
                         switch (msg.datapoint) {
                             case 'STATE':
-                                log.debug('> hap ' + config.name + ' On ' + msg.value);
+                                log.trace('[homekit] > hap ' + config.name + ' On ' + msg.value);
                                 acc.getService('0').updateCharacteristic(hap.Characteristic.On, unreach ? new Error(hap.HAPServer.Status.SERVICE_COMMUNICATION_FAILURE) : msg.value);
                                 break;
                             default:
@@ -43,7 +43,7 @@ module.exports = class HMIPPS {
                             case 'UNREACH':
                                 unreach = msg.value;
                                 if (msg.value) {
-                                    log.debug('> hap ' + config.name + ' SERVICE_COMMUNICATION_FAILURE');
+                                    log.trace('[homekit] > hap ' + config.name + ' SERVICE_COMMUNICATION_FAILURE');
                                     acc.getService('0').updateCharacteristic(hap.Characteristic.On, new Error(hap.HAPServer.Status.SERVICE_COMMUNICATION_FAILURE));
                                 }
                                 break;

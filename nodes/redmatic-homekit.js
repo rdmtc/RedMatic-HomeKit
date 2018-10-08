@@ -14,7 +14,7 @@ module.exports = function (RED) {
 
             this.ccu.register(this);
 
-            RED.log.info('starting HAP-Nodejs');
+            RED.log.info('[homekit] starting HAP-Nodejs');
 
             this.hap = new Hap(RED.log, config);
 
@@ -68,9 +68,9 @@ module.exports = function (RED) {
             });
             this.hap.publish(devices);
 
-            RED.log.info('subscribing homematic events');
+            RED.log.info('[homekit] subscribe homematic events');
             this.idSubscription = this.ccu.subscribe({cache: false, change: true}, msg => {
-                RED.log.trace('hm  < ' + msg.datapointName + ' ' + msg.value);
+                RED.log.trace('[homekit] hm  < ' + msg.datapointName + ' ' + msg.value);
                 this.hap.emit('event', msg);
             });
 
@@ -119,7 +119,7 @@ module.exports = function (RED) {
         }
 
         _destructor(done) {
-            RED.log.info('HomeKit exiting');
+            RED.log.info('[homekit] exiting');
             this.hap.unpublish();
             this.ccu.deregister(this);
             this.ccu.unsubscribe(this.idSubscription);

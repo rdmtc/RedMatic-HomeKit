@@ -12,7 +12,7 @@ module.exports = class HMSecSD {
             .setCharacteristic(hap.Characteristic.FirmwareRevision, config.description.FIRMWARE);
 
         acc.on('identify', (paired, callback) => {
-            log.info('hap identify ' + config.name + ' ' + config.description.TYPE + ' ' + config.description.ADDRESS);
+            log.info('[homekit] hap identify ' + config.name + ' ' + config.description.TYPE + ' ' + config.description.ADDRESS);
             callback();
         });
 
@@ -26,7 +26,7 @@ module.exports = class HMSecSD {
                         switch (msg.datapoint) {
                             case 'STATE':
                                 val = msg.value ? hap.Characteristic.SmokeDetected.SMOKE_DETECTED : hap.Characteristic.SmokeDetected.SMOKE_NOT_DETECTED;
-                                log.debug('> hap ' + config.name + ' SmokeDetected ' + val);
+                                log.trace('[homekit] > hap ' + config.name + ' SmokeDetected ' + val);
                                 acc.getService('0').updateCharacteristic(hap.Characteristic.SmokeDetected, val);
                                 break;
 
@@ -36,12 +36,12 @@ module.exports = class HMSecSD {
                     case 'MAINTENANCE':
                         switch (msg.datapoint) {
                             case 'UNREACH':
-                                log.debug('> hap ' + config.name + ' StatusFault ' + msg.value);
+                                log.trace('[homekit] > hap ' + config.name + ' StatusFault ' + msg.value);
                                 acc.getService('0').updateCharacteristic(hap.Characteristic.StatusFault, msg.value ? 1 : 0);
                                 break;
                             case 'LOWBAT':
                                 val = msg.value ? hap.Characteristic.StatusFault.BATTERY_LEVEL_LOW : hap.Characteristic.StatusLowBattery.BATTERY_LEVEL_NORMAL;
-                                log.debug('> hap ' + config.name + ' StatusLowBattery ' + val);
+                                log.trace('[homekit] > hap ' + config.name + ' StatusLowBattery ' + val);
                                 acc.getService('0').updateCharacteristic(hap.Characteristic.StatusLowBattery, val);
                                 break;
                             default:

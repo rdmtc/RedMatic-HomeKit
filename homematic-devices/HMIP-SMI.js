@@ -13,7 +13,7 @@ module.exports = class HMIPSMI {
             .setCharacteristic(hap.Characteristic.FirmwareRevision, config.description.FIRMWARE);
 
         acc.on('identify', (paired, callback) => {
-            log.info('hap identify ' + config.name + ' ' + config.description.TYPE + ' ' + config.description.ADDRESS);
+            log.info('[homekit] hap identify ' + config.name + ' ' + config.description.TYPE + ' ' + config.description.ADDRESS);
             callback();
         });
 
@@ -30,11 +30,11 @@ module.exports = class HMIPSMI {
                     case 'MOTIONDETECTOR_TRANSCEIVER':
                         switch (msg.datapoint) {
                             case 'MOTION':
-                                log.debug('> hap ' + config.name + ' MotionDetected ' + msg.value);
+                                log.trace('[homekit] > hap ' + config.name + ' MotionDetected ' + msg.value);
                                 acc.getService('0').updateCharacteristic(hap.Characteristic.MotionDetected, msg.value);
                                 break;
                             case 'ILLUMINATION':
-                                log.debug('> hap ' + config.name + ' CurrentAmbientLightLevel ' + msg.value);
+                                log.trace('[homekit] > hap ' + config.name + ' CurrentAmbientLightLevel ' + msg.value);
                                 acc.getService('1').updateCharacteristic(hap.Characteristic.CurrentAmbientLightLevel, msg.value);
                                 break;
                             default:
@@ -43,26 +43,26 @@ module.exports = class HMIPSMI {
                     case 'MAINTENANCE':
                         switch (msg.datapoint) {
                             case 'ERROR':
-                                log.debug('> hap ' + config.name + ' StatusFault ' + msg.value);
+                                log.trace('[homekit] > hap ' + config.name + ' StatusFault ' + msg.value);
                                 acc.getService('0').updateCharacteristic(hap.Characteristic.StatusFault, unreach || (msg.value ? 1 : 0));
                                 break;
                             case 'UNREACH':
                                 unreach = msg.value;
-                                log.debug('> hap ' + config.name + ' StatusFault ' + msg.value);
+                                log.trace('[homekit] > hap ' + config.name + ' StatusFault ' + msg.value);
                                 acc.getService('0').updateCharacteristic(hap.Characteristic.StatusFault, msg.value ? 1 : 0);
                                 break;
                             case 'SABOTAGE':
                                 unreach = msg.value;
-                                log.debug('> hap ' + config.name + ' StatusTampered ' + msg.value);
+                                log.trace('[homekit] > hap ' + config.name + ' StatusTampered ' + msg.value);
                                 acc.getService('0').updateCharacteristic(hap.Characteristic.StatusFault, msg.value);
                                 break;
                             case 'OPERATING_VOLTAGE_STATUS':
-                                log.debug('> hap ' + config.name + ' BatteryLevel ' + msg.value);
+                                log.trace('[homekit] > hap ' + config.name + ' BatteryLevel ' + msg.value);
                                 acc.getService('2').updateCharacteristic(hap.Characteristic.BatteryLevel, msg.value);
                                 break;
                             case 'LOW_BAT':
                                 val = msg.value ? hap.Characteristic.StatusLowBattery.BATTERY_LEVEL_LOW : hap.Characteristic.StatusLowBattery.BATTERY_LEVEL_NORMAL;
-                                log.debug('> hap ' + config.name + ' StatusLowBattery ' + val);
+                                log.trace('[homekit] > hap ' + config.name + ' StatusLowBattery ' + val);
                                 acc.getService('2').updateCharacteristic(hap.Characteristic.StatusLowBattery, val);
                                 break;
                             default:

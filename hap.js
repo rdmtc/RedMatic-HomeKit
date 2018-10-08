@@ -7,9 +7,8 @@ module.exports = class Hap extends EventEmitter {
         super();
         this.setMaxListeners(1000);
 
-        console.log(options.accessories);
-
         this.log = log || {
+            trace: console.log,
             debug: console.log,
             info: console.log,
             warn: console.log,
@@ -38,8 +37,6 @@ module.exports = class Hap extends EventEmitter {
             callback();
         });
 
-        console.log(Object.keys(accessories));
-
         Object.keys(accessories).forEach(uid => {
             const acc = accessories[uid];
             if (acc) {
@@ -48,14 +45,14 @@ module.exports = class Hap extends EventEmitter {
                         this.createHomematicDevice(acc, this.bridge, this.hap);
                         break;
                     default:
-                        log.warn('unknown accessory type ' + acc.type);
+                        log.warn('[homekit] unknown accessory type ' + acc.type);
                 }
             }
         });
 
 
 
-        this.log.info('hap publishing bridge ' + this.bridgename + ' on port ' + this.port);
+        this.log.info('[homekit:hap.js] hap publishing bridge ' + this.bridgename + ' on port ' + this.port);
 
         this.bridge.getService(this.hap.Service.AccessoryInformation)
             .setCharacteristic(this.hap.Characteristic.Manufacturer, 'Hobbyquaker')
@@ -73,7 +70,7 @@ module.exports = class Hap extends EventEmitter {
     }
 
     unpublish() {
-        this.log.info('hap unpublishing bridge ' + this.bridgename);
+        this.log.info('[homekit:hap.js] hap unpublishing bridge ' + this.bridgename);
         this.bridge.unpublish();
     }
 
@@ -86,7 +83,7 @@ module.exports = class Hap extends EventEmitter {
             try {
                 this.homematicDevices[type] = require('./homematic-devices/' + type + '.js');
             } catch (error) {
-                this.log.warn('missing homematic-devices/' + type);
+                this.log.warn('[homekit:hap.js] missing homematic-devices/' + type);
                 this.homematicInvalidDevices.push(type);
                 return;
             }
@@ -94,7 +91,7 @@ module.exports = class Hap extends EventEmitter {
         if (this.homematicDevices[type] && typeof this.homematicDevices[type] === 'function') {
             new this.homematicDevices[type](acc, this);
         } else {
-            this.log.warn('invalid homematic-devices/' + type);
+            this.log.warn('[homekit:hap.js] invalid homematic-devices/' + type);
             this.homematicInvalidDevices.push(type);
         }
 
