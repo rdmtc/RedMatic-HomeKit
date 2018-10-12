@@ -3,7 +3,7 @@ module.exports = class HmipPs {
         const {bridgeConfig, ccu} = homematic;
         const {hap} = bridgeConfig;
 
-        homematic.log('creating Homematic Device ' + config.description.TYPE + ' ' + config.name);
+        homematic.debug('creating Homematic Device ' + config.description.TYPE + ' ' + config.name);
 
         const datapointOn = config.iface + '.' + config.description.ADDRESS + ':3.STATE';
         let valueOn = ccu.values && ccu.values[datapointOn] && ccu.values[datapointOn].value;
@@ -26,7 +26,7 @@ module.exports = class HmipPs {
                 .setCharacteristic(hap.Characteristic.FirmwareRevision, config.description.FIRMWARE);
 
             acc.on('identify', (paired, callback) => {
-                homematic.log('identify ' + config.name + ' ' + config.description.TYPE + ' ' + config.description.ADDRESS);
+                homematic.debug('identify ' + config.name + ' ' + config.description.TYPE + ' ' + config.description.ADDRESS);
                 callback();
             });
 
@@ -35,7 +35,7 @@ module.exports = class HmipPs {
         }
 
         const setListener = (value, callback) => {
-            homematic.log('set ' + config.name + ' 0 On ' + value);
+            homematic.debug('set ' + config.name + ' 0 On ' + value);
             console.log('setValue', config.iface, config.description.ADDRESS + ':3', 'STATE', value);
             ccu.setValue(config.iface, config.description.ADDRESS + ':3', 'STATE', value)
                 .then(() => {
@@ -47,7 +47,7 @@ module.exports = class HmipPs {
         };
 
         const getListener = callback => {
-            homematic.log('get ' + config.name + ' 0 On ' + getError() + ' ' + valueOn);
+            homematic.debug('get ' + config.name + ' 0 On ' + getError() + ' ' + valueOn);
             callback(getError(), valueOn);
         };
 
@@ -66,7 +66,7 @@ module.exports = class HmipPs {
                     break;
                 case '3.STATE':
                     valueOn = msg.value;
-                    homematic.log('update ' + config.name + ' 0 On ' + valueOn);
+                    homematic.debug('update ' + config.name + ' 0 On ' + valueOn);
                     acc.getService(subtype).updateCharacteristic(hap.Characteristic.On, valueOn);
                     break;
                 default:
@@ -74,7 +74,7 @@ module.exports = class HmipPs {
         });
 
         homematic.on('close', () => {
-            homematic.log('removing listeners ' + config.name);
+            homematic.debug('removing listeners ' + config.name);
             ccu.unsubscribe(idSubscription);
             acc.getService(subtype).getCharacteristic(hap.Characteristic.On).removeListener('get', getListener);
             acc.getService(subtype).getCharacteristic(hap.Characteristic.On).removeListener('set', setListener);
