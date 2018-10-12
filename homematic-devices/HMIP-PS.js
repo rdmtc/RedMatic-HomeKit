@@ -64,7 +64,7 @@ module.exports = class HmipPs {
                 case '0.UNREACH':
                     unreach = msg.value;
                     break;
-                case '2.STATE':
+                case '3.STATE':
                     valueOn = msg.value;
                     homematic.log('update ' + config.name + ' 0 On ' + valueOn);
                     acc.getService(subtype).updateCharacteristic(hap.Characteristic.On, valueOn);
