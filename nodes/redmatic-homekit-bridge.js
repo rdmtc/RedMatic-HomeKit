@@ -2,7 +2,7 @@ const path = require('path');
 const hap = require('hap-nodejs');
 const pkg = require('../package.json');
 
-hap.init(path.join(__dirname, '..', '..', 'homekit'));
+hap.init(path.join(__dirname, '..', '..', '..', 'homekit'));
 
 const bridges = {};
 
