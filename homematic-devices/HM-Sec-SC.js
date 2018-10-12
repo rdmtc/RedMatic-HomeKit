@@ -36,7 +36,7 @@ module.exports = class HmSecSc {
                 .setCharacteristic(hap.Characteristic.FirmwareRevision, config.description.FIRMWARE);
 
             acc.on('identify', (paired, callback) => {
-                homematic.debug('identify ' + config.name + ' ' + config.description.TYPE + ' ' + config.description.ADDRESS);
+                homematic.log('identify ' + config.name + ' ' + config.description.TYPE + ' ' + config.description.ADDRESS);
                 callback();
             });
 
