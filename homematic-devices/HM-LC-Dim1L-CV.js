@@ -1,89 +1,112 @@
-module.exports = class HMLCDim1LCV {
-    constructor(config, iface) {
-        const {bridge, hap, log} = iface;
-        const uuid = hap.uuid.generate(config.description.ADDRESS);
-        log.info('creating Homematic Device ' + config.description.TYPE + ' ' + config.name + ' ' + uuid);
-        const acc = new hap.Accessory(config.name, uuid, hap.Accessory.Categories.OTHER);
+module.exports = class HmDim1 {
+    constructor(config, homematic) {
+        const {bridgeConfig, ccu} = homematic;
+        const {hap} = bridgeConfig;
 
-        let unreach;
-        let currentLevel;
+        homematic.debug('creating Homematic Device ' + config.description.TYPE + ' ' + config.name);
 
-        acc.getService(hap.Service.AccessoryInformation)
-            .setCharacteristic(hap.Characteristic.Manufacturer, 'eQ-3')
-            .setCharacteristic(hap.Characteristic.Model, config.description.TYPE)
-            .setCharacteristic(hap.Characteristic.SerialNumber, config.description.ADDRESS)
-            .setCharacteristic(hap.Characteristic.FirmwareRevision, config.description.FIRMWARE);
+        const datapointBrightness = config.iface + '.' + config.description.ADDRESS + ':1.LEVEL';
+        let valueBrightness = ((ccu.values && ccu.values[datapointBrightness] && ccu.values[datapointBrightness].value) * 100) || 0;
 
-        acc.on('identify', (paired, callback) => {
-            log.info('[homekit] hap identify ' + config.name + ' ' + config.description.TYPE + ' ' + config.description.ADDRESS);
-            callback();
-        });
+        const datapointUnreach = config.iface + '.' + config.description.ADDRESS + ':0.UNREACH';
+        let unreach = ccu.values && ccu.values[datapointUnreach] && ccu.values[datapointUnreach].value;
 
-        acc.addService(hap.Service.Lightbulb, config.name, '0')
-            .getCharacteristic(hap.Characteristic.On)
-            .on('set', (value, callback) => {
-                log.trace('[homekit] < hap ' + config.name + ' On ' + value);
-                if (value && !currentLevel) {
-                    iface.emit('setValue', {address: config.description.ADDRESS + ':1', datapoint: 'LEVEL', value: 100});
-                } else if (!value) {
-                    iface.emit('setValue', {address: config.description.ADDRESS + ':1', datapoint: 'LEVEL', value: 0});
-                }
+        function getError() {
+            return unreach ? new Error(hap.HAPServer.Status.SERVICE_COMMUNICATION_FAILURE) : null;
+        }
+
+        const acc = bridgeConfig.accessory({id: config.description.ADDRESS, name: config.name});
+        const subtype = '0';
+
+        if (!acc.isConfigured) {
+            acc.getService(hap.Service.AccessoryInformation)
+                .setCharacteristic(hap.Characteristic.Manufacturer, 'eQ-3')
+                .setCharacteristic(hap.Characteristic.Model, config.description.TYPE)
+                .setCharacteristic(hap.Characteristic.SerialNumber, config.description.ADDRESS)
+                .setCharacteristic(hap.Characteristic.FirmwareRevision, config.description.FIRMWARE);
+
+            acc.on('identify', (paired, callback) => {
+                homematic.debug('identify ' + config.name + ' ' + config.description.TYPE + ' ' + config.description.ADDRESS);
                 callback();
             });
 
-        acc.getService('0')
-            .getCharacteristic(hap.Characteristic.Brightness)
-            .on('set', (value, callback) => {
-                log.trace('[homekit] < hap ' + config.name + ' Brightness ' + value);
-                iface.emit('setValue', {
-                    address: config.description.ADDRESS + ':1',
-                    datapoint: 'LEVEL',
-                    value: value / 100
+            acc.addService(hap.Service.Lightbulb, config.name, subtype);
+            acc.isConfigured = true;
+        }
+
+        const setListenerBrightness = (value, callback) => {
+            homematic.debug('set ' + config.name + ' 0 Brightness ' + value);
+            ccu.setValue(config.iface, config.description.ADDRESS + ':1', 'LEVEL', value / 100)
+                .then(() => {
+                    callback();
+                })
+                .catch(() => {
+                    callback(new Error(hap.HAPServer.Status.SERVICE_COMMUNICATION_FAILURE));
                 });
+        };
+
+        const setListenerOn = (value, callback) => {
+            homematic.debug('set ' + config.name + ' 0 On ' + value);
+            if (valueBrightness === 0 || !value) {
+                ccu.setValue(config.iface, config.description.ADDRESS + ':1', 'LEVEL', value ? 1 : 0)
+                    .then(() => {
+                        callback();
+                    })
+                    .catch(() => {
+                        callback(new Error(hap.HAPServer.Status.SERVICE_COMMUNICATION_FAILURE));
+                    });
+            } else {
                 callback();
-            });
+            }
+        };
 
-        iface.on('event', msg => {
-            let val;
-            if (msg.device === config.description.ADDRESS) {
-                switch (msg.channelType) {
-                    case 'DIMMER':
-                        switch (msg.datapoint) {
-                            case 'LEVEL':
-                                if (msg.working || msg.direction) {
-                                    return;
-                                }
-                                val = msg.value * 100;
-                                currentLevel = val;
-                                log.trace('[homekit] > hap ' + config.name + ' On ' + Boolean(val));
-                                acc.getService('0').updateCharacteristic(hap.Characteristic.On, unreach ? new Error(hap.HAPServer.Status.SERVICE_COMMUNICATION_FAILURE) : Boolean(val));
-                                log.trace('[homekit] > hap ' + config.name + ' Brightness ' + val);
-                                acc.getService('0').updateCharacteristic(hap.Characteristic.Brightness, unreach ? new Error(hap.HAPServer.Status.SERVICE_COMMUNICATION_FAILURE) : val);
-                                break;
+        const getListenerBrightness = callback => {
+            homematic.debug('get ' + config.name + ' 0 Brightness ' + getError() + ' ' + valueBrightness);
+            callback(getError(), valueBrightness);
+        };
 
-                            case 'ERROR':
+        const getListenerOn = callback => {
+            homematic.debug('get ' + config.name + ' 0 On ' + getError() + ' ' + valueBrightness);
+            callback(getError(), Boolean(valueBrightness));
+        };
 
-                                break;
-                            default:
-                        }
-                        break;
-                    case 'MAINTENANCE':
-                        switch (msg.datapoint) {
-                            case 'UNREACH':
-                                unreach = msg.value;
-                                if (msg.value) {
-                                    log.trace('[homekit] > hap ' + config.name + ' SERVICE_COMMUNICATION_FAILURE');
-                                    acc.getService('0').updateCharacteristic(hap.Characteristic.On, new Error(hap.HAPServer.Status.SERVICE_COMMUNICATION_FAILURE));
-                                }
-                                break;
+        acc.getService(subtype).getCharacteristic(hap.Characteristic.Brightness).on('get', getListenerBrightness);
+        acc.getService(subtype).getCharacteristic(hap.Characteristic.On).on('get', getListenerOn);
+        acc.getService(subtype).getCharacteristic(hap.Characteristic.Brightness).on('set', setListenerBrightness);
+        acc.getService(subtype).getCharacteristic(hap.Characteristic.On).on('set', setListenerOn);
 
-                        }
-                        break;
-                }
+        const idSubscription = ccu.subscribe({
+            iface: config.iface,
+            device: config.description.ADDRESS,
+            cache: true,
+            change: true
+        }, msg => {
+            switch (msg.channelIndex + '.' + msg.datapoint) {
+                case '0.UNREACH':
+                    unreach = msg.value;
+                    break;
+                case '1.LEVEL':
+                    if (!msg.working) {
+                        valueBrightness = msg.value * 100;
+                        const valueOn = Boolean(msg.value);
+                        homematic.debug('update ' + config.name + ' 0 On ' + valueOn);
+                        acc.getService(subtype).updateCharacteristic(hap.Characteristic.On, valueOn);
+                        homematic.debug('update ' + config.name + ' 0 Brightness ' + valueBrightness);
+                        acc.getService(subtype).updateCharacteristic(hap.Characteristic.Brightness, valueBrightness);
+                    }
+                    break;
+                default:
             }
         });
 
-
-        bridge.addBridgedAccessory(acc);
+        homematic.on('close', () => {
+            homematic.debug('removing listeners ' + config.name);
+            ccu.unsubscribe(idSubscription);
+            acc.getService(subtype).getCharacteristic(hap.Characteristic.Brightness).removeListener('get', getListenerBrightness);
+            acc.getService(subtype).getCharacteristic(hap.Characteristic.On).removeListener('get', getListenerOn);
+            acc.getService(subtype).getCharacteristic(hap.Characteristic.Brightness).removeListener('set', setListenerBrightness);
+            acc.getService(subtype).getCharacteristic(hap.Characteristic.On).removeListener('set', setListenerOn);
+        });
     }
 };
+

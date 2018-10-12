@@ -1,10 +1,13 @@
-const Hap = require('../hap');
-
 module.exports = function (RED) {
-    class RedMaticHomeKit {
+    class RedMaticHomeKitHomematicDevices {
         constructor(config) {
             RED.nodes.createNode(this, config);
 
+            this.bridgeConfig = RED.nodes.getNode(config.bridgeConfig);
+
+            if (!this.bridgeConfig) {
+                return;
+            }
 
             this.ccu = RED.nodes.getNode(config.ccuConfig);
 
@@ -12,13 +15,80 @@ module.exports = function (RED) {
                 return;
             }
 
+            this.bridgeConfig.waitForHomematic = true;
             this.ccu.register(this);
 
-            RED.log.info('[homekit] starting HAP-Nodejs');
+            this.homematicDevices = {};
+            this.homematicInvalidDevices = [];
+        }
 
-            this.hap = new Hap(RED.log, config);
+        publishDevices() {
+            Object.keys(this.ccu.channelNames).forEach(address => {
+                if (!address.match(/:\d+$/)) {
+                    const iface = this.ccu.findIface(address);
+                    if (iface && this.ccu.metadata.devices && this.ccu.metadata.devices[iface]) {
+                        this.createHomematicDevice({
+                            name: this.ccu.channelNames[address],
+                            iface: this.ccu.findIface(address),
+                            description: this.ccu.metadata.devices[iface][address]
+                        });
+                    }
+                }
+            });
+        }
 
+        createHomematicDevice(dev) {
+            const type = dev && dev.description && dev.description.TYPE;
+            if (!type || this.homematicInvalidDevices.includes(type)) {
+                return;
+            }
+            if (!this.homematicDevices[type]) {
+                try {
+                    this.homematicDevices[type] = require('../homematic-devices/' + type);
+                } catch (error) {
+                    // This.warn('missing homematic-devices/' + type);
+                    this.homematicInvalidDevices.push(type);
+                    return;
+                }
+            }
+            if (this.homematicDevices[type] && typeof this.homematicDevices[type] === 'function') {
+                return new this.homematicDevices[type](dev, this);
+            }
+            // This.error('invalid homematic-devices/' + type);
+            this.homematicInvalidDevices.push(type);
+        }
 
+        setStatus(data) {
+            this.ccuStatus = data;
+            let status = 0;
+            Object.keys(data.ifaceStatus).forEach(s => {
+                if (data.ifaceStatus[s] || s === 'ReGaHSS') {
+                    status += 1;
+                }
+            });
+            if (status <= 1) {
+                this.status({fill: 'red', shape: 'dot', text: 'disconnected'});
+            } else if (status === Object.keys(data.ifaceStatus).length) {
+                this.status({fill: 'green', shape: 'dot', text: 'connected'});
+                if (!this.ccuConnected) {
+                    this.publishDevices();
+                    this.bridgeConfig.waitForHomematic = false;
+                    this.bridgeConfig.emit('homematic-ready');
+                }
+                this.ccuConnected = true;
+            } else {
+                this.status({fill: 'yellow', shape: 'dot', text: 'partly connected'});
+            }
+        }
+
+        _destructor(done) {
+            this.ccu.deregister(this);
+            this.ccu.unsubscribe(this.idSubscription);
+            done();
+        }
+        /*
+
+            This.hap = new Hap(RED.log, config);
 
             this.hap.on('cmd', msg => {
                 switch (msg.type) {
@@ -41,17 +111,20 @@ module.exports = function (RED) {
                 }
             });
 
-
-
-            this.on('close', done => { this._destructor(done); });
-
             if (this.connected) {
                 this.publish();
             }
 
-        }
+            this.on('close', done => {
+                this._destructor(done);
+            });
 
-        publish() {
+            */
+    }
+
+    /*
+
+        Publish() {
 
             const devices = {};
             Object.keys(this.ccu.channelNames).forEach(address => {
@@ -79,7 +152,6 @@ module.exports = function (RED) {
 
             this.idProgramSubscription = this.ccu.subscribeProgram({cache: true}, msg => {
             });
-
 
             // Todo? Bug in node-red-contrib-ccu? filter cache:true doesnt work, so workaround this here:
             setTimeout(() => {
@@ -118,6 +190,10 @@ module.exports = function (RED) {
 
         }
 
+        addAccessory(acc) {
+            console.log('addAccessory', acc);
+        }
+
         _destructor(done) {
             RED.log.info('[homekit] exiting');
             this.hap.unpublish();
@@ -127,7 +203,8 @@ module.exports = function (RED) {
             this.ccu.unsubscribeProgram(this.idProgramSubscription);
             done();
         }
-    }
 
-    RED.nodes.registerType('redmatic-homekit', RedMaticHomeKit);
+        */
+
+    RED.nodes.registerType('redmatic-homekit-homematic-devices', RedMaticHomeKitHomematicDevices);
 };

@@ -1,4 +1,5 @@
-module.exports = class HMSecSC {
+/*
+Module.exports = class HMSecSC {
     constructor(config, iface) {
         const {bridge, hap, log} = iface;
         const uuid = hap.uuid.generate(config.description.ADDRESS);
@@ -57,3 +58,4 @@ module.exports = class HMSecSC {
         bridge.addBridgedAccessory(acc);
     }
 };
+*/

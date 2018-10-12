@@ -1,0 +1,45 @@
+<script type="text/javascript">
+    RED.nodes.registerType('redmatic-homekit-switch', {
+        category: 'redmatic homekit',
+        defaults: {
+            bridgeConfig: {value: 'CC:22:3D:E3:CE:C7:51826', type: 'redmatic-homekit-bridge', required: true},
+            name: {required: true},
+        },
+        inputs: 1,
+        outputs: 1,
+        icon: 'homekit2.png',
+        color: '#E2D96E',
+        paletteLabel: 'Switch',
+        align: 'left',
+        label() {
+            return 'Switch' || this.name;
+        },
+        labelStyle() {
+            return this.name ? 'node_label_italic' : '';
+        },
+        oneditprepare() {
+
+        },
+        oneditsave() {
+
+        }
+    });
+</script>
+
+<script type="text/x-red" data-template-name="redmatic-homekit-switch">
+
+    <div class="form-row">
+        <label for="node-input-bridgeConfig"><i class="icon-globe"></i> Bridge</label>
+        <input type="text" id="node-input-bridgeConfig">
+    </div>
+    <div class="form-row">
+        <label for="node-input-name"><i class="icon-globe"></i> Name</label>
+        <input type="text" id="node-input-name">
+    </div>
+
+
+</script>
+
+<script type="text/x-red" data-help-name="redmatic-homekit-switch">
+
+</script>

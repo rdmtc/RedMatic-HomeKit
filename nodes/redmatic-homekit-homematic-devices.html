@@ -1,0 +1,44 @@
+<script type="text/javascript">
+    RED.nodes.registerType('redmatic-homekit-homematic-devices', {
+        category: 'redmatic homekit',
+        defaults: {
+            ccuConfig: {value: 'localhost', type: 'ccu-connection', required: true},
+            bridgeConfig: {value: 'CC:22:3D:E3:CE:C7:51826', type: 'redmatic-homekit-bridge', required: true},
+        },
+        inputs: 0,
+        outputs: 0,
+        icon: 'homekit2.png',
+        color: '#E2D96E',
+        paletteLabel: 'HomeMatic',
+        align: 'left',
+        label() {
+            return 'HomeMatic';
+        },
+        labelStyle() {
+            return this.name ? 'node_label_italic' : '';
+        },
+        oneditprepare() {
+
+        },
+        oneditsave() {
+
+        }
+    });
+</script>
+
+<script type="text/x-red" data-template-name="redmatic-homekit-homematic-devices">
+
+    <div class="form-row">
+        <label for="node-input-ccuConfig"><i class="icon-globe"></i> CCU</label>
+        <input type="text" id="node-input-ccuConfig">
+    </div>
+    <div class="form-row">
+        <label for="node-input-bridgeConfig"><i class="icon-globe"></i> Bridge</label>
+        <input type="text" id="node-input-bridgeConfig">
+    </div>
+
+</script>
+
+<script type="text/x-red" data-help-name="redmatic-homekit-homematic-devices">
+
+</script>

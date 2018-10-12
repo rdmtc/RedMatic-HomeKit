@@ -1,10 +1,10 @@
-module.exports = class HMIPSMI {
+/*
+Module.exports = class HMIPSMI {
     constructor(config, iface) {
         const {bridge, hap, log} = iface;
         const uuid = hap.uuid.generate(config.description.ADDRESS);
         log.info('creating Homematic Device ' + config.description.TYPE + ' ' + config.name + ' ' + uuid);
         const acc = new hap.Accessory(config.name, uuid, hap.Accessory.Categories.OTHER);
-
 
         acc.getService(hap.Service.AccessoryInformation)
             .setCharacteristic(hap.Characteristic.Manufacturer, 'eQ-3')
@@ -75,3 +75,4 @@ module.exports = class HMIPSMI {
         bridge.addBridgedAccessory(acc);
     }
 };
+*/

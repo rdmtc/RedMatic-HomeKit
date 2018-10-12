@@ -1,16 +1,28 @@
 {
   "name": "redmatic-homekit",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "RedMatic based HomeKit Addon for the CCU3 and RaspberryMatic",
   "main": "none",
   "author": "Sebastian Raff <hobbyquaker@gmail.com>",
   "license": "Apache-2.0",
   "node-red": {
     "nodes": {
-      "redmatic-homekit": "nodes/redmatic-homekit.js"
+      "redmatic-homekit-bridge": "nodes/redmatic-homekit-bridge.js",
+      "redmatic-homekit-switch": "nodes/redmatic-homekit-switch.js",
+      "redmatic-homekit-homematic-devices": "nodes/redmatic-homekit-homematic-devices.js"
     }
   },
   "dependencies": {
     "hap-nodejs": "0.4.47"
+  },
+  "devDependencies": {
+    "xo": "^0.23.0"
+  },
+  "xo": {
+    "space": 4,
+    "rules": {
+      "unicorn/filename-case": 0,
+      "capitalized-comments": 0
+    }
   }
 }
