@@ -1,0 +1,1 @@
+module.exports = require('./HM-WDS10-TH-O');
