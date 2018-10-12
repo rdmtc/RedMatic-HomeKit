@@ -109,6 +109,10 @@ module.exports = function (RED) {
             if (acc) {
                 this.log('already existing accessory ' + config.id + ' ' + config.name);
             } else {
+                if (this.bridge.bridgedAccessories.length >= 100) {
+                    this.error('maximum of 100 accessories per bridge exceeded, can\'t add ' + config.id + ' ' + config.name);
+                    return;
+                }
                 this.log('addAccessory ' + config.id + ' ' + config.name);
                 acc = new hap.Accessory(config.name, uuid, hap.Accessory.Categories.OTHER);
                 this.bridge.addBridgedAccessory(acc);
