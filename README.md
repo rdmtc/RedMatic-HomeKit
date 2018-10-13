@@ -7,8 +7,7 @@
 
 This package isn't meant to be installed manually, it is included in [RedMatic](https://github.com/hobbyquaker/RedMatic)
 
-This Project is in an early development stage and has to be seen as alpha software. Many planned features are not
-implemented yet and there are most likely many bugs.
+See https://github.com/hobbyquaker/RedMatic/wiki/Homekit
 
 
 ## License
