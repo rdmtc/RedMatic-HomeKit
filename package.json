@@ -8,8 +8,9 @@
   "node-red": {
     "nodes": {
       "redmatic-homekit-bridge": "nodes/redmatic-homekit-bridge.js",
+      "redmatic-homekit-homematic-devices": "nodes/redmatic-homekit-homematic-devices.js",
       "redmatic-homekit-switch": "nodes/redmatic-homekit-switch.js",
-      "redmatic-homekit-homematic-devices": "nodes/redmatic-homekit-homematic-devices.js"
+      "redmatic-homekit-statelessprogrammableswitch": "nodes/redmatic-homekit-statelessprogrammableswitch.js"
     }
   },
   "dependencies": {
