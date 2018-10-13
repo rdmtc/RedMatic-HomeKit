@@ -124,7 +124,7 @@ module.exports = class HmipSpi {
                 case '1.ILLUMINATION':
                     valueBrightness = msg.value;
                     homematic.debug('update ' + config.name + ' 1 CurrentAmbientLightLevel ' + valueBrightness);
-                    acc.getService(subtypeBrightness).updateCharacteristic(hap.Characteristic.CurrentAmbientLightLevel, valueHumidity);
+                    acc.getService(subtypeBrightness).updateCharacteristic(hap.Characteristic.CurrentAmbientLightLevel, valueBrightness);
                     break;
                 default:
             }
