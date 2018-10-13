@@ -68,7 +68,7 @@ module.exports = function (RED) {
             this.published = true;
 
             this.bridge.on('identify', (paired, callback) => {
-                console.log('hap bridge identify', paired ? '(paired)' : '(unpaired)');
+                this.log('hap bridge identify', paired ? '(paired)' : '(unpaired)');
                 callback();
             });
 
