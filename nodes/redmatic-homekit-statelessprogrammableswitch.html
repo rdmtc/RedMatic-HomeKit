@@ -1,0 +1,64 @@
+<script type="text/javascript">
+    RED.nodes.registerType('redmatic-homekit-programmableswitch', {
+        category: 'redmatic homekit',
+        defaults: {
+            bridgeConfig: {value: 'CC:22:3D:E3:CE:C7:51826', type: 'redmatic-homekit-bridge', required: true},
+            name: {required: true, value: 'ProgrammableSwitch'},
+            //services: {value: ['ProgrammableSwitchEvent0']}
+        },
+        inputs: 1,
+        outputs: 0,
+        icon: 'homekit2.png',
+        color: '#E2D96E',
+        paletteLabel: 'Event',
+        align: 'left',
+        label() {
+            return this.name || 'Event';
+        },
+        labelStyle() {
+            return this.name ? 'node_label_italic' : '';
+        },
+        /*
+        oneditprepare() {
+            console.log(this.services);
+            $('ol#services').editableList({
+                addItem: function(row, index, data) {
+                    console.log(data)
+                    let html = '<span style="width: 40px; padding-right: 8px" class="id">' + index + '</span>';
+                    html += '<input id="name-' + index +'" class="name" value="' + (typeof data === 'string' ? data : ('ProgrammableSwitchEvent' + index)) + '">';
+                    $(row).html(html);
+                }
+            });
+            $('ol#services').editableList('addItems', this.services)
+        },
+        oneditsave() {
+            const items = $('ol#services').editableList('items');
+            const services = Array.from($('ol#services').editableList('items'))
+                .map(domNode => $(domNode).find('input').val());
+            this.services = services;
+        }
+        */
+    });
+</script>
+
+<script type="text/x-red" data-template-name="redmatic-homekit-programmableswitch">
+
+    <div class="form-row">
+        <label for="node-input-bridgeConfig"><i class="icon-globe"></i> Bridge</label>
+        <input type="text" id="node-input-bridgeConfig">
+    </div>
+    <div class="form-row">
+        <label for="node-input-name"><i class="icon-globe"></i> Name</label>
+        <input type="text" id="node-input-name">
+    </div>
+    <!--
+    <div class="form-row">
+        <label for="node-input-services"><i class="icon-globe"></i> Services</label>
+        <ol id="services"></ol>
+    </div>
+    -->
+</script>
+
+<script type="text/x-red" data-help-name="redmatic-homekit-programmableswitch">
+
+</script>
