@@ -52,12 +52,12 @@ module.exports = class HmSecSc {
         }
 
         const getListenerBrightness = callback => {
-            homematic.log('get ' + config.name + ' 1 CurrentAmbientLightLevel ' + getError() + ' ' + valueBrightness);
+            homematic.debug('get ' + config.name + ' 1 CurrentAmbientLightLevel ' + getError() + ' ' + valueBrightness);
             callback(null, valueBrightness);
         };
 
         const getListenerMotion = callback => {
-            homematic.log('get ' + config.name + ' 0 MotionDetected ' + getError() + ' ' + valueMotion);
+            homematic.debug('get ' + config.name + ' 0 MotionDetected ' + getError() + ' ' + valueMotion);
             callback(null, valueMotion);
         };
 
@@ -106,13 +106,13 @@ module.exports = class HmSecSc {
                     break;
                 case '1.MOTION':
                     valueMotion = msg.value;
-                    homematic.log('update ' + config.name + ' 0 MotionDetected ' + valueMotion);
+                    homematic.debug('update ' + config.name + ' 0 MotionDetected ' + valueMotion);
                     acc.getService(subtypeMotion).updateCharacteristic(hap.Characteristic.MotionDetected, valueMotion);
                     break;
                 case '1.BRIGHTNESS':
                     valueBrightness = lux(msg.value);
-                    homematic.debug('update ' + config.name + ' 2 CurrentAmbientLightLevel ' + valueBrightness);
-                    acc.getService(subtypeBrightness).updateCharacteristic(hap.Characteristic.CurrentAmbientLightLevel, valueHumidity);
+                    homematic.debug('update ' + config.name + ' 1 CurrentAmbientLightLevel ' + valueBrightness);
+                    acc.getService(subtypeBrightness).updateCharacteristic(hap.Characteristic.CurrentAmbientLightLevel, valueBrightness);
                     break;
                 default:
             }
