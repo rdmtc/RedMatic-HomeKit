@@ -5,6 +5,16 @@ module.exports = class HmipSpi {
 
         homematic.debug('creating Homematic Device ' + config.description.TYPE + ' ' + config.name);
 
+        function batteryPercent(val) {
+            let p = Math.round((val - 2) * 100);
+            if (p < 0) {
+                p = 0;
+            } else if (p > 100) {
+                p = 100;
+            }
+            return p;
+        }
+
         const datapointOccupancy = config.iface + '.' + config.description.ADDRESS + ':1.PRESENCE_DETECTION_STATE';
         let valueOccupancy = Boolean(ccu.values && ccu.values[datapointOccupancy] && ccu.values[datapointOccupancy].value);
 
@@ -17,7 +27,7 @@ module.exports = class HmipSpi {
             hap.Characteristic.StatusLowBattery.BATTERY_LEVEL_NORMAL;
 
         const datapointVoltage = config.iface + '.' + config.description.ADDRESS + ':0.OPERATING_VOLTAGE';
-        let voltage = (ccu.values && ccu.values[datapointVoltage] && ccu.values[datapointVoltage].value) || 0;
+        let voltage = batteryPercent(ccu.values && ccu.values[datapointVoltage] && ccu.values[datapointVoltage].value) || 0;
 
         const datapointUnreach = config.iface + '.' + config.description.ADDRESS + ':0.UNREACH';
         let unreach = ccu.values && ccu.values[datapointUnreach] && ccu.values[datapointUnreach].value;
@@ -107,7 +117,7 @@ module.exports = class HmipSpi {
                     acc.getService(subtypeBattery).updateCharacteristic(hap.Characteristic.StatusLowBattery, lowbat);
                     break;
                 case '0.OPERATING_VOLTAGE':
-                    voltage = msg.value;
+                    voltage = batteryPercent(msg.value);
                     homematic.debug('update ' + config.name + ' 2 BatteryLevel ' + voltage);
                     acc.getService(subtypeBattery).updateCharacteristic(hap.Characteristic.BatteryLevel, voltage);
                     break;
