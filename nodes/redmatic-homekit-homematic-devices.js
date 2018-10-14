@@ -38,8 +38,12 @@ module.exports = function (RED) {
         }
 
         createHomematicDevice(dev) {
-            const type = dev && dev.description && dev.description.TYPE;
-            if (!type || this.homematicInvalidDevices.includes(type)) {
+            let type = dev && dev.description && dev.description.TYPE;
+            if (!type) {
+                return;
+            }
+            type = type.toLowerCase();
+            if (this.homematicInvalidDevices.includes(type)) {
                 return;
             }
             if (!this.homematicDevices[type]) {
