@@ -1,3 +1,3 @@
-module.exports = require('./HM-Sec-SC');
+module.exports = require('./hm-sec-sc');
 
 // TODO BatteryService

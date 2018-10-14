@@ -1,1 +1,1 @@
-module.exports = require('./HMIP-PS');
+module.exports = require('./hmip-ps');

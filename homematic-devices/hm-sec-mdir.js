@@ -1,4 +1,4 @@
-module.exports = class HmSecSc {
+module.exports = class HmSecMdir {
     constructor(config, homematic) {
         const {bridgeConfig, ccu} = homematic;
         const {hap} = bridgeConfig;

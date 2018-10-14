@@ -1,1 +1,1 @@
-module.exports = require('./HM-LC-Dim1L-CV');
+module.exports = require('./hm-lc-dim1l-cv');

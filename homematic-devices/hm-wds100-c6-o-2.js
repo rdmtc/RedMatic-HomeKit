@@ -1,1 +1,1 @@
-module.exports = require('./HM-WDS100-C6-O');
+module.exports = require('./hm-wds100-c6-o');

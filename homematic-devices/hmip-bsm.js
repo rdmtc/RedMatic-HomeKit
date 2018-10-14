@@ -1,4 +1,4 @@
-module.exports = class HmipPs {
+module.exports = class HmipBsm {
     constructor(config, homematic) {
         const {bridgeConfig, ccu} = homematic;
         const {hap} = bridgeConfig;
