@@ -6,7 +6,7 @@ module.exports = class HmWds100 {
         homematic.debug('creating Homematic Device ' + config.description.TYPE + ' ' + config.name);
 
         function lux(val) {
-            return Math.pow(10, val / 50);
+            return Math.round(Math.pow(10, val / 50));
         }
 
         const datapointTemperature = config.iface + '.' + config.description.ADDRESS + ':1.TEMPERATURE';
