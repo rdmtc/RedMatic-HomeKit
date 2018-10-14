@@ -45,6 +45,7 @@ module.exports = class HmWds {
                 .setValue(valueTemperature);
 
             acc.addService(hap.Service.HumiditySensor, config.name, subtypeHumidity)
+                .getCharacteristic(hap.Characteristic.CurrentRelativeHumidity)
                 .setValue(valueHumidity);
 
             acc.isConfigured = true;

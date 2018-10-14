@@ -6,7 +6,7 @@ module.exports = class HmWds100 {
         homematic.debug('creating Homematic Device ' + config.description.TYPE + ' ' + config.name);
 
         function lux(val) {
-            return Math.round(Math.pow(10, val / 50));
+            return Math.round(Math.pow(10, val / 50)) || 1;
         }
 
         const datapointTemperature = config.iface + '.' + config.description.ADDRESS + ':1.TEMPERATURE';
@@ -55,9 +55,11 @@ module.exports = class HmWds100 {
                 .setValue(valueTemperature);
 
             acc.addService(hap.Service.HumiditySensor, config.name, subtypeHumidity)
+                .getCharacteristic(hap.Characteristic.CurrentRelativeHumidity)
                 .setValue(valueHumidity);
 
             acc.addService(hap.Service.LightSensor, config.name, subtypeBrightness)
+                .getCharacteristic(hap.Characteristic.CurrentAmbientLightLevel)
                 .setValue(valueBrightness);
 
             acc.isConfigured = true;
@@ -139,5 +141,7 @@ module.exports = class HmWds100 {
             acc.getService(subtypeTemperature).getCharacteristic(hap.Characteristic.StatusLowBattery).removeListener('get', getListenerLowbat);
             acc.getService(subtypeTemperature).getCharacteristic(hap.Characteristic.StatusFault).removeListener('get', getListenerFault);
         });
+
+        console.log('hmm')
     }
 };
