@@ -40,13 +40,14 @@ module.exports = class HmWds {
             });
 
             acc.addService(hap.Service.TemperatureSensor, config.name, subtypeTemperature)
+                .updateCharacteristic(hap.Characteristic.StatusLowBattery, lowbat)
+                .updateCharacteristic(hap.Characteristic.StatusFault, unreach)
                 .getCharacteristic(hap.Characteristic.CurrentTemperature)
                 .setProps({minValue: -40, maxValue: 80})
-                .setValue(valueTemperature);
+                .updateValue(valueTemperature);
 
             acc.addService(hap.Service.HumiditySensor, config.name, subtypeHumidity)
-                .getCharacteristic(hap.Characteristic.CurrentRelativeHumidity)
-                .setValue(valueHumidity);
+                .updateCharacteristic(hap.Characteristic.CurrentRelativeHumidity, valueHumidity);
 
             acc.isConfigured = true;
         }

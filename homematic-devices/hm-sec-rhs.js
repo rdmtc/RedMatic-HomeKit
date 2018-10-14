@@ -40,7 +40,12 @@ module.exports = class HmSecRhs {
                 callback();
             });
 
-            acc.addService(hap.Service.ContactSensor, config.name, subtype);
+            acc.addService(hap.Service.ContactSensor, config.name, subtype)
+                .updateCharacteristic(hap.Characteristic.ContactSensorState, valueContact)
+                .updateCharacteristic(hap.Characteristic.StatusLowBattery, lowbat)
+                .updateCharacteristic(hap.Characteristic.StatusTampered, tampered)
+                .updateCharacteristic(hap.Characteristic.StatusFault, unreach);
+
             acc.isConfigured = true;
         }
 

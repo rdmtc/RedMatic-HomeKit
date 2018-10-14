@@ -50,6 +50,8 @@ module.exports = class HmWds100 {
             acc.addService(hap.Service.TemperatureSensor, config.name, subtypeTemperature);
 
             acc.getService(subtypeTemperature)
+                .updateCharacteristic(hap.Characteristic.StatusLowBattery, lowbat)
+                .updateCharacteristic(hap.Characteristic.StatusFault, unreach)
                 .getCharacteristic(hap.Characteristic.CurrentTemperature)
                 .setProps({minValue: -40, maxValue: 80})
                 .setValue(valueTemperature);
