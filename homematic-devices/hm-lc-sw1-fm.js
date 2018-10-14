@@ -30,7 +30,9 @@ module.exports = class HmSw1 {
                 callback();
             });
 
-            acc.addService(hap.Service.Switch, config.name, subtype);
+            acc.addService(hap.Service.Switch, config.name, subtype)
+                .updateCharacteristic(hap.Characteristic.On, valueOn);
+
             acc.isConfigured = true;
         }
 

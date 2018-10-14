@@ -30,7 +30,10 @@ module.exports = class HmDim1 {
                 callback();
             });
 
-            acc.addService(hap.Service.Lightbulb, config.name, subtype);
+            acc.addService(hap.Service.Lightbulb, config.name, subtype)
+                .updateCharacteristic(hap.Characteristic.On, Boolean(valueBrightness))
+                .updateCharacteristic(hap.Characteristic.Brightness, valueBrightness);
+
             acc.isConfigured = true;
         }
 

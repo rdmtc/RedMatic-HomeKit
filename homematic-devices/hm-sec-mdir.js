@@ -46,8 +46,15 @@ module.exports = class HmSecMdir {
                 callback();
             });
 
-            acc.addService(hap.Service.MotionSensor, config.name, subtypeMotion);
-            acc.addService(hap.Service.LightSensor, config.name, subtypeBrightness);
+            acc.addService(hap.Service.MotionSensor, config.name, subtypeMotion)
+                .updateCharacteristic(hap.Characteristic.MotionDetected, valueMotion)
+                .updateCharacteristic(hap.Characteristic.StatusLowBattery, lowbat)
+                .updateCharacteristic(hap.Characteristic.StatusTampered, tampered)
+                .updateCharacteristic(hap.Characteristic.StatusFault, unreach);
+
+            acc.addService(hap.Service.LightSensor, config.name, subtypeBrightness)
+                .updateCharacteristic(hap.Characteristic.Brightness, valueBrightness);
+
             acc.isConfigured = true;
         }
 
