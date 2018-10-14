@@ -50,22 +50,23 @@ module.exports = function (RED) {
             } else {
                 this.bridge = new hap.Bridge(this.name, hap.uuid.generate(this.username));
                 bridges[this.username] = this.bridge;
-                this.waitForAccessories();
             }
+            this.waitForAccessories();
         }
 
         publishBridge() {
-            if (this.published) {
-                return;
-            }
+
             if (this.waitForHomematic) {
                 this.once('homematic-ready', () => {
                     this.publishBridge();
                 });
                 return;
+            } else if (this.bridge.isPublished) {
+                this.log('bridge already published (' + this.bridge.bridgedAccessories.length + ' Accessories) ' + this.name + ' ' + this.username + ' on port ' + this.port);
+                return;
             }
 
-            this.published = true;
+            this.bridge.isPublished = true;
 
             this.bridge.on('identify', (paired, callback) => {
                 this.log('hap bridge identify', paired ? '(paired)' : '(unpaired)');
@@ -84,7 +85,7 @@ module.exports = function (RED) {
                 pincode: this.pincode,
                 category: hap.Accessory.Categories.OTHER
             });
-            this.log('published bridge (' + this.bridge.bridgedAccessories.length + ') ' + this.name + ' ' + this.username + ' on port ' + this.port);
+            this.log('published bridge (' + this.bridge.bridgedAccessories.length + ' Accessories) ' + this.name + ' ' + this.username + ' on port ' + this.port);
 
             this.emit('published');
         }
@@ -92,7 +93,9 @@ module.exports = function (RED) {
         waitForAccessories() {
             clearTimeout(this.waitForAccessoriesTimer);
             this.waitForAccessoriesTimer = setTimeout(() => {
-                this.publishBridge();
+                if (!this.waitForHomematic) {
+                    this.publishBridge();
+                }
             }, 3000);
         }
 
