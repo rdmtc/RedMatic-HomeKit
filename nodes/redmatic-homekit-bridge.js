@@ -52,6 +52,14 @@ module.exports = function (RED) {
                 bridges[this.username] = this.bridge;
             }
             this.waitForAccessories();
+
+            this.on('close', (remove, done) => {
+                if (remove && this.bridge.isPublished) {
+                    this.bridge.unpublish();
+                    this.log('unpublished bridge ' + this.name + ' ' + this.username + ' on port ' + this.port);
+                }
+                done();
+            });
         }
 
         publishBridge() {
