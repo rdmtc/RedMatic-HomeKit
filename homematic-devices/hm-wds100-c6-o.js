@@ -51,10 +51,15 @@ module.exports = class HmWds100 {
 
             acc.getService(subtypeTemperature)
                 .getCharacteristic(hap.Characteristic.CurrentTemperature)
-                .setProps({minValue: -40, maxValue: 80});
+                .setProps({minValue: -40, maxValue: 80})
+                .setValue(valueTemperature);
 
-            acc.addService(hap.Service.HumiditySensor, config.name, subtypeHumidity);
-            acc.addService(hap.Service.LightSensor, config.name, subtypeBrightness);
+            acc.addService(hap.Service.HumiditySensor, config.name, subtypeHumidity)
+                .setValue(valueHumidity);
+
+            acc.addService(hap.Service.LightSensor, config.name, subtypeBrightness)
+                .setValue(valueBrightness);
+
             acc.isConfigured = true;
         }
 
