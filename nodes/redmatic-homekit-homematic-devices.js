@@ -40,6 +40,7 @@ module.exports = function (RED) {
         createHomematicDevice(dev) {
             let type = dev && dev.description && dev.description.TYPE;
             if (!type) {
+                this.error('invalid homematic device type ' + type);
                 return;
             }
             type = type.toLowerCase();
@@ -49,8 +50,9 @@ module.exports = function (RED) {
             if (!this.homematicDevices[type]) {
                 try {
                     this.homematicDevices[type] = require('../homematic-devices/' + type);
+                    this.debug('loaded homematic-devices/' + type);
                 } catch (error) {
-                    // this.warn('missing homematic-devices/' + type);
+                    this.warn('missing homematic-devices/' + type);
                     this.homematicInvalidDevices.push(type);
                     return;
                 }
@@ -58,7 +60,7 @@ module.exports = function (RED) {
             if (this.homematicDevices[type] && typeof this.homematicDevices[type] === 'function') {
                 return new this.homematicDevices[type](dev, this);
             }
-            // this.error('invalid homematic-devices/' + type);
+            this.error('invalid homematic-devices/' + type);
             this.homematicInvalidDevices.push(type);
         }
 

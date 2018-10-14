@@ -107,7 +107,7 @@ module.exports = function (RED) {
             });
 
             if (acc) {
-                this.log('already existing accessory ' + config.id + ' ' + config.name);
+                this.debug('already existing accessory ' + config.id + ' ' + config.name);
             } else {
                 if (this.bridge.bridgedAccessories.length >= 100) {
                     this.error('maximum of 100 accessories per bridge exceeded, can\'t add ' + config.id + ' ' + config.name);

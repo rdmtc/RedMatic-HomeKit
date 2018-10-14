@@ -3,7 +3,7 @@ module.exports = class HmipPs {
         const {bridgeConfig, ccu} = homematic;
         const {hap} = bridgeConfig;
 
-        homematic.log('creating Homematic Device ' + config.description.TYPE + ' ' + config.name);
+        homematic.debug('creating Homematic Device ' + config.description.TYPE + ' ' + config.name);
 
         const datapointOn = config.iface + '.' + config.description.ADDRESS + ':4.STATE';
         let valueOn = ccu.values && ccu.values[datapointOn] && ccu.values[datapointOn].value;
