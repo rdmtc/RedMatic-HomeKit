@@ -141,7 +141,5 @@ module.exports = class HmWds100 {
             acc.getService(subtypeTemperature).getCharacteristic(hap.Characteristic.StatusLowBattery).removeListener('get', getListenerLowbat);
             acc.getService(subtypeTemperature).getCharacteristic(hap.Characteristic.StatusFault).removeListener('get', getListenerFault);
         });
-
-        console.log('hmm')
     }
 };
