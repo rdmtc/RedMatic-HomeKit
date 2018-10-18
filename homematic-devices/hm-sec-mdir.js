@@ -53,7 +53,7 @@ module.exports = class HmSecMdir {
                 .updateCharacteristic(hap.Characteristic.StatusFault, unreach);
 
             acc.addService(hap.Service.LightSensor, config.name, subtypeBrightness)
-                .updateCharacteristic(hap.Characteristic.Brightness, valueBrightness);
+                .updateCharacteristic(hap.Characteristic.CurrentAmbientLightLevel, valueBrightness);
 
             acc.isConfigured = true;
         }
