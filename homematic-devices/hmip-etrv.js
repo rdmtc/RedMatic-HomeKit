@@ -139,7 +139,7 @@ module.exports = class HmipEtrv {
             homematic.debug('set ' + config.name + ' 0 TargetHeatingCoolingState ' + value);
             if (value === 0) {
                 ccu.methodCall(config.iface, 'putParamset', [config.description.ADDRESS + ':1', 'VALUES', {
-                    SET_POINT_MODE: 1,
+                    CONTROL_MODE: 1,
                     SET_POINT_TEMPERATURE: 4.5
                 }]).then(() => {
                     callback();
@@ -149,7 +149,7 @@ module.exports = class HmipEtrv {
                     });
             } else if (value === 1) {
                 ccu.methodCall(config.iface, 'putParamset', [config.description.ADDRESS + ':1', 'VALUES', {
-                    SET_POINT_MODE: 1,
+                    CONTROL_MODE: 1,
                     SET_POINT_TEMPERATURE: 21
                 }]).then(() => {
                     callback();
@@ -158,7 +158,7 @@ module.exports = class HmipEtrv {
                         callback(new Error(hap.HAPServer.Status.SERVICE_COMMUNICATION_FAILURE));
                     });
             } else {
-                ccu.setValue(config.iface, config.description.ADDRESS + ':1', 'SET_POINT_MODE', value === 3 ? 0 : 1)
+                ccu.setValue(config.iface, config.description.ADDRESS + ':1', 'CONTROL_MODE', value === 3 ? 0 : 1)
                     .then(() => {
                         callback();
                     })
