@@ -16,17 +16,19 @@ module.exports = class HmipEtrv {
         }
 
         const datapointTemperature = config.iface + '.' + config.description.ADDRESS + ':1.ACTUAL_TEMPERATURE';
-        let valueTemperature = (ccu.values && ccu.values[datapointTemperature] && ccu.values[datapointTemperature].value) || 0;
+        let actualTemperature = (ccu.values && ccu.values[datapointTemperature] && ccu.values[datapointTemperature].value) || 0;
 
         const datapointLevel = config.iface + '.' + config.description.ADDRESS + ':1.LEVEL';
-        let valueLevel = (ccu.values && ccu.values[datapointLevel] && ccu.values[datapointLevel].value) || 0;
+        let level = (ccu.values && ccu.values[datapointLevel] && ccu.values[datapointLevel].value) || 0;
 
         const datapointSetpoint = config.iface + '.' + config.description.ADDRESS + ':1.SET_POINT_TEMPERATURE';
         let valueSetpoint = (ccu.values && ccu.values[datapointSetpoint] && ccu.values[datapointSetpoint].value) || 0;
 
+        const datapointControlMode = config.iface + '.' + config.description.ADDRESS + ':1.SET_POINT_MODE';
+        let setPointMode = (ccu.values && ccu.values[datapointControlMode] && ccu.values[datapointControlMode].value) || 0;
 
         const datapointLowbat = config.iface + '.' + config.description.ADDRESS + ':0.LOW_BAT';
-        let lowbat = (ccu.values && ccu.values[datapointLowbat] && ccu.values[datapointLowbat].value) ?
+        let lowBat = (ccu.values && ccu.values[datapointLowbat] && ccu.values[datapointLowbat].value) ?
             hap.Characteristic.StatusLowBattery.BATTERY_LEVEL_LOW :
             hap.Characteristic.StatusLowBattery.BATTERY_LEVEL_NORMAL;
 
@@ -44,13 +46,27 @@ module.exports = class HmipEtrv {
 
         function targetState() {
             // 0=off, 1=heat, 3=auto
-            return valueSetpoint > 12 ? 3 : 0;
+            let target;
+            homematic.log(config.name + ' controlMode ' + setPointMode);
+            switch (setPointMode) {
+                case 1:
+                    // Manu
+                    target = valueSetpoint > 4.5 ? 1 : 0;
+                    break;
+                default:
+                    // Auto/Party
+                    target = 3;
+            }
+            homematic.log(config.name + ' TargetHeatingCoolingState ' + target);
+            return target;
+
         }
 
         function currentState() {
             // 0=off, 1=heat
-            return (valueLevel > 0 && valueSetpoint > 12) ? 1 : 0;
-
+            const current = level > 0 ? 1 : 0;
+            homematic.log(config.name + ' CurrentHeatingCoolingState ' + current);
+            return current;
         }
 
         const acc = bridgeConfig.accessory({id: config.description.ADDRESS, name: config.name});
@@ -72,7 +88,7 @@ module.exports = class HmipEtrv {
             acc.addService(hap.Service.Thermostat, config.name, subtypeThermostat)
                 .getCharacteristic(hap.Characteristic.CurrentTemperature)
                 .setProps({minValue: -40, maxValue: 80})
-                .updateValue(valueTemperature)
+                .updateValue(actualTemperature)
 
             acc.getService(subtypeThermostat)
                 .getCharacteristic(hap.Characteristic.TargetTemperature)
@@ -86,7 +102,7 @@ module.exports = class HmipEtrv {
 
             acc.getService(subtypeThermostat)
                 .getCharacteristic(hap.Characteristic.TargetHeatingCoolingState)
-                .setProps({validValues: [0, 3]})
+                .setProps({validValues: [0, 1, 3]})
                 .updateValue(targetState());
 
             acc.addService(hap.Service.BatteryService, config.name, subtypeBattery);
@@ -95,8 +111,8 @@ module.exports = class HmipEtrv {
         }
 
         const getListenerCurrentTemperature = callback => {
-            homematic.debug('get ' + config.name + ' ' + subtypeThermostat + ' CurrentTemperature ' + getError() + ' ' + valueTemperature);
-            callback(null, valueTemperature);
+            homematic.debug('get ' + config.name + ' ' + subtypeThermostat + ' CurrentTemperature ' + getError() + ' ' + actualTemperature);
+            callback(null, actualTemperature);
         };
 
         const getListenerTargetTemperature = callback => {
@@ -119,28 +135,65 @@ module.exports = class HmipEtrv {
             const state = targetState();
             homematic.debug('get ' + config.name + ' ' + subtypeThermostat + ' TargetHeatingCoolingState ' + getError() + ' ' + state);
             callback(null, state);
+            setTimeout(() => {
+                updateHeatingCoolingState();
+            }, 1000);
         };
 
         const setListenerTargetHeatingCoolingState = (value, callback) => {
+            // 0=off, 1=heat, 3=auto
             homematic.log('set ' + config.name + ' 0 TargetHeatingCoolingState ' + value);
-            callback();
+            if (value === 0) {
+                ccu.methodCall(config.iface, 'putParamset', [config.description.ADDRESS + ':1', 'VALUES', {
+                    'CONTROL_MODE': 1,
+                    'SET_POINT_TEMPERATURE': 4.5
+                }]).then(() => {
+                        callback();
+                    })
+                    .catch(() => {
+                        callback(new Error(hap.HAPServer.Status.SERVICE_COMMUNICATION_FAILURE));
+                    });
+            } else if (value === 1) {
+                ccu.methodCall(config.iface, 'putParamset', [config.description.ADDRESS + ':1', 'VALUES', {
+                    'CONTROL_MODE': 1,
+                    'SET_POINT_TEMPERATURE': 21
+                }]).then(() => {
+                    callback();
+                })
+                    .catch(() => {
+                        callback(new Error(hap.HAPServer.Status.SERVICE_COMMUNICATION_FAILURE));
+                    });
+            } else {
+                ccu.setValue(config.iface, config.description.ADDRESS + ':1', 'CONTROL_MODE', value === 3 ? 0 : 1)
+                    .then(() => {
+                        callback();
+                    })
+                    .catch(() => {
+                        callback(new Error(hap.HAPServer.Status.SERVICE_COMMUNICATION_FAILURE));
+                    });
+            }
+
+
         };
 
         const getListenerCurrentHeatingCoolingState = callback => {
             const state = currentState();
             homematic.debug('get ' + config.name + ' ' + subtypeThermostat + ' CurrentHeatingCoolingState ' + getError() + ' ' + state);
             callback(null, state);
+            setTimeout(() => {
+                updateHeatingCoolingState();
+            }, 1000);
         };
 
 
         const getListenerLowbat = callback => {
-            homematic.debug('get ' + config.name + ' ' + subtypeBattery + ' StatusLowBattery ' + getError() + ' ' + lowbat);
-            callback(null, lowbat);
+            homematic.debug('get ' + config.name + ' ' + subtypeBattery + ' StatusLowBattery ' + getError() + ' ' + lowBat);
+            callback(null, lowBat);
         };
 
         const getListenerBattery = callback => {
             homematic.debug('get ' + config.name + ' ' + subtypeBattery + ' Batterylevel ' + getError() + ' ' + battery);
-            callback(null, lowbat);
+            callback(null, battery);
         };
 
         acc.getService(subtypeThermostat).getCharacteristic(hap.Characteristic.TargetTemperature).on('get', getListenerTargetTemperature);
@@ -154,12 +207,14 @@ module.exports = class HmipEtrv {
 
         function updateHeatingCoolingState() {
             const current = currentState();
-            homematic.debug('update ' + config.name + ' 0 CurrentHeatingCoolingState ' + current);
+            homematic.log('update ' + config.name + ' 0 CurrentHeatingCoolingState ' + current);
             acc.getService(subtypeThermostat).updateCharacteristic(hap.Characteristic.CurrentHeatingCoolingState, current);
             const target = targetState();
-            homematic.debug('update ' + config.name + ' 0 TargetHeatingCoolingState ' + target);
+            homematic.log('update ' + config.name + ' 0 TargetHeatingCoolingState ' + target);
             acc.getService(subtypeThermostat).updateCharacteristic(hap.Characteristic.TargetHeatingCoolingState, target);
         }
+
+
 
         const idSubscription = ccu.subscribe({
             iface: config.iface,
@@ -170,8 +225,6 @@ module.exports = class HmipEtrv {
             switch (msg.channelIndex + '.' + msg.datapoint) {
                 case '0.UNREACH':
                     unreach = msg.value;
-                    homematic.debug('update ' + config.name + ' ' + subtypeThermostat + ' StatusFault ' + unreach);
-                    acc.getService(subtypeThermostat).updateCharacteristic(hap.Characteristic.StatusFault, unreach);
                     break;
                 case '0.OPERATING_VOLTAGE':
                     battery = batteryPercent(msg.value);
@@ -179,14 +232,14 @@ module.exports = class HmipEtrv {
                     acc.getService(subtypeBattery).updateCharacteristic(hap.Characteristic.BatteryLevel, battery);
                     break;
                 case '0.LOW_BAT':
-                    lowbat = msg.value ? hap.Characteristic.StatusLowBattery.BATTERY_LEVEL_LOW : hap.Characteristic.StatusLowBattery.BATTERY_LEVEL_NORMAL;
-                    homematic.debug('update ' + config.name + ' ' + subtypeBattery + ' StatusLowBattery ' + lowbat);
-                    acc.getService(subtypeBattery).updateCharacteristic(hap.Characteristic.StatusLowBattery, lowbat);
+                    lowBat = msg.value ? hap.Characteristic.StatusLowBattery.BATTERY_LEVEL_LOW : hap.Characteristic.StatusLowBattery.BATTERY_LEVEL_NORMAL;
+                    homematic.debug('update ' + config.name + ' ' + subtypeBattery + ' StatusLowBattery ' + lowBat);
+                    acc.getService(subtypeBattery).updateCharacteristic(hap.Characteristic.StatusLowBattery, lowBat);
                     break;
                 case '1.ACTUAL_TEMPERATURE':
-                    valueTemperature = msg.value;
-                    homematic.debug('update ' + config.name + ' ' + subtypeThermostat + ' CurrentTemperature ' + valueTemperature);
-                    acc.getService(subtypeThermostat).updateCharacteristic(hap.Characteristic.CurrentTemperature, valueTemperature);
+                    actualTemperature = msg.value;
+                    homematic.debug('update ' + config.name + ' ' + subtypeThermostat + ' CurrentTemperature ' + actualTemperature);
+                    acc.getService(subtypeThermostat).updateCharacteristic(hap.Characteristic.CurrentTemperature, actualTemperature);
                     break;
                 case '1.SET_POINT_TEMPERATURE':
                     valueSetpoint = msg.value;
@@ -195,7 +248,11 @@ module.exports = class HmipEtrv {
                     updateHeatingCoolingState();
                     break;
                 case '1.LEVEL':
-                    valueLevel = msg.value;
+                    level = msg.value;
+                    updateHeatingCoolingState();
+                    break;
+                case '1.SET_POINT_MODE':
+                    setPointMode = msg.value;
                     updateHeatingCoolingState();
                     break;
                 default:
