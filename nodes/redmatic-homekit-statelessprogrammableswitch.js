@@ -16,7 +16,6 @@ module.exports = function (RED) {
 
             const acc = this.bridgeConfig.accessory({id: this.id, name: this.name});
 
-
             if (!acc.isConfigured) {
                 this.debug('addAccessory Event ' + config.name);
 
@@ -28,7 +27,6 @@ module.exports = function (RED) {
 
                 acc.addService(hap.Service.ServiceLabel, 'Buttons', '0')
                     .setCharacteristic(hap.Characteristic.ServiceLabelNamespace, 1);
-
 
                 for (let index = 1; index <= this.count; index++) {
                     const subtype = String(index);

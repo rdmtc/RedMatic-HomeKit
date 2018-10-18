@@ -34,17 +34,14 @@ module.exports = class HmCcTc {
         const datapointUnreach = config.iface + '.' + config.description.ADDRESS + ':0.UNREACH';
         let unreach = ccu.values && ccu.values[datapointUnreach] && ccu.values[datapointUnreach].value;
 
-
-
         function getError() {
             return unreach ? new Error(hap.HAPServer.Status.SERVICE_COMMUNICATION_FAILURE) : null;
         }
 
         function targetState() {
             // 0=off, 1=heat, 3=auto
-            let target = valueSetpoint > 5.5 ? 1 : 0;
+            const target = valueSetpoint > 5.5 ? 1 : 0;
             return target;
-
         }
 
         function currentState() {
@@ -134,8 +131,6 @@ module.exports = class HmCcTc {
             }, 1000);
         };
 
-
-
         const getListenerCurrentHeatingCoolingState = callback => {
             const state = currentState();
             homematic.debug('get ' + config.name + ' ' + subtypeThermostat + ' CurrentHeatingCoolingState ' + getError() + ' ' + state);
@@ -165,17 +160,12 @@ module.exports = class HmCcTc {
                         callback(new Error(hap.HAPServer.Status.SERVICE_COMMUNICATION_FAILURE));
                     });
             }
-
-
         };
-
 
         const getListenerLowbat = callback => {
             homematic.debug('get ' + config.name + ' ' + subtypeBattery + ' StatusLowBattery ' + getError() + ' ' + lowbat);
             callback(null, lowbat);
         };
-
-
 
         acc.getService(subtypeThermostat).getCharacteristic(hap.Characteristic.TargetTemperature).on('get', getListenerTargetTemperature);
         acc.getService(subtypeThermostat).getCharacteristic(hap.Characteristic.TargetTemperature).on('set', setListenerTargetTemperature);
@@ -194,8 +184,6 @@ module.exports = class HmCcTc {
             homematic.debug('update ' + config.name + ' 0 TargetHeatingCoolingState ' + target);
             acc.getService(subtypeThermostat).updateCharacteristic(hap.Characteristic.TargetHeatingCoolingState, target);
         }
-
-
 
         const idSubscription = ccu.subscribe({
             iface: config.iface,
@@ -258,7 +246,6 @@ module.exports = class HmCcTc {
                 ccu.unsubscribe(idSubscriptionValveState);
             }
             acc.getService(subtypeBattery).getCharacteristic(hap.Characteristic.StatusLowBattery).removeListener('get', getListenerLowbat);
-            acc.getService(subtypeBattery).getCharacteristic(hap.Characteristic.BatteryLevel).removeListener('get', getListenerBattery);
             acc.getService(subtypeHumidity).getCharacteristic(hap.Characteristic.CurrentRelativeHumidity).removeListener('get', getListenerCurrentRelativeHumidity);
             acc.getService(subtypeThermostat).getCharacteristic(hap.Characteristic.TargetTemperature).removeListener('get', getListenerTargetTemperature);
             acc.getService(subtypeThermostat).getCharacteristic(hap.Characteristic.CurrentTemperature).removeListener('get', getListenerCurrentTemperature);

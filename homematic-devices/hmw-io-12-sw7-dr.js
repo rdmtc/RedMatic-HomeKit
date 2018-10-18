@@ -1,6 +1,5 @@
 module.exports = class hmwIo12Sw7Dr {
     hmChannelSwitch(channel, config, homematic) {
-
         const {bridgeConfig, ccu} = homematic;
         const {hap} = bridgeConfig;
 
@@ -10,7 +9,6 @@ module.exports = class hmwIo12Sw7Dr {
         function getError() {
             return unreach ? new Error(hap.HAPServer.Status.SERVICE_COMMUNICATION_FAILURE) : null;
         }
-
 
         homematic.debug('creating Homematic Channel ' + address + ' ' + name);
 
@@ -87,6 +85,7 @@ module.exports = class hmwIo12Sw7Dr {
             acc.getService(subtype).getCharacteristic(hap.Characteristic.On).removeListener('set', setListener);
         });
     }
+
     constructor(config, homematic) {
         homematic.debug('creating Homematic Device ' + config.description.TYPE + ' ' + config.name);
 

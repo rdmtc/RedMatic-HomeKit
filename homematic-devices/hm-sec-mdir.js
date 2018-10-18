@@ -6,7 +6,7 @@ module.exports = class HmSecMdir {
         homematic.debug('creating Homematic Device ' + config.description.TYPE + ' ' + config.name);
 
         function lux(val) {
-            return Math.round(Math.pow(10, val / 50));
+            return Math.round(10 ** (val / 50));
         }
 
         const datapointMotion = config.iface + '.' + config.description.ADDRESS + ':1.MOTION';

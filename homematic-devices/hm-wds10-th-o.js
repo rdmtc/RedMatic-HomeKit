@@ -66,7 +66,7 @@ module.exports = class HmWds {
             homematic.debug('get ' + config.name + ' 0 StatusLowBattery ' + getError() + ' ' + lowbat);
             callback(null, lowbat);
         };
-        
+
         const getListenerFault = callback => {
             homematic.debug('get ' + config.name + ' 0 StatusFault ' + getError() + ' ' + unreach);
             callback(null, unreach);

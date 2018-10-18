@@ -81,7 +81,6 @@ module.exports = class HmLcBl1 {
             callback(getError(), getState());
         };
 
-
         acc.getService(subtype).getCharacteristic(hap.Characteristic.CurrentPosition).on('get', getListenerCurrentPosition);
         acc.getService(subtype).getCharacteristic(hap.Characteristic.TargetPosition).on('get', getListenerTargetPosition);
         acc.getService(subtype).getCharacteristic(hap.Characteristic.TargetPosition).on('set', setListenerTargetPosition);

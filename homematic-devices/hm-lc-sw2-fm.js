@@ -12,7 +12,7 @@ module.exports = class HmSw2 {
         let valueOn1 = ccu.values && ccu.values[datapointOn1] && ccu.values[datapointOn1].value;
 
         const datapointOn2 = config.iface + '.' + config.description.ADDRESS + ':2.STATE';
-        let valueOn2 = ccu.values && ccu.values[datapointOn2] && ccu.values[datapointOn2].value;
+        const valueOn2 = ccu.values && ccu.values[datapointOn2] && ccu.values[datapointOn2].value;
 
         const datapointUnreach = config.iface + '.' + config.description.ADDRESS + ':0.UNREACH';
         let unreach = ccu.values && ccu.values[datapointUnreach] && ccu.values[datapointUnreach].value;
@@ -40,7 +40,7 @@ module.exports = class HmSw2 {
             acc.addService(hap.Service.Switch, name1, subtype1)
                 .updateCharacteristic(hap.Characteristic.On, valueOn1);
 
-             acc.addService(hap.Service.Switch, name2, subtype2)
+            acc.addService(hap.Service.Switch, name2, subtype2)
                 .updateCharacteristic(hap.Characteristic.On, valueOn2);
 
             acc.isConfigured = true;
@@ -73,7 +73,7 @@ module.exports = class HmSw2 {
             callback(getError(), valueOn1);
         };
 
-       const getListener2 = callback => {
+        const getListener2 = callback => {
             homematic.debug('get ' + config.name + ' ' + subtype2 + ' On ' + getError() + ' ' + valueOn2);
             callback(getError(), valueOn1);
         };

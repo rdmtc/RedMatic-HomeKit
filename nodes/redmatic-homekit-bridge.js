@@ -83,13 +83,13 @@ module.exports = function (RED) {
         }
 
         publishBridge() {
-
             if (this.waitForHomematic) {
                 this.once('homematic-ready', () => {
                     this.publishBridge();
                 });
                 return;
-            } else if (this.bridge.isPublished) {
+            }
+            if (this.bridge.isPublished) {
                 this.log('bridge already published (' + this.bridge.bridgedAccessories.length + ' Accessories) ' + this.name + ' ' + this.username + ' on port ' + this.port);
                 return;
             }

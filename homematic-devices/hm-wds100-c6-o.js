@@ -6,7 +6,7 @@ module.exports = class HmWds100 {
         homematic.debug('creating Homematic Device ' + config.description.TYPE + ' ' + config.name);
 
         function lux(val) {
-            return Math.round(Math.pow(10, val / 50)) || 1;
+            return Math.round(10 ** (val / 50)) || 1;
         }
 
         const datapointTemperature = config.iface + '.' + config.description.ADDRESS + ':1.TEMPERATURE';
@@ -125,7 +125,7 @@ module.exports = class HmWds100 {
                     homematic.debug('update ' + config.name + ' 1 CurrentRelativeHumidity ' + valueHumidity);
                     acc.getService(subtypeHumidity).updateCharacteristic(hap.Characteristic.CurrentRelativeHumidity, valueHumidity);
                     break;
-                 case '1.BRIGHTNESS':
+                case '1.BRIGHTNESS':
                     valueBrightness = lux(msg.value);
                     homematic.debug('update ' + config.name + ' 2 CurrentAmbientLightLevel ' + valueBrightness);
                     acc.getService(subtypeBrightness).updateCharacteristic(hap.Characteristic.CurrentAmbientLightLevel, valueHumidity);

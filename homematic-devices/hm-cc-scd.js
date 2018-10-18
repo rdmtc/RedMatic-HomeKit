@@ -43,8 +43,6 @@ module.exports = class HmCcScd {
             callback(null, getValue());
         };
 
-
-
         acc.getService(subtype).getCharacteristic(hap.Characteristic.CarbonDioxideDetected).on('get', getListenerCarbonDioxideDetected);
 
         const idSubscription = ccu.subscribe({

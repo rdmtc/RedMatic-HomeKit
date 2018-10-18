@@ -13,12 +13,9 @@ module.exports = class HmSecKey {
             hap.Characteristic.StatusLowBattery.BATTERY_LEVEL_LOW :
             hap.Characteristic.StatusLowBattery.BATTERY_LEVEL_NORMAL;
 
-
         function getError() {
             return unreach ? new Error(hap.HAPServer.Status.SERVICE_COMMUNICATION_FAILURE) : null;
         }
-
-
 
         const acc = bridgeConfig.accessory({id: config.description.ADDRESS, name: config.name});
         const subtypeLock = '0';
@@ -36,13 +33,14 @@ module.exports = class HmSecKey {
 
             if (jammed) {
                 return hap.Characteristic.LockCurrentState.JAMMED;
-            } else if (unknown) {
-                return hap.Characteristic.LockCurrentState.UNKNOWN;
-            } else if (!state) {
-                return hap.Characteristic.LockCurrentState.SECURED;
-            } else {
-                return hap.Characteristic.LockCurrentState.UNSECURED;
             }
+            if (unknown) {
+                return hap.Characteristic.LockCurrentState.UNKNOWN;
+            }
+            if (!state) {
+                return hap.Characteristic.LockCurrentState.SECURED;
+            }
+            return hap.Characteristic.LockCurrentState.UNSECURED;
         };
 
         const getTargetState = () => {
@@ -53,9 +51,8 @@ module.exports = class HmSecKey {
 
             if (!state) {
                 return hap.Characteristic.LockCurrentState.SECURED;
-            } else {
-                return hap.Characteristic.LockCurrentState.UNSECURED;
             }
+            return hap.Characteristic.LockCurrentState.UNSECURED;
         };
 
         if (!acc.isConfigured) {
@@ -80,11 +77,9 @@ module.exports = class HmSecKey {
             acc.isConfigured = true;
         }
 
-
-
         const setListener = (value, callback) => {
             homematic.debug('set ' + config.name + ' ' + subtypeLock + ' LockTargetState ' + value);
-            ccu.setValue(config.iface, config.description.ADDRESS + ':1', 'STATE', !Boolean(value))
+            ccu.setValue(config.iface, config.description.ADDRESS + ':1', 'STATE', !value)
                 .then(() => {
                     callback();
                 })
@@ -103,12 +98,10 @@ module.exports = class HmSecKey {
             callback(getError(), getCurrentState());
         };
 
-
         const getListenerLowbat = callback => {
             homematic.debug('get ' + config.name + ' ' + subtypeBattery + ' StatusLowBattery ' + getError() + ' ' + lowbat);
             callback(null, lowbat);
         };
-
 
         acc.getService(subtypeLock).getCharacteristic(hap.Characteristic.LockCurrentState).on('get', getListenerCurrent);
         acc.getService(subtypeLock).getCharacteristic(hap.Characteristic.LockTargetState).on('get', getListener);

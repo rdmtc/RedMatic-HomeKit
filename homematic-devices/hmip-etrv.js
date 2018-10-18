@@ -38,8 +38,6 @@ module.exports = class HmipEtrv {
         const datapointUnreach = config.iface + '.' + config.description.ADDRESS + ':0.UNREACH';
         let unreach = ccu.values && ccu.values[datapointUnreach] && ccu.values[datapointUnreach].value;
 
-
-
         function getError() {
             return unreach ? new Error(hap.HAPServer.Status.SERVICE_COMMUNICATION_FAILURE) : null;
         }
@@ -84,7 +82,7 @@ module.exports = class HmipEtrv {
             acc.addService(hap.Service.Thermostat, config.name, subtypeThermostat)
                 .getCharacteristic(hap.Characteristic.CurrentTemperature)
                 .setProps({minValue: -40, maxValue: 80})
-                .updateValue(actualTemperature)
+                .updateValue(actualTemperature);
 
             acc.getService(subtypeThermostat)
                 .getCharacteristic(hap.Characteristic.TargetTemperature)
@@ -141,18 +139,18 @@ module.exports = class HmipEtrv {
             homematic.debug('set ' + config.name + ' 0 TargetHeatingCoolingState ' + value);
             if (value === 0) {
                 ccu.methodCall(config.iface, 'putParamset', [config.description.ADDRESS + ':1', 'VALUES', {
-                    'CONTROL_MODE': 1,
-                    'SET_POINT_TEMPERATURE': 4.5
+                    CONTROL_MODE: 1,
+                    SET_POINT_TEMPERATURE: 4.5
                 }]).then(() => {
-                        callback();
-                    })
+                    callback();
+                })
                     .catch(() => {
                         callback(new Error(hap.HAPServer.Status.SERVICE_COMMUNICATION_FAILURE));
                     });
             } else if (value === 1) {
                 ccu.methodCall(config.iface, 'putParamset', [config.description.ADDRESS + ':1', 'VALUES', {
-                    'CONTROL_MODE': 1,
-                    'SET_POINT_TEMPERATURE': 21
+                    CONTROL_MODE: 1,
+                    SET_POINT_TEMPERATURE: 21
                 }]).then(() => {
                     callback();
                 })
@@ -168,8 +166,6 @@ module.exports = class HmipEtrv {
                         callback(new Error(hap.HAPServer.Status.SERVICE_COMMUNICATION_FAILURE));
                     });
             }
-
-
         };
 
         const getListenerCurrentHeatingCoolingState = callback => {
@@ -180,7 +176,6 @@ module.exports = class HmipEtrv {
                 updateHeatingCoolingState();
             }, 1000);
         };
-
 
         const getListenerLowbat = callback => {
             homematic.debug('get ' + config.name + ' ' + subtypeBattery + ' StatusLowBattery ' + getError() + ' ' + lowBat);
@@ -209,8 +204,6 @@ module.exports = class HmipEtrv {
             homematic.debug('update ' + config.name + ' 0 TargetHeatingCoolingState ' + target);
             acc.getService(subtypeThermostat).updateCharacteristic(hap.Characteristic.TargetHeatingCoolingState, target);
         }
-
-
 
         const idSubscription = ccu.subscribe({
             iface: config.iface,
