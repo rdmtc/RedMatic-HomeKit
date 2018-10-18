@@ -44,7 +44,6 @@ module.exports = class HmipEtrv {
         function targetState() {
             // 0=off, 1=heat, 3=auto
             let target;
-            homematic.log(config.name + ' controlMode ' + controlMode);
             switch (controlMode) {
                 case 1:
                     // Manu
@@ -54,7 +53,6 @@ module.exports = class HmipEtrv {
                     // Auto/Party
                     target = 3;
             }
-            homematic.log(config.name + ' TargetHeatingCoolingState ' + target);
             return target;
 
         }
@@ -62,7 +60,6 @@ module.exports = class HmipEtrv {
         function currentState() {
             // 0=off, 1=heat
             const current = valveState > 0 ? 1 : 0;
-            homematic.log(config.name + ' CurrentHeatingCoolingState ' + current);
             return current;
         }
 
@@ -118,7 +115,7 @@ module.exports = class HmipEtrv {
         };
 
         const setListenerTargetTemperature = (value, callback) => {
-            homematic.log('set ' + config.name + ' ' + subtypeThermostat + ' TargetTemperature ' + value);
+            homematic.debug('set ' + config.name + ' ' + subtypeThermostat + ' TargetTemperature ' + value);
             ccu.setValue(config.iface, config.description.ADDRESS + ':4', 'SET_TEMPERATURE', value)
                 .then(() => {
                     callback();
@@ -139,7 +136,6 @@ module.exports = class HmipEtrv {
 
         const setListenerTargetHeatingCoolingState = (value, callback) => {
             // 0=off, 1=heat, 3=auto
-            homematic.log('set ' + config.name + ' 0 TargetHeatingCoolingState ' + value);
             if (value === 0) {
                 ccu.setValue(config.iface, config.description.ADDRESS + ':4', 'MANU_MODE', 4.5)
                     .then(() => {
@@ -200,10 +196,10 @@ module.exports = class HmipEtrv {
 
         function updateHeatingCoolingState() {
             const current = currentState();
-            homematic.log('update ' + config.name + ' 0 CurrentHeatingCoolingState ' + current);
+            homematic.debug('update ' + config.name + ' 0 CurrentHeatingCoolingState ' + current);
             acc.getService(subtypeThermostat).updateCharacteristic(hap.Characteristic.CurrentHeatingCoolingState, current);
             const target = targetState();
-            homematic.log('update ' + config.name + ' 0 TargetHeatingCoolingState ' + target);
+            homematic.debug('update ' + config.name + ' 0 TargetHeatingCoolingState ' + target);
             acc.getService(subtypeThermostat).updateCharacteristic(hap.Characteristic.TargetHeatingCoolingState, target);
         }
 

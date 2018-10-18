@@ -12,7 +12,7 @@ module.exports = class hmwIo12Sw7Dr {
         }
 
 
-        homematic.log('creating Homematic Channel ' + address + ' ' + name);
+        homematic.debug('creating Homematic Channel ' + address + ' ' + name);
 
         const acc = bridgeConfig.accessory({id: address, name});
         const subtype = '0';

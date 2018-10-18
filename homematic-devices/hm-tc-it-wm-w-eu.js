@@ -3,17 +3,16 @@ module.exports = class HmTcItWmWEu {
         const {bridgeConfig, ccu} = homematic;
         const {hap} = bridgeConfig;
 
-        homematic.log('creating Homematic Device ' + config.description.TYPE + ' ' + config.name);
+        homematic.debug('creating Homematic Device ' + config.description.TYPE + ' ' + config.name);
 
         const links = ccu.getLinks(config.iface, config.description.ADDRESS + ':2');
-        homematic.log(config.name + ' linked to ' + JSON.stringify(links));
+        homematic.debug(config.name + ' linked to ' + JSON.stringify(links));
 
         let datapointValveState;
         let valveStateDevice;
         if (links[0]) {
             valveStateDevice = links[0].split(':')[0];
             datapointValveState = config.iface + '.' + valveStateDevice + ':4.VALVE_STATE';
-            console.log('datapointValveState', datapointValveState)
         }
 
         function batteryPercent(val) {
@@ -60,7 +59,6 @@ module.exports = class HmTcItWmWEu {
         function targetState() {
             // 0=off, 1=heat, 3=auto
             let target;
-            homematic.log(config.name + ' controlMode ' + controlMode);
             switch (controlMode) {
                 case 1:
                     // Manu
@@ -70,7 +68,6 @@ module.exports = class HmTcItWmWEu {
                     // Auto/Party
                     target = 3;
             }
-            homematic.log(config.name + ' TargetHeatingCoolingState ' + target);
             return target;
 
         }
@@ -78,7 +75,6 @@ module.exports = class HmTcItWmWEu {
         function currentState() {
             // 0=off, 1=heat
             const current = valveState > 0 ? 1 : 0;
-            homematic.log(config.name + ' CurrentHeatingCoolingState ' + current);
             return current;
         }
 
@@ -143,7 +139,7 @@ module.exports = class HmTcItWmWEu {
         };
 
         const setListenerTargetTemperature = (value, callback) => {
-            homematic.log('set ' + config.name + ' ' + subtypeThermostat + ' TargetTemperature ' + value);
+            homematic.debug('set ' + config.name + ' ' + subtypeThermostat + ' TargetTemperature ' + value);
             ccu.setValue(config.iface, config.description.ADDRESS + ':2', 'SET_TEMPERATURE', value)
                 .then(() => {
                     callback();
@@ -164,7 +160,7 @@ module.exports = class HmTcItWmWEu {
 
         const setListenerTargetHeatingCoolingState = (value, callback) => {
             // 0=off, 1=heat, 3=auto
-            homematic.log('set ' + config.name + ' 0 TargetHeatingCoolingState ' + value);
+            homematic.debug('set ' + config.name + ' 0 TargetHeatingCoolingState ' + value);
             if (value === 0) {
                 ccu.setValue(config.iface, config.description.ADDRESS + ':2', 'MANU_MODE', 4.5)
                     .then(() => {
@@ -205,12 +201,12 @@ module.exports = class HmTcItWmWEu {
 
 
         const getListenerLowbat = callback => {
-            homematic.log('get ' + config.name + ' ' + subtypeBattery + ' StatusLowBattery ' + getError() + ' ' + lowbat);
+            homematic.debug('get ' + config.name + ' ' + subtypeBattery + ' StatusLowBattery ' + getError() + ' ' + lowbat);
             callback(null, lowbat);
         };
 
         const getListenerBattery = callback => {
-            homematic.log('get ' + config.name + ' ' + subtypeBattery + ' BatteryLevel ' + getError() + ' ' + battery);
+            homematic.debug('get ' + config.name + ' ' + subtypeBattery + ' BatteryLevel ' + getError() + ' ' + battery);
             callback(null, battery);
         };
 
@@ -226,10 +222,10 @@ module.exports = class HmTcItWmWEu {
 
         function updateHeatingCoolingState() {
             const current = currentState();
-            homematic.log('update ' + config.name + ' 0 CurrentHeatingCoolingState ' + current);
+            homematic.debug('update ' + config.name + ' 0 CurrentHeatingCoolingState ' + current);
             acc.getService(subtypeThermostat).updateCharacteristic(hap.Characteristic.CurrentHeatingCoolingState, current);
             const target = targetState();
-            homematic.log('update ' + config.name + ' 0 TargetHeatingCoolingState ' + target);
+            homematic.debug('update ' + config.name + ' 0 TargetHeatingCoolingState ' + target);
             acc.getService(subtypeThermostat).updateCharacteristic(hap.Characteristic.TargetHeatingCoolingState, target);
         }
 
@@ -247,7 +243,7 @@ module.exports = class HmTcItWmWEu {
                     break;
                 case '2.BATTERY_STATE':
                     battery = batteryPercent(msg.value);
-                    homematic.log('update ' + config.name + ' ' + subtypeBattery + ' BatteryLevel ' + battery);
+                    homematic.debug('update ' + config.name + ' ' + subtypeBattery + ' BatteryLevel ' + battery);
                     acc.getService(subtypeBattery).updateCharacteristic(hap.Characteristic.BatteryLevel, battery);
                     break;
                 case '0.LOWBAT':
@@ -282,7 +278,6 @@ module.exports = class HmTcItWmWEu {
         let idSubscriptionValveState;
 
         if (datapointValveState) {
-            console.log('subscribe level', valveStateDevice)
             idSubscriptionValveState = ccu.subscribe({
                 iface: config.iface,
                 device: valveStateDevice,
@@ -291,7 +286,6 @@ module.exports = class HmTcItWmWEu {
             }, msg => {
                 switch (msg.channelIndex + '.' + msg.datapoint) {
                     case '4.VALVE_STATE':
-                        console.log('valveState update!', msg.value);
                         valveState = msg.value;
                         updateHeatingCoolingState();
                         break;

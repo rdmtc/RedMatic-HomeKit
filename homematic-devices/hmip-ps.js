@@ -36,7 +36,6 @@ module.exports = class HmipPs {
 
         const setListener = (value, callback) => {
             homematic.debug('set ' + config.name + ' 0 On ' + value);
-            console.log('setValue', config.iface, config.description.ADDRESS + ':3', 'STATE', value);
             ccu.setValue(config.iface, config.description.ADDRESS + ':3', 'STATE', value)
                 .then(() => {
                     callback();
