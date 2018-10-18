@@ -32,10 +32,11 @@ module.exports = class HmipEtrv {
             hap.Characteristic.StatusLowBattery.BATTERY_LEVEL_LOW :
             hap.Characteristic.StatusLowBattery.BATTERY_LEVEL_NORMAL;
 
+        const datapointVoltage = config.iface + '.' + config.description.ADDRESS + ':4.BATTERY_STATE';
+        let battery = batteryPercent(ccu.values && ccu.values[datapointVoltage] && ccu.values[datapointVoltage].value);
+
         const datapointUnreach = config.iface + '.' + config.description.ADDRESS + ':0.UNREACH';
         let unreach = ccu.values && ccu.values[datapointUnreach] && ccu.values[datapointUnreach].value;
-
-
 
         function getError() {
             return unreach ? new Error(hap.HAPServer.Status.SERVICE_COMMUNICATION_FAILURE) : null;
@@ -54,7 +55,6 @@ module.exports = class HmipEtrv {
                     target = 3;
             }
             return target;
-
         }
 
         function currentState() {
@@ -82,7 +82,7 @@ module.exports = class HmipEtrv {
             acc.addService(hap.Service.Thermostat, config.name, subtypeThermostat)
                 .getCharacteristic(hap.Characteristic.CurrentTemperature)
                 .setProps({minValue: -40, maxValue: 80})
-                .updateValue(actualTemperature)
+                .updateValue(actualTemperature);
 
             acc.getService(subtypeThermostat)
                 .getCharacteristic(hap.Characteristic.TargetTemperature)
@@ -99,7 +99,9 @@ module.exports = class HmipEtrv {
                 .setProps({validValues: [0, 1, 3]})
                 .updateValue(targetState());
 
-            acc.addService(hap.Service.BatteryService, config.name, subtypeBattery);
+            acc.addService(hap.Service.BatteryService, config.name, subtypeBattery)
+                .updateCharacteristic(hap.Characteristic.StatusLowBattery, lowbat)
+                .updateCharacteristic(hap.Characteristic.BatteryLevel, battery);
 
             acc.isConfigured = true;
         }
@@ -161,8 +163,6 @@ module.exports = class HmipEtrv {
                         callback(new Error(hap.HAPServer.Status.SERVICE_COMMUNICATION_FAILURE));
                     });
             }
-
-
         };
 
         const getListenerCurrentHeatingCoolingState = callback => {
@@ -174,14 +174,13 @@ module.exports = class HmipEtrv {
             }, 1000);
         };
 
-
         const getListenerLowbat = callback => {
             homematic.debug('get ' + config.name + ' ' + subtypeBattery + ' StatusLowBattery ' + getError() + ' ' + lowbat);
             callback(null, lowbat);
         };
 
         const getListenerBattery = callback => {
-            homematic.debug('get ' + config.name + ' ' + subtypeBattery + ' Batterylevel ' + getError() + ' ' + battery);
+            homematic.debug('get ' + config.name + ' ' + subtypeBattery + ' BatteryLevel ' + getError() + ' ' + battery);
             callback(null, battery);
         };
 
@@ -203,8 +202,6 @@ module.exports = class HmipEtrv {
             acc.getService(subtypeThermostat).updateCharacteristic(hap.Characteristic.TargetHeatingCoolingState, target);
         }
 
-
-
         const idSubscription = ccu.subscribe({
             iface: config.iface,
             device: config.description.ADDRESS,
@@ -219,6 +216,11 @@ module.exports = class HmipEtrv {
                     lowbat = msg.value ? hap.Characteristic.StatusLowBattery.BATTERY_LEVEL_LOW : hap.Characteristic.StatusLowBattery.BATTERY_LEVEL_NORMAL;
                     homematic.debug('update ' + config.name + ' ' + subtypeBattery + ' StatusLowBattery ' + lowbat);
                     acc.getService(subtypeBattery).updateCharacteristic(hap.Characteristic.StatusLowBattery, lowbat);
+                    break;
+                case '4.BATTERY_STATE':
+                    battery = batteryPercent(msg.value);
+                    homematic.debug('update ' + config.name + ' ' + subtypeBattery + ' BatteryLevel ' + battery);
+                    acc.getService(subtypeBattery).updateCharacteristic(hap.Characteristic.BatteryLevel, battery);
                     break;
                 case '4.ACTUAL_TEMPERATURE':
                     actualTemperature = msg.value;

@@ -50,8 +50,6 @@ module.exports = class HmTcItWmWEu {
         const datapointUnreach = config.iface + '.' + config.description.ADDRESS + ':0.UNREACH';
         let unreach = ccu.values && ccu.values[datapointUnreach] && ccu.values[datapointUnreach].value;
 
-
-
         function getError() {
             return unreach ? new Error(hap.HAPServer.Status.SERVICE_COMMUNICATION_FAILURE) : null;
         }
@@ -69,7 +67,6 @@ module.exports = class HmTcItWmWEu {
                     target = 3;
             }
             return target;
-
         }
 
         function currentState() {
@@ -98,7 +95,7 @@ module.exports = class HmTcItWmWEu {
             acc.addService(hap.Service.Thermostat, config.name, subtypeThermostat)
                 .getCharacteristic(hap.Characteristic.CurrentTemperature)
                 .setProps({minValue: -40, maxValue: 80})
-                .updateValue(actualTemperature)
+                .updateValue(actualTemperature);
 
             acc.getService(subtypeThermostat)
                 .getCharacteristic(hap.Characteristic.TargetTemperature)
@@ -118,7 +115,9 @@ module.exports = class HmTcItWmWEu {
             acc.addService(hap.Service.HumiditySensor, config.name, subtypeHumidity)
                 .updateCharacteristic(hap.Characteristic.CurrentRelativeHumidity, humidity);
 
-            acc.addService(hap.Service.BatteryService, config.name, subtypeBattery);
+            acc.addService(hap.Service.BatteryService, config.name, subtypeBattery)
+                .updateCharacteristic(hap.Characteristic.StatusLowBattery, lowbat)
+                .updateCharacteristic(hap.Characteristic.BatteryLevel, battery);
 
             acc.isConfigured = true;
         }
@@ -186,8 +185,6 @@ module.exports = class HmTcItWmWEu {
                         callback(new Error(hap.HAPServer.Status.SERVICE_COMMUNICATION_FAILURE));
                     });
             }
-
-
         };
 
         const getListenerCurrentHeatingCoolingState = callback => {
@@ -198,7 +195,6 @@ module.exports = class HmTcItWmWEu {
                 updateHeatingCoolingState();
             }, 1000);
         };
-
 
         const getListenerLowbat = callback => {
             homematic.debug('get ' + config.name + ' ' + subtypeBattery + ' StatusLowBattery ' + getError() + ' ' + lowbat);
@@ -228,8 +224,6 @@ module.exports = class HmTcItWmWEu {
             homematic.debug('update ' + config.name + ' 0 TargetHeatingCoolingState ' + target);
             acc.getService(subtypeThermostat).updateCharacteristic(hap.Characteristic.TargetHeatingCoolingState, target);
         }
-
-
 
         const idSubscription = ccu.subscribe({
             iface: config.iface,
@@ -267,7 +261,7 @@ module.exports = class HmTcItWmWEu {
                     acc.getService(subtypeThermostat).updateCharacteristic(hap.Characteristic.TargetTemperature, valueSetpoint);
                     updateHeatingCoolingState();
                     break;
-                 case '2.CONTROL_MODE':
+                case '2.CONTROL_MODE':
                     controlMode = msg.value;
                     updateHeatingCoolingState();
                     break;
