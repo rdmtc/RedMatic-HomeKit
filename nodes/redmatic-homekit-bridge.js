@@ -10,7 +10,7 @@ module.exports = function (RED) {
     RED.httpAdmin.get('/redmatic-homekit', (req, res) => {
         if (req.query.config && req.query.config !== '_ADD_') {
             const config = RED.nodes.getNode(req.query.config);
-            if (!config || !config.published) {
+            if (!config || !config.bridge.isPublished) {
                 res.status(500).send(JSON.stringify({}));
             } else {
                 res.status(200).send(JSON.stringify({setupURI: config.bridge.setupURI()}));
@@ -18,6 +18,26 @@ module.exports = function (RED) {
         } else {
             res.status(404).send(JSON.stringify({}));
         }
+    });
+
+    RED.httpAdmin.get('/redmatic-homekit/services', (req, res) => {
+        const invalidServices = [
+            'TunneledBTLEAccessoryService',
+            'TimeInformation',
+            'ProtocolInformation',
+            'Pairing',
+            'BridgingState',
+            'BridgeConfiguration',
+            'Label',
+            'StatefulProgrammableSwitch',
+            'CameraControl',
+            'ServiceLabel',
+            'CameraRTPStreamManagement',
+            'AccessoryInformation',
+            'super_',
+            'Relay'
+        ];
+        res.status(200).send(JSON.stringify(Object.keys(hap.Service).filter(v => !invalidServices.includes(v)).sort()));
     });
 
     class RedMaticHomeKitBridge {
