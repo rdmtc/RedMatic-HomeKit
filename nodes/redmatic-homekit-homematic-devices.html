@@ -4,6 +4,7 @@
         defaults: {
             ccuConfig: {value: 'localhost', type: 'ccu-connection', required: true},
             bridgeConfig: {value: 'CC:22:3D:E3:CE:C7:51826', type: 'redmatic-homekit-bridge', required: true},
+            devices: {value: {}}
         },
         inputs: 0,
         outputs: 0,
@@ -18,10 +19,81 @@
             return this.name ? 'node_label_italic' : '';
         },
         oneditprepare() {
+            const that = this;
+            function addDevice(addr, type, name) {
 
+                if (!that.devices) {
+                    that.devices = {};
+                }
+
+                const homematicInvalidDevices = [
+                    'hm-sec-sd-2-team',
+                    'hm-sec-sd-team',
+                    'hm-rc-4-2',
+                    'hm-rc-4-b',
+                    'hm-rc-12-b',
+                    'hm-pbi-4-fm',
+                    'hm-pb-6-wm55',
+                    'hm-pb-4dis-wm-2',
+                    'hm-rc-19-sw',
+                    'hm-rc-8',
+                    'hm-rc-key4-2',
+                    'hm-rcv-50',
+                    'hmw-rcv-50',
+                    'hm-cc-vd',
+                    'hmip-wrc2',
+                    'hmip-brc2',
+                    'hm-dis-ep-wm55'
+                ];
+
+                if (homematicInvalidDevices.indexOf(type.toLowerCase()) !== -1) {
+                    return;
+                }
+
+                if (!addr.match(/:\d+$/)) {
+                        let checked = true;
+                        if (that.devices[addr] && that.devices[addr].disabled) {
+                            checked = false;
+                        }
+
+                        $('#devices').append('<tr><td class="enabled"><input class="device-enabled" data-addr="' + addr + '" type="checkbox"' + (checked ? ' checked' : '') + '></td><td class="text">' + name + '</td><td class="text small">' + addr + '</td><td class="text small">' + type + '</td></tr>')
+                }
+            }
+
+            const url = 'ccu?config=' + this.ccuConfig;
+            $.getJSON(url, d => {
+                const devs = [];
+                Object.keys(d.metadata.devices).forEach(iface => {
+                    Object.keys(d.metadata.devices[iface]).forEach(addr => {
+                        const dev = d.metadata.devices[iface][addr];
+                        devs.push({addr, type: dev.TYPE, name: d.channelNames[addr] || addr});
+                    });
+                });
+
+                devs.sort((a, b) => a.name.localeCompare(b.name)).forEach(dev => {
+                    addDevice(dev.addr, dev.type, dev.name);
+                });
+
+            });
         },
         oneditsave() {
+            const devices = {};
+            $('.device-enabled').each(function () {
 
+                 const addr = $(this).data('addr');
+                 const enabled = $(this).is(':checked');
+                 console.log(addr, enabled);
+                 if (enabled && devices[addr]) {
+                     devices[addr].disabled = false;
+                 } else if (!enabled) {
+                     if (!devices[addr]) {
+                         devices[addr] = {};
+                     }
+                     devices[addr].disabled = true;
+                 }
+            });
+            this.devices = devices;
+            console.log(this);
         }
     });
 </script>
@@ -35,6 +107,31 @@
     <div class="form-row">
         <label for="node-input-bridgeConfig"><i class="icon-globe"></i> Bridge</label>
         <input type="text" id="node-input-bridgeConfig">
+    </div>
+    <style>
+        #devices {
+            width: 100%;
+        }
+        #devices td.text {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        #devices td.small {
+            max-width: 90px;
+            font-size: 10px;
+        }
+        #devices td.enabled {
+            width: 16px;
+            display: block;
+            margin-top: -2px;
+        }
+
+
+
+    </style>
+    <div class="form-row">
+        <table id="devices"></table>
     </div>
 
 </script>

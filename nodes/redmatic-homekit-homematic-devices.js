@@ -10,6 +10,7 @@ module.exports = function (RED) {
             }
 
             this.ccu = RED.nodes.getNode(config.ccuConfig);
+            this.devices = config.devices;
 
             if (!this.ccu) {
                 return;
@@ -19,11 +20,32 @@ module.exports = function (RED) {
             this.ccu.register(this);
 
             this.homematicDevices = {};
-            this.homematicInvalidDevices = [];
+            this.homematicInvalidDevices = [
+                'hm-sec-sd-2-team',
+                'hm-sec-sd-team',
+                'hm-rc-4-2',
+                'hm-rc-4-b',
+                'hm-rc-12-b',
+                'hm-pbi-4-fm',
+                'hm-pb-6-wm55',
+                'hm-pb-4dis-wm-2',
+                'hm-rc-19-sw',
+                'hm-rc-8',
+                'hm-rc-key4-2',
+                'hm-rcv-50',
+                'hmw-rcv-50',
+                'hm-cc-vd',
+                'hmip-wrc2',
+                'hmip-brc2',
+                'hm-dis-ep-wm55'
+            ];
         }
 
         publishDevices() {
             Object.keys(this.ccu.channelNames).forEach(address => {
+                if (this.devices && this.devices[address] && this.devices[address].disabled) {
+                    return;
+                }
                 if (!address.match(/:\d+$/)) {
                     const iface = this.ccu.findIface(address);
                     if (iface && this.ccu.metadata.devices && this.ccu.metadata.devices[iface]) {
