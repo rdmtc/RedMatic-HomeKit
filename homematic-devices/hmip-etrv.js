@@ -22,10 +22,10 @@ module.exports = class HmipEtrv {
         let level = (ccu.values && ccu.values[datapointLevel] && ccu.values[datapointLevel].value) || 0;
 
         const datapointSetpoint = config.iface + '.' + config.description.ADDRESS + ':1.SET_POINT_TEMPERATURE';
-        let valueSetpoint = (ccu.values && ccu.values[datapointSetpoint] && ccu.values[datapointSetpoint].value) || 0;
+        let setPointTemperature = (ccu.values && ccu.values[datapointSetpoint] && ccu.values[datapointSetpoint].value) || 0;
 
-        const datapointControlMode = config.iface + '.' + config.description.ADDRESS + ':1.SET_POINT_MODE';
-        let setPointMode = (ccu.values && ccu.values[datapointControlMode] && ccu.values[datapointControlMode].value) || 0;
+        const datapointSetpointMode = config.iface + '.' + config.description.ADDRESS + ':1.SET_POINT_MODE';
+        let setPointMode = (ccu.values && ccu.values[datapointSetpointMode] && ccu.values[datapointSetpointMode].value) || 0;
 
         const datapointLowbat = config.iface + '.' + config.description.ADDRESS + ':0.LOW_BAT';
         let lowBat = (ccu.values && ccu.values[datapointLowbat] && ccu.values[datapointLowbat].value) ?
@@ -48,7 +48,7 @@ module.exports = class HmipEtrv {
             switch (setPointMode) {
                 case 1:
                     // Manu
-                    target = valueSetpoint > 4.5 ? 1 : 0;
+                    target = setPointTemperature > 4.5 ? 1 : 0;
                     break;
                 default:
                     // Auto/Party
@@ -87,7 +87,7 @@ module.exports = class HmipEtrv {
             acc.getService(subtypeThermostat)
                 .getCharacteristic(hap.Characteristic.TargetTemperature)
                 .setProps({minValue: 4.5, maxValue: 30.5, minStep: 0.5})
-                .updateValue(valueSetpoint);
+                .updateValue(setPointTemperature);
 
             acc.getService(subtypeThermostat)
                 .getCharacteristic(hap.Characteristic.CurrentHeatingCoolingState)
@@ -110,8 +110,8 @@ module.exports = class HmipEtrv {
         };
 
         const getListenerTargetTemperature = callback => {
-            homematic.debug('get ' + config.name + ' ' + subtypeThermostat + ' TargetTemperature ' + getError() + ' ' + valueSetpoint);
-            callback(null, valueSetpoint);
+            homematic.debug('get ' + config.name + ' ' + subtypeThermostat + ' TargetTemperature ' + getError() + ' ' + setPointTemperature);
+            callback(null, setPointTemperature);
         };
 
         const setListenerTargetTemperature = (value, callback) => {
@@ -139,7 +139,7 @@ module.exports = class HmipEtrv {
             homematic.debug('set ' + config.name + ' 0 TargetHeatingCoolingState ' + value);
             if (value === 0) {
                 ccu.methodCall(config.iface, 'putParamset', [config.description.ADDRESS + ':1', 'VALUES', {
-                    CONTROL_MODE: 1,
+                    SET_POINT_MODE: 1,
                     SET_POINT_TEMPERATURE: 4.5
                 }]).then(() => {
                     callback();
@@ -149,7 +149,7 @@ module.exports = class HmipEtrv {
                     });
             } else if (value === 1) {
                 ccu.methodCall(config.iface, 'putParamset', [config.description.ADDRESS + ':1', 'VALUES', {
-                    CONTROL_MODE: 1,
+                    SET_POINT_MODE: 1,
                     SET_POINT_TEMPERATURE: 21
                 }]).then(() => {
                     callback();
@@ -158,7 +158,7 @@ module.exports = class HmipEtrv {
                         callback(new Error(hap.HAPServer.Status.SERVICE_COMMUNICATION_FAILURE));
                     });
             } else {
-                ccu.setValue(config.iface, config.description.ADDRESS + ':1', 'CONTROL_MODE', value === 3 ? 0 : 1)
+                ccu.setValue(config.iface, config.description.ADDRESS + ':1', 'SET_POINT_MODE', value === 3 ? 0 : 1)
                     .then(() => {
                         callback();
                     })
@@ -231,9 +231,9 @@ module.exports = class HmipEtrv {
                     acc.getService(subtypeThermostat).updateCharacteristic(hap.Characteristic.CurrentTemperature, actualTemperature);
                     break;
                 case '1.SET_POINT_TEMPERATURE':
-                    valueSetpoint = msg.value;
-                    homematic.debug('update ' + config.name + ' ' + subtypeThermostat + ' TargetTemperature ' + valueSetpoint);
-                    acc.getService(subtypeThermostat).updateCharacteristic(hap.Characteristic.TargetTemperature, valueSetpoint);
+                    setPointTemperature = msg.value;
+                    homematic.debug('update ' + config.name + ' ' + subtypeThermostat + ' TargetTemperature ' + setPointTemperature);
+                    acc.getService(subtypeThermostat).updateCharacteristic(hap.Characteristic.TargetTemperature, setPointTemperature);
                     updateHeatingCoolingState();
                     break;
                 case '1.LEVEL':
