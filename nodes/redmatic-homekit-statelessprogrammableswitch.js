@@ -12,6 +12,7 @@ module.exports = function (RED) {
             const {hap} = this.bridgeConfig;
 
             this.name = config.name || ('Switch ' + this.id);
+            this.count = parseInt(config.count, 10) || 1;
 
             const acc = this.bridgeConfig.accessory({id: this.id, name: this.name});
 
@@ -28,12 +29,14 @@ module.exports = function (RED) {
                 acc.addService(hap.Service.ServiceLabel, 'Buttons', '0')
                     .setCharacteristic(hap.Characteristic.ServiceLabelNamespace, 1);
 
-                ['1', '2', '3', '4', '5', '6', '7', '8'].forEach((subtype, index) => {
+
+                for (let index = 1; index <= this.count; index++) {
+                    const subtype = String(index);
                     acc.addService(hap.Service.StatelessProgrammableSwitch, 'Button ' + subtype, subtype)
-                        .setCharacteristic(hap.Characteristic.ServiceLabelIndex, index + 1)
+                        .setCharacteristic(hap.Characteristic.ServiceLabelIndex, index)
                         .getCharacteristic(hap.Characteristic.ProgrammableSwitchEvent)
                         .setProps({validValues: [0, 2]});
-                });
+                }
 
                 acc.isConfigured = true;
             }
@@ -41,7 +44,7 @@ module.exports = function (RED) {
             this.on('input', msg => {
                 let [button, type] = String(msg.topic).split('/');
                 button = parseInt(button, 10);
-                if (button < 1 || button > 8) {
+                if (button < 1 || button > this.count) {
                     this.error('invalid topic ' + msg.topic);
                     return;
                 }
