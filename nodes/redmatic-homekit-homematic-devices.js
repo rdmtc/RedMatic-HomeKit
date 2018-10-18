@@ -30,6 +30,7 @@ module.exports = function (RED) {
                 'hm-pb-6-wm55',
                 'hm-pb-4dis-wm-2',
                 'hm-rc-19-sw',
+                'hm-rc-19',
                 'hm-rc-8',
                 'hm-rc-key4-2',
                 'hm-rcv-50',
