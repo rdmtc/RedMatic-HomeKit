@@ -1,0 +1,111 @@
+<script type="text/javascript">
+    RED.nodes.registerType('redmatic-homekit-universal', {
+        category: 'redmatic homekit',
+        defaults: {
+            bridgeConfig: {value: 'CC:22:3D:E3:CE:C7:51826', type: 'redmatic-homekit-bridge', required: true},
+            name: {required: true},
+            services: {value: []}
+        },
+        inputs: 1,
+        outputs: 1,
+        icon: 'homekit2.png',
+        color: '#E2D96E',
+        paletteLabel: 'Universal',
+        align: 'left',
+        label() {
+            return 'Universal' || this.name;
+        },
+        labelStyle() {
+            return this.name ? 'node_label_italic' : '';
+        },
+        oneditprepare() {
+            const availableServices = ['AirPurifier','AirQualitySensor','BatteryService','CarbonDioxideSensor','CarbonMonoxideSensor','ContactSensor','Door','Doorbell','Fan','Fanv2','Faucet','FilterMaintenance','GarageDoorOpener','HeaterCooler','HumidifierDehumidifier','HumiditySensor','IrrigationSystem','LeakSensor','LightSensor','Lightbulb','LockManagement','LockMechanism','Microphone','MotionSensor','OccupancySensor','Outlet','SecuritySystem','Slat','SmokeSensor','Speaker','StatelessProgrammableSwitch','Switch','TemperatureSensor','Thermostat','Valve','Window','WindowCovering'];
+            
+            $('ol#services').editableList({
+                removable: true,
+                addItem: function(row, index, data) {
+                    let html = '<span class="subtype">' + index + '</span>';
+                    html += '<select class="service">';
+                    availableServices.forEach(s => {
+                        const selected = s === data.service ? ' selected' : '';
+                        html += '<option' + selected + '>' + s + '</option>';
+                    });
+                    html += '</select>';
+                    html += '<input class="name" value="' + (data.name || '') + '">';
+                    $(row).html(html);
+
+                },
+                removeItem: function (data) {
+                    const services = [];
+                    let subtype = 0;
+                    const items = $('ol#services').editableList('items');
+                    items.each(function () {
+                        services.push({
+                            subtype: subtype++,
+                            service: $(this).find('.service').val(),
+                            name: $(this).find('.name').val()
+                        });
+                    });
+                    $('ol#services').editableList('empty');
+                    $('ol#services').editableList('addItems', services);
+                }
+            });
+
+            $('ol#services').editableList('addItems', this.services);
+        },
+        oneditsave() {
+            const items = $('ol#services').editableList('items');
+            const services = [];
+            items.each(function () {
+                services.push({
+                    subtype: $(this).find('.subtype').html(),
+                    service: $(this).find('.service').val(),
+                    name: $(this).find('.name').val()
+                });
+            });
+            this.services = services;
+        }
+    });
+</script>
+
+<script type="text/x-red" data-template-name="redmatic-homekit-universal">
+
+    <div class="form-row">
+        <label for="node-input-bridgeConfig"><i class="icon-globe"></i> Bridge</label>
+        <input type="text" id="node-input-bridgeConfig">
+    </div>
+    <div class="form-row">
+        <label for="node-input-name"><i class="icon-globe"></i> Name</label>
+        <input type="text" id="node-input-name">
+    </div>
+    <style>
+        span.subtype {
+            padding-left: 3px;
+            padding-right: 6px;
+        }
+        input.name {
+            width: calc(100% - 260px);
+            background-color: #ffffff;
+            border: 1px solid #ccc;
+            box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
+            height: 30px;
+            margin-left: 6px;
+            padding-left: 6px;
+            font-size: 14px;
+            line-height: 20px;
+            color: #555555;
+            vertical-align: middle;
+            border-radius: 4px;
+        }
+    </style>
+    <div class="form-row">
+        <ol id="services">
+        </ol>
+    </div>
+
+
+</script>
+
+<script type="text/x-red" data-help-name="redmatic-homekit-universal">
+
+</script>
