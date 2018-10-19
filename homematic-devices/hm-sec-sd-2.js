@@ -18,8 +18,8 @@ module.exports = class HmSecSd2 {
         const datapointAlarmTest = config.iface + '.' + config.description.ADDRESS + ':1.ERROR_ALARM_TEST';
         let errorAlarmTest = Boolean(ccu.values && ccu.values[datapointAlarmTest] && ccu.values[datapointAlarmTest].value);
 
-        const datapintSmokeChamber = config.iface + '.' + config.description.ADDRESS + ':1.ERROR_SMOKE_CHAMBER';
-        let errorSmokeChamber = Boolean(ccu.values && ccu.values[datapintSmokeChamber] && ccu.values[datapintSmokeChamber].value);
+        const datapointSmokeChamber = config.iface + '.' + config.description.ADDRESS + ':1.ERROR_SMOKE_CHAMBER';
+        let errorSmokeChamber = Boolean(ccu.values && ccu.values[datapointSmokeChamber] && ccu.values[datapointSmokeChamber].value);
 
         function getFault() {
             return unreach || errorAlarmTest || errorSmokeChamber;
