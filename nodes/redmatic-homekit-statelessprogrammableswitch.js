@@ -23,7 +23,7 @@ module.exports = function (RED) {
                     .setCharacteristic(hap.Characteristic.Manufacturer, 'RedMatic')
                     .setCharacteristic(hap.Characteristic.Model, 'ProgrammableSwitch')
                     .setCharacteristic(hap.Characteristic.SerialNumber, this.id)
-                    .setCharacteristic(hap.Characteristic.FirmwareRevision, 'version');
+                    .setCharacteristic(hap.Characteristic.FirmwareRevision, version);
 
                 acc.addService(hap.Service.ServiceLabel, 'Buttons', '0')
                     .setCharacteristic(hap.Characteristic.ServiceLabelNamespace, 1);
