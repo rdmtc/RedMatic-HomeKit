@@ -9,7 +9,7 @@ module.exports = function (RED) {
                 return;
             }
 
-            const {hap} = this.bridgeConfig;
+            const {hap, version} = this.bridgeConfig;
 
             this.name = config.name || ('Universal ' + this.id);
             this.services = config.services || [];
@@ -21,7 +21,7 @@ module.exports = function (RED) {
                     .setCharacteristic(hap.Characteristic.Manufacturer, 'RedMatic')
                     .setCharacteristic(hap.Characteristic.Model, 'Universal')
                     .setCharacteristic(hap.Characteristic.SerialNumber, this.id)
-                    .setCharacteristic(hap.Characteristic.FirmwareRevision, '0');
+                    .setCharacteristic(hap.Characteristic.FirmwareRevision, version);
 
                 this.services.forEach(s => {
                     this.debug('addService ' + s.subtype + ' ' + s.service + ' ' + s.name);
@@ -65,7 +65,7 @@ module.exports = function (RED) {
                 const [subtype, c] = msg.topic.split('/');
                 const service = acc.getService(subtype);
                 if (service) {
-                    if (service.testCharacteristic(hap.Characteristic[c])) {
+                    //if (service.testCharacteristic(hap.Characteristic[c])) {
                         if (typeof msg.payload === 'object') {
                             this.debug('setProps ' + msg.topic + ' ' + JSON.stringify(msg.payload));
                             service.getCharacteristic(hap.Characteristic[c]).setProps(msg.payload);
@@ -73,9 +73,9 @@ module.exports = function (RED) {
                             this.debug('-> hap ' + msg.topic + ' ' + msg.payload);
                             service.updateCharacteristic(hap.Characteristic[c], msg.payload);
                         }
-                    } else {
-                        this.error('unknown characteristic ' + c + ' on subtype ' + subtype);
-                    }
+                    //} else {
+                    //    this.error('unknown characteristic ' + c + ' on subtype ' + subtype);
+                    //}
                 } else {
                     this.error('unknown subtype ' + subtype);
                 }

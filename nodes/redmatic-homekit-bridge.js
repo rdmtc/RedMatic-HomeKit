@@ -40,6 +40,8 @@ module.exports = function (RED) {
 
             this.hap = hap;
 
+            this.version = pkg.version;
+
             this.name = config.name || 'RedMatic';
             this.username = config.username;
             this.pincode = config.pincode;
@@ -82,8 +84,8 @@ module.exports = function (RED) {
             });
 
             this.bridge.getService(hap.Service.AccessoryInformation)
-                .setCharacteristic(hap.Characteristic.Manufacturer, 'Hobbyquaker')
-                .setCharacteristic(hap.Characteristic.Model, 'RedMatic')
+                .setCharacteristic(hap.Characteristic.Manufacturer, 'RedMatic')
+                .setCharacteristic(hap.Characteristic.Model, 'HAP-Nodejs Bridge')
                 .setCharacteristic(hap.Characteristic.SerialNumber, this.username)
                 .setCharacteristic(hap.Characteristic.FirmwareRevision, pkg.version);
 

@@ -9,7 +9,7 @@ module.exports = function (RED) {
                 return;
             }
 
-            const {hap} = this.bridgeConfig;
+            const {hap, version} = this.bridgeConfig;
 
             this.name = config.name || ('Switch ' + this.id);
             this.count = parseInt(config.count, 10) || 1;
@@ -23,7 +23,7 @@ module.exports = function (RED) {
                     .setCharacteristic(hap.Characteristic.Manufacturer, 'RedMatic')
                     .setCharacteristic(hap.Characteristic.Model, 'ProgrammableSwitch')
                     .setCharacteristic(hap.Characteristic.SerialNumber, this.id)
-                    .setCharacteristic(hap.Characteristic.FirmwareRevision, '0');
+                    .setCharacteristic(hap.Characteristic.FirmwareRevision, 'version');
 
                 acc.addService(hap.Service.ServiceLabel, 'Buttons', '0')
                     .setCharacteristic(hap.Characteristic.ServiceLabelNamespace, 1);

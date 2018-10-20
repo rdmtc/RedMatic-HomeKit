@@ -9,7 +9,7 @@ module.exports = function (RED) {
                 return;
             }
 
-            const {hap} = this.bridgeConfig;
+            const {hap, version} = this.bridgeConfig;
 
             this.name = config.name || ('Switch ' + this.id);
 
@@ -24,7 +24,7 @@ module.exports = function (RED) {
                     .setCharacteristic(hap.Characteristic.Manufacturer, 'RedMatic')
                     .setCharacteristic(hap.Characteristic.Model, 'Switch')
                     .setCharacteristic(hap.Characteristic.SerialNumber, this.id)
-                    .setCharacteristic(hap.Characteristic.FirmwareRevision, '0');
+                    .setCharacteristic(hap.Characteristic.FirmwareRevision, version);
 
                 acc.addService(hap.Service.Switch, this.name, subtype);
 
