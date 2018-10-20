@@ -34,29 +34,31 @@ module.exports = function (RED) {
             this.listeners = [];
 
             this.services.forEach(s => {
-                const service = acc.getService(s.subtype);
-                if (service) {
-                    service.characteristics.forEach(c => {
-                        const cName = c.displayName.replace(/ /g, '');
-
-                        this.debug('create change listener', s.subtype, cName);
-
-                        const changeListener = obj => {
-                            const topic = s.subtype + '/' + cName;
-                            this.debug('hap ->', topic, obj.newValue);
-                            if (obj && obj.context && obj.context.request) {
-                                this.send({
-                                    topic,
-                                    payload: obj.newValue
-                                });
-                            }
-                        };
-
-                        this.listeners.push({subtype: s.subtype, characteristic: c, listener: changeListener, cName});
-
-                        c.on('change', changeListener);
-                    });
+                let service = acc.getService(s.subtype);
+                if (!service) {
+                    this.debug('addService ' + s.subtype + ' ' + s.service + ' ' + s.name);
+                    service = acc.addService(hap.Service[s.service], s.name, s.subtype);
                 }
+                service.characteristics.forEach(c => {
+                    const cName = c.displayName.replace(/ /g, '');
+
+                    this.debug('create change listener', s.subtype, cName);
+
+                    const changeListener = obj => {
+                        const topic = s.subtype + '/' + cName;
+                        this.debug('hap ->', topic, obj.newValue);
+                        if (obj && obj.context && obj.context.request) {
+                            this.send({
+                                topic,
+                                payload: obj.newValue
+                            });
+                        }
+                    };
+
+                    this.listeners.push({subtype: s.subtype, characteristic: c, listener: changeListener, cName});
+
+                    c.on('change', changeListener);
+                });
             });
 
             this.on('input', msg => {
