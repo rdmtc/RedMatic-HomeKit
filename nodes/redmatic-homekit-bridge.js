@@ -2,11 +2,11 @@ const path = require('path');
 const hap = require('hap-nodejs');
 const pkg = require('../package.json');
 
-hap.init(path.join(__dirname, '..', '..', '..', 'homekit'));
-
 const bridges = {};
 
 module.exports = function (RED) {
+    hap.init(path.join(RED.settings.userDir, 'homekit'));
+
     RED.httpAdmin.get('/redmatic-homekit', (req, res) => {
         if (req.query.config && req.query.config !== '_ADD_') {
             const config = RED.nodes.getNode(req.query.config);
@@ -18,26 +18,6 @@ module.exports = function (RED) {
         } else {
             res.status(404).send(JSON.stringify({}));
         }
-    });
-
-    RED.httpAdmin.get('/redmatic-homekit/services', (req, res) => {
-        const invalidServices = [
-            'TunneledBTLEAccessoryService',
-            'TimeInformation',
-            'ProtocolInformation',
-            'Pairing',
-            'BridgingState',
-            'BridgeConfiguration',
-            'Label',
-            'StatefulProgrammableSwitch',
-            'CameraControl',
-            'ServiceLabel',
-            'CameraRTPStreamManagement',
-            'AccessoryInformation',
-            'super_',
-            'Relay'
-        ];
-        res.status(200).send(JSON.stringify(Object.keys(hap.Service).filter(v => !invalidServices.includes(v)).sort()));
     });
 
     class RedMaticHomeKitBridge {
