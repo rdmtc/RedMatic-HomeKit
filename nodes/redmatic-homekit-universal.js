@@ -34,26 +34,29 @@ module.exports = function (RED) {
             this.listeners = [];
 
             this.services.forEach(s => {
-                acc.getService(s.subtype).characteristics.forEach(c => {
-                    const cName = c.displayName.replace(/ /g, '');
+                const service = acc.getService(s.subtype);
+                if (service) {
+                    service.characteristics.forEach(c => {
+                        const cName = c.displayName.replace(/ /g, '');
 
-                    this.debug('create change listener', s.subtype, cName);
+                        this.debug('create change listener', s.subtype, cName);
 
-                    const changeListener = obj => {
-                        const topic = s.subtype + '/' + cName;
-                        console.log('hap ->', topic, obj.newValue);
-                        if (obj && obj.context && obj.context.request) {
-                            this.send({
-                                topic,
-                                payload: obj.newValue
-                            });
-                        }
-                    };
+                        const changeListener = obj => {
+                            const topic = s.subtype + '/' + cName;
+                            this.debug('hap ->', topic, obj.newValue);
+                            if (obj && obj.context && obj.context.request) {
+                                this.send({
+                                    topic,
+                                    payload: obj.newValue
+                                });
+                            }
+                        };
 
-                    this.listeners.push({subtype: s.subtype, characteristic: c, listener: changeListener, cName});
+                        this.listeners.push({subtype: s.subtype, characteristic: c, listener: changeListener, cName});
 
-                    c.on('change', changeListener);
-                });
+                        c.on('change', changeListener);
+                    });
+                }
             });
 
             this.on('input', msg => {
