@@ -30,7 +30,9 @@ module.exports = class HmipPs {
                 callback();
             });
 
-            acc.addService(hap.Service.Switch, config.name, subtype);
+            acc.addService(hap.Service.Switch, config.name, subtype)
+                .updateCharacteristic(hap.Characteristic.On, valueOn);
+
             acc.isConfigured = true;
         }
 
