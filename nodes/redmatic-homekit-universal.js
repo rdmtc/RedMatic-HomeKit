@@ -35,8 +35,7 @@ module.exports = function (RED) {
 
             this.services.forEach(s => {
                 acc.getService(s.subtype).characteristics.forEach(c => {
-
-                    const cName = c.displayName.replace(/ /g, '')
+                    const cName = c.displayName.replace(/ /g, '');
 
                     this.debug('create change listener', s.subtype, cName);
 
@@ -51,7 +50,7 @@ module.exports = function (RED) {
                         }
                     };
 
-                    this.listeners.push({subtype: s.subtype, characteristic: c, listener: changeListener, cName})
+                    this.listeners.push({subtype: s.subtype, characteristic: c, listener: changeListener, cName});
 
                     c.on('change', changeListener);
                 });

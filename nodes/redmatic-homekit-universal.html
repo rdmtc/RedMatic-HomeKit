@@ -18,12 +18,50 @@
         labelStyle() {
             return this.name ? 'node_label_italic' : '';
         },
-        oneditprepare() {
-            const availableServices = ['AirPurifier','AirQualitySensor','BatteryService','CarbonDioxideSensor','CarbonMonoxideSensor','ContactSensor','Door','Doorbell','Fan','Fanv2','Faucet','FilterMaintenance','GarageDoorOpener','HeaterCooler','HumidifierDehumidifier','HumiditySensor','IrrigationSystem','LeakSensor','LightSensor','Lightbulb','LockManagement','LockMechanism','Microphone','MotionSensor','OccupancySensor','Outlet','SecuritySystem','Slat','SmokeSensor','Speaker','StatelessProgrammableSwitch','Switch','TemperatureSensor','Thermostat','Valve','Window','WindowCovering'];
-            
+        oneditprepare: function () {
+            const availableServices = [
+                'AirPurifier',
+                'AirQualitySensor',
+                'BatteryService',
+                'CarbonDioxideSensor',
+                'CarbonMonoxideSensor',
+                'ContactSensor',
+                'Door',
+                'Doorbell',
+                'Fan',
+                'Fanv2',
+                'Faucet',
+                'FilterMaintenance',
+                'GarageDoorOpener',
+                'HeaterCooler',
+                'HumidifierDehumidifier',
+                'HumiditySensor',
+                'IrrigationSystem',
+                'LeakSensor',
+                'LightSensor',
+                'Lightbulb',
+                'LockManagement',
+                'LockMechanism',
+                'Microphone',
+                'MotionSensor',
+                'OccupancySensor',
+                'Outlet',
+                'SecuritySystem',
+                'Slat',
+                'SmokeSensor',
+                'Speaker',
+                'StatelessProgrammableSwitch',
+                'Switch',
+                'TemperatureSensor',
+                'Thermostat',
+                'Valve',
+                'Window',
+                'WindowCovering'
+            ];
+
             $('ol#services').editableList({
                 removable: true,
-                addItem: function(row, index, data) {
+                addItem: function (row, index, data) {
                     let html = '<span class="subtype">' + index + '</span>';
                     html += '<select class="service">';
                     availableServices.forEach(s => {
