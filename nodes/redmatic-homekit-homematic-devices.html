@@ -10,10 +10,10 @@
         outputs: 0,
         icon: 'homekit2.png',
         color: '#E2D96E',
-        paletteLabel: 'HomeMatic',
+        paletteLabel: 'homematic',
         align: 'left',
         label() {
-            return 'HomeMatic';
+            return this.name || 'homematic';
         },
         labelStyle() {
             return this.name ? 'node_label_italic' : '';
