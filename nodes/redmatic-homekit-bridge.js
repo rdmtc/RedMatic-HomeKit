@@ -1,4 +1,5 @@
 const path = require('path');
+const net = require('net');
 const hap = require('hap-nodejs');
 const pkg = require('../package.json');
 
@@ -28,13 +29,12 @@ module.exports = function (RED) {
                 this.error('username missing');
                 return;
             }
-            if (!config.port) {
-                // TODO check if port is available
-                this.error('port missing');
-                return;
-            }
             if (!config.pincode) {
                 this.error('pincode missing');
+                return;
+            }
+            if (!config.port) {
+                this.error('port missing');
                 return;
             }
 
@@ -87,15 +87,24 @@ module.exports = function (RED) {
                 .setCharacteristic(hap.Characteristic.SerialNumber, this.username)
                 .setCharacteristic(hap.Characteristic.FirmwareRevision, pkg.version);
 
-            this.bridge.publish({
-                username: this.username,
-                port: this.port,
-                pincode: this.pincode,
-                category: hap.Accessory.Categories.OTHER
-            });
-            this.log('published bridge (' + this.bridge.bridgedAccessories.length + ' Accessories) ' + this.name + ' ' + this.username + ' on port ' + this.port);
+            const testPort = net.createServer()
+                .once('error', err => {
+                    this.error(err);
+                })
+                .once('listening', () => {
+                    testPort.once('close', () => {
+                        this.bridge.publish({
+                            username: this.username,
+                            port: this.port,
+                            pincode: this.pincode,
+                            category: hap.Accessory.Categories.OTHER
+                        });
+                        this.log('published bridge (' + this.bridge.bridgedAccessories.length + ' Accessories) ' + this.name + ' ' + this.username + ' on port ' + this.port);
 
-            this.emit('published');
+                        this.emit('published');
+                    }).close();
+                })
+                .listen(this.port);
         }
 
         waitForAccessories() {
