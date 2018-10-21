@@ -66,7 +66,9 @@ module.exports = function (RED) {
 
         publishBridge() {
             if (this.waitForHomematic) {
+                this.debug('publishBridge wait for homematic');
                 this.once('homematic-ready', () => {
+                    this.debug('publishBridge homematic-ready');
                     this.publishBridge();
                 });
                 return;
@@ -135,11 +137,11 @@ module.exports = function (RED) {
                     this.error('maximum of 100 accessories per bridge exceeded, can\'t add ' + config.id + ' ' + config.name);
                     return;
                 }
-                this.log('addAccessory ' + config.id + ' ' + config.name);
+                this.debug('addAccessory ' + config.id + ' ' + config.name);
                 acc = new hap.Accessory(config.name, uuid, hap.Accessory.Categories.OTHER);
                 this.bridge.addBridgedAccessory(acc);
-                this.waitForAccessories();
             }
+            this.waitForAccessories();
 
             return acc;
         }
