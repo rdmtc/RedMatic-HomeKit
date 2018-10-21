@@ -6,9 +6,18 @@
         category: 'config',
         defaults: {
             name: {value: 'RedMatic Bridge', required: true},
-            username: {value: 'CC:22:3D:E3:CE:C7', required: true},
-            pincode: {value: '031-45-154', required: true},
-            port: {value: 51826, type: Number, required: true},
+            username: {value: 'CC:22:3D:E3:CE:C7', required: true, validate: function (val) {
+                    return Boolean(String(val).match(/^([0-9A-Fa-f]{2}:){5}([0-9A-Fa-f]{2})$/));
+                }
+            },
+            pincode: {value: '031-45-154', required: true, validate: function (val) {
+                    return Boolean(String(val).match(/^\d{3}-\d{2}-\d{3}$/));
+                }
+            },
+            port: {value: 51826, type: Number, required: true, validate: function (val) {
+                    return val > 1024 && val < 65536;
+                }
+            },
         },
         inputs: 0,
         outputs: 0,
