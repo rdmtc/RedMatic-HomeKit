@@ -84,21 +84,45 @@ module.exports = class HmSci3Fm {
             callback(null, valueContact1);
         };
 
-        const getListenerLowbat = callback => {
+        const getListenerLowbat1 = callback => {
             homematic.debug('get ' + config.name + ' ' + subtype1 + ' StatusLowBattery ' + getError() + ' ' + lowbat);
             callback(null, lowbat);
         };
 
-        const getListenerFault = callback => {
+        const getListenerFault1 = callback => {
             homematic.debug('get ' + config.name + ' ' + subtype1 + ' StatusFault ' + getError() + ' ' + unreach);
+            callback(null, unreach);
+        };
+
+        const getListenerLowbat2 = callback => {
+            homematic.debug('get ' + config.name + ' ' + subtype2 + ' StatusLowBattery ' + getError() + ' ' + lowbat);
+            callback(null, lowbat);
+        };
+
+        const getListenerFault2 = callback => {
+            homematic.debug('get ' + config.name + ' ' + subtype2 + ' StatusFault ' + getError() + ' ' + unreach);
+            callback(null, unreach);
+        };
+
+        const getListenerLowbat3 = callback => {
+            homematic.debug('get ' + config.name + ' ' + subtype3 + ' StatusLowBattery ' + getError() + ' ' + lowbat);
+            callback(null, lowbat);
+        };
+
+        const getListenerFault3 = callback => {
+            homematic.debug('get ' + config.name + ' ' + subtype3 + ' StatusFault ' + getError() + ' ' + unreach);
             callback(null, unreach);
         };
 
         acc.getService(subtype1).getCharacteristic(hap.Characteristic.ContactSensorState).on('get', getListenerContact1);
         acc.getService(subtype2).getCharacteristic(hap.Characteristic.ContactSensorState).on('get', getListenerContact2);
         acc.getService(subtype3).getCharacteristic(hap.Characteristic.ContactSensorState).on('get', getListenerContact3);
-        acc.getService(subtype1).getCharacteristic(hap.Characteristic.StatusLowBattery).on('get', getListenerLowbat);
-        acc.getService(subtype1).getCharacteristic(hap.Characteristic.StatusFault).on('get', getListenerFault);
+        acc.getService(subtype1).getCharacteristic(hap.Characteristic.StatusLowBattery).on('get', getListenerLowbat1);
+        acc.getService(subtype1).getCharacteristic(hap.Characteristic.StatusFault).on('get', getListenerFault1);
+        acc.getService(subtype2).getCharacteristic(hap.Characteristic.StatusLowBattery).on('get', getListenerLowbat2);
+        acc.getService(subtype2).getCharacteristic(hap.Characteristic.StatusFault).on('get', getListenerFault2);
+        acc.getService(subtype3).getCharacteristic(hap.Characteristic.StatusLowBattery).on('get', getListenerLowbat3);
+        acc.getService(subtype3).getCharacteristic(hap.Characteristic.StatusFault).on('get', getListenerFault3);
 
         const idSubscription = ccu.subscribe({
             iface: config.iface,
@@ -140,10 +164,14 @@ module.exports = class HmSci3Fm {
             homematic.debug('removing listeners ' + config.name);
             ccu.unsubscribe(idSubscription);
             acc.getService(subtype1).getCharacteristic(hap.Characteristic.ContactSensorState).removeListener('get', getListenerContact1);
-            acc.getService(subtype2).getCharacteristic(hap.Characteristic.ContactSensorState).removeListener('get', getListenerContact3);
-            acc.getService(subtype3).getCharacteristic(hap.Characteristic.ContactSensorState).removeListener('get', getListenerContact2);
-            acc.getService(subtype1).getCharacteristic(hap.Characteristic.StatusLowBattery).removeListener('get', getListenerLowbat);
-            acc.getService(subtype1).getCharacteristic(hap.Characteristic.StatusFault).removeListener('get', getListenerFault);
+            acc.getService(subtype2).getCharacteristic(hap.Characteristic.ContactSensorState).removeListener('get', getListenerContact2);
+            acc.getService(subtype3).getCharacteristic(hap.Characteristic.ContactSensorState).removeListener('get', getListenerContact3);
+            acc.getService(subtype1).getCharacteristic(hap.Characteristic.StatusLowBattery).removeListener('get', getListenerLowbat1);
+            acc.getService(subtype1).getCharacteristic(hap.Characteristic.StatusFault).removeListener('get', getListenerFault1);
+            acc.getService(subtype2).getCharacteristic(hap.Characteristic.StatusLowBattery).removeListener('get', getListenerLowbat2);
+            acc.getService(subtype2).getCharacteristic(hap.Characteristic.StatusFault).removeListener('get', getListenerFault2);
+            acc.getService(subtype3).getCharacteristic(hap.Characteristic.StatusLowBattery).removeListener('get', getListenerLowbat3);
+            acc.getService(subtype3).getCharacteristic(hap.Characteristic.StatusFault).removeListener('get', getListenerFault3);
         });
     }
 };
