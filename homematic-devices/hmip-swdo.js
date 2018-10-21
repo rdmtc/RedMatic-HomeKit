@@ -63,9 +63,9 @@ module.exports = class HmipSwdo {
                 .updateCharacteristic(hap.Characteristic.StatusTampered, tampered)
                 .updateCharacteristic(hap.Characteristic.StatusFault, unreach);
 
-            acc.addService(hap.Service.LeakSensor, config.name, subtypeBattery)
+            acc.addService(hap.Service.BatteryService, config.name, subtypeBattery)
                 .updateCharacteristic(hap.Characteristic.StatusLowBattery, lowBat)
-                .updateCharacteristic(hap.Characteristic.BatteryLevel, voltage);
+                .updateCharacteristic(hap.Characteristic.BatteryLevel, battery);
 
             acc.isConfigured = true;
         }
