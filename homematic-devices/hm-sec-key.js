@@ -135,10 +135,10 @@ module.exports = class HmSecKey {
         homematic.on('close', () => {
             homematic.debug('removing listeners ' + config.name);
             ccu.unsubscribe(idSubscription);
-            acc.getService(subtypeBattery).getCharacteristic(hap.Characteristic.LockCurrentState).removeListener('get', getListenerLowbat);
             acc.getService(subtypeLock).getCharacteristic(hap.Characteristic.LockCurrentState).removeListener('get', getListenerCurrent);
             acc.getService(subtypeLock).getCharacteristic(hap.Characteristic.LockTargetState).removeListener('get', getListener);
             acc.getService(subtypeLock).getCharacteristic(hap.Characteristic.LockTargetState).removeListener('set', setListener);
+            acc.getService(subtypeBattery).getCharacteristic(hap.Characteristic.StatusLowBattery).removeListener('get', getListenerLowbat);
         });
     }
 };
