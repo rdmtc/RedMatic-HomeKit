@@ -1,5 +1,9 @@
-module.exports = class HmipPsm {
+const Accessory = require('./lib/accessory');
+
+module.exports = class HmipPsm extends Accessory {
     constructor(config, homematic) {
+        super(config, homematic);
+
         const {bridgeConfig, ccu} = homematic;
         const {hap} = bridgeConfig;
 
@@ -18,26 +22,15 @@ module.exports = class HmipPsm {
             return unreach ? new Error(hap.HAPServer.Status.SERVICE_COMMUNICATION_FAILURE) : null;
         }
 
-        const acc = bridgeConfig.accessory({id: config.description.ADDRESS, name: config.name});
-        const subtype = '0';
+         const subtype = '0';
 
-        if (!acc.isConfigured) {
-            acc.getService(hap.Service.AccessoryInformation)
-                .setCharacteristic(hap.Characteristic.Manufacturer, 'eQ-3')
-                .setCharacteristic(hap.Characteristic.Model, config.description.TYPE)
-                .setCharacteristic(hap.Characteristic.SerialNumber, config.description.ADDRESS)
-                .setCharacteristic(hap.Characteristic.FirmwareRevision, config.description.FIRMWARE);
+        if (!this.acc.isConfigured) {
 
-            acc.on('identify', (paired, callback) => {
-                homematic.log('identify ' + config.name + ' ' + config.description.TYPE + ' ' + config.description.ADDRESS);
-                callback();
-            });
-
-            acc.addService(hap.Service.Outlet, config.name, subtype)
+            this.acc.addService(hap.Service.Outlet, config.name, subtype)
                 .updateCharacteristic(hap.Characteristic.On, valueOn)
                 .updateCharacteristic(hap.Characteristic.OutletInUse, valueOutletInUse);
 
-            acc.isConfigured = true;
+            this.acc.isConfigured = true;
         }
 
         const setListener = (value, callback) => {
@@ -61,9 +54,9 @@ module.exports = class HmipPsm {
             callback(getError(), valueOn);
         };
 
-        acc.getService(subtype).getCharacteristic(hap.Characteristic.On).on('get', getListener);
-        acc.getService(subtype).getCharacteristic(hap.Characteristic.OutletInUse).on('get', getListenerOutletInUse);
-        acc.getService(subtype).getCharacteristic(hap.Characteristic.On).on('set', setListener);
+        this.acc.getService(subtype).getCharacteristic(hap.Characteristic.On).on('get', getListener);
+        this.acc.getService(subtype).getCharacteristic(hap.Characteristic.OutletInUse).on('get', getListenerOutletInUse);
+        this.acc.getService(subtype).getCharacteristic(hap.Characteristic.On).on('set', setListener);
 
         const idSubscription = ccu.subscribe({
             iface: config.iface,
@@ -78,12 +71,12 @@ module.exports = class HmipPsm {
                 case '3.STATE':
                     valueOn = msg.value;
                     homematic.debug('update ' + config.name + ' 0 On ' + valueOn);
-                    acc.getService(subtype).updateCharacteristic(hap.Characteristic.On, valueOn);
+                    this.acc.getService(subtype).updateCharacteristic(hap.Characteristic.On, valueOn);
                     break;
                 case '6.POWER':
                     valueOutletInUse = msg.value > 0;
                     homematic.debug('update ' + config.name + ' 0 OutletInUse ' + valueOutletInUse);
-                    acc.getService(subtype).updateCharacteristic(hap.Characteristic.OutletInUse, valueOutletInUse);
+                    this.acc.getService(subtype).updateCharacteristic(hap.Characteristic.OutletInUse, valueOutletInUse);
                     break;
                 default:
             }
@@ -92,9 +85,9 @@ module.exports = class HmipPsm {
         homematic.on('close', () => {
             homematic.debug('removing listeners ' + config.name);
             ccu.unsubscribe(idSubscription);
-            acc.getService(subtype).getCharacteristic(hap.Characteristic.On).removeListener('get', getListener);
-            acc.getService(subtype).getCharacteristic(hap.Characteristic.OutletInUse).removeListener('get', getListenerOutletInUse);
-            acc.getService(subtype).getCharacteristic(hap.Characteristic.On).removeListener('set', setListener);
+            this.acc.getService(subtype).getCharacteristic(hap.Characteristic.On).removeListener('get', getListener);
+            this.acc.getService(subtype).getCharacteristic(hap.Characteristic.OutletInUse).removeListener('get', getListenerOutletInUse);
+            this.acc.getService(subtype).getCharacteristic(hap.Characteristic.On).removeListener('set', setListener);
         });
     }
 };
