@@ -39,6 +39,7 @@ module.exports = class HmipBdt {
 
         const setListenerBrightness = (value, callback) => {
             homematic.debug('set ' + config.name + ' 0 Brightness ' + value);
+            valueBrightness = value;
             ccu.setValue(config.iface, config.description.ADDRESS + ':4', 'LEVEL', value / 100)
                 .then(() => {
                     callback();
