@@ -1,4 +1,4 @@
-module.exports = class HmLcBl1 {
+module.exports = class HmLcJa1 {
     constructor(config, homematic) {
         const {bridgeConfig, ccu} = homematic;
         const {hap} = bridgeConfig;
