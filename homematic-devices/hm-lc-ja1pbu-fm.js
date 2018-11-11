@@ -61,7 +61,7 @@ module.exports = class HmLcJa1 {
                 callback();
             });
 
-            acc.addService(hap.Service.Window, config.name, subtype)
+            acc.addService(hap.Service.WindowCovering, config.name, subtype)
                 .updateCharacteristic(hap.Characteristic.CurrentPosition, getCurrent())
                 .updateCharacteristic(hap.Characteristic.CurrentVerticalTiltAngle, getCurrentSlat())
                 .updateCharacteristic(hap.Characteristic.TargetPosition, getTarget())
@@ -152,6 +152,7 @@ module.exports = class HmLcJa1 {
                     break;
                 case '1.WORKING_SLATS':
                     workingSlats = msg.value;
+                    break;
                 default:
             }
         });
