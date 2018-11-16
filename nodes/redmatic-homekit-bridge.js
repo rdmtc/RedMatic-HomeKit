@@ -121,7 +121,7 @@ module.exports = function (RED) {
         }
 
         accessory(config) {
-            const uuid = hap.uuid.generate(config.id);
+            const uuid = hap.uuid.generate(config.id + (config.uuidAddition ? config.uuidAddition : ''));
             let acc;
 
             this.bridge.bridgedAccessories.forEach(a => {
