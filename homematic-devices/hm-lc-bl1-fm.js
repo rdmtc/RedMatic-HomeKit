@@ -34,7 +34,7 @@ module.exports = class HmLcBl1 {
             }
         }
 
-        const acc = bridgeConfig.accessory({id: config.description.ADDRESS, name: config.name});
+        const acc = bridgeConfig.accessory({id: config.description.ADDRESS, uuidAddition: '-v2', name: config.name});
         const subtype = '0';
 
         if (!acc.isConfigured) {
@@ -49,7 +49,7 @@ module.exports = class HmLcBl1 {
                 callback();
             });
 
-            acc.addService(hap.Service.Window, config.name, subtype)
+            acc.addService(hap.Service.WindowCovering, config.name, subtype)
                 .updateCharacteristic(hap.Characteristic.CurrentPosition, getCurrent())
                 .updateCharacteristic(hap.Characteristic.TargetPosition, getTarget())
                 .updateCharacteristic(hap.Characteristic.PositionState, getState());
