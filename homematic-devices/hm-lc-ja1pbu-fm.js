@@ -119,9 +119,9 @@ module.exports = class HmLcJa1 {
         acc.getService(subtype).getCharacteristic(hap.Characteristic.CurrentPosition).on('get', getListenerCurrentPosition);
         acc.getService(subtype).getCharacteristic(hap.Characteristic.TargetPosition).on('get', getListenerTargetPosition);
         acc.getService(subtype).getCharacteristic(hap.Characteristic.TargetPosition).on('set', setListenerTargetPosition);
-        acc.getService(subtype).getCharacteristic(hap.Characteristic.CurrentPosition).on('get', getListenerCurrentVerticalTiltAngle);
-        acc.getService(subtype).getCharacteristic(hap.Characteristic.TargetPosition).on('get', getListenerTargetVerticalTiltAngle);
-        acc.getService(subtype).getCharacteristic(hap.Characteristic.TargetPosition).on('set', setListenerTargetVerticalTiltAngle);
+        acc.getService(subtype).getCharacteristic(hap.Characteristic.CurrentVerticalTiltAngle).on('get', getListenerCurrentVerticalTiltAngle);
+        acc.getService(subtype).getCharacteristic(hap.Characteristic.TargetVerticalTiltAngle).on('get', getListenerTargetVerticalTiltAngle);
+        acc.getService(subtype).getCharacteristic(hap.Characteristic.TargetVerticalTiltAngle).on('set', setListenerTargetVerticalTiltAngle);
         acc.getService(subtype).getCharacteristic(hap.Characteristic.PositionState).on('get', getListenerPositionState);
 
         const idSubscription = ccu.subscribe({
@@ -163,9 +163,9 @@ module.exports = class HmLcJa1 {
             acc.getService(subtype).getCharacteristic(hap.Characteristic.CurrentPosition).removeListener('get', getListenerCurrentPosition);
             acc.getService(subtype).getCharacteristic(hap.Characteristic.TargetPosition).removeListener('get', getListenerTargetPosition);
             acc.getService(subtype).getCharacteristic(hap.Characteristic.TargetPosition).removeListener('set', setListenerTargetPosition);
-            acc.getService(subtype).getCharacteristic(hap.Characteristic.CurrentPosition).removeListener('get', getListenerCurrentVerticalTiltAngle);
-            acc.getService(subtype).getCharacteristic(hap.Characteristic.TargetPosition).removeListener('get', getListenerTargetVerticalTiltAngle);
-            acc.getService(subtype).getCharacteristic(hap.Characteristic.TargetPosition).removeListener('set', setListenerTargetVerticalTiltAngle);
+            acc.getService(subtype).getCharacteristic(hap.Characteristic.CurrentVerticalTiltAngle).removeListener('get', getListenerCurrentVerticalTiltAngle);
+            acc.getService(subtype).getCharacteristic(hap.Characteristic.TargetVerticalTiltAngle).removeListener('get', getListenerTargetVerticalTiltAngle);
+            acc.getService(subtype).getCharacteristic(hap.Characteristic.TargetVerticalTiltAngle).removeListener('set', setListenerTargetVerticalTiltAngle);
             acc.getService(subtype).getCharacteristic(hap.Characteristic.PositionState).removeListener('get', getListenerPositionState);
         });
     }
