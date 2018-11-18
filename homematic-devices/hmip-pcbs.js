@@ -5,6 +5,25 @@ module.exports = class HmipPcbs {
 
         homematic.debug('creating Homematic Device ' + config.description.TYPE + ' ' + config.name);
 
+        function batteryPercent(val) {
+            let p = Math.round((val - 2) * 100);
+            if (p < 0) {
+                p = 0;
+            } else if (p > 100) {
+                p = 100;
+            }
+            return p;
+        }
+
+        const datapointLowbat = config.iface + '.' + config.description.ADDRESS + ':0.LOW_BAT';
+        let lowbat = (ccu.values && ccu.values[datapointLowbat] && ccu.values[datapointLowbat].value) ?
+            hap.Characteristic.StatusLowBattery.BATTERY_LEVEL_LOW :
+            hap.Characteristic.StatusLowBattery.BATTERY_LEVEL_NORMAL;
+
+        const datapointVoltage = config.iface + '.' + config.description.ADDRESS + ':0.OPERATING_VOLTAGE';
+        let voltage = batteryPercent(ccu.values && ccu.values[datapointVoltage] && ccu.values[datapointVoltage].value) || 0;
+
+
         const datapointOn = config.iface + '.' + config.description.ADDRESS + ':3.STATE';
         let valueOn = ccu.values && ccu.values[datapointOn] && ccu.values[datapointOn].value;
 
@@ -17,6 +36,7 @@ module.exports = class HmipPcbs {
 
         const acc = bridgeConfig.accessory({id: config.description.ADDRESS, name: config.name});
         const subtype = '0';
+        const subtypeBattery = '1';
 
         if (!acc.isConfigured) {
             acc.getService(hap.Service.AccessoryInformation)
@@ -33,7 +53,7 @@ module.exports = class HmipPcbs {
             acc.addService(hap.Service.Switch, config.name, subtype)
                 .updateCharacteristic(hap.Characteristic.On, valueOn);
 
-            // TODO add Battery Service
+            acc.addService(hap.Service.BatteryService, config.name, subtypeBattery);
 
             acc.isConfigured = true;
         }
@@ -54,8 +74,20 @@ module.exports = class HmipPcbs {
             callback(getError(), valueOn);
         };
 
+        const getListenerLowbat = callback => {
+            homematic.debug('get ' + config.name + ' ' + subtypeBattery + ' StatusLowBattery ' + getError() + ' ' + lowbat);
+            callback(null, lowbat);
+        };
+
+        const getListenerVoltage = callback => {
+            homematic.debug('get ' + config.name + ' ' + subtypeBattery + ' BatteryLevel ' + getError() + ' ' + voltage);
+            callback(null, voltage);
+        };
+
         acc.getService(subtype).getCharacteristic(hap.Characteristic.On).on('get', getListener);
         acc.getService(subtype).getCharacteristic(hap.Characteristic.On).on('set', setListener);
+        acc.getService(subtypeBattery).getCharacteristic(hap.Characteristic.StatusLowBattery).on('get', getListenerLowbat);
+        acc.getService(subtypeBattery).getCharacteristic(hap.Characteristic.BatteryLevel).on('get', getListenerVoltage);
 
         const idSubscription = ccu.subscribe({
             iface: config.iface,
@@ -67,9 +99,19 @@ module.exports = class HmipPcbs {
                 case '0.UNREACH':
                     unreach = msg.value;
                     break;
+                case '0.LOW_BAT':
+                    lowbat = msg.value ? hap.Characteristic.StatusLowBattery.BATTERY_LEVEL_LOW : hap.Characteristic.StatusLowBattery.BATTERY_LEVEL_NORMAL;
+                    homematic.debug('update ' + config.name + ' ' + subtypeBattery + ' StatusLowBattery ' + lowbat);
+                    acc.getService(subtypeBattery).updateCharacteristic(hap.Characteristic.StatusLowBattery, lowbat);
+                    break;
+                case '0.OPERATING_VOLTAGE':
+                    voltage = batteryPercent(msg.value);
+                    homematic.debug('update ' + config.name + ' ' + subtypeBattery + ' BatteryLevel ' + voltage);
+                    acc.getService(subtypeBattery).updateCharacteristic(hap.Characteristic.BatteryLevel, voltage);
+                    break;
                 case '3.STATE':
                     valueOn = msg.value;
-                    homematic.debug('update ' + config.name + ' 0 On ' + valueOn);
+                    homematic.debug('update ' + config.name + ' ' + subtype + ' On ' + valueOn);
                     acc.getService(subtype).updateCharacteristic(hap.Characteristic.On, valueOn);
                     break;
                 default:
@@ -81,6 +123,8 @@ module.exports = class HmipPcbs {
             ccu.unsubscribe(idSubscription);
             acc.getService(subtype).getCharacteristic(hap.Characteristic.On).removeListener('get', getListener);
             acc.getService(subtype).getCharacteristic(hap.Characteristic.On).removeListener('set', setListener);
+            acc.getService(subtypeBattery).getCharacteristic(hap.Characteristic.StatusLowBattery).removeListener('get', getListenerLowbat);
+            acc.getService(subtypeBattery).getCharacteristic(hap.Characteristic.BatteryLevel).removeListener('get', getListenerVoltage);
         });
     }
 };
