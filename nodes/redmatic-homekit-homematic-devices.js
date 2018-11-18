@@ -23,18 +23,21 @@ module.exports = function (RED) {
             this.homematicInvalidDevices = [
                 'hm-cc-vd',
                 'hm-dis-ep-wm55',
+                'hm-ou-cfm-pl',
                 'hm-pbi-4-fm',
                 'hm-pb-6-wm55',
                 'hm-pb-4dis-wm-2',
                 'hm-rc-4-2',
+                'hm-rc-4-3',
                 'hm-rc-4-b',
-                'hm-rc-key3-b',
-                'hm-rc-key4-2',
                 'hm-rc-8',
                 'hm-rc-12',
                 'hm-rc-12-b',
                 'hm-rc-19',
                 'hm-rc-19-sw',
+                'hm-rc-dis-h-x-eu',
+                'hm-rc-key3-b',
+                'hm-rc-key4-2',
                 'hm-rcv-50',
                 'hm-sec-sd-2-team',
                 'hm-sec-sd-team',
@@ -42,7 +45,8 @@ module.exports = function (RED) {
                 'hmw-rcv-50',
                 'hmip-brc2',
                 'hmip-krca',
-                'hmip-wrc2'
+                'hmip-wrc2',
+                'hmip-wrc6'
             ];
         }
 
