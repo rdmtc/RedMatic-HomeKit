@@ -22,10 +22,9 @@ module.exports = class HmipPsm extends Accessory {
             return unreach ? new Error(hap.HAPServer.Status.SERVICE_COMMUNICATION_FAILURE) : null;
         }
 
-         const subtype = '0';
+        const subtype = '0';
 
         if (!this.acc.isConfigured) {
-
             this.acc.addService(hap.Service.Outlet, config.name, subtype)
                 .updateCharacteristic(hap.Characteristic.On, valueOn)
                 .updateCharacteristic(hap.Characteristic.OutletInUse, valueOutletInUse);

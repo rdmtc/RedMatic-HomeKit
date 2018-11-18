@@ -23,7 +23,6 @@ module.exports = class HmipPcbs {
         const datapointVoltage = config.iface + '.' + config.description.ADDRESS + ':0.OPERATING_VOLTAGE';
         let voltage = batteryPercent(ccu.values && ccu.values[datapointVoltage] && ccu.values[datapointVoltage].value) || 0;
 
-
         const datapointOn = config.iface + '.' + config.description.ADDRESS + ':3.STATE';
         let valueOn = ccu.values && ccu.values[datapointOn] && ccu.values[datapointOn].value;
 
