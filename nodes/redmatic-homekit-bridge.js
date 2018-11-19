@@ -57,8 +57,8 @@ module.exports = function (RED) {
 
             this.on('close', (remove, done) => {
                 if (remove && this.bridge.isPublished) {
-                    this.bridge.unpublish();
-                    this.log('unpublished bridge ' + this.name + ' ' + this.username + ' on port ' + this.port);
+                //    this.bridge.unpublish();
+                //    this.log('unpublished bridge ' + this.name + ' ' + this.username + ' on port ' + this.port);
                 }
                 done();
             });
