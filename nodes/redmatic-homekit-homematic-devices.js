@@ -53,18 +53,28 @@ module.exports = function (RED) {
         }
 
         publishDevices() {
+            if (!this.ccu.channelNames) {
+                this.error('ccu.channelNames missing');
+                return;
+            }
+            if (!this.ccu.metadata.devices) {
+                this.error('ccu.metadata.devices missing');
+                return;
+            }
             Object.keys(this.ccu.channelNames).forEach(address => {
                 if (this.devices && this.devices[address] && this.devices[address].disabled) {
                     return;
                 }
                 if (!address.match(/:\d+$/)) {
                     const iface = this.ccu.findIface(address);
-                    if (iface && this.ccu.metadata.devices && this.ccu.metadata.devices[iface]) {
+                    if (iface && this.ccu.metadata.devices[iface]) {
                         this.createHomematicDevice({
                             name: this.ccu.channelNames[address],
                             iface: this.ccu.findIface(address),
                             description: this.ccu.metadata.devices[iface][address]
                         });
+                    } else {
+                        this.error('ccu.metadata.devices[' + iface + '] missing');
                     }
                 }
             });
