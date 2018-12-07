@@ -59,9 +59,12 @@ module.exports = class HmipSrh {
 
             acc.addService(hap.Service.ContactSensor, config.name, subtypeContactSensor)
                 .updateCharacteristic(hap.Characteristic.ContactSensorState, valueContact)
-                .updateCharacteristic(hap.Characteristic.StatusLowBattery, lowBat)
                 .updateCharacteristic(hap.Characteristic.StatusTampered, tampered)
                 .updateCharacteristic(hap.Characteristic.StatusFault, unreach);
+
+            acc.addService(hap.Service.BatteryService, config.name, subtypeBattery)
+                .updateCharacteristic(hap.Characteristic.StatusLowBattery, lowBat)
+                .updateCharacteristic(hap.Characteristic.BatteryLevel, battery);
 
             acc.isConfigured = true;
         }
