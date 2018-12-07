@@ -74,7 +74,7 @@ module.exports = function (RED) {
                             description: this.ccu.metadata.devices[iface][address]
                         });
                     } else {
-                        this.error('ccu.metadata.devices[' + iface + '] missing');
+                        this.error('ccu.metadata.devices[' + iface + '] missing for ' + address);
                     }
                 }
             });
@@ -101,7 +101,14 @@ module.exports = function (RED) {
                 }
             }
             if (this.homematicDevices[type] && typeof this.homematicDevices[type] === 'function') {
-                return new this.homematicDevices[type](dev, this);
+                try {
+                    return new this.homematicDevices[type](dev, this);
+                } catch (error) {
+                    this.error('createHomematicDevice Exception ' + dev.name + ' ' + type);
+                    this.error(error.stack);
+                    return;
+                }
+
             }
             this.error('invalid homematic-devices/' + type);
             this.homematicInvalidDevices.push(type);
