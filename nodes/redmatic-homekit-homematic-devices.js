@@ -28,6 +28,7 @@ module.exports = function (RED) {
                 'hm-pb-4dis-wm-2',
                 'hm-pb-6-wm55',
                 'hm-pbi-4-fm',
+                'hm-rc-2-pbu-fm',
                 'hm-rc-4-2',
                 'hm-rc-4-3',
                 'hm-rc-4-b',
@@ -42,6 +43,8 @@ module.exports = function (RED) {
                 'hm-rcv-50',
                 'hm-sec-sd-2-team',
                 'hm-sec-sd-team',
+                'hm-sec-sfa-sm',
+                'hm-sen-rd-o',
                 'hm-wdc7000',
                 'hmw-rcv-50',
                 'hmip-asir',
@@ -61,20 +64,29 @@ module.exports = function (RED) {
                 this.error('ccu.metadata.devices missing');
                 return;
             }
+            if (!this.devices) {
+                this.devices = {};
+            }
             Object.keys(this.ccu.channelNames).forEach(address => {
-                if (this.devices && this.devices[address] && this.devices[address].disabled) {
+                if (this.devices[address] && this.devices[address].disabled) {
                     return;
                 }
                 if (!address.match(/:\d+$/)) {
                     const iface = this.ccu.findIface(address);
-                    if (iface && this.ccu.metadata.devices[iface]) {
+                    if (iface && this.ccu.enabledIfaces.includes(iface) && this.ccu.metadata.devices[iface]) {
+                        const options = {};
+                        Object.keys(this.devices).forEach(addr => {
+                            if (addr === address || addr.startsWith(address + ':')) {
+                                options[addr] = this.devices[addr];
+                            }
+                        });
                         this.createHomematicDevice({
                             name: this.ccu.channelNames[address],
-                            iface: this.ccu.findIface(address),
-                            description: this.ccu.metadata.devices[iface][address]
+                            iface,
+                            deviceAddress: iface + '.' + address,
+                            description: this.ccu.metadata.devices[iface][address],
+                            options
                         });
-                    } else {
-                        this.error('ccu.metadata.devices[' + iface + '] missing for ' + address);
                     }
                 }
             });
