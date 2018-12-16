@@ -135,11 +135,11 @@ module.exports = function (RED) {
             } else {
                 if (this.bridge.bridgedAccessories.length >= 100) {
                     this.error('maximum of 100 accessories per bridge exceeded, can\'t add ' + config.id + ' ' + config.name);
-                    return;
+                } else {
+                    this.debug('addAccessory ' + config.id + ' ' + config.name);
+                    acc = new hap.Accessory(config.name, uuid, hap.Accessory.Categories.OTHER);
+                    this.bridge.addBridgedAccessory(acc);
                 }
-                this.debug('addAccessory ' + config.id + ' ' + config.name);
-                acc = new hap.Accessory(config.name, uuid, hap.Accessory.Categories.OTHER);
-                this.bridge.addBridgedAccessory(acc);
             }
             this.waitForAccessories();
 
