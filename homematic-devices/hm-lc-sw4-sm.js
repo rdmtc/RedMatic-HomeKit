@@ -1,1 +1,1 @@
-module.exports = require('./hm-lc-sw4-pcb');
+module.exports = require('./generic-sw-single-acc');

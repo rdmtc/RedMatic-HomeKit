@@ -1,1 +1,1 @@
-module.exports = require('./hm-lc-sw1-fm');
+module.exports = require('./generic-sw-single-acc');
