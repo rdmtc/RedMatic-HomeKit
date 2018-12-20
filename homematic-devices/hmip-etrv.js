@@ -4,7 +4,6 @@ module.exports = class HmipEtrv extends Accessory {
     init(config, node) {
         const {bridgeConfig, ccu} = node;
         const {hap} = bridgeConfig;
-        const that = this;
 
         let level = 0;
         let valueSetpoint;
@@ -31,7 +30,6 @@ module.exports = class HmipEtrv extends Accessory {
         }
 
         const serviceThermostat = this.addService('Thermostat', config.name);
-        const subtypeThermostat = serviceThermostat.subtype;
 
         serviceThermostat
             .setProps('CurrentTemperature', {minValue: -40, maxValue: 80})
@@ -62,23 +60,10 @@ module.exports = class HmipEtrv extends Accessory {
             })
             .set('TargetHeatingCoolingState', (value, callback) => {
                 // 0=off, 1=heat, 3=auto
-                if (value === 0) {
+                if (value === 0 || value === 1) {
                     const params = {
                         CONTROL_MODE: 1,
-                        SET_POINT_TEMPERATURE: 4.5
-                    }
-                    node.debug('set ' + config.name + ' (' + subtypeThermostat + ') TargetHeatingCoolingState ' + value + ' -> ' + config.description.ADDRESS + ':1' + ' ' + JSON.stringify(params));
-
-                    ccu.methodCall(config.iface, 'putParamset', [config.description.ADDRESS + ':1', 'VALUES', params]).then(() => {
-                        callback();
-                    })
-                    .catch(() => {
-                        callback(new Error(hap.HAPServer.Status.SERVICE_COMMUNICATION_FAILURE));
-                    });
-                } else if (value === 1) {
-                    const params = {
-                        CONTROL_MODE: 1,
-                        SET_POINT_TEMPERATURE: 21
+                        SET_POINT_TEMPERATURE: value === 0 ? 4.5 : 21
                     };
                     node.debug('set ' + config.name + ' (' + subtypeThermostat + ') TargetHeatingCoolingState ' + value + ' -> ' + config.description.ADDRESS + ':1' + ' ' + JSON.stringify(params));
                     ccu.methodCall(config.iface, 'putParamset', [config.description.ADDRESS + ':1', 'VALUES', params]).then(() => {
@@ -88,7 +73,6 @@ module.exports = class HmipEtrv extends Accessory {
                         callback(new Error(hap.HAPServer.Status.SERVICE_COMMUNICATION_FAILURE));
                     });
                 } else {
-                    node.debug('set ' + config.name + ' (' + subtypeThermostat + ') TargetHeatingCoolingState ' + value + ' -> ' + config.description.ADDRESS + ':1.CONTROL_MODE' + ' ' + (value === 3 ? 0 : 1));
                     ccu.setValue(config.iface, config.description.ADDRESS + ':1', 'CONTROL_MODE', value === 3 ? 0 : 1)
                         .then(() => {
                             callback();
@@ -100,33 +84,21 @@ module.exports = class HmipEtrv extends Accessory {
             });
 
         function updateHeatingCoolingState() {
-            const current = currentState();
-            node.debug('update ' + config.name + ' (' + subtypeThermostat + ') CurrentHeatingCoolingState ' + current);
-            that.acc.getService(subtypeThermostat).updateCharacteristic(hap.Characteristic.CurrentHeatingCoolingState, current);
-            const target = targetState();
-            node.debug('update ' + config.name + ' (' + subtypeThermostat + ') TargetHeatingCoolingState ' + target);
-            that.acc.getService(subtypeThermostat).updateCharacteristic(hap.Characteristic.TargetHeatingCoolingState, target);
+            serviceThermostat.update('CurrentHeatingCoolingState', currentState());
+            serviceThermostat.update('TargetHeatingCoolingState', targetState());
         }
 
-        this.subscriptions.push(ccu.subscribe({
-            cache: true,
-            change: true,
-            datapointName: config.deviceAddress + ':1.LEVEL'
-        }, msg => {
-            level = msg.value;
-            node.debug('update ' + config.name + ' level ' + msg.value);
+        this.subscribe(config.deviceAddress + ':1.LEVEL', value => {
+            level = value;
+            node.debug('update ' + config.name + ' level ' + level);
             updateHeatingCoolingState();
-        }));
+        });
 
-        this.subscriptions.push(ccu.subscribe({
-            cache: true,
-            change: true,
-            datapointName: config.deviceAddress + ':1.SET_POINT_MODE'
-        }, msg => {
-            setpointMode = msg.value;
-            node.debug('update ' + config.name + ' setpointMode ' + msg.value);
+        this.subscribe(config.deviceAddress + ':1.SET_POINT_MODE', value => {
+            setpointMode = value;
+            node.debug('update ' + config.name + ' setpointMode ' + setpointMode);
             updateHeatingCoolingState();
-        }));
+        });
 
         this.addService('BatteryService', config.name)
             .get('StatusLowBattery', config.deviceAddress + ':0.LOWBAT', (value, c) => {
