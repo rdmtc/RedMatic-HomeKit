@@ -4,6 +4,7 @@ class Service {
         this.subtype = subtype;
         return this;
     }
+
     get(characteristic, datapointNameOrCallback, transform) {
         if (typeof datapointNameOrCallback === 'function') {
             this.acc.addListener('get', this.subtype, characteristic, datapointNameOrCallback);
@@ -12,6 +13,7 @@ class Service {
         }
         return this;
     }
+
     set(characteristic, datapointNameOrCallback, transform) {
         if (typeof datapointNameOrCallback === 'function') {
             this.acc.addListener('set', this.subtype, characteristic, datapointNameOrCallback);
@@ -20,13 +22,16 @@ class Service {
         }
         return this;
     }
+
     update(characteristic, value) {
         this.acc.updateCharacteristic(this.subtype, characteristic, value);
     }
+
     setProps(characteristic, props) {
         this.acc.setProps(this.subtype, characteristic, props);
         return this;
     }
+
     fault(datapointNameArr, transformArr) {
         this.acc.datapointsFault(this.subtype, datapointNameArr, transformArr);
         return this;
@@ -110,7 +115,7 @@ module.exports = class Accessory {
             this.removeSubscriptions();
         }
     }
-    
+
     getError() {
         return this.unreach ? new Error(this.hap.HAPServer.Status.SERVICE_COMMUNICATION_FAILURE) : null;
     }
@@ -165,7 +170,7 @@ module.exports = class Accessory {
 
     datapointGet(subtype, characteristic, datapointName, transform) {
         this.addListener('get', subtype, characteristic, callback => {
-            let valueOrig = this.ccu.values && this.ccu.values[datapointName] && this.ccu.values[datapointName].value;
+            const valueOrig = this.ccu.values && this.ccu.values[datapointName] && this.ccu.values[datapointName].value;
             let value = valueOrig;
             if (typeof transform === 'function') {
                 value = transform(value, this.hap.Characteristic[characteristic]);
@@ -181,7 +186,7 @@ module.exports = class Accessory {
             stable: true,
             datapointName
         }, msg => {
-            let valueOrig = msg.value;
+            const valueOrig = msg.value;
             let value = valueOrig;
             if (typeof transform === 'function') {
                 value = transform(value, this.hap.Characteristic[characteristic]);
@@ -193,12 +198,12 @@ module.exports = class Accessory {
 
     datapointSet(subtype, characteristic, datapointName, transform) {
         this.addListener('set', subtype, characteristic, (value, callback) => {
-            let valueOrig = value;
+            const valueOrig = value;
             if (typeof transform === 'function') {
                 value = transform(value, this.hap.Characteristic[characteristic]);
             }
             const [iface, channel, dp] = datapointName.split('.');
-            this.node.debug('set ' + this.config.name + ' (' + subtype + ') ' + characteristic + ' ' +  valueOrig + ' -> ' + datapointName + ' ' + value);
+            this.node.debug('set ' + this.config.name + ' (' + subtype + ') ' + characteristic + ' ' + valueOrig + ' -> ' + datapointName + ' ' + value);
             this.ccu.setValue(iface, channel, dp, value)
                 .then(() => {
                     callback();
@@ -221,7 +226,7 @@ module.exports = class Accessory {
             .setProps(props);
     }
 
-    identify(paired, callback)  {
+    identify(paired, callback) {
         this.node.info('identify ' + this.config.name + ' ' + this.config.description.TYPE + ' ' + this.config.description.ADDRESS);
         callback();
     }

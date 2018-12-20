@@ -1,8 +1,7 @@
 const Accessory = require('./lib/accessory');
 
 module.exports = class HmwDim extends Accessory {
-    init(config, node) {
-
+    init(config) {
         let valueBrightness;
 
         this.addService('Lightbulb', config.name)
@@ -15,9 +14,8 @@ module.exports = class HmwDim extends Accessory {
             .set('On', config.deviceAddress + ':3.LEVEL', value => {
                 if (!valueBrightness || !value) {
                     return value ? 1 : 0;
-                } else {
-                    return valueBrightness / 100;
                 }
+                return valueBrightness / 100;
             })
 
             .get('Brightness', config.deviceAddress + ':3.LEVEL', value => {
@@ -28,6 +26,6 @@ module.exports = class HmwDim extends Accessory {
             .set('Brightness', config.deviceAddress + ':3.LEVEL', value => {
                 valueBrightness = value;
                 return value / 100;
-            })
+            });
     }
 };

@@ -2,8 +2,7 @@ const Accessory = require('./lib/accessory');
 
 module.exports = class HmSci3Fm extends Accessory {
     init(config, node) {
-
-        console.log(config)
+        console.log(config);
 
         for (let i = 1; i <= 3; i++) {
             const ch = config.description.ADDRESS + ':' + i;
@@ -19,7 +18,5 @@ module.exports = class HmSci3Fm extends Accessory {
                     return value ? c.BATTERY_LEVEL_LOW : c.BATTERY_LEVEL_NORMAL;
                 });
         }
-
-
     }
 };

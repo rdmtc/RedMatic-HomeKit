@@ -1,8 +1,7 @@
 const Accessory = require('./lib/accessory');
 
 module.exports = class HmSecTis extends Accessory {
-    init(config, node) {
-
+    init(config) {
         this.addService('ContactSensor', config.name)
 
             .get('ContactSensorState', config.deviceAddress + ':1.STATE', (value, c) => {
@@ -13,9 +12,8 @@ module.exports = class HmSecTis extends Accessory {
                 return value ? c.BATTERY_LEVEL_LOW : c.BATTERY_LEVEL_NORMAL;
             })
 
-            .get('StatusFault', config.deviceAddress + ':0.UNREACH', (value, c) => {
+            .get('StatusFault', config.deviceAddress + ':0.UNREACH', value => {
                 return value;
             });
-
     }
 };

@@ -1,7 +1,7 @@
 const Accessory = require('./lib/accessory');
 
 module.exports = class HmWds extends Accessory {
-    init(config, node) {
+    init(config) {
         this.addService('TemperatureSensor', config.name)
             .setProps('CurrentTemperature', {minValue: -40, maxValue: 80})
             .get('CurrentTemperature', config.deviceAddress + ':1.TEMPERATURE')
@@ -13,7 +13,6 @@ module.exports = class HmWds extends Accessory {
         const humiditySensorOption = config.description.ADDRESS + ':HumiditySensor';
 
         if (!(config.options[humiditySensorOption] && config.options[humiditySensorOption].disabled)) {
-
             this.addService('HumiditySensor', config.name)
                 .get('CurrentRelativeHumidity', config.deviceAddress + ':1.HUMIDITY')
 

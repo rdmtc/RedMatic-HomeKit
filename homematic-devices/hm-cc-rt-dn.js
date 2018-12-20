@@ -131,38 +131,35 @@ module.exports = class HmCcRtDn extends Accessory {
                             .catch(() => {
                                 callback(new Error(hap.HAPServer.Status.SERVICE_COMMUNICATION_FAILURE));
                             });
+                    } else if (target === 0) {
+                        ccu.setValue(config.iface, config.description.ADDRESS + ':4', 'MANU_MODE', valueSetpoint)
+                            .then(() => {
+                                callback();
+                            })
+                            .catch(() => {
+                                callback(new Error(hap.HAPServer.Status.SERVICE_COMMUNICATION_FAILURE));
+                            });
+                    } else if (target === 1) {
+                        ccu.setValue(config.iface, config.description.ADDRESS + ':4', 'MANU_MODE', valueSetpoint)
+                            .then(() => {
+                                callback();
+                            })
+                            .catch(() => {
+                                callback(new Error(hap.HAPServer.Status.SERVICE_COMMUNICATION_FAILURE));
+                            });
                     } else {
-                        if (target === 0) {
-                            ccu.setValue(config.iface, config.description.ADDRESS + ':4', 'MANU_MODE', valueSetpoint)
-                                .then(() => {
-                                    callback();
-                                })
-                                .catch(() => {
-                                    callback(new Error(hap.HAPServer.Status.SERVICE_COMMUNICATION_FAILURE));
-                                });
-                        } else if (target === 1) {
-                            ccu.setValue(config.iface, config.description.ADDRESS + ':4', 'MANU_MODE', valueSetpoint)
-                                .then(() => {
-                                    callback();
-                                })
-                                .catch(() => {
-                                    callback(new Error(hap.HAPServer.Status.SERVICE_COMMUNICATION_FAILURE));
-                                });
-                        } else {
-                            ccu.setValue(config.iface, config.description.ADDRESS + ':4', 'AUTO_MODE', true)
-                                .then(() => {
-                                    callback();
-                                })
-                                .catch(() => {
-                                    callback(new Error(hap.HAPServer.Status.SERVICE_COMMUNICATION_FAILURE));
-                                });
-                        }
+                        ccu.setValue(config.iface, config.description.ADDRESS + ':4', 'AUTO_MODE', true)
+                            .then(() => {
+                                callback();
+                            })
+                            .catch(() => {
+                                callback(new Error(hap.HAPServer.Status.SERVICE_COMMUNICATION_FAILURE));
+                            });
                     }
                 })
                 .get('On', config.deviceAddress + ':4.CONTROL_MODE', value => {
                     return value === 3;
-                })
-
+                });
         }
     }
 };

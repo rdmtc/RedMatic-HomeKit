@@ -31,7 +31,7 @@ module.exports = class HmSecKey extends Accessory {
             })
             .set('LockTargetState', (value, callback) => {
                 value = value === hap.Characteristic.LockTargetState.UNSECURED;
-                let dp = (this.option('OpenOnUnlock') && value) ? 'OPEN' : 'STATE';
+                const dp = (this.option('OpenOnUnlock') && value) ? 'OPEN' : 'STATE';
                 ccu.setValue(config.iface, config.description.ADDRESS + ':1', dp, value)
                     .then(() => {
                         callback();

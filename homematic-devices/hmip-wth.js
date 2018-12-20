@@ -4,7 +4,6 @@ module.exports = class HmipWth extends Accessory {
     init(config, node) {
         const {bridgeConfig, ccu} = node;
         const {hap} = bridgeConfig;
-        const that = this;
 
         let level = 0;
         let valueSetpoint;
@@ -66,13 +65,13 @@ module.exports = class HmipWth extends Accessory {
                     const params = {
                         CONTROL_MODE: 1,
                         SET_POINT_TEMPERATURE: 4.5
-                    }
+                    };
                     node.debug('set ' + config.name + ' (' + subtypeThermostat + ') TargetHeatingCoolingState ' + value + ' -> ' + config.description.ADDRESS + ':1' + ' ' + JSON.stringify(params));
 
-                    ccu.methodCall(config.iface, 'putParamset', [config.description.ADDRESS + ':1', 'VALUES', params]).then(() => {
-                        callback();
-                    })
-                        .catch(() => {
+                    ccu.methodCall(config.iface, 'putParamset', [config.description.ADDRESS + ':1', 'VALUES', params])
+                        .then(() => {
+                            callback();
+                        }).catch(() => {
                             callback(new Error(hap.HAPServer.Status.SERVICE_COMMUNICATION_FAILURE));
                         });
                 } else if (value === 1) {
@@ -81,10 +80,10 @@ module.exports = class HmipWth extends Accessory {
                         SET_POINT_TEMPERATURE: 21
                     };
                     node.debug('set ' + config.name + ' (' + subtypeThermostat + ') TargetHeatingCoolingState ' + value + ' -> ' + config.description.ADDRESS + ':1' + ' ' + JSON.stringify(params));
-                    ccu.methodCall(config.iface, 'putParamset', [config.description.ADDRESS + ':1', 'VALUES', params]).then(() => {
-                        callback();
-                    })
-                        .catch(() => {
+                    ccu.methodCall(config.iface, 'putParamset', [config.description.ADDRESS + ':1', 'VALUES', params])
+                        .then(() => {
+                            callback();
+                        }).catch(() => {
                             callback(new Error(hap.HAPServer.Status.SERVICE_COMMUNICATION_FAILURE));
                         });
                 } else {
@@ -92,8 +91,7 @@ module.exports = class HmipWth extends Accessory {
                     ccu.setValue(config.iface, config.description.ADDRESS + ':1', 'CONTROL_MODE', value === 3 ? 0 : 1)
                         .then(() => {
                             callback();
-                        })
-                        .catch(() => {
+                        }).catch(() => {
                             callback(new Error(hap.HAPServer.Status.SERVICE_COMMUNICATION_FAILURE));
                         });
                 }
@@ -124,13 +122,13 @@ module.exports = class HmipWth extends Accessory {
 
         if (this.option('HumiditySensor')) {
             this.addService('HumiditySensor', config.name)
-                .get('CurrentRelativeHumidity', config.deviceAddress + ':1.HUMIDITY')
+                .get('CurrentRelativeHumidity', config.deviceAddress + ':1.HUMIDITY');
         }
 
         if (this.option('BoostSwitch')) {
             this.addService('Switch', 'Boost ' + config.name, 'Boost')
                 .set('On', config.deviceAddress + ':1.BOOST_MODE')
-                .get('On', config.deviceAddress + ':1.BOOST_MODE')
+                .get('On', config.deviceAddress + ':1.BOOST_MODE');
         }
     }
 };

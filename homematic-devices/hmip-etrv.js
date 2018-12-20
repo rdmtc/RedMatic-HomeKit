@@ -30,6 +30,7 @@ module.exports = class HmipEtrv extends Accessory {
         }
 
         const serviceThermostat = this.addService('Thermostat', config.name);
+        const {subtypeThermostat} = serviceThermostat;
 
         serviceThermostat
             .setProps('CurrentTemperature', {minValue: -40, maxValue: 80})
@@ -69,9 +70,9 @@ module.exports = class HmipEtrv extends Accessory {
                     ccu.methodCall(config.iface, 'putParamset', [config.description.ADDRESS + ':1', 'VALUES', params]).then(() => {
                         callback();
                     })
-                    .catch(() => {
-                        callback(new Error(hap.HAPServer.Status.SERVICE_COMMUNICATION_FAILURE));
-                    });
+                        .catch(() => {
+                            callback(new Error(hap.HAPServer.Status.SERVICE_COMMUNICATION_FAILURE));
+                        });
                 } else {
                     ccu.setValue(config.iface, config.description.ADDRESS + ':1', 'CONTROL_MODE', value === 3 ? 0 : 1)
                         .then(() => {
@@ -109,7 +110,7 @@ module.exports = class HmipEtrv extends Accessory {
         if (this.option('BoostSwitch')) {
             this.addService('Switch', 'Boost ' + config.name, 'Boost')
                 .set('On', config.deviceAddress + ':1.BOOST_MODE')
-                .get('On', config.deviceAddress + ':1.BOOST_MODE')
+                .get('On', config.deviceAddress + ':1.BOOST_MODE');
         }
     }
 };

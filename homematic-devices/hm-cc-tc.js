@@ -2,10 +2,8 @@ const Accessory = require('./lib/accessory');
 
 module.exports = class HmCcTc extends Accessory {
     init(config, node) {
-        const {bridgeConfig, ccu} = node;
-        const {hap} = bridgeConfig;
+        const {ccu} = node;
 
-        let datapointValveState;
         let valveStateDevice;
         let valveState = 0;
         let valueSetpoint;

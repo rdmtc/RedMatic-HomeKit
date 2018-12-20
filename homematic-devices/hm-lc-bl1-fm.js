@@ -2,7 +2,6 @@ const Accessory = require('./lib/accessory');
 
 module.exports = class HmLcBl1 extends Accessory {
     init(config) {
-
         this.addService('WindowCovering', config.name)
             .get('CurrentPosition', config.deviceAddress + ':1.LEVEL', value => {
                 return value * 100;
@@ -24,6 +23,6 @@ module.exports = class HmLcBl1 extends Accessory {
                     default:
                         return c.STOPPED;
                 }
-            })
+            });
     }
 };

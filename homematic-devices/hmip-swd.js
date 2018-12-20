@@ -14,6 +14,5 @@ module.exports = class HmipSwd extends Accessory {
                 return value ? c.BATTERY_LEVEL_LOW : c.BATTERY_LEVEL_NORMAL;
             })
             .get('BatteryLevel', config.deviceAddress + ':0.OPERATING_VOLTAGE', value => this.percent(value, 1, 1.5));
-
     }
 };

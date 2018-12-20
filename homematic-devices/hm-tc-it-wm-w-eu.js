@@ -112,8 +112,6 @@ module.exports = class HmTcItWmWEu extends Accessory {
                 }
             });
 
-
-
         function updateHeatingCoolingState() {
             const current = currentState();
             node.debug('update ' + config.name + ' (' + subtypeThermostat + ') CurrentHeatingCoolingState ' + current);
@@ -133,7 +131,6 @@ module.exports = class HmTcItWmWEu extends Accessory {
                 node.debug('update ' + config.name + ' valveState ' + msg.value);
                 updateHeatingCoolingState();
             }));
-
         }
 
         this.subscriptions.push(ccu.subscribe({
@@ -155,7 +152,7 @@ module.exports = class HmTcItWmWEu extends Accessory {
 
         if (this.option('HumiditySensor')) {
             this.addService('HumiditySensor', config.name, 'HumiditySensor')
-                .get('CurrentRelativeHumidity', config.deviceAddress + ':2.ACTUAL_HUMIDITY')
+                .get('CurrentRelativeHumidity', config.deviceAddress + ':2.ACTUAL_HUMIDITY');
         }
 
         if (this.option('BoostSwitch')) {
@@ -169,37 +166,35 @@ module.exports = class HmTcItWmWEu extends Accessory {
                             .catch(() => {
                                 callback(new Error(hap.HAPServer.Status.SERVICE_COMMUNICATION_FAILURE));
                             });
+                    } else if (target === 0) {
+                        ccu.setValue(config.iface, config.description.ADDRESS + ':2', 'MANU_MODE', valueSetpoint)
+                            .then(() => {
+                                callback();
+                            })
+                            .catch(() => {
+                                callback(new Error(hap.HAPServer.Status.SERVICE_COMMUNICATION_FAILURE));
+                            });
+                    } else if (target === 1) {
+                        ccu.setValue(config.iface, config.description.ADDRESS + ':2', 'MANU_MODE', valueSetpoint)
+                            .then(() => {
+                                callback();
+                            })
+                            .catch(() => {
+                                callback(new Error(hap.HAPServer.Status.SERVICE_COMMUNICATION_FAILURE));
+                            });
                     } else {
-                        if (target === 0) {
-                            ccu.setValue(config.iface, config.description.ADDRESS + ':2', 'MANU_MODE', valueSetpoint)
-                                .then(() => {
-                                    callback();
-                                })
-                                .catch(() => {
-                                    callback(new Error(hap.HAPServer.Status.SERVICE_COMMUNICATION_FAILURE));
-                                });
-                        } else if (target === 1) {
-                            ccu.setValue(config.iface, config.description.ADDRESS + ':2', 'MANU_MODE', valueSetpoint)
-                                .then(() => {
-                                    callback();
-                                })
-                                .catch(() => {
-                                    callback(new Error(hap.HAPServer.Status.SERVICE_COMMUNICATION_FAILURE));
-                                });
-                        } else {
-                            ccu.setValue(config.iface, config.description.ADDRESS + ':2', 'AUTO_MODE', true)
-                                .then(() => {
-                                    callback();
-                                })
-                                .catch(() => {
-                                    callback(new Error(hap.HAPServer.Status.SERVICE_COMMUNICATION_FAILURE));
-                                });
-                        }
+                        ccu.setValue(config.iface, config.description.ADDRESS + ':2', 'AUTO_MODE', true)
+                            .then(() => {
+                                callback();
+                            })
+                            .catch(() => {
+                                callback(new Error(hap.HAPServer.Status.SERVICE_COMMUNICATION_FAILURE));
+                            });
                     }
                 })
                 .get('On', config.deviceAddress + ':2.CONTROL_MODE', value => {
                     return value === 3;
-                })
+                });
         }
     }
 };

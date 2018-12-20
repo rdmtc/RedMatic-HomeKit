@@ -1,7 +1,7 @@
 const Accessory = require('./lib/accessory');
 
 module.exports = class HmipPsm extends Accessory {
-    init(config, node) {
+    init(config) {
         this.addService('Outlet', config.name)
             .get('On', config.deviceAddress + ':3.STATE')
             .set('On', config.deviceAddress + ':3.STATE')

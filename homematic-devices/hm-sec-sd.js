@@ -15,6 +15,6 @@ module.exports = class HmSecSd extends Accessory {
                 config.deviceAddress + ':0.UNREACH',
                 config.deviceAddress + ':1.ERROR_ALARM_TEST',
                 config.deviceAddress + ':1.ERROR_SMOKE_CHAMBER'
-            ])
+            ]);
     }
 };
