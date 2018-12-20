@@ -66,7 +66,7 @@ module.exports = class HmipWth extends Accessory {
                         CONTROL_MODE: 1,
                         SET_POINT_TEMPERATURE: 4.5
                     };
-                    node.debug('set ' + config.name + ' (' + subtypeThermostat + ') TargetHeatingCoolingState ' + value + ' -> ' + config.description.ADDRESS + ':1' + ' ' + JSON.stringify(params));
+                    node.debug('set ' + config.name + ' (' + subtypeThermostat + ') TargetHeatingCoolingState ' + value + ' -> ' + config.description.ADDRESS + ':1 ' + JSON.stringify(params));
 
                     ccu.methodCall(config.iface, 'putParamset', [config.description.ADDRESS + ':1', 'VALUES', params])
                         .then(() => {
@@ -79,7 +79,7 @@ module.exports = class HmipWth extends Accessory {
                         CONTROL_MODE: 1,
                         SET_POINT_TEMPERATURE: 21
                     };
-                    node.debug('set ' + config.name + ' (' + subtypeThermostat + ') TargetHeatingCoolingState ' + value + ' -> ' + config.description.ADDRESS + ':1' + ' ' + JSON.stringify(params));
+                    node.debug('set ' + config.name + ' (' + subtypeThermostat + ') TargetHeatingCoolingState ' + value + ' -> ' + config.description.ADDRESS + ':1 ' + JSON.stringify(params));
                     ccu.methodCall(config.iface, 'putParamset', [config.description.ADDRESS + ':1', 'VALUES', params])
                         .then(() => {
                             callback();
@@ -87,7 +87,7 @@ module.exports = class HmipWth extends Accessory {
                             callback(new Error(hap.HAPServer.Status.SERVICE_COMMUNICATION_FAILURE));
                         });
                 } else {
-                    node.debug('set ' + config.name + ' (' + subtypeThermostat + ') TargetHeatingCoolingState ' + value + ' -> ' + config.description.ADDRESS + ':1.CONTROL_MODE' + ' ' + (value === 3 ? 0 : 1));
+                    node.debug('set ' + config.name + ' (' + subtypeThermostat + ') TargetHeatingCoolingState ' + value + ' -> ' + config.description.ADDRESS + ':1.CONTROL_MODE ' + (value === 3 ? 0 : 1));
                     ccu.setValue(config.iface, config.description.ADDRESS + ':1', 'CONTROL_MODE', value === 3 ? 0 : 1)
                         .then(() => {
                             callback();
