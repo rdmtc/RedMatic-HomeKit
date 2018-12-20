@@ -20,6 +20,9 @@ class Service {
         }
         return this;
     }
+    update(characteristic, value) {
+        this.acc.updateCharacteristic(this.subtype, characteristic, value);
+    }
     setProps(characteristic, props) {
         this.acc.setProps(this.subtype, characteristic, props);
         return this;
@@ -112,6 +115,17 @@ module.exports = class Accessory {
         return this.unreach ? new Error(this.hap.HAPServer.Status.SERVICE_COMMUNICATION_FAILURE) : null;
     }
 
+    subscribe(datapointName, callback) {
+        this.subscriptions.push(this.ccu.subscribe({
+            cache: true,
+            change: true,
+            stable: true,
+            datapointName
+        }, msg => {
+            callback(msg.value);
+        }));
+    }
+
     datapointUnreach(datapointName) {
         this.subscriptions.push(this.ccu.subscribe({
             cache: true,
@@ -193,6 +207,12 @@ module.exports = class Accessory {
                     callback(new Error(this.hap.HAPServer.Status.SERVICE_COMMUNICATION_FAILURE));
                 });
         });
+    }
+
+    updateCharacteristic(subtype, characteristic, value) {
+        this.node.debug('update ' + this.config.name + ' (' + subtype + ') ' + characteristic + ' ' + value);
+        this.acc.getService(subtype)
+            .updateCharacteristic(this.hap.Characteristic[characteristic], value);
     }
 
     setProps(subtype, characteristic, props) {

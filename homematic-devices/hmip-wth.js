@@ -100,33 +100,21 @@ module.exports = class HmipWth extends Accessory {
             });
 
         function updateHeatingCoolingState() {
-            const current = currentState();
-            node.debug('update ' + config.name + ' (' + subtypeThermostat + ') CurrentHeatingCoolingState ' + current);
-            that.acc.getService(subtypeThermostat).updateCharacteristic(hap.Characteristic.CurrentHeatingCoolingState, current);
-            const target = targetState();
-            node.debug('update ' + config.name + ' (' + subtypeThermostat + ') TargetHeatingCoolingState ' + target);
-            that.acc.getService(subtypeThermostat).updateCharacteristic(hap.Characteristic.TargetHeatingCoolingState, target);
+            serviceThermostat.update('CurrentHeatingCoolingState', currentState());
+            serviceThermostat.update('TargetHeatingCoolingState', targetState());
         }
 
-        this.subscriptions.push(ccu.subscribe({
-            cache: true,
-            change: true,
-            datapointName: config.deviceAddress + ':1.LEVEL'
-        }, msg => {
-            level = msg.value;
-            node.debug('update ' + config.name + ' level ' + msg.value);
+        this.subscribe(config.deviceAddress + ':1.LEVEL', value => {
+            level = value;
+            node.debug('update ' + config.name + ' level ' + level);
             updateHeatingCoolingState();
-        }));
+        });
 
-        this.subscriptions.push(ccu.subscribe({
-            cache: true,
-            change: true,
-            datapointName: config.deviceAddress + ':1.SET_POINT_MODE'
-        }, msg => {
-            setpointMode = msg.value;
-            node.debug('update ' + config.name + ' setpointMode ' + msg.value);
+        this.subscribe(config.deviceAddress + ':1.SET_POINT_MODE', value => {
+            setpointMode = value;
+            node.debug('update ' + config.name + ' setpointMode ' + setpointMode);
             updateHeatingCoolingState();
-        }));
+        });
 
         this.addService('BatteryService', config.name)
             .get('StatusLowBattery', config.deviceAddress + ':0.LOWBAT', (value, c) => {

@@ -57,17 +57,9 @@ module.exports = class HmCcTc extends Accessory {
                 return valueSetpoint;
             });
 
-        const subtypeThermostat = serviceThermostat.subtype;
-
-        const that = this;
-
         function updateHeatingCoolingState() {
-            const current = currentState();
-            node.debug('update ' + config.name + ' (' + subtypeThermostat + ') CurrentHeatingCoolingState ' + current);
-            that.acc.getService(subtypeThermostat).updateCharacteristic(hap.Characteristic.CurrentHeatingCoolingState, current);
-            const target = targetState();
-            node.debug('update ' + config.name + ' (' + subtypeThermostat + ') TargetHeatingCoolingState ' + target);
-            that.acc.getService(subtypeThermostat).updateCharacteristic(hap.Characteristic.TargetHeatingCoolingState, target);
+            serviceThermostat.update('CurrentHeatingCoolingState', currentState());
+            serviceThermostat.update('TargetHeatingCoolingState', targetState());
         }
 
         const links = ccu.getLinks(config.iface, config.description.ADDRESS + ':2');
@@ -75,18 +67,10 @@ module.exports = class HmCcTc extends Accessory {
 
         if (links[0]) {
             valveStateDevice = links[0].split(':')[0];
-            datapointValveState = config.iface + '.' + valveStateDevice + ':1.VALVE_STATE';
-
-            valveState = (ccu.values && ccu.values[datapointValveState] && ccu.values[datapointValveState].value) || 0;
-
-            this.subscriptions.push(ccu.subscribe({
-                cache: true,
-                change: true,
-                datapointName: datapointValveState,
-            }, msg => {
-                valveState = msg.value;
+            this.subscribe(config.iface + '.' + valveStateDevice + ':1.VALVE_STATE', value => {
+                valveState = value;
                 updateHeatingCoolingState();
-            }));
+            });
         }
 
         this.addService('BatteryService', config.name)
@@ -94,8 +78,7 @@ module.exports = class HmCcTc extends Accessory {
                 return value ? c.BATTERY_LEVEL_LOW : c.BATTERY_LEVEL_NORMAL;
             });
 
-        const humiditySensorOption = config.description.ADDRESS + ':HumiditySensor';
-        if (!(config.options[humiditySensorOption] && config.options[humiditySensorOption].disabled)) {
+        if (this.option('HumiditySensor')) {
             this.addService('HumiditySensor', config.name)
                 .get('CurrentRelativeHumidity', config.deviceAddress + ':1.HUMIDITY')
 
@@ -103,7 +86,5 @@ module.exports = class HmCcTc extends Accessory {
                     return value ? c.BATTERY_LEVEL_LOW : c.BATTERY_LEVEL_NORMAL;
                 });
         }
-
-
     }
 };

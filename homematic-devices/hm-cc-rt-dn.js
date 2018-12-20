@@ -10,9 +10,6 @@ module.exports = class HmCcRtDn extends Accessory {
         let controlMode;
         let target;
 
-        const that = this;
-
-
         function targetState() {
             // 0=off, 1=heat, 3=auto
             switch (controlMode) {
@@ -43,7 +40,6 @@ module.exports = class HmCcRtDn extends Accessory {
         }
 
         const serviceThermostat = this.addService('Thermostat', config.name);
-        const subtypeThermostat = serviceThermostat.subtype;
 
         serviceThermostat
             .setProps('CurrentTemperature', {minValue: -40, maxValue: 80})
@@ -101,37 +97,22 @@ module.exports = class HmCcRtDn extends Accessory {
                 }
             });
 
-
-
         function updateHeatingCoolingState() {
-            const current = currentState();
-            node.debug('update ' + config.name + ' (' + subtypeThermostat + ') CurrentHeatingCoolingState ' + current);
-            that.acc.getService(subtypeThermostat).updateCharacteristic(hap.Characteristic.CurrentHeatingCoolingState, current);
-            const target = targetState();
-            node.debug('update ' + config.name + ' (' + subtypeThermostat + ') TargetHeatingCoolingState ' + target);
-            that.acc.getService(subtypeThermostat).updateCharacteristic(hap.Characteristic.TargetHeatingCoolingState, target);
+            serviceThermostat.update('CurrentHeatingCoolingState', currentState());
+            serviceThermostat.update('TargetHeatingCoolingState', targetState());
         }
 
-        this.subscriptions.push(ccu.subscribe({
-            cache: true,
-            change: true,
-            datapointName: config.deviceAddress + ':4.VALVE_STATE'
-        }, msg => {
-            valveState = msg.value;
-            node.debug('update ' + config.name + ' valveState ' + msg.value);
+        this.subscribe(config.deviceAddress + ':4.VALVE_STATE', value => {
+            valveState = value;
+            node.debug('update ' + config.name + ' valveState ' + valveState);
             updateHeatingCoolingState();
-        }));
+        });
 
-        this.subscriptions.push(ccu.subscribe({
-            cache: true,
-            change: true,
-            datapointName: config.deviceAddress + ':4.CONTROL_MODE'
-        }, msg => {
-            controlMode = msg.value;
-            node.debug('update ' + config.name + ' controlMode ' + msg.value);
-
+        this.subscribe(config.deviceAddress + ':4.CONTROL_MODE', value => {
+            controlMode = value;
+            node.debug('update ' + config.name + ' controlMode ' + controlMode);
             updateHeatingCoolingState();
-        }));
+        });
 
         this.addService('BatteryService', config.name)
             .get('StatusLowBattery', config.deviceAddress + ':0.LOWBAT', (value, c) => {
