@@ -134,11 +134,13 @@ module.exports = function (RED) {
                     status += 1;
                 }
             });
+            this.debug(JSON.stringify(data))
             if (status <= 1) {
                 this.status({fill: 'red', shape: 'dot', text: 'disconnected'});
-            } else if (status === Object.keys(data.ifaceStatus).length) {
+            } else if (status === this.ccu.enabledIfaces.length) {
                 this.status({fill: 'green', shape: 'dot', text: 'connected'});
                 if (!this.ccuConnected) {
+                    this.debug('connection status green')
                     this.publishDevices();
                     this.bridgeConfig.waitForHomematic = false;
                     this.bridgeConfig.emit('homematic-ready');
