@@ -4,12 +4,20 @@ class Service {
         this.subtype = subtype;
         return this;
     }
-    get(characteristic, datapointName, transform) {
-        this.acc.datapointGet(this.subtype, characteristic, datapointName, transform);
+    get(characteristic, datapointNameOrCallback, transform) {
+        if (typeof datapointNameOrCallback === 'function') {
+            this.acc.addListener('get', this.subtype, characteristic, datapointNameOrCallback);
+        } else {
+            this.acc.datapointGet(this.subtype, characteristic, datapointNameOrCallback, transform);
+        }
         return this;
     }
-    set(characteristic, datapointName, transform) {
-        this.acc.datapointSet(this.subtype, characteristic, datapointName, transform);
+    set(characteristic, datapointNameOrCallback, transform) {
+        if (typeof datapointNameOrCallback === 'function') {
+            this.acc.addListener('set', this.subtype, characteristic, datapointNameOrCallback);
+        } else {
+            this.acc.datapointSet(this.subtype, characteristic, datapointNameOrCallback, transform);
+        }
         return this;
     }
     setProps(characteristic, props) {
@@ -62,13 +70,13 @@ module.exports = class Accessory {
         }
     }
 
-    addService(type, name) {
-        const subtype = String(this.subtypeCounter++);
-         if (this.acc.getService(subtype)) {
-             this.node.debug('service (' + subtype + ') already existing ' + this.config.description.TYPE + ' ' + this.config.name);
-         } else {
-             this.node.debug('add service ' + type + ' (' + subtype + ') to ' + this.config.description.TYPE + ' ' + this.config.name);
-             this.acc.addService(this.hap.Service[type], name, subtype);
+    addService(type, name, subtypeIdentifier = '') {
+        const subtype = subtypeIdentifier + String(this.subtypeCounter++);
+        if (this.acc.getService(subtype)) {
+            this.node.debug('service (' + subtype + ') already existing ' + this.config.description.TYPE + ' ' + this.config.name);
+        } else {
+            this.node.debug('add service ' + type + ' (' + subtype + ') to ' + this.config.description.TYPE + ' ' + this.config.name);
+            this.acc.addService(this.hap.Service[type], name, subtype);
         }
         this.datapointUnreach(this.config.deviceAddress + ':0.UNREACH');
         return new Service(this, subtype);
@@ -148,7 +156,7 @@ module.exports = class Accessory {
             if (typeof transform === 'function') {
                 value = transform(value, this.hap.Characteristic[characteristic]);
             }
-            this.node.debug('get ' + this.config.name + ' (' + subtype + ') ' + characteristic + ' ' + this.getError() + ' ' + value + ' ' + valueOrig);
+            this.node.debug('get ' + this.config.name + ' (' + subtype + ') ' + characteristic + ' ' + valueOrig + ' -> ' + this.getError() + ' ' + value);
             callback(this.getError(), value);
         });
 
@@ -164,7 +172,7 @@ module.exports = class Accessory {
             if (typeof transform === 'function') {
                 value = transform(value, this.hap.Characteristic[characteristic]);
             }
-            this.node.debug('update ' + this.config.name + ' (' + subtype + ') ' + characteristic + ' ' + this.getError() + ' ' + value + ' ' + valueOrig);
+            this.node.debug('update ' + this.config.name + ' (' + subtype + ') ' + characteristic + ' ' + valueOrig + ' -> ' + this.getError() + ' ' + value);
             this.acc.getService(subtype).updateCharacteristic(this.hap.Characteristic[characteristic], value);
         }));
     }
@@ -176,7 +184,7 @@ module.exports = class Accessory {
                 value = transform(value, this.hap.Characteristic[characteristic]);
             }
             const [iface, channel, dp] = datapointName.split('.');
-            this.node.debug('set ' + this.config.name + ' (' + subtype + ') ' + characteristic + ' ' + datapointName + ' ' + value + ' ' + valueOrig);
+            this.node.debug('set ' + this.config.name + ' (' + subtype + ') ' + characteristic + ' ' +  valueOrig + ' -> ' + datapointName + ' ' + value);
             this.ccu.setValue(iface, channel, dp, value)
                 .then(() => {
                     callback();
@@ -196,6 +204,11 @@ module.exports = class Accessory {
     identify(paired, callback)  {
         this.node.info('identify ' + this.config.name + ' ' + this.config.description.TYPE + ' ' + this.config.description.ADDRESS);
         callback();
+    }
+
+    option(id) {
+        const option = this.config.description.ADDRESS + ':' + id;
+        return !(this.config.options[option] && this.config.options[option].disabled);
     }
 
     percent(value, _, lower = 2, upper = 3) {
