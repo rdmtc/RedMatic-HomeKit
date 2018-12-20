@@ -144,6 +144,8 @@
                             addOption(addr, 'HumiditySensor');
                         } else if (type.match(/hm-cc-tc/i)) {
                             addOption(addr, 'HumiditySensor');
+                        } else if (type.match(/hm-sec-key/i)) {
+                            addOption(addr, 'OpenOnUnlock');
                         }
 
                 }
