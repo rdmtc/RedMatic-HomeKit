@@ -18,7 +18,7 @@ module.exports = function (RED) {
             const acc = this.bridgeConfig.accessory({id: this.id, name: this.name});
 
             const subtype = '0';
-            
+
             if (!acc.isConfigured) {
                 acc.getService(hap.Service.AccessoryInformation)
                     .setCharacteristic(hap.Characteristic.Manufacturer, 'RedMatic')
@@ -40,7 +40,7 @@ module.exports = function (RED) {
                         try {
                             if ((this.payloadType == null && this.payload === '') || this.payloadType === 'date') {
                                 msg.payload = Date.now();
-                            } else if (this.payloadType == null) {
+                            } else if (!this.payloadType) {
                                 msg.payload = this.payload;
                             } else if (this.payloadType === 'none') {
                                 msg.payload = '';
@@ -48,8 +48,8 @@ module.exports = function (RED) {
                                 msg.payload = RED.util.evaluateNodeProperty(this.payload, this.payloadType, this, msg);
                             }
                             this.send(msg);
-                        } catch(err) {
-                            this.error(err, msg);
+                        } catch (error) {
+                            this.error(error, msg);
                         }
                     } else {
                         RED.util.evaluateNodeProperty(this.payload, this.payloadType, this, msg, (err, res) => {
@@ -61,7 +61,7 @@ module.exports = function (RED) {
                             }
                         });
                     }
-                    
+
                     setTimeout(() => {
                         this.log('update Switch 0 On false');
                         acc.getService(subtype).updateCharacteristic(hap.Characteristic.On, false);

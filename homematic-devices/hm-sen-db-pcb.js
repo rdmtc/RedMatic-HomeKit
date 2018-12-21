@@ -5,7 +5,7 @@ module.exports = class HmSecSc extends Accessory {
         const service = this.addService('Doorbell', config.name);
 
         this.subscribe(config.deviceAddress + ':1.PRESS_SHORT', () => {
-            service.update('ProgrammableSwitchEvent', 0)
+            service.update('ProgrammableSwitchEvent', 0);
         });
     }
 };
