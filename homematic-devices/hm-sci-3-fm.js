@@ -2,8 +2,6 @@ const Accessory = require('./lib/accessory');
 
 module.exports = class HmSci3Fm extends Accessory {
     init(config, node) {
-        console.log(config);
-
         for (let i = 1; i <= 3; i++) {
             const ch = config.description.ADDRESS + ':' + i;
             if (config.options[ch] && config.options[ch].disabled) {
