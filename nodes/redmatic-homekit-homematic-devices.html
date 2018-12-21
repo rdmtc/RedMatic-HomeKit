@@ -60,9 +60,15 @@
                 const homematicInvalidDevices = [
                     'hm-cc-vd',
                     'hm-dis-ep-wm55',
+                    'hm-ou-cf-pl',
                     'hm-ou-cfm-pl',
+                    'hm-ou-led16',
+                    'hm-pb-2-wm',
+                    'hm-pb-2-wm55',
                     'hm-pb-2-wm55-2',
+                    'hm-pb-4dis-wm',
                     'hm-pb-4dis-wm-2',
+                    'hm-pb-4-wm',
                     'hm-pb-6-wm55',
                     'hm-pbi-4-fm',
                     'hm-rc-2-pbu-fm',
@@ -73,15 +79,21 @@
                     'hm-rc-12',
                     'hm-rc-12-b',
                     'hm-rc-19',
+                    'hm-rc-19-b',
                     'hm-rc-19-sw',
                     'hm-rc-dis-h-x-eu',
+                    'hm-rc-key3',
                     'hm-rc-key3-b',
                     'hm-rc-key4-2',
+                    'hm-rc-p1',
+                    'hm-rc-sec3',
+                    'hm-rc-sec3-b',
                     'hm-rcv-50',
                     'hm-sec-sd-2-team',
                     'hm-sec-sd-team',
                     'hm-sec-sfa-sm',
                     'hm-sen-rd-o',
+                    'hm-sen-wa-od',
                     'hm-wdc7000',
                     'hmw-rcv-50',
                     'hmip-asir',
@@ -120,10 +132,12 @@
                             addChannels(addr, 13, 19);
                         } else if (type.match(/hm-wds[0-9]{2}-th/i)) {
                             addOption(addr, 'HumiditySensor');
+                        } else if (type.match(/hmip-sth[a-z]?/i)) {
+                            addOption(addr, 'HumiditySensor');
                         } else if (type.match(/hm-wds100-/i)) {
                             addOption(addr, 'HumiditySensor');
                             addOption(addr, 'LightSensor');
-                        } else if (type.match(/hmip-swo/i)) {
+                        } else if (type.match(/hmip-swo-/i)) {
                             addOption(addr, 'HumiditySensor');
                             addOption(addr, 'LightSensor');
                         } else if (type.match(/mdir/i)) {

@@ -1,7 +1,7 @@
 const Accessory = require('./lib/accessory');
 
 module.exports = class HmipSmi55 extends Accessory {
-    init(config, node) {
+    init(config) {
         this.addService('MotionSensor', config.name)
             .get('MotionDetected', config.deviceAddress + ':3.MOTION')
             .get('StatusTampered', config.deviceAddress + ':0.SABOTAGE');
@@ -12,8 +12,7 @@ module.exports = class HmipSmi55 extends Accessory {
             })
             .get('BatteryLevel', config.deviceAddress + ':0.OPERATING_VOLTAGE', this.percent);
 
-        const lightSensorOption = config.description.ADDRESS + ':LightSensor';
-        if (!(config.options[lightSensorOption] && config.options[lightSensorOption].disabled)) {
+        if (this.optios('lightSensorOption')) {
             this.addService('LightSensor', config.name)
                 .get('CurrentAmbientLightLevel', config.deviceAddress + ':3.ILLUMINATION');
         }

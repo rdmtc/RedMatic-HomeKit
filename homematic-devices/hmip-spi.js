@@ -1,7 +1,7 @@
 const Accessory = require('./lib/accessory');
 
 module.exports = class HmipSmi extends Accessory {
-    init(config, node) {
+    init(config) {
         this.addService('OccupancySensor', config.name)
             .get('OccupancyDetected', config.deviceAddress + ':1.PRESENCE_DETECTION_STATE')
             .get('StatusTampered', config.deviceAddress + ':0.SABOTAGE');
@@ -12,8 +12,7 @@ module.exports = class HmipSmi extends Accessory {
             })
             .get('BatteryLevel', config.deviceAddress + ':0.OPERATING_VOLTAGE', this.percent);
 
-        const lightSensorOption = config.description.ADDRESS + ':LightSensor';
-        if (!(config.options[lightSensorOption] && config.options[lightSensorOption].disabled)) {
+        if (this.options('lightSensorOption')) {
             this.addService('LightSensor', config.name)
                 .get('CurrentAmbientLightLevel', config.deviceAddress + ':1.ILLUMINATION');
         }

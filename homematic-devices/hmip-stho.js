@@ -1,7 +1,7 @@
 const Accessory = require('./lib/accessory');
 
 module.exports = class HmipStho extends Accessory {
-    init(config, node) {
+    init(config) {
         this.addService('TemperatureSensor', config.name)
             .setProps('CurrentTemperature', {minValue: -40, maxValue: 80})
             .get('CurrentTemperature', config.deviceAddress + ':1.ACTUAL_TEMPERATURE');
@@ -12,7 +12,9 @@ module.exports = class HmipStho extends Accessory {
             })
             .get('BatteryLevel', config.deviceAddress + ':0.OPERATING_VOLTAGE', this.percent);
 
-        this.addService('HumiditySensor', config.name)
-            .get('CurrentRelativeHumidity', config.deviceAddress + ':1.HUMIDITY');
+        if (this.option('HumiditySensor')) {
+            this.addService('HumiditySensor', config.name)
+                .get('CurrentRelativeHumidity', config.deviceAddress + ':1.HUMIDITY');
+        }
     }
 };

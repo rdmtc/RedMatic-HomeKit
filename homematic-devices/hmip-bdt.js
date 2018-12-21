@@ -1,7 +1,7 @@
 const Accessory = require('./lib/accessory');
 
-module.exports = class HmipPdt extends Accessory {
-    init(config, node) {
+module.exports = class HmipBdt extends Accessory {
+    init(config) {
         let valueBrightness;
 
         this.addService('Lightbulb', config.name)
