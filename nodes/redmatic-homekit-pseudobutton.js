@@ -12,12 +12,13 @@ module.exports = function (RED) {
             const {hap, version} = this.bridgeConfig;
 
             this.name = config.name || ('Pseudobutton ' + this.id);
+            this.payload = config.payload;
+            this.payloadType = config.payloadType;
 
             const acc = this.bridgeConfig.accessory({id: this.id, name: this.name});
 
             const subtype = '0';
-            this.valueOn = false;
-
+            
             if (!acc.isConfigured) {
                 acc.getService(hap.Service.AccessoryInformation)
                     .setCharacteristic(hap.Characteristic.Manufacturer, 'RedMatic')
@@ -33,7 +34,34 @@ module.exports = function (RED) {
             const setListener = (value, callback) => {
                 this.log('set Switch 0 On ' + value);
                 if (value) {
-                    this.send({topic: config.topic, payload: value});
+                    const msg = {};
+                    msg.topic = config.topic;
+                    if (this.payloadType !== 'flow' && this.payloadType !== 'global') {
+                        try {
+                            if ((this.payloadType == null && this.payload === '') || this.payloadType === 'date') {
+                                msg.payload = Date.now();
+                            } else if (this.payloadType == null) {
+                                msg.payload = this.payload;
+                            } else if (this.payloadType === 'none') {
+                                msg.payload = '';
+                            } else {
+                                msg.payload = RED.util.evaluateNodeProperty(this.payload, this.payloadType, this, msg);
+                            }
+                            this.send(msg);
+                        } catch(err) {
+                            this.error(err, msg);
+                        }
+                    } else {
+                        RED.util.evaluateNodeProperty(this.payload, this.payloadType, this, msg, (err, res) => {
+                            if (err) {
+                                this.error(err, msg);
+                            } else {
+                                msg.payload = res;
+                                this.send(msg);
+                            }
+                        });
+                    }
+                    
                     setTimeout(() => {
                         this.log('update Switch 0 On false');
                         acc.getService(subtype).updateCharacteristic(hap.Characteristic.On, false);

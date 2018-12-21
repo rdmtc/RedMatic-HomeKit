@@ -4,7 +4,9 @@
         defaults: {
             bridgeConfig: {value: 'CC:22:3D:E3:CE:C7:51826', type: 'redmatic-homekit-bridge', required: true},
             name: {value: ''},
-            topic: {value: ''}
+            topic: {value: ''},
+            payload: {value: true},
+            payloadType: {value: 'bool'}
         },
         inputs: 0,
         outputs: 1,
@@ -19,6 +21,21 @@
             return this.name ? 'node_label_italic' : '';
         },
         oneditprepare() {
+            if (this.payloadType == null) {
+                if (this.payload == "") {
+                    this.payloadType = "date";
+                } else {
+                    this.payloadType = "str";
+                }
+            } else if (this.payloadType === 'string' || this.payloadType === 'none') {
+                this.payloadType = "str";
+            }
+            $("#node-input-payloadType").val(this.payloadType);
+            $("#node-input-payload").typedInput({
+                default: 'str',
+                typeField: $("#node-input-payloadType"),
+                types:['flow','global','str','num','bool','json','bin','date','env']
+            });
 
         },
         oneditsave() {
@@ -36,6 +53,11 @@
     <div class="form-row">
         <label for="node-input-name"><i class="icon-globe"></i> Name</label>
         <input type="text" id="node-input-name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-payload"><i class="fa fa-envelope"></i> Payload</span></label>
+        <input type="text" id="node-input-payload" style="width:70%">
+        <input type="hidden" id="node-input-payloadType">
     </div>
     <div class="form-row">
         <label for="node-input-topic"><i class="icon-globe"></i> Topic</label>
