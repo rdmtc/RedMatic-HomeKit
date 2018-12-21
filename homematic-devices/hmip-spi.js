@@ -12,7 +12,7 @@ module.exports = class HmipSmi extends Accessory {
             })
             .get('BatteryLevel', config.deviceAddress + ':0.OPERATING_VOLTAGE', this.percent);
 
-        if (this.options('lightSensorOption')) {
+        if (this.option('lightSensorOption')) {
             this.addService('LightSensor', config.name)
                 .get('CurrentAmbientLightLevel', config.deviceAddress + ':1.ILLUMINATION');
         }

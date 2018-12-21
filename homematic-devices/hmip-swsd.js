@@ -11,8 +11,8 @@ module.exports = class HmipSecSwsd extends Accessory {
                 return value ? c.BATTERY_LEVEL_LOW : c.BATTERY_LEVEL_NORMAL;
             })
 
-            .get('StatusFault', config.deviceAddress + ':1.SMOKE_DETECTOR_TEST_RESULT', (value, c) => {
+            .get('StatusFault', config.deviceAddress + ':1.SMOKE_DETECTOR_TEST_RESULT', value => {
                 return value === 2;
-            })
+            });
     }
 };

@@ -66,7 +66,7 @@ module.exports = class HmipEtrv extends Accessory {
                         CONTROL_MODE: 1,
                         SET_POINT_TEMPERATURE: value === 0 ? 4.5 : 21
                     };
-                    node.debug('set ' + config.name + ' (' + subtypeThermostat + ') TargetHeatingCoolingState ' + value + ' -> ' + config.description.ADDRESS + ':1' + ' ' + JSON.stringify(params));
+                    node.debug('set ' + config.name + ' (' + subtypeThermostat + ') TargetHeatingCoolingState ' + value + ' -> ' + config.description.ADDRESS + ':1 ' + JSON.stringify(params));
                     ccu.methodCall(config.iface, 'putParamset', [config.description.ADDRESS + ':1', 'VALUES', params]).then(() => {
                         callback();
                     })

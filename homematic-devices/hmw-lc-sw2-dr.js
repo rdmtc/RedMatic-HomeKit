@@ -2,7 +2,7 @@ const Accessory = require('./lib/accessory');
 
 module.exports = class HmSw2 extends Accessory {
     init(config, node) {
-        const {bridgeConfig, ccu} = node;
+        const {ccu} = node;
 
         const channels = config.description.CHILDREN;
 

@@ -14,7 +14,7 @@ module.exports = class HmLcDim2 extends Accessory {
 
             const name = ccu.channelNames[channels[i]];
             const dp = config.iface + '.' + channels[i] + '.LEVEL';
-            
+
             let valueBrightness;
 
             this.addService('Lightbulb', name)

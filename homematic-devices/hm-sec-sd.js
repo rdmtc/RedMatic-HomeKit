@@ -1,7 +1,7 @@
 const Accessory = require('./lib/accessory');
 
 module.exports = class HmSecSd extends Accessory {
-    init(config, node) {
+    init(config) {
         this.addService('SmokeSensor', config.name)
             .get('SmokeDetected', config.deviceAddress + ':1.STATE', (value, c) => {
                 return value ? c.SMOKE_DETECTED : c.SMOKE_NOT_DETECTED;

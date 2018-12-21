@@ -1,7 +1,7 @@
 const Accessory = require('./lib/accessory');
 
 module.exports = class HmLcSw1BaPcb extends Accessory {
-    init(config, node) {
+    init(config) {
         this.addService('Switch', config.name)
             .get('On', config.deviceAddress + ':1.STATE')
             .set('On', config.deviceAddress + ':1.STATE');

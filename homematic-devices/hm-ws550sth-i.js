@@ -10,8 +10,6 @@ module.exports = class HmWs550 extends Accessory {
                 return value ? c.BATTERY_LEVEL_LOW : c.BATTERY_LEVEL_NORMAL;
             });
 
-        const humiditySensorOption = config.description.ADDRESS + ':HumiditySensor';
-
         if (this.option('HumiditySensor')) {
             this.addService('HumiditySensor', config.name)
                 .get('CurrentRelativeHumidity', config.deviceAddress + ':10.HUMIDITY')
