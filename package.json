@@ -1,6 +1,6 @@
 {
   "name": "redmatic-homekit",
-  "version": "0.7.11",
+  "version": "1.0.0-beta.0",
   "description": "RedMatic based HomeKit Addon for the CCU3 and RaspberryMatic",
   "main": "none",
   "author": "Sebastian Raff <hobbyquaker@gmail.com>",
