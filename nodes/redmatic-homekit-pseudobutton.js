@@ -38,7 +38,7 @@ module.exports = function (RED) {
                     msg.topic = config.topic;
                     if (this.payloadType !== 'flow' && this.payloadType !== 'global') {
                         try {
-                            if ((this.payloadType == null && this.payload === '') || this.payloadType === 'date') {
+                            if ((!this.payloadType && !this.payload) || this.payloadType === 'date') {
                                 msg.payload = Date.now();
                             } else if (!this.payloadType) {
                                 msg.payload = this.payload;
