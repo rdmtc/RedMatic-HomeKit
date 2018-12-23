@@ -177,6 +177,8 @@
                         } else if (type.match(/hb-uni-sen-wea/i)) {
                             addOption(addr, 'HumiditySensor');
                             addOption(addr, 'LightSensor');
+                        } else if (type.match(/hb-lc-sw2/i)) {
+                            addChannels(addr, 1, 2);
                         }
                 }
             }
