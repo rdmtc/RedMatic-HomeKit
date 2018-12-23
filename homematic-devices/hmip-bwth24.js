@@ -1,1 +1,1 @@
-module.exports = require('./hmip-smi');
+module.exports = require('./hmip-bwth');
