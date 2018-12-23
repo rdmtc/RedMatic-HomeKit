@@ -9,6 +9,8 @@ module.exports = class HmipWth extends Accessory {
         let valueSetpoint;
         let setpointMode;
         let target;
+        let valveStateDevice;
+        let datapointLevel;
 
         function targetState() {
             // 0=off, 1=heat, 3=auto
@@ -27,6 +29,14 @@ module.exports = class HmipWth extends Accessory {
         function currentState() {
             // 0=off, 1=heat
             return level > 0 ? 1 : 0;
+        }
+
+        const links = ccu.getLinks(config.iface, config.description.ADDRESS + ':3');
+        node.debug(config.name + ' linked to ' + JSON.stringify(links));
+
+        if (links[0]) {
+            valveStateDevice = links[0].split(':')[0];
+            datapointLevel = config.iface + '.' + valveStateDevice + ':1.LEVEL';
         }
 
         const serviceThermostat = this.addService('Thermostat', config.name);
@@ -102,7 +112,7 @@ module.exports = class HmipWth extends Accessory {
             serviceThermostat.update('TargetHeatingCoolingState', targetState());
         }
 
-        this.subscribe(config.deviceAddress + ':1.LEVEL', value => {
+        this.subscribe(datapointLevel, value => {
             level = value;
             node.debug('update ' + config.name + ' level ' + level);
             updateHeatingCoolingState();
