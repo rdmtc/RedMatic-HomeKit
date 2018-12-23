@@ -1,7 +1,7 @@
 module.exports = require('./hm-wds30-ot2-sm');
 const Accessory = require('./lib/accessory');
 
-module.exports = class HmUniSenTemp extends Accessory {
+module.exports = class HbUniSenTemp extends Accessory {
     init(config, node) {
         const {ccu} = node;
 
