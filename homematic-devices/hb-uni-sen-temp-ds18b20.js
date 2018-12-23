@@ -1,3 +1,4 @@
+module.exports = require('./hm-wds30-ot2-sm');
 const Accessory = require('./lib/accessory');
 
 module.exports = class HmUniSenTemp extends Accessory {
@@ -16,7 +17,7 @@ module.exports = class HmUniSenTemp extends Accessory {
             const dp = config.iface + '.' + channels[i] + '.TEMPERATURE';
 
             this.addService('TEMPERATURE', name)
-                .setProps('CurrentTemperature', {minValue: -450, maxValue: 450})
+                .setProps('CurrentTemperature', {minValue: -150, maxValue: 150})
                 .get('CurrentTemperature', dp)
                 .get('StatusLowBattery', config.deviceAddress + ':0.LOWBAT', (value, c) => {
                     return value ? c.BATTERY_LEVEL_LOW : c.BATTERY_LEVEL_NORMAL;
