@@ -162,6 +162,10 @@
                             addOption(addr, 'HumiditySensor');
                         } else if (type.match(/hm-sec-key/i)) {
                             addOption(addr, 'OpenOnUnlock');
+                        } else if (type.match(/hm-wds-30-ot2-sm/i)) {
+                            addChannels(addr, 1, 5);
+                        } else if (type.match(/hb-uni-sen-temp-ir/i)) {
+                            addChannels(addr, 1, 5);
                         }
                 }
             }
