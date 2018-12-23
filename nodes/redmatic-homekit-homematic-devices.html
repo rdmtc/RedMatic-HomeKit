@@ -166,6 +166,14 @@
                             addChannels(addr, 1, 5);
                         } else if (type.match(/hb-uni-sen-temp-ir/i)) {
                             addChannels(addr, 1, 5);
+                        } else if (type.match(/hb-uni-senact-4-4-rc/i)) {
+                            addChannels(addr, 1, 4);
+                        } else if (type.match(/hb-uni-senact-4-4-sc/i)) {
+                            addChannels(addr, 1, 8);
+                        } else if (type.match(/hb-uni-senact-8-8-rc/i)) {
+                            addChannels(addr, 1, 8);
+                        } else if (type.match(/hb-uni-senact-8-8-sc/i)) {
+                            addChannels(addr, 1, 16);
                         }
                 }
             }
