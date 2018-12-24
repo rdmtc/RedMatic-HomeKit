@@ -8,7 +8,7 @@ module.exports = class HmSw extends Accessory {
 
         for (let i = 1; i < channels.length; i++) {
             const ch = config.description.ADDRESS + ':' + i;
-            if (!this.option(ch)) {
+            if (config.options[ch] && config.options[ch].disabled) {
                 continue;
             }
 
