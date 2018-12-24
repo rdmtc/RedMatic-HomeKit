@@ -8,14 +8,14 @@ module.exports = class HmSw extends Accessory {
 
         for (let i = 1; i < channels.length; i++) {
             const ch = config.description.ADDRESS + ':' + i;
-            if (!this.option(ch)) {
+            if (config.options[ch] && config.options[ch].disabled) {
                 continue;
             }
 
             const name = ccu.channelNames[channels[i]];
             const dp = config.iface + '.' + channels[i] + '.TEMPERATURE';
 
-            this.addService('TEMPERATURE', name)
+            this.addService('TemperatureSensor', name)
                 .setProps('CurrentTemperature', {minValue: -150, maxValue: 150})
                 .get('CurrentTemperature', dp)
                 .get('StatusLowBattery', config.deviceAddress + ':0.LOWBAT', (value, c) => {
