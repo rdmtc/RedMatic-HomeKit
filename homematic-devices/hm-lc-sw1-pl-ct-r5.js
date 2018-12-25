@@ -1,1 +1,1 @@
-module.exports = require('./generic-sw-single-acc');
+module.exports = require('./generic-switch');
