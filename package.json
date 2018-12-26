@@ -1,6 +1,6 @@
 {
   "name": "redmatic-homekit",
-  "version": "1.1.5",
+  "version": "1.2.0-beta.0",
   "description": "RedMatic based HomeKit Addon for the CCU3 and RaspberryMatic",
   "main": "none",
   "author": "Sebastian Raff <hobbyquaker@gmail.com>",
@@ -12,11 +12,13 @@
       "redmatic-homekit-switch": "nodes/redmatic-homekit-switch.js",
       "redmatic-homekit-pseudobutton": "nodes/redmatic-homekit-pseudobutton.js",
       "redmatic-homekit-statelessprogrammableswitch": "nodes/redmatic-homekit-statelessprogrammableswitch.js",
-      "redmatic-homekit-universal": "nodes/redmatic-homekit-universal.js"
+      "redmatic-homekit-universal": "nodes/redmatic-homekit-universal.js",
+      "redmatic-homekit-camera": "nodes/redmatic-homekit-camera.js"
     }
   },
   "dependencies": {
-    "hap-nodejs": "0.4.47"
+    "hap-nodejs": "0.4.47",
+    "homebridge-camera-ffmpeg": "^0.1.9"
   },
   "devDependencies": {
     "xo": "^0.23.0"
