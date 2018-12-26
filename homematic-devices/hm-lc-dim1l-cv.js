@@ -1,8 +1,8 @@
 const Accessory = require('./lib/accessory');
 
-module.exports = class HmipPdt extends Accessory {
+module.exports = class HmLcDim extends Accessory {
     init(config) {
-        let valueBrightness;
+        let valueBrightness = 0;
 
         this.addService('Lightbulb', config.name)
 
@@ -11,11 +11,19 @@ module.exports = class HmipPdt extends Accessory {
                 return value > 0;
             })
 
-            .set('On', config.deviceAddress + ':1.LEVEL', value => {
-                if (!valueBrightness || !value) {
-                    return value ? 1 : 0;
+            .set('On', (value, callback) => {
+                if (value) {
+                    setTimeout(() => {
+                        if (valueBrightness === 0) {
+                            value = 1
+                        } else {
+                            value = valueBrightness / 100;
+                        }
+                        this.ccuSetValue(config.deviceAddress + ':1.LEVEL', value, callback);
+                    }, 100);
+                } else {
+                    this.ccuSetValue(config.deviceAddress + ':1.LEVEL', 0, callback);
                 }
-                return valueBrightness / 100;
             })
 
             .get('Brightness', config.deviceAddress + ':1.LEVEL', value => {

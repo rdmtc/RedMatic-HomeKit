@@ -78,6 +78,17 @@ module.exports = class Accessory {
         }
     }
 
+    ccuSetValue(address, value, callback) {
+        const [iface, channel, dp] = address.split('.');
+        this.ccu.setValue(iface, channel, dp, value)
+            .then(() => {
+                callback();
+            })
+            .catch(() => {
+                callback(new Error(this.hap.HAPServer.Status.SERVICE_COMMUNICATION_FAILURE));
+            });
+    }
+
     addService(type, name, subtypeIdentifier = '') {
         const subtype = subtypeIdentifier + String(this.subtypeCounter++);
         if (this.acc.getService(subtype)) {

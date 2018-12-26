@@ -41,7 +41,7 @@ module.exports = class HmLcRgbw extends Accessory {
                 return value * hueFactor;
             })
             .set('Hue', config.deviceAddress + ':2.COLOR', value => {
-                valueColor = valueSaturation < 10 ? 200 : value / hueFactor;
+                valueColor = valueSaturation < 10 ? 200 : (value / hueFactor);
                 return valueColor;
             })
 

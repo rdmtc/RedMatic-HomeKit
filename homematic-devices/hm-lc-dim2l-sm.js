@@ -24,12 +24,21 @@ module.exports = class HmLcDim2 extends Accessory {
                     return value > 0;
                 })
 
-                .set('On', dp, value => {
-                    if (!valueBrightness || !value) {
-                        return value ? 1 : 0;
+                .set('On', (value, callback) => {
+                    if (value) {
+                        setTimeout(() => {
+                            if (valueBrightness === 0) {
+                                value = 1
+                            } else {
+                                value = valueBrightness / 100;
+                            }
+                            this.ccuSetValue(dp, value, callback);
+                        }, 100);
+                    } else {
+                        this.ccuSetValue(dp, 0, callback);
                     }
-                    return valueBrightness / 100;
                 })
+
 
                 .get('Brightness', dp, value => {
                     valueBrightness = value * 100;
