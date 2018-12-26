@@ -118,9 +118,9 @@
 
                         $('#devices').append('<tr><td class="enabled"><input class="device-enabled option-hide" data-addr="' + addr + '" type="checkbox"' + (checked ? ' checked' : '') + '></td><td class="text">' + name + '</td><td class="text small">' + addr + '</td><td class="text small">' + type + '</td></tr>')
 
-                        if (type.match(/hm-lc-sw([0-9])/i)) {
+                        if (type.match(/hm-lc-sw([0-9])/i) && channelCount > 2) {
                             addOption(addr, 'SingleAccessory');
-                            addChannels(addr, 1, channelCount);
+                            addChannels(addr, 1, channelCount - 1);
                         } else if (type.match(/hm-mod-re-8/i)) {
                             addOption(addr, 'SingleAccessory');
                             addChannels(addr, 1, 8);
@@ -189,9 +189,11 @@
                     const devs = [];
                     Object.keys(d.metadata.devices).forEach(iface => {
                         if (d.enabledIfaces.includes(iface)) {
+                            console.log(iface)
                             Object.keys(d.metadata.devices[iface]).forEach(addr => {
                                 const dev = d.metadata.devices[iface][addr];
-                                devs.push({addr, type: dev.TYPE, name: d.channelNames[addr] || addr, channelCount: dev.CHILDREN.length});
+                                console.log(dev);
+                                devs.push({addr, type: dev.TYPE, name: d.channelNames[addr] || addr, channelCount: dev.CHILDREN && dev.CHILDREN.length});
                             });
                         }
                     });

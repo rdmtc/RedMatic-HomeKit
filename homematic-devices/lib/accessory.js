@@ -227,7 +227,7 @@ module.exports = class Accessory {
     }
 
     identify(paired, callback) {
-        this.node.info('identify ' + this.config.name + ' ' + this.config.description.TYPE + ' ' + this.config.description.ADDRESS);
+        this.node.log('identify ' + this.config.name + ' ' + this.config.description.TYPE + ' ' + this.config.description.ADDRESS);
         callback();
     }
 

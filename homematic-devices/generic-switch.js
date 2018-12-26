@@ -20,7 +20,7 @@ class AccMultiService extends Accessory {
 
         for (let i = 1; i < channels.length; i++) {
             const ch = channels[i];
-            if (!this.options(ch) || !(ccu.metadata.devices[config.iface][accChannel] && ccu.metadata.devices[config.iface][accChannel].TYPE === 'SWITCH')) {
+            if (!this.option(ch) || !(ccu.metadata.devices[config.iface][ch] && ccu.metadata.devices[config.iface][ch].TYPE === 'SWITCH')) {
                 continue;
             }
 
@@ -35,10 +35,14 @@ class AccMultiService extends Accessory {
 }
 
 module.exports = class GenericSwitch {
+    option(id) {
+        return !(this.config.options[id] && this.config.options[id].disabled);
+    }
     constructor(config, node) {
         const {ccu} = node;
-
-        if (this.option('SingleAccessory')) {
+        this.ccu = ccu;
+        this.config = config;
+        if (this.option(config.description.ADDRESS + ':SingleAccessory')) {
             new AccMultiService(config, node);
         } else {
             const channels = config.description.CHILDREN;
