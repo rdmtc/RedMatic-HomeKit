@@ -82,10 +82,14 @@ module.exports = class Accessory {
         const [iface, channel, dp] = address.split('.');
         this.ccu.setValue(iface, channel, dp, value)
             .then(() => {
-                callback();
+                if (typeof callback === 'function') {
+                    callback();
+                }
             })
             .catch(() => {
-                callback(new Error(this.hap.HAPServer.Status.SERVICE_COMMUNICATION_FAILURE));
+                if (typeof callback === 'function') {
+                    callback(new Error(this.hap.HAPServer.Status.SERVICE_COMMUNICATION_FAILURE));
+                }
             });
     }
 

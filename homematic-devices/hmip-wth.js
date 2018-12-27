@@ -31,7 +31,7 @@ module.exports = class HmipWth extends Accessory {
             return level > 0 ? 1 : 0;
         }
 
-        const links = ccu.getLinks(config.iface, config.description.ADDRESS + ':3');
+        const links = ccu.getLinks(config.iface, config.description.ADDRESS + ':3') || [];
         node.debug(config.name + ' linked to ' + JSON.stringify(links));
 
         if (links[0]) {
@@ -137,7 +137,13 @@ module.exports = class HmipWth extends Accessory {
 
         if (this.option('BoostSwitch')) {
             this.addService('Switch', 'Boost ' + config.name, 'Boost')
-                .set('On', config.deviceAddress + ':1.BOOST_MODE')
+                .set('On', (value, callback) => {
+                    this.ccuSetValue(config.deviceAddress + ':1.BOOST_MODE', value, callback);
+                    links.forEach(link => {
+                        const linkedDevice = link.split(':')[0];
+                        this.ccuSetValue(config.iface + '.' + linkedDevice + ':1.BOOST_MODE', value);
+                    });
+                })
                 .get('On', config.deviceAddress + ':1.BOOST_MODE');
         }
     }

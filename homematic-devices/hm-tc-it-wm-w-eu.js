@@ -16,7 +16,7 @@ module.exports = class HmTcItWmWEu extends Accessory {
 
         const that = this;
 
-        const links = ccu.getLinks(config.iface, config.description.ADDRESS + ':2');
+        const links = ccu.getLinks(config.iface, config.description.ADDRESS + ':2') || [];
         node.debug(config.name + ' linked to ' + JSON.stringify(links));
 
         if (links[0]) {
@@ -140,7 +140,6 @@ module.exports = class HmTcItWmWEu extends Accessory {
         }, msg => {
             controlMode = msg.value;
             node.debug('update ' + config.name + ' controlMode ' + msg.value);
-
             updateHeatingCoolingState();
         }));
 
@@ -158,39 +157,21 @@ module.exports = class HmTcItWmWEu extends Accessory {
         if (this.option('BoostSwitch')) {
             this.addService('Switch', 'Boost ' + config.name, 'Boost')
                 .set('On', (value, callback) => {
+                    let dp;
                     if (value) {
-                        ccu.setValue(config.iface, config.description.ADDRESS + ':2', 'BOOST_MODE', true)
-                            .then(() => {
-                                callback();
-                            })
-                            .catch(() => {
-                                callback(new Error(hap.HAPServer.Status.SERVICE_COMMUNICATION_FAILURE));
-                            });
-                    } else if (target === 0) {
-                        ccu.setValue(config.iface, config.description.ADDRESS + ':2', 'MANU_MODE', valueSetpoint)
-                            .then(() => {
-                                callback();
-                            })
-                            .catch(() => {
-                                callback(new Error(hap.HAPServer.Status.SERVICE_COMMUNICATION_FAILURE));
-                            });
-                    } else if (target === 1) {
-                        ccu.setValue(config.iface, config.description.ADDRESS + ':2', 'MANU_MODE', valueSetpoint)
-                            .then(() => {
-                                callback();
-                            })
-                            .catch(() => {
-                                callback(new Error(hap.HAPServer.Status.SERVICE_COMMUNICATION_FAILURE));
-                            });
+                        dp = 'BOOST_MODE';
+                    } else if (target === 0 || target === 1) {
+                        dp = 'MANU_MODE';
+                        value = valueSetpoint;
                     } else {
-                        ccu.setValue(config.iface, config.description.ADDRESS + ':2', 'AUTO_MODE', true)
-                            .then(() => {
-                                callback();
-                            })
-                            .catch(() => {
-                                callback(new Error(hap.HAPServer.Status.SERVICE_COMMUNICATION_FAILURE));
-                            });
+                        dp = 'AUTO_MODE';
+                        value = true;
                     }
+                    this.ccuSetValue(config.iface + '.' + config.description.ADDRESS + ':2.' + dp, value, callback);
+                    links.forEach(link => {
+                        const linkedDevice = link.split(':')[0];
+                        this.ccuSetValue(config.iface + '.' + linkedDevice + ':4.' + dp, value);
+                    });
                 })
                 .get('On', config.deviceAddress + ':2.CONTROL_MODE', value => {
                     return value === 3;
