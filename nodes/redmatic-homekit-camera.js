@@ -1,4 +1,5 @@
 const path = require('path');
+const net = require('net');
 const hap = require('hap-nodejs');
 const {uuid, Accessory, Service} = hap;
 const {FFMPEG} = require('homebridge-camera-ffmpeg/ffmpeg');
@@ -71,13 +72,22 @@ module.exports = function (RED) {
             const cameraSource = new FFMPEG(hap, {name: this.name, videoConfig: config}, logger, config.videoProcessor || 'ffmpeg');
             acc.configureCameraSource(cameraSource);
 
-            this.debug('publishing camera ' + this.name + ' ' + this.username);
-            acc.publish({
-                username: config.username,
-                port: config.port,
-                pincode: config.pincode,
-                category: Accessory.Categories.CAMERA
-            });
+            const testPort = net.createServer()
+                .once('error', err => {
+                    this.error(err);
+                })
+                .once('listening', () => {
+                    testPort.once('close', () => {
+                        acc.publish({
+                            username: config.username,
+                            port: config.port,
+                            pincode: config.pincode,
+                            category: Accessory.Categories.CAMERA
+                        });
+                        this.debug('publishing camera ' + this.name + ' ' + config.username);
+                    }).close();
+                })
+                .listen(config.port);
 
             acc._server.on('listening', () => {
                 this.log('camera ' + this.name + ' listening on port ' + config.port);
