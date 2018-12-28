@@ -72,9 +72,11 @@ module.exports = function (RED) {
             const cameraSource = new FFMPEG(hap, {name: this.name, videoConfig: config}, logger, config.videoProcessor || 'ffmpeg');
             acc.configureCameraSource(cameraSource);
 
+            this.log('publishing camera ' + this.name + ' ' + config.username);
             const testPort = net.createServer()
                 .once('error', err => {
                     this.error(err);
+                    this.status({fill: 'red', shape: 'dot', text: err.message});
                 })
                 .once('listening', () => {
                     testPort.once('close', () => {
@@ -84,26 +86,28 @@ module.exports = function (RED) {
                             pincode: config.pincode,
                             category: Accessory.Categories.CAMERA
                         });
-                        this.debug('publishing camera ' + this.name + ' ' + config.username);
+
+                        acc._server.on('listening', () => {
+                            this.log('camera ' + this.name + ' listening on port ' + config.port);
+                            this.status({fill: 'green', shape: 'dot', text: ' '});
+                        });
+
+                        acc._server.on('pair', username => {
+                            this.log('camera ' + this.name + ' paired', username);
+                        });
+
+                        acc._server.on('unpair', username => {
+                            this.log('camera ' + this.name + ' unpaired', username);
+                        });
+
+                        acc._server.on('verify', () => {
+                            this.log('camera ' + this.name + ' verify');
+                        });
+
+
                     }).close();
                 })
                 .listen(config.port);
-
-            acc._server.on('listening', () => {
-                this.log('camera ' + this.name + ' listening on port ' + config.port);
-            });
-
-            acc._server.on('pair', username => {
-                this.log('camera ' + this.name + ' paired', username);
-            });
-
-            acc._server.on('unpair', username => {
-                this.log('camera ' + this.name + ' unpaired', username);
-            });
-
-            acc._server.on('verify', () => {
-                this.log('camera ' + this.name + ' verify');
-            });
 
             this.on('close', () => {
             });
