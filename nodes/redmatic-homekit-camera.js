@@ -89,7 +89,7 @@ module.exports = function (RED) {
 
                         acc._server.on('listening', () => {
                             this.log('camera ' + this.name + ' listening on port ' + config.port);
-                            this.status({fill: 'green', shape: 'dot', text: ' '});
+                            this.status({fill: 'green', shape: 'ring', text: ' '});
                         });
 
                         acc._server.on('pair', username => {
