@@ -62,6 +62,7 @@ module.exports = function (RED) {
                 'hmip-asir',
                 'hmip-brc2',
                 'hmip-krca',
+                'hmip-pmfs',
                 'hmip-wrc2',
                 'hmip-wrc6'
             ];
