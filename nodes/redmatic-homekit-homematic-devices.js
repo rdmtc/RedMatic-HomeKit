@@ -68,7 +68,7 @@ module.exports = function (RED) {
             ];
         }
 
-        publishDevices() {
+        publishDevices(callback) {
             if (!this.ccu.channelNames) {
                 this.error('ccu.channelNames missing');
                 return;
@@ -80,6 +80,8 @@ module.exports = function (RED) {
             if (!this.devices) {
                 this.devices = {};
             }
+            const queue = [];
+
             Object.keys(this.ccu.channelNames).forEach(address => {
                 if (this.devices[address] && this.devices[address].disabled) {
                     return;
@@ -93,15 +95,27 @@ module.exports = function (RED) {
                                 options[addr] = this.devices[addr];
                             }
                         });
-                        this.createHomematicDevice({
-                            name: this.ccu.channelNames[address],
-                            iface,
-                            deviceAddress: iface + '.' + address,
-                            description: this.ccu.metadata.devices[iface][address],
-                            options
+
+                        queue.push(() => {
+                            return new Promise(resolve => {
+                                this.createHomematicDevice({
+                                    name: this.ccu.channelNames[address],
+                                    iface,
+                                    deviceAddress: iface + '.' + address,
+                                    description: this.ccu.metadata.devices[iface][address],
+                                    options
+                                });
+                                setTimeout(() => {
+                                    resolve();
+                                }, 50);
+                            });
                         });
                     }
                 }
+            });
+            this.log('publish ' + queue.length + ' devices');
+            queue.reduce((p, task) => p.then(task), Promise.resolve()).then(() => {
+                callback();
             });
         }
 
@@ -152,12 +166,13 @@ module.exports = function (RED) {
             } else if (status === this.ccu.enabledIfaces.length) {
                 this.status({fill: 'green', shape: 'dot', text: 'connected'});
                 if (!this.ccuConnected) {
-                    this.debug('connection status green');
-                    this.publishDevices();
-                    this.bridgeConfig.waitForHomematic = false;
-                    this.bridgeConfig.emit('homematic-ready');
+                    this.publishDevices(() => {
+                        this.log('publish done');
+                        this.bridgeConfig.waitForHomematic = false;
+                        this.bridgeConfig.emit('homematic-ready');
+                        this.ccuConnected = true;
+                    });
                 }
-                this.ccuConnected = true;
             } else {
                 this.status({fill: 'yellow', shape: 'dot', text: 'partly connected'});
             }
