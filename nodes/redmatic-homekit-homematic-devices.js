@@ -23,6 +23,7 @@ module.exports = function (RED) {
             this.homematicInvalidDevices = [
                 'hm-cc-vd',
                 'hm-dis-ep-wm55',
+                'hm-dis-wm55',
                 'hm-ou-cf-pl',
                 'hm-ou-cfm-pl',
                 'hm-ou-led16',
