@@ -99,7 +99,7 @@ module.exports = function (RED) {
                     testPort.once('close', () => {
                         this.bridge.publish({
                             username: this.username,
-                            port: this.port,
+                            port: parseInt(this.port, 10),
                             pincode: this.pincode,
                             category: hap.Accessory.Categories.OTHER
                         });

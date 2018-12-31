@@ -14,8 +14,8 @@
                     return Boolean(String(val).match(/^\d{3}-\d{2}-\d{3}$/));
                 }
             },
-            port: {value: 51826, type: Number, required: true, validate: function (val) {
-                    return val > 1024 && val < 65536;
+            port: {value: '51826', required: true, validate: function (val) {
+                    return RED.validators.number(val) && val > 1024 && val < 65536;
                 }
             },
         },
@@ -54,7 +54,6 @@
 
         },
         oneditsave() {
-
         }
     });
 </script>
@@ -75,7 +74,7 @@
     </div>
     <div class="form-row">
         <label for="node-config-input-port"><i class="icon-globe"></i> Port</label>
-        <input type="text" id="node-config-input-port">
+        <input type="number" id="node-config-input-port">
     </div>
     <div class="form-fow" style="padding-top: 20px; display: flex; justify-content: center;">
         <div id="qrcode" style=""></div>
