@@ -8,7 +8,7 @@ module.exports = class HmSw extends Accessory {
 
         for (let i = 1; i <= 2; i++) {
             const ch = config.description.ADDRESS + ':' + i;
-            if (!this.option(ch)) {
+            if (!this.option(i)) {
                 continue;
             }
 

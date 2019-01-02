@@ -17,7 +17,7 @@ class AccMultiService extends Accessory {
     init(config, node) {
         for (let i = 1; i <= 12; i++) {
             const ch = config.description.ADDRESS + ':' + i;
-            if (!this.option(ch)) {
+            if (!this.option(i)) {
                 continue;
             }
             const name = node.ccu.channelNames[ch];

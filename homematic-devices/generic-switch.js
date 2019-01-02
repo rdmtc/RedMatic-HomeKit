@@ -20,7 +20,8 @@ class AccMultiService extends Accessory {
 
         for (let i = 1; i < channels.length; i++) {
             const ch = channels[i];
-            if (!this.option(ch) || !(ccu.metadata.devices[config.iface][ch] && ccu.metadata.devices[config.iface][ch].TYPE === 'SWITCH')) {
+            node.log(ch + ' ' + this.option(ch) + ' ' + JSON.stringify(config.options[ch]));
+            if (!this.option(i) || !(ccu.metadata.devices[config.iface][ch] && ccu.metadata.devices[config.iface][ch].TYPE === 'SWITCH')) {
                 continue;
             }
 
