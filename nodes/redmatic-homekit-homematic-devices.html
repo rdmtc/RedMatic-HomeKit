@@ -131,6 +131,9 @@
                         } else if (type.match(/hmw-io-12-sw7-dr/i)) {
                             addOption(addr, 'SingleAccessory');
                             addChannels(addr, 13, 19);
+                        } else if (type.match(/hmw-sen-sc-12/i)) {
+                            addOption(addr, 'SingleAccessory');
+                            addChannels(addr, 1, 12);
                         } else if (type.match(/hm-wds[0-9]{2}-th/i)) {
                             addOption(addr, 'HumiditySensor');
                         } else if (type.match(/hmip-sth[a-z]?/i)) {
