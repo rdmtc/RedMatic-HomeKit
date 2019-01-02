@@ -28,7 +28,7 @@ module.exports = class HmLcDim2 extends Accessory {
                     if (value) {
                         setTimeout(() => {
                             if (valueBrightness === 0) {
-                                value = 1
+                                value = 1;
                             } else {
                                 value = valueBrightness / 100;
                             }
@@ -38,7 +38,6 @@ module.exports = class HmLcDim2 extends Accessory {
                         this.ccuSetValue(dp, 0, callback);
                     }
                 })
-
 
                 .get('Brightness', dp, value => {
                     valueBrightness = value * 100;

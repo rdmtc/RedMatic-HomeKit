@@ -9,6 +9,6 @@ module.exports = class HbUniSenPress extends Accessory {
 
             .get('StatusLowBattery', config.deviceAddress + ':0.LOWBAT', (value, c) => {
                 return value ? c.BATTERY_LEVEL_LOW : c.BATTERY_LEVEL_NORMAL;
-            })
+            });
     }
 };

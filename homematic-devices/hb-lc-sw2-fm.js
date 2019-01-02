@@ -7,7 +7,6 @@ module.exports = class HmSw extends Accessory {
         const channels = config.description.CHILDREN;
 
         for (let i = 1; i <= 2; i++) {
-            const ch = config.description.ADDRESS + ':' + i;
             if (!this.option(i)) {
                 continue;
             }

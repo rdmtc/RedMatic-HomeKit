@@ -8,7 +8,6 @@ module.exports = class HbUniSenTemp extends Accessory {
         const channels = config.description.CHILDREN;
 
         for (let i = 1; i < channels.length; i++) {
-            const ch = config.description.ADDRESS + ':' + i;
             if (!this.option(i)) {
                 continue;
             }

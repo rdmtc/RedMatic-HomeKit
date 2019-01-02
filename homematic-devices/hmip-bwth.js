@@ -10,7 +10,6 @@ module.exports = class HmipBwth extends Accessory {
         let setpointMode;
         let target;
 
-
         function targetState() {
             // 0=off, 1=heat, 3=auto
             switch (setpointMode) {
@@ -74,8 +73,8 @@ module.exports = class HmipBwth extends Accessory {
                         .then(() => {
                             callback();
                         }).catch(() => {
-                        callback(new Error(hap.HAPServer.Status.SERVICE_COMMUNICATION_FAILURE));
-                    });
+                            callback(new Error(hap.HAPServer.Status.SERVICE_COMMUNICATION_FAILURE));
+                        });
                 } else if (value === 1) {
                     const params = {
                         CONTROL_MODE: 1,
@@ -86,16 +85,16 @@ module.exports = class HmipBwth extends Accessory {
                         .then(() => {
                             callback();
                         }).catch(() => {
-                        callback(new Error(hap.HAPServer.Status.SERVICE_COMMUNICATION_FAILURE));
-                    });
+                            callback(new Error(hap.HAPServer.Status.SERVICE_COMMUNICATION_FAILURE));
+                        });
                 } else {
                     node.debug('set ' + config.name + ' (' + subtypeThermostat + ') TargetHeatingCoolingState ' + value + ' -> ' + config.description.ADDRESS + ':1.CONTROL_MODE ' + (value === 3 ? 0 : 1));
                     ccu.setValue(config.iface, config.description.ADDRESS + ':1', 'CONTROL_MODE', value === 3 ? 0 : 1)
                         .then(() => {
                             callback();
                         }).catch(() => {
-                        callback(new Error(hap.HAPServer.Status.SERVICE_COMMUNICATION_FAILURE));
-                    });
+                            callback(new Error(hap.HAPServer.Status.SERVICE_COMMUNICATION_FAILURE));
+                        });
                 }
             });
 

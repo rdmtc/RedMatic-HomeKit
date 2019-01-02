@@ -39,6 +39,7 @@ module.exports = class GenericSwitch {
     option(id) {
         return !(this.config.options[id] && this.config.options[id].disabled);
     }
+
     constructor(config, node) {
         const {ccu} = node;
         this.ccu = ccu;

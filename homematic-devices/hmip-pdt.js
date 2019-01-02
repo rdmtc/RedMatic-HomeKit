@@ -15,7 +15,7 @@ module.exports = class HmipPdt extends Accessory {
                 if (value) {
                     setTimeout(() => {
                         if (valueBrightness === 0) {
-                            value = 1
+                            value = 1;
                         } else {
                             value = valueBrightness / 100;
                         }

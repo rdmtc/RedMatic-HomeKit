@@ -9,7 +9,7 @@ class AccSingleService extends Accessory {
         this.addService('ContactSensor', config.name)
             .get('ContactSensorState', dp, (value, c) => {
                 return value ? c.CONTACT_DETECTED : c.CONTACT_NOT_DETECTED;
-            })
+            });
     }
 }
 
@@ -24,7 +24,7 @@ class AccMultiService extends Accessory {
             this.addService('ContactSensor', name)
                 .get('ContactSensorState', config.deviceAddress + ':' + i + '.SENSOR', (value, c) => {
                     return value ? c.CONTACT_DETECTED : c.CONTACT_NOT_DETECTED;
-                })
+                });
         }
     }
 }
@@ -33,6 +33,7 @@ module.exports = class GenericContactSensor {
     option(id) {
         return !(this.config.options[id] && this.config.options[id].disabled);
     }
+
     constructor(config, node) {
         const {ccu} = node;
         this.ccu = ccu;

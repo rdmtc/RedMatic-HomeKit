@@ -7,7 +7,6 @@ module.exports = class HbUniSenAct extends Accessory {
         const channels = config.description.CHILDREN;
 
         for (let i = 1; i <= 4; i++) {
-            const ch = config.description.ADDRESS + ':' + i;
             if (!this.option(i)) {
                 continue;
             }

@@ -2,7 +2,8 @@ const Accessory = require('./lib/accessory');
 
 module.exports = class HmUniDmx extends Accessory {
     init(config, node) {
-        const {ccu} = node;
+        const {bridgeConfig, ccu} = node;
+        const {hap} = bridgeConfig;
 
         this.addService('Switch', ccu.channelNames[config.description.ADDRESS + ':1'])
             .get('On', this.deviceAddress + ':1.STATE')
@@ -15,7 +16,7 @@ module.exports = class HmUniDmx extends Accessory {
             service.get('On', () => {
                 return false;
             });
-            service.set('On', value => {
+            service.set('On', (value, callback) => {
                 if (value) {
                     ccu.setValue(config.iface, ch, 'PRESS_SHORT', true)
                         .then(() => {

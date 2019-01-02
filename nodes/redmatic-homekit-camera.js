@@ -1,12 +1,12 @@
 const path = require('path');
 const net = require('net');
 const hap = require('hap-nodejs');
+
 const {uuid, Accessory, Service} = hap;
 const {FFMPEG} = require('homebridge-camera-ffmpeg/ffmpeg');
 const pkg = require('../package.json');
 
 const accessories = {};
-
 
 module.exports = function (RED) {
     hap.init(path.join(RED.settings.userDir, 'homekit'));
@@ -50,12 +50,10 @@ module.exports = function (RED) {
 
             this.name = config.name || ('Camera ' + this.id);
 
-
             const acc = new Accessory(this.name, uuid.generate(config.id), Accessory.Categories.CAMERA);
             accessories[this.id] = acc;
 
             this.debug('camera created' + this.name + ' ' + this.id + ' ' + config.username);
-
 
             acc.getService(Service.AccessoryInformation)
                 .setCharacteristic(hap.Characteristic.Manufacturer, 'RedMatic')
@@ -64,7 +62,8 @@ module.exports = function (RED) {
                 .setCharacteristic(hap.Characteristic.FirmwareRevision, pkg.version);
 
             acc.on('identify', (paired, callback) => {
-               this.log('identify ' + this.id + ' ' + this.username + ' ' + this.paired);
+                this.log('identify ' + this.id + ' ' + this.username + ' ' + paired);
+                callback();
             });
 
             config.audio = Boolean(config.audio);
@@ -103,8 +102,6 @@ module.exports = function (RED) {
                         acc._server.on('verify', () => {
                             this.log('camera ' + this.name + ' verify');
                         });
-
-
                     }).close();
                 })
                 .listen(config.port);
