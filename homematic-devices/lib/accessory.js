@@ -59,7 +59,9 @@ module.exports = class Accessory {
             .setCharacteristic(hap.Characteristic.SerialNumber, config.description.ADDRESS)
             .setCharacteristic(hap.Characteristic.FirmwareRevision, config.description.FIRMWARE);
 
-        this.acc.on('identify', this.identify);
+        this.acc.on('identify', (paired, callback) => {
+            this.identify(paired, callback);
+        });
 
         this.listeners = [];
         this.subscriptions = [];
@@ -242,7 +244,7 @@ module.exports = class Accessory {
     }
 
     identify(paired, callback) {
-        this.node.log('identify ' + this.config.name + ' ' + this.config.description.TYPE + ' ' + this.config.description.ADDRESS);
+        this.node.log('identify ' + (paired ? '(paired)' : '(unpaired)') + ' ' + this.config.name + ' ' + this.config.description.TYPE + ' ' + this.config.description.ADDRESS);
         callback();
     }
 
