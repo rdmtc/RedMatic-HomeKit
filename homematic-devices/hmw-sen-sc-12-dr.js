@@ -8,7 +8,7 @@ class AccSingleService extends Accessory {
 
         this.addService('ContactSensor', config.name)
             .get('ContactSensorState', dp, (value, c) => {
-                return value ? c.CONTACT_DETECTED : c.CONTACT_NOT_DETECTED;
+                return value ? c.CONTACT_NOT_DETECTED : c.CONTACT_DETECTED;
             });
     }
 }
@@ -23,7 +23,7 @@ class AccMultiService extends Accessory {
             const name = node.ccu.channelNames[ch];
             this.addService('ContactSensor', name)
                 .get('ContactSensorState', config.deviceAddress + ':' + i + '.SENSOR', (value, c) => {
-                    return value ? c.CONTACT_DETECTED : c.CONTACT_NOT_DETECTED;
+                    return value ? c.CONTACT_NOT_DETECTED : c.CONTACT_DETECTED;
                 });
         }
     }
