@@ -8,21 +8,16 @@ module.exports = class HmTcItWmWEu extends Accessory {
         let valveState = 0;
         let valueSetpoint;
 
-        let datapointValveState;
-        let valveStateDevice;
-
         let controlMode;
         let target;
+
+        const levels = {};
+        let level = 0;
 
         const that = this;
 
         const links = ccu.getLinks(config.iface, config.description.ADDRESS + ':2') || [];
         node.debug(config.name + ' linked to ' + JSON.stringify(links));
-
-        if (links[0]) {
-            valveStateDevice = links[0].split(':')[0];
-            datapointValveState = config.iface + '.' + valveStateDevice + ':4.VALVE_STATE';
-        }
 
         function targetState() {
             // 0=off, 1=heat, 3=auto
@@ -121,17 +116,24 @@ module.exports = class HmTcItWmWEu extends Accessory {
             that.acc.getService(subtypeThermostat).updateCharacteristic(hap.Characteristic.TargetHeatingCoolingState, target);
         }
 
-        if (valveStateDevice) {
-            this.subscriptions.push(ccu.subscribe({
-                cache: true,
-                change: true,
-                datapointName: datapointValveState
-            }, msg => {
-                valveState = msg.value;
-                node.debug('update ' + config.name + ' valveState ' + msg.value);
-                updateHeatingCoolingState();
-            }));
-        }
+        links.forEach(link => {
+            const valveStateDevice = link.split(':')[0];
+            const datapointLevel = config.iface + '.' + valveStateDevice + ':4.VALVE_STATE';
+            this.subscribe(datapointLevel, value => {
+                levels[datapointLevel] = value;
+                let max = 0;
+                Object.keys(levels).forEach(dp => {
+                    if (levels[dp] > max) {
+                        max = levels[dp];
+                    }
+                });
+                if (level !== max) {
+                    level = max;
+                    node.debug('update ' + config.name + ' level ' + level);
+                    updateHeatingCoolingState();
+                }
+            });
+        });
 
         this.subscriptions.push(ccu.subscribe({
             cache: true,

@@ -5,12 +5,11 @@ module.exports = class HmipWth extends Accessory {
         const {bridgeConfig, ccu} = node;
         const {hap} = bridgeConfig;
 
+        const levels = {};
         let level = 0;
         let valueSetpoint;
         let setpointMode;
         let target;
-        let valveStateDevice;
-        let datapointLevel;
 
         function targetState() {
             // 0=off, 1=heat, 3=auto
@@ -33,11 +32,6 @@ module.exports = class HmipWth extends Accessory {
 
         const links = ccu.getLinks(config.iface, config.description.ADDRESS + ':3') || [];
         node.debug(config.name + ' linked to ' + JSON.stringify(links));
-
-        if (links[0]) {
-            valveStateDevice = links[0].split(':')[0];
-            datapointLevel = config.iface + '.' + valveStateDevice + ':1.LEVEL';
-        }
 
         const serviceThermostat = this.addService('Thermostat', config.name);
         const subtypeThermostat = serviceThermostat.subtype;
@@ -112,10 +106,23 @@ module.exports = class HmipWth extends Accessory {
             serviceThermostat.update('TargetHeatingCoolingState', targetState());
         }
 
-        this.subscribe(datapointLevel, value => {
-            level = value;
-            node.debug('update ' + config.name + ' level ' + level);
-            updateHeatingCoolingState();
+        links.forEach(link => {
+            const valveStateDevice = link.split(':')[0];
+            const datapointLevel = config.iface + '.' + valveStateDevice + ':1.LEVEL';
+            this.subscribe(datapointLevel, value => {
+                levels[datapointLevel] = value;
+                let max = 0;
+                Object.keys(levels).forEach(dp => {
+                    if (levels[dp] > max) {
+                        max = levels[dp];
+                    }
+                });
+                if (level !== max) {
+                    level = max;
+                    node.debug('update ' + config.name + ' level ' + level);
+                    updateHeatingCoolingState();
+                }
+            });
         });
 
         this.subscribe(config.deviceAddress + ':1.SET_POINT_MODE', value => {
