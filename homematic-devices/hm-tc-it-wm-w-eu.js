@@ -5,7 +5,6 @@ module.exports = class HmTcItWmWEu extends Accessory {
         const {bridgeConfig, ccu} = node;
         const {hap} = bridgeConfig;
 
-        let valveState = 0;
         let valueSetpoint;
 
         let controlMode;
@@ -45,7 +44,7 @@ module.exports = class HmTcItWmWEu extends Accessory {
 
         function currentState() {
             // 0=off, 1=heat
-            return (valveState > 0 || controlMode === 3) ? 1 : 0;
+            return (level > 0 || controlMode === 3) ? 1 : 0;
         }
 
         const serviceThermostat = this.addService('Thermostat', config.name);
