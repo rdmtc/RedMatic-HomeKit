@@ -2,16 +2,32 @@ const Accessory = require('./lib/accessory');
 
 module.exports = class HmLcJa1 extends Accessory {
     init(config) {
-        this.addService('WindowCovering', config.name)
+        let timeout;
+        let level;
+        let levelSlats;
+
+        const that = this;
+
+        const service = this.addService('WindowCovering', config.name);
+
+        service
             .get('CurrentPosition', config.deviceAddress + ':1.LEVEL', value => {
+                if (typeof level === 'undefined') {
+                    level = value;
+                }
                 return value * 100;
             })
 
             .get('TargetPosition', config.deviceAddress + ':1.LEVEL', value => {
                 return value * 100;
             })
-            .set('TargetPosition', config.deviceAddress + ':1.LEVEL', value => {
-                return value / 100;
+            .set('TargetPosition', (value, callback) => {
+                level = value / 100;
+                clearTimeout(timeout);
+                timeout = setTimeout(() => {
+                    setCombined();
+                }, 250);
+                callback();
             })
 
             .get('PositionState', config.deviceAddress + ':1.DIRECTION', (value, c) => {
@@ -26,14 +42,33 @@ module.exports = class HmLcJa1 extends Accessory {
             })
 
             .get('CurrentVerticalTiltAngle', config.deviceAddress + ':1.LEVEL_SLATS', value => {
+                if (typeof levelSlats === 'undefined') {
+                    levelSlats = value;
+                }
                 return (value * 180) - 90;
             })
 
             .get('TargetVerticalTiltAngle', config.deviceAddress + ':1.LEVEL_SLATS', value => {
                 return (value * 180) - 90;
             })
-            .set('TargetVerticalTiltAngle', config.deviceAddress + ':1.LEVEL_SLATS', value => {
-                return (value + 90) / 180;
+            .set('TargetVerticalTiltAngle', (value, callback) => {
+                levelSlats = (value + 90) / 180;
+                clearTimeout(timeout);
+                timeout = setTimeout(() => {
+                    setCombined();
+                }, 250);
+                callback();
             });
+
+        function setCombined() {
+            const b1 = ('0' + ((level || 0) * 200).toString(16)).slice(-2);
+            const b2 = ('0' + ((levelSlats || 0) * 200).toString(16)).slice(-2);
+            const value = '0x' + b1 + ',0x' + b2;
+            that.ccuSetValue(config.deviceAddress + ':1.LEVEL_COMBINED', value, error => {
+                if (error) {
+                    service.updateCharacteristic('TargetPosition', error);
+                }
+            });
+        }
     }
 };
