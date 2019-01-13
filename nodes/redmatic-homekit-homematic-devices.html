@@ -22,7 +22,7 @@
             const that = this;
             let data;
 
-            function addChannels(addr, first, last) {
+            function addChannels(addr, first, last, dropdowns) {
                 for (let i = first; i <= last; i++) {
                     const ch = addr + ':' + i;
                     const name = data.channelNames[ch];
@@ -33,7 +33,18 @@
                     if (that.devices[ch].disabled) {
                         checked = false;
                     }
-                    $('#devices').append('<tr class="device-options" data-addr="' + addr + '"><td></td><td class="text small"><input class="channel-enabled device-enabled" data-addr="' + ch + '" type="checkbox"' + (checked ? ' checked' : '') + '>' + name + '</td><td class="text small">' + ch + '</td><td class="text small"></td></tr>');
+                    let html = '';
+                    if (dropdowns) {
+                        Object.keys(dropdowns).forEach(option => {
+                            html += addDropdown(ch, option, dropdowns[option]);
+                        });
+                    }
+
+                    const disabled = first === last ? ' disabled' : '';
+
+                    $('#devices').append('<tr class="device-options" data-addr="' + addr + '"><td></td><td class="text small"><input class="channel-enabled device-enabled" data-addr="' + ch + '" type="checkbox"' + (checked ? ' checked' : '') + disabled + '>' + name + '</td><td class="text small">' + ch + '</td><td class="text small">' + html + '</td></tr>');
+
+
                 }
             }
 
@@ -47,9 +58,20 @@
                     checked = false;
                 }
                 $('#devices').append('<tr class="device-options" data-addr="' + addr + '"><td></td><td class="text small"><input class="channel-enabled device-enabled" data-addr="' + ch + '" type="checkbox"' + (checked ? ' checked' : '') + '>' + option + '</td><td class="text small"></td><td class="text small"></td></tr>');
-
             }
 
+            function addDropdown(ch, option, options) {
+                if (!that.devices[ch]) {
+                    that.devices[ch] = {};
+                }
+                const selected = that.devices[ch][option];
+                let html = '<select class="small channel-option" data-addr="' + ch + '" data-option="' + option + '">';
+                options.forEach(val => {
+                    html += '<option' + (selected === val ? ' selected' : '') + '>' + val + '</option>';
+                });
+                html += '</select>';
+                return html;
+            }
 
             function addDevice(addr, type, name, channelCount) {
 
@@ -120,20 +142,22 @@
 
                         $('#devices').append('<tr><td class="enabled"><input class="device-enabled option-hide" data-addr="' + addr + '" type="checkbox"' + (checked ? ' checked' : '') + '></td><td class="text">' + name + '</td><td class="text small">' + addr + '</td><td class="text small">' + type + '</td></tr>')
 
-                        if (type.match(/hm-lc-sw([0-9])/i) && channelCount > 2) {
-                            addOption(addr, 'SingleAccessory');
-                            addChannels(addr, 1, channelCount - 1);
+                        if (type.match(/hm-lc-sw([0-9])/i)) {
+                            if (channelCount > 2) {
+                                addOption(addr, 'SingleAccessory');
+                            }
+                            addChannels(addr, 1, channelCount - 1, {type: ['Switch', 'Outlet', 'Faucet']});
                         } else if (type.match(/hm-mod-re-8/i)) {
                             addOption(addr, 'SingleAccessory');
-                            addChannels(addr, 1, 8);
+                            addChannels(addr, 1, 8, {type: ['Switch', 'Outlet', 'Faucet']});
                         } else if (type.match(/hm-sci-3-fm/i)) {
-                            addChannels(addr, 1, 3);
+                            addChannels(addr, 1, 3); //, {type: ['ContactSensor', 'Door', 'Window']});
                         } else if (type.match(/hmw-io-12-sw7-dr/i)) {
                             addOption(addr, 'SingleAccessory');
-                            addChannels(addr, 13, 19);
+                            addChannels(addr, 13, 19, {type: ['Switch', 'Outlet', 'Faucet']});
                         } else if (type.match(/hmw-lc-sw2-dr/i)) {
                             addOption(addr, 'SingleAccessory');
-                            addChannels(addr, 3, 4);
+                            addChannels(addr, 3, 4, {type: ['Switch', 'Outlet', 'Faucet']});
                         } else if (type.match(/hmw-sen-sc-12/i)) {
                             addOption(addr, 'SingleAccessory');
                             addChannels(addr, 1, 12);
@@ -184,6 +208,8 @@
                             addOption(addr, 'LightSensor');
                         } else if (type.match(/hb-lc-sw2/i)) {
                             addChannels(addr, 1, 2);
+                        } else if (type.match(/hm-sec-sc/i)) {
+                            //addChannels(addr, 1, 1, {type: ['ContactSensor', 'Door', 'Window']});
                         }
                 }
             }
@@ -243,6 +269,15 @@
         },
         oneditsave() {
             const devices = {};
+            $('.channel-option').each(function () {
+                const addr = $(this).data('addr');
+                const option = $(this).data('option');
+                console.log(addr, option)
+                if (!devices[addr]) {
+                    devices[addr] = {};
+                }
+                devices[addr][option] = $(this).val();
+            });
             $('.device-enabled').each(function () {
 
                  const addr = $(this).data('addr');
@@ -297,6 +332,11 @@
             margin-right: 2px !important;
         }
 
+        select.small {
+            width: 100%;
+            height: 1em;
+            font-size: 9px;
+        }
 
 
     </style>
