@@ -3,8 +3,8 @@ const Accessory = require('./lib/accessory');
 module.exports = class HmLcJa1 extends Accessory {
     init(config) {
         let timeout;
-        let level;
-        let levelSlats;
+        let level = null;
+        let levelSlats = null;
 
         const that = this;
 
@@ -12,9 +12,6 @@ module.exports = class HmLcJa1 extends Accessory {
 
         service
             .get('CurrentPosition', config.deviceAddress + ':1.LEVEL', value => {
-                if (typeof level === 'undefined') {
-                    level = value;
-                }
                 return value * 100;
             })
 
@@ -42,9 +39,6 @@ module.exports = class HmLcJa1 extends Accessory {
             })
 
             .get('CurrentVerticalTiltAngle', config.deviceAddress + ':1.LEVEL_SLATS', value => {
-                if (typeof levelSlats === 'undefined') {
-                    levelSlats = value;
-                }
                 return (value * 180) - 90;
             })
 
@@ -61,14 +55,28 @@ module.exports = class HmLcJa1 extends Accessory {
             });
 
         function setCombined() {
-            const b1 = ('0' + ((level || 0) * 200).toString(16)).slice(-2);
-            const b2 = ('0' + ((levelSlats || 0) * 200).toString(16)).slice(-2);
-            const value = '0x' + b1 + ',0x' + b2;
-            that.ccuSetValue(config.deviceAddress + ':1.LEVEL_COMBINED', value, error => {
+            let dp;
+            let value;
+            if (levelSlats !== null && level !== null) {
+                const b1 = ('0' + ((level || 0) * 200).toString(16)).slice(-2);
+                const b2 = ('0' + ((levelSlats || 0) * 200).toString(16)).slice(-2);
+                value = '0x' + b1 + ',0x' + b2;
+                dp = config.deviceAddress + ':1.LEVEL_COMBINED';
+
+            } else if (level !== null) {
+                value = level;
+                dp = config.deviceAddress + ':1.LEVEL';
+            } else if (levelSlats !== null) {
+                value = levelSlats;
+                dp = config.deviceAddress + ':1.LEVEL_SLATS';
+            }
+            that.ccuSetValue(dp, value, error => {
                 if (error) {
                     service.updateCharacteristic('TargetPosition', error);
                 }
             });
+            level = null;
+            levelSlats = null;
         }
     }
 };
