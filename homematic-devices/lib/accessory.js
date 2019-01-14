@@ -245,7 +245,11 @@ module.exports = class Accessory {
 
     identify(paired, callback) {
         this.node.log('identify ' + (paired ? '(paired)' : '(unpaired)') + ' ' + this.config.name + ' ' + this.config.description.TYPE + ' ' + this.config.description.ADDRESS);
-        callback();
+        try {
+            callback();
+        } catch (error) {
+            this.node.error(error);
+        }
     }
 
     option(id, option) {
