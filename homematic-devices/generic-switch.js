@@ -2,12 +2,11 @@
 
 const Accessory = require('./lib/accessory');
 
-
 function addService(type, dp, name) {
     switch (type) {
         case 'ValveIrrigation':
         // intentional fallthrough
-        case 'Valve':
+        case 'Valve': {
             const service = this.addService('Valve', name, type);
 
             service.update('ValveType', type === 'ValveIrrigation' ? 1 : 0);
@@ -20,6 +19,7 @@ function addService(type, dp, name) {
                     return Boolean(val);
                 });
             break;
+        }
         case 'Lightbulb':
         // intentional fallthrough
         case 'Fan':
@@ -60,7 +60,7 @@ class AccMultiService extends Accessory {
             const dp = config.iface + '.' + ch + '.STATE';
             const type = this.option(i, 'type') || 'Switch';
 
-            node.debug(i + ' ' +  type + ' ' + this.option(i, 'type'));
+            node.debug(i + ' ' + type + ' ' + this.option(i, 'type'));
 
             addService.call(this, type, dp, name);
         }

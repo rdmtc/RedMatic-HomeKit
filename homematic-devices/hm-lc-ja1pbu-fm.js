@@ -62,7 +62,6 @@ module.exports = class HmLcJa1 extends Accessory {
                 const b2 = ('0' + ((levelSlats || 0) * 200).toString(16)).slice(-2);
                 value = '0x' + b1 + ',0x' + b2;
                 dp = config.deviceAddress + ':1.LEVEL_COMBINED';
-
             } else if (level !== null) {
                 value = level;
                 dp = config.deviceAddress + ':1.LEVEL';

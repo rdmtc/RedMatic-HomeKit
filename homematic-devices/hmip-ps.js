@@ -2,7 +2,6 @@ const Accessory = require('./lib/accessory');
 
 module.exports = class HmipPs extends Accessory {
     init(config, node) {
-
         const {ccu} = node;
         const dp = config.deviceAddress + ':3.STATE';
         const name = ccu.channelNames[config.deviceAddress + ':3'];
@@ -11,7 +10,7 @@ module.exports = class HmipPs extends Accessory {
         switch (type) {
             case 'ValveIrrigation':
             // intentional fallthrough
-            case 'Valve':
+            case 'Valve': {
                 const service = this.addService('Valve', name, type);
 
                 service.update('ValveType', type === 'ValveIrrigation' ? 1 : 0);
@@ -24,6 +23,7 @@ module.exports = class HmipPs extends Accessory {
                         return Boolean(val);
                     });
                 break;
+            }
             case 'Lightbulb':
             // intentional fallthrough
             case 'Fan':
@@ -38,6 +38,5 @@ module.exports = class HmipPs extends Accessory {
                     .get('On', dp)
                     .set('On', dp);
         }
-
     }
 };

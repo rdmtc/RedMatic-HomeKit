@@ -255,9 +255,8 @@ module.exports = class Accessory {
         }
         if (option) {
             return this.config.options[addr] && this.config.options[addr][option];
-        } else {
-            return !(this.config.options[addr] && this.config.options[addr].disabled);
         }
+        return !(this.config.options[addr] && this.config.options[addr].disabled);
     }
 
     percent(value, _, lower = 2, upper = 3) {
