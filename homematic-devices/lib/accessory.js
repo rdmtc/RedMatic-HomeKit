@@ -248,9 +248,16 @@ module.exports = class Accessory {
         callback();
     }
 
-    option(id) {
-        const option = this.config.description.ADDRESS + ':' + id;
-        return !(this.config.options[option] && this.config.options[option].disabled);
+    option(id, option) {
+        let addr = this.config.description.ADDRESS;
+        if (!addr.includes(':')) {
+            addr = addr + ':' + id;
+        }
+        if (option) {
+            return this.config.options[addr] && this.config.options[addr][option];
+        } else {
+            return !(this.config.options[addr] && this.config.options[addr].disabled);
+        }
     }
 
     percent(value, _, lower = 2, upper = 3) {

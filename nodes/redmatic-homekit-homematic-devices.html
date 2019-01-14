@@ -130,6 +130,7 @@
                 if (homematicInvalidDevices.indexOf(type.toLowerCase()) !== -1) {
                     return;
                 }
+                const switchTypes = ['Switch', 'Outlet', 'Lightbulb', 'Fan', 'Valve', 'ValveIrrigation'];
 
                 if (!addr.match(/:\d+$/)) {
                         if (!that.devices[addr]) {
@@ -146,18 +147,20 @@
                             if (channelCount > 2) {
                                 addOption(addr, 'SingleAccessory');
                             }
-                            addChannels(addr, 1, channelCount - 1, {type: ['Switch', 'Outlet', 'Faucet']});
+                            addChannels(addr, 1, channelCount - 1, {type: switchTypes});
                         } else if (type.match(/hm-mod-re-8/i)) {
                             addOption(addr, 'SingleAccessory');
-                            addChannels(addr, 1, 8, {type: ['Switch', 'Outlet', 'Faucet']});
+                            addChannels(addr, 1, 8, {type: switchTypes});
                         } else if (type.match(/hm-sci-3-fm/i)) {
                             addChannels(addr, 1, 3); //, {type: ['ContactSensor', 'Door', 'Window']});
                         } else if (type.match(/hmw-io-12-sw7-dr/i)) {
                             addOption(addr, 'SingleAccessory');
-                            addChannels(addr, 13, 19, {type: ['Switch', 'Outlet', 'Faucet']});
+                            addChannels(addr, 13, 19, {type: switchTypes});
                         } else if (type.match(/hmw-lc-sw2-dr/i)) {
                             addOption(addr, 'SingleAccessory');
-                            addChannels(addr, 3, 4, {type: ['Switch', 'Outlet', 'Faucet']});
+                            addChannels(addr, 3, 4, {type: switchTypes});
+                        } else if (type.match(/hmip-ps/i)) {
+                            addChannels(addr, 3, 3, {type: switchTypes});
                         } else if (type.match(/hmw-sen-sc-12/i)) {
                             addOption(addr, 'SingleAccessory');
                             addChannels(addr, 1, 12);

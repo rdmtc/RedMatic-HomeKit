@@ -2,35 +2,67 @@
 
 const Accessory = require('./lib/accessory');
 
-class AccSingleService extends Accessory {
-    init(config) {
-        const dp = config.iface + '.' + config.accChannel + '.STATE';
 
-        this.addService('Switch', config.name)
-            .get('On', dp)
-            .set('On', dp);
+function addService(type, dp, name) {
+    switch (type) {
+        case 'ValveIrrigation':
+        // intentional fallthrough
+        case 'Valve':
+            const service = this.addService('Valve', name, type);
+
+            service.update('ValveType', type === 'ValveIrrigation' ? 1 : 0);
+
+            service
+                .get('Active', dp, val => val ? 1 : 0)
+                .get('InUse', dp, val => val ? 1 : 0)
+                .set('Active', dp, val => {
+                    service.update('InUse', val);
+                    return Boolean(val);
+                });
+            break;
+        case 'Lightbulb':
+        // intentional fallthrough
+        case 'Fan':
+        // intentional fallthrough
+        case 'Outlet':
+        // intentional fallthrough
+        default:
+            this.addService(type, name, type === 'Switch' ? '' : type)
+                .get('On', dp)
+                .set('On', dp);
+    }
+}
+
+class AccSingleService extends Accessory {
+    init(config, node) {
+        const {ccu} = node;
+        const dp = config.iface + '.' + config.accChannel + '.STATE';
+        const name = ccu.channelNames[config.accChannel];
+        const type = this.option('', 'type') || 'Switch';
+
+        node.debug(config.accChannel + ' ' + type + ' ' + this.option('', 'type'));
+
+        addService.call(this, type, dp, name);
     }
 }
 
 class AccMultiService extends Accessory {
     init(config, node) {
         const {ccu} = node;
-
         const channels = config.description.CHILDREN;
 
         for (let i = 1; i < channels.length; i++) {
             const ch = channels[i];
-
             if (!this.option(i) || !(ccu.metadata.devices[config.iface][ch] && ccu.metadata.devices[config.iface][ch].TYPE === 'SWITCH')) {
                 continue;
             }
-
             const name = ccu.channelNames[ch];
             const dp = config.iface + '.' + ch + '.STATE';
+            const type = this.option(i, 'type') || 'Switch';
 
-            this.addService('Switch', name)
-                .get('On', dp)
-                .set('On', dp);
+            node.debug(i + ' ' +  type + ' ' + this.option(i, 'type'));
+
+            addService.call(this, type, dp, name);
         }
     }
 }
