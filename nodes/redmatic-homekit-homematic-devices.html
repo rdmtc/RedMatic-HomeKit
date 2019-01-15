@@ -131,6 +131,7 @@
                     return;
                 }
                 const switchTypes = ['Switch', 'Outlet', 'Lightbulb', 'Fan', 'Valve', 'ValveIrrigation'];
+                const outletTypes = ['Outlet', 'Switch', 'Lightbulb', 'Fan', 'Valve', 'ValveIrrigation'];
 
                 if (!addr.match(/:\d+$/)) {
                         if (!that.devices[addr]) {
@@ -143,77 +144,408 @@
 
                         $('#devices').append('<tr><td class="enabled"><input class="device-enabled option-hide" data-addr="' + addr + '" type="checkbox"' + (checked ? ' checked' : '') + '></td><td class="text">' + name + '</td><td class="text small">' + addr + '</td><td class="text small">' + type + '</td></tr>')
 
-                        if (type.match(/hm-lc-sw([0-9])/i)) {
-                            if (channelCount > 2) {
+                        switch (type.toLowerCase()) {
+
+                            case 'hb-lc-bl1pbu-fm':
+                                break;
+
+                            case 'hb-lc-sw1pbu-fm':
+                            case 'hb-lc-sw2-fm':
+                            case 'hb-lc-sw2pbu-fm':
+                                if (channelCount > 2) {
+                                    addOption(addr, 'SingleAccessory');
+                                }
+                                addChannels(addr, 1, channelCount - 1, {type: switchTypes});
+                                break;
+
+                            case 'hb-uni-dmx-master':
+                                break;
+                            case 'hb-uni-rgb-led-ctrl':
+                                break;
+                            case 'hb-uni-sen-press-sc':
+                                break;
+                            case 'hb-uni-sen-temp-ds18b20':
+                                break;
+
+                            case 'hb-uni-sen-temp-ir':
+                                addChannels(addr, 1, 5);
+                                break;
+
+                            case 'hb-uni-sen-wea':
+                                addOption(addr, 'HumiditySensor');
+                                addOption(addr, 'LightSensor');
+                                break;
+
+                            case 'hb-uni-senact-4-4-rc-bat':
+                            case 'hb-uni-senact-4-4-rc':
+                                addChannels(addr, 1, 4);
+                                break;
+
+                            case 'hb-uni-senact-4-4-sc-bat':
+                            case 'hb-uni-senact-4-4-sc':
+                                addChannels(addr, 1, 8);
+                                break;
+
+                            case 'hb-uni-senact-8-8-rc-bat':
+                            case 'hb-uni-senact-8-8-rc':
+                                addChannels(addr, 1, 8);
+                                break;
+
+                            case 'hb-uni-senact-8-8-sc-bat':
+                            case 'hb-uni-senact-8-8-sc':
+                                addChannels(addr, 1, 16);
+                                break;
+
+                            case 'hm-cc-rt-dn-bom':
+                            case 'hm-cc-rt-dn':
+                                addOption(addr, 'BoostSwitch');
+                                break;
+
+                            case 'hm-cc-scd':
+                                break;
+                            case 'hm-cc-tc':
+                                addOption(addr, 'HumiditySensor');
+                                break;
+                            case 'hm-dw-wm':
+                                break;
+
+                            case 'hm-es-pmsw1-dr':
+                            case 'hm-es-pmsw1-pl-dn-r1':
+                            case 'hm-es-pmsw1-pl':
+                                addChannels(addr, 1, 1, {type: switchTypes});
+                                break;
+
+                            case 'hm-lc-ao-sm':
+                                break;
+                            case 'hm-lc-bl1-fm-2':
+                                break;
+                            case 'hm-lc-bl1-fm':
+                                break;
+                            case 'hm-lc-bl1-pb-fm':
+                                break;
+                            case 'hm-lc-bl1-sm-2':
+                                break;
+                            case 'hm-lc-bl1-sm':
+                                break;
+                            case 'hm-lc-bl1pbu-fm':
+                                break;
+
+                            case 'hm-lc-dim1l-cv-2':
+                            case 'hm-lc-dim1l-cv':
+                            case 'hm-lc-dim1l-pl-2':
+                            case 'hm-lc-dim1l-pl-3':
+                            case 'hm-lc-dim1l-pl':
+                            case 'hm-lc-dim1pwm-cv-2':
+                            case 'hm-lc-dim1pwm-cv':
+                            case 'hm-lc-dim1t-cv-2':
+                            case 'hm-lc-dim1t-cv':
+                            case 'hm-lc-dim1t-dr':
+                            case 'hm-lc-dim1t-fm-2':
+                            case 'hm-lc-dim1t-fm-lf':
+                            case 'hm-lc-dim1t-fm':
+                            case 'hm-lc-dim1t-pl-2':
+                            case 'hm-lc-dim1t-pl-3':
+                            case 'hm-lc-dim1t-pl':
+                            case 'hm-lc-dim1tpbu-fm-2':
+                            case 'hm-lc-dim1tpbu-fm':
+                                break;
+
+                            case 'hm-lc-dim2l-sm-2':
+                            case 'hm-lc-dim2l-sm':
+                            case 'hm-lc-dim2t-sm-2':
+                            case 'hm-lc-dim2t-sm':
+                                break;
+
+                            case 'hm-lc-ja1pbu-fm':
+                                break;
+
+                            case 'hm-lc-rgbw-wm':
+                                break;
+
+                            case 'hm-lc-sw1-ba-pcb':
+                            case 'hm-lc-sw1-dr':
+                            case 'hm-lc-sw1-fm-2':
+                            case 'hm-lc-sw1-fm':
+                            case 'hm-lc-sw1-pb-fm':
+                            case 'hm-lc-sw1-pcb':
+                            case 'hm-lc-sw1-pl-2':
+                            case 'hm-lc-sw1-pl-3':
+                            case 'hm-lc-sw1-pl-ct-r1':
+                            case 'hm-lc-sw1-pl-ct-r2':
+                            case 'hm-lc-sw1-pl-ct-r3':
+                            case 'hm-lc-sw1-pl-ct-r4':
+                            case 'hm-lc-sw1-pl-ct-r5':
+                            case 'hm-lc-sw1-pl-dn-r1':
+                            case 'hm-lc-sw1-pl-dn-r2':
+                            case 'hm-lc-sw1-pl-dn-r3':
+                            case 'hm-lc-sw1-pl-dn-r4':
+                            case 'hm-lc-sw1-pl-dn-r5':
+                            case 'hm-lc-sw1-pl-om54':
+                            case 'hm-lc-sw1-pl':
+                            case 'hm-lc-sw1-sm-2':
+                            case 'hm-lc-sw1-sm':
+                            case 'hm-lc-sw1pbu-fm':
+                            case 'hm-lc-sw2-dr-2':
+                            case 'hm-lc-sw2-dr':
+                            case 'hm-lc-sw2-fm-2':
+                            case 'hm-lc-sw2-fm':
+                            case 'hm-lc-sw2-pb-fm':
+                            case 'hm-lc-sw2pbu-fm':
+                            case 'hm-lc-sw4-ba-pcb':
+                            case 'hm-lc-sw4-dr-2':
+                            case 'hm-lc-sw4-dr':
+                            case 'hm-lc-sw4-pcb-2':
+                            case 'hm-lc-sw4-pcb':
+                            case 'hm-lc-sw4-sm-2':
+                            case 'hm-lc-sw4-sm':
+                            case 'hm-lc-sw4-wm-2':
+                            case 'hm-lc-sw4-wm':
+                            case 'hm-mod-re-8':
+                                if (channelCount > 2) {
+                                    addOption(addr, 'SingleAccessory');
+                                }
+                                addChannels(addr, 1, channelCount - 1, {type: switchTypes});
+                                break;
+
+                            case 'hm-sci-3-fm':
+                                addChannels(addr, 1, 3, {type: ['ContactSensor', 'Door', 'Window']});
+                                break;
+
+                            case 'hm-sec-key-s':
+                            case 'hm-sec-key':
+                                addOption(addr, 'OpenOnUnlock');
+                                break;
+
+                            case 'hm-sec-mdir-2':
+                            case 'hm-sec-mdir':
+                                addOption(addr, 'LightSensor');
+                                break;
+
+                            case 'hm-sec-rhs-2':
+                            case 'hm-sec-rhs':
+                                addChannels(addr, 1, 1, {type: ['ContactSensor', 'Door', 'Window']});
+                                break;
+
+                            case 'hm-sec-sc-2':
+                            case 'hm-sec-sc':
+                            case 'hm-sec-sco':
+                                addChannels(addr, 1, 1, {type: ['ContactSensor', 'Door', 'Window']});
+                                break;
+
+                            case 'hm-sec-sd-2':
+                            case 'hm-sec-sd':
+                                break;
+
+                            case 'hm-sec-tis':
+                                break;
+
+                            case 'hm-sec-wds-2':
+                            case 'hm-sec-wds':
+                                break;
+
+                            case 'hm-sen-db-pcb':
+                                break;
+
+                            case 'hm-sen-li-o':
+                                break;
+
+                            case 'hm-sen-mdir-o-2':
+                            case 'hm-sen-mdir-o-3':
+                            case 'hm-sen-mdir-o':
+                            case 'hm-sen-mdir-sm':
+                            case 'hm-sen-mdir-wm55':
+                                addOption(addr, 'LightSensor');
+                                break;
+
+                            case 'hm-tc-it-wm-w-eu':
+                                addOption(addr, 'BoostSwitch');
+                                addOption(addr, 'HumiditySensor');
+                                break;
+
+                            case 'hm-wds10-th-o':
+                                addOption(addr, 'HumiditySensor');
+                                break;
+
+                            case 'hm-wds100-c6-o-2':
+                            case 'hm-wds100-c6-o':
+                                addOption(addr, 'HumiditySensor');
+                                addOption(addr, 'LightSensor');
+                                break;
+
+                            case 'hm-wds20-th-o':
+                                addOption(addr, 'HumiditySensor');
+                                break;
+
+                            case 'hm-wds30-ot2-sm-2':
+                            case 'hm-wds30-ot2-sm':
+                                addChannels(addr, 1, 5);
+                                break;
+
+                            case 'hm-wds30-t-o':
+                                break;
+
+                            case 'hm-wds40-th-i-2':
+                            case 'hm-wds40-th-i':
+                                addOption(addr, 'HumiditySensor');
+                                break;
+
+                            case 'hm-ws550st-io':
+                                break;
+
+                            case 'hm-ws550sth-i':
+                            case 'hm-ws550sth-o':
+                                addOption(addr, 'HumiditySensor');
+                                break;
+
+                            case 'hmip-bbl':
+                                break;
+                            case 'hmip-bdt':
+                                break;
+                            case 'hmip-broll':
+                                break;
+                            case 'hmip-bsl':
+                                break;
+
+                            case 'hmip-bsm':
+                                addChannels(addr, 4, 4, {type: switchTypes});
+                                break;
+
+                            case 'hmip-bwth':
+                            case 'hmip-bwth24':
+                                addOption(addr, 'BoostSwitch');
+                                addOption(addr, 'HumiditySensor');
+                                break;
+
+                            case 'hmip-dbb':
+                                break;
+
+                            case 'hmip-etrv-2':
+                            case 'hmip-etrv-b':
+                            case 'hmip-etrv-b1':
+                            case 'hmip-etrv-c':
+                            case 'hmip-etrv':
+                                addOption(addr, 'BoostSwitch');
+                                break;
+
+                            case 'hmip-fbl':
+                                break;
+
+                            case 'hmip-fci1':
+                                addChannels(addr, 1, 1, {type: ['ContactSensor', 'Door', 'Window']});
+                                break;
+
+                            case 'hmip-fdt':
+                                break;
+                            case 'hmip-froll':
+                                break;
+
+                            case 'hmip-fsm':
+                            case 'hmip-fsm16':
+                                addChannels(addr, 2, 2, {type: switchTypes});
+                                break;
+
+                            case 'hmip-pcbs-bat':
+                            case 'hmip-pcbs':
+                                addChannels(addr, 3, 3, {type: switchTypes});
+                                break;
+
+                            case 'hmip-pcbs2':
+                                addChannels(addr, 4, 4, {type: switchTypes});
+                                addChannels(addr, 8, 8, {type: switchTypes});
+                                break;
+
+                            case 'hmip-pdt':
+                                break;
+
+                            case 'hmip-ps':
+                            case 'hmip-psm':
+                                addChannels(addr, 3, 3, {type: outletTypes});
+                                break;
+
+                            case 'hmip-slo':
+                                break;
+
+                            case 'hmip-smi':
+                            case 'hmip-smi55':
+                                addOption(addr, 'LightSensor');
+                                break;
+
+                            case 'hmip-smo-a':
+                                break;
+                            case 'hmip-smo':
+                                break;
+                            case 'hmip-spdr':
+                                break;
+
+                            case 'hmip-spi':
+                                addOption(addr, 'LightSensor');
+                                break;
+
+                            case 'hmip-srh':
+                                addChannels(addr, 1, 1, {type: ['ContactSensor', 'Door', 'Window']});
+                                break;
+
+                            case 'hmip-sth':
+                            case 'hmip-sthd':
+                            case 'hmip-stho-a':
+                            case 'hmip-stho':
+                                addOption(addr, 'HumiditySensor');
+                                break;
+
+                            case 'hmip-swd':
+                                break;
+
+                            case 'hmip-swdm-b':
+                            case 'hmip-swdm-b1':
+                            case 'hmip-swdm-b2':
+                            case 'hmip-swdm':
+                            case 'hmip-swdo-i':
+                            case 'hmip-swdo':
+                                addChannels(addr, 1, 1, {type: ['ContactSensor', 'Door', 'Window']});
+                                break;
+
+                            case 'hmip-swo-b':
+                            case 'hmip-swo-pl':
+                            case 'hmip-swo-pr':
+                                addOption(addr, 'HumiditySensor');
+                                addOption(addr, 'LightSensor');
+                                break;
+
+                            case 'hmip-swsd':
+                                break;
+
+                            case 'hmip-wth-2':
+                            case 'hmip-wth':
+                                addOption(addr, 'BoostSwitch');
+                                addOption(addr, 'HumiditySensor');
+                                break;
+
+                            case 'hmw-io-12-sw7-dr':
                                 addOption(addr, 'SingleAccessory');
-                            }
-                            addChannels(addr, 1, channelCount - 1, {type: switchTypes});
-                        } else if (type.match(/hm-mod-re-8/i)) {
-                            addOption(addr, 'SingleAccessory');
-                            addChannels(addr, 1, 8, {type: switchTypes});
-                        } else if (type.match(/hm-sci-3-fm/i)) {
-                            addChannels(addr, 1, 3); //, {type: ['ContactSensor', 'Door', 'Window']});
-                        } else if (type.match(/hmw-io-12-sw7-dr/i)) {
-                            addOption(addr, 'SingleAccessory');
-                            addChannels(addr, 13, 19, {type: switchTypes});
-                        } else if (type.match(/hmw-lc-sw2-dr/i)) {
-                            addOption(addr, 'SingleAccessory');
-                            addChannels(addr, 3, 4, {type: switchTypes});
-                        } else if (type.match(/hmip-ps/i)) {
-                            addChannels(addr, 3, 3, {type: switchTypes});
-                        } else if (type.match(/hmw-sen-sc-12/i)) {
-                            addOption(addr, 'SingleAccessory');
-                            addChannels(addr, 1, 12);
-                        } else if (type.match(/hm-wds[0-9]{2}-th/i)) {
-                            addOption(addr, 'HumiditySensor');
-                        } else if (type.match(/hmip-sth[a-z]?/i)) {
-                            addOption(addr, 'HumiditySensor');
-                        } else if (type.match(/hm-wds100-/i)) {
-                            addOption(addr, 'HumiditySensor');
-                            addOption(addr, 'LightSensor');
-                        } else if (type.match(/hmip-swo-/i)) {
-                            addOption(addr, 'HumiditySensor');
-                            addOption(addr, 'LightSensor');
-                        } else if (type.match(/mdir/i)) {
-                            addOption(addr, 'LightSensor');
-                        } else if (type.match(/hmip-smi/i)) {
-                            addOption(addr, 'LightSensor');
-                        } else if (type.match(/hmip-spi/i)) {
-                            addOption(addr, 'LightSensor');
-                        } else if (type.match(/hm-cc-rt-dn/i)) {
-                            addOption(addr, 'BoostSwitch');
-                        } else if (type.match(/hm-tc-it-wm/i)) {
-                            addOption(addr, 'BoostSwitch');
-                            addOption(addr, 'HumiditySensor');
-                        } else if (type.match(/hmip-etrv/i)) {
-                            addOption(addr, 'BoostSwitch');
-                        } else if (type.match(/hmip-b?wth/i)) {
-                            addOption(addr, 'BoostSwitch');
-                            addOption(addr, 'HumiditySensor');
-                        } else if (type.match(/hm-cc-tc/i)) {
-                            addOption(addr, 'HumiditySensor');
-                        } else if (type.match(/hm-sec-key/i)) {
-                            addOption(addr, 'OpenOnUnlock');
-                        } else if (type.match(/hm-wds30-ot2-sm/i)) {
-                            addChannels(addr, 1, 5);
-                        } else if (type.match(/hb-uni-sen-temp-ir/i)) {
-                            addChannels(addr, 1, 5);
-                        } else if (type.match(/hb-uni-senact-4-4-rc/i)) {
-                            addChannels(addr, 1, 4);
-                        } else if (type.match(/hb-uni-senact-4-4-sc/i)) {
-                            addChannels(addr, 1, 8);
-                        } else if (type.match(/hb-uni-senact-8-8-rc/i)) {
-                            addChannels(addr, 1, 8);
-                        } else if (type.match(/hb-uni-senact-8-8-sc/i)) {
-                            addChannels(addr, 1, 16);
-                        } else if (type.match(/hb-uni-sen-wea/i)) {
-                            addOption(addr, 'HumiditySensor');
-                            addOption(addr, 'LightSensor');
-                        } else if (type.match(/hb-lc-sw2/i)) {
-                            addChannels(addr, 1, 2);
-                        } else if (type.match(/hm-sec-sc/i)) {
-                            //addChannels(addr, 1, 1, {type: ['ContactSensor', 'Door', 'Window']});
-                        }
+                                addChannels(addr, 13, 19, {type: switchTypes});
+                                break;
+
+                            case 'hmw-lc-bl1-dr-2':
+                            case 'hmw-lc-bl1-dr':
+                                break;
+
+                            case 'hmw-lc-dim1l-dr':
+                                break;
+
+                            case 'hmw-lc-sw2-dr':
+                                addOption(addr, 'SingleAccessory');
+                                addChannels(addr, 3, 4, {type: switchTypes});
+                                break;
+
+                            case 'hmw-sen-sc-12-dr':
+                            case 'hmw-sen-sc-12-fm':
+                                addOption(addr, 'SingleAccessory');
+                                addChannels(addr, 1, 12, {type: ['ContactSensor', 'Door', 'Window']});
+                                break;
+
+                            default:
+                    }
+
                 }
             }
 

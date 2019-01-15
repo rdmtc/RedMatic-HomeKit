@@ -170,7 +170,7 @@ module.exports = function (RED) {
                     this.publishDevices(() => {
                         this.log('publish done');
                         this.bridgeConfig.waitForHomematic = false;
-                        this.bridgeConfig.emit('homematic-ready');
+                        // this.bridgeConfig.emit('homematic-ready');
                         this.ccuConnected = true;
                     });
                 }
