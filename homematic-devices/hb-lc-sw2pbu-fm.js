@@ -1,1 +1,1 @@
-module.exports = require('./hb-lc-sw2-fm');
+module.exports = require('./generic-switch');
