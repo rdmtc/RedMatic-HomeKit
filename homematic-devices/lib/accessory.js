@@ -257,10 +257,16 @@ module.exports = class Accessory {
         if (!addr.includes(':')) {
             addr = addr + ':' + id;
         }
+
+        let res;
+
         if (option) {
-            return this.config.options[addr] && this.config.options[addr][option];
+            res = this.config.options[addr] && this.config.options[addr][option];
+        } else {
+            res = !(this.config.options[addr] && this.config.options[addr].disabled);
         }
-        return !(this.config.options[addr] && this.config.options[addr].disabled);
+        this.node.debug('option ' + addr + ' ' + id + ' ' + option + ' ' + res);
+        return res;
     }
 
     percent(value, _, lower = 2, upper = 3) {
