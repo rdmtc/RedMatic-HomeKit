@@ -8,7 +8,7 @@ module.exports = class HmSenMdir55 extends Accessory {
                 return value ? c.BATTERY_LEVEL_LOW : c.BATTERY_LEVEL_NORMAL;
             });
 
-        if (!this.option('LightSensor')) {
+        if (this.option('LightSensor')) {
             this.addService('LightSensor', config.name)
                 .get('CurrentAmbientLightLevel', config.deviceAddress + ':3.BRIGHTNESS', this.lux)
                 .get('StatusLowBattery', config.deviceAddress + ':0.LOWBAT', (value, c) => {
