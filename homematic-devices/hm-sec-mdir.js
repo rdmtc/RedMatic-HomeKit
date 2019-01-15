@@ -11,7 +11,7 @@ module.exports = class HmSecMdir extends Accessory {
                 return Boolean(value);
             });
 
-        if (!this.option('LightSensor')) {
+        if (this.option('LightSensor')) {
             this.addService('LightSensor', config.name)
                 .get('CurrentAmbientLightLevel', config.deviceAddress + ':1.BRIGHTNESS', this.lux)
                 .get('StatusLowBattery', config.deviceAddress + ':0.LOWBAT', (value, c) => {
