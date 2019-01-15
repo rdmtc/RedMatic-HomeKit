@@ -2,14 +2,54 @@
 
 const Accessory = require('./lib/accessory');
 
+function addService(type, name, dp) {
+    let service;
+    let actualValue;
+
+    switch (type) {
+        case 'Door':
+        case 'Window':
+            service = this.addService(type, name, type);
+
+            service.update('PositionState', 2);
+
+            service.get('CurrentPosition', dp, value => {
+                actualValue = value ? 100 : 0;
+                service.update('TargetPosition', actualValue);
+                return actualValue;
+            });
+
+            service.get('TargetPosition', dp, value => {
+                actualValue = value ? 100 : 0;
+                service.update('TargetPosition', actualValue);
+                return actualValue;
+            });
+
+            service.set('TargetPosition', (value, callback) => {
+                callback();
+                setTimeout(() => {
+                    service.update('CurrentPosition', actualValue);
+                    service.update('TargetPosition', actualValue);
+                    service.update('PositionState', 2);
+                }, 20);
+            });
+
+            break;
+
+        default:
+            this.addService('ContactSensor', name)
+                .get('ContactSensorState', dp, (value, c) => {
+                    return value ? c.CONTACT_NOT_DETECTED : c.CONTACT_DETECTED;
+                });
+    }
+}
+
 class AccSingleService extends Accessory {
     init(config) {
         const dp = config.iface + '.' + config.accChannel + '.SENSOR';
-
-        this.addService('ContactSensor', config.name)
-            .get('ContactSensorState', dp, (value, c) => {
-                return value ? c.CONTACT_NOT_DETECTED : c.CONTACT_DETECTED;
-            });
+        const {name} = config;
+        const type = this.option('', 'type');
+        addService.call(this, type, name, dp);
     }
 }
 
@@ -20,11 +60,12 @@ class AccMultiService extends Accessory {
             if (!this.option(i)) {
                 continue;
             }
+
+            const dp = config.deviceAddress + ':' + i + '.SENSOR';
             const name = node.ccu.channelNames[ch];
-            this.addService('ContactSensor', name)
-                .get('ContactSensorState', config.deviceAddress + ':' + i + '.SENSOR', (value, c) => {
-                    return value ? c.CONTACT_NOT_DETECTED : c.CONTACT_DETECTED;
-                });
+            const type = this.option(i, 'type');
+
+            addService.call(this, type, name, dp);
         }
     }
 }
