@@ -65,14 +65,7 @@ module.exports = function (RED) {
         }
 
         publishBridge() {
-            if (this.waitForHomematic) {
-                this.debug('publishBridge wait for homematic');
-                this.once('homematic-ready', () => {
-                    this.debug('publishBridge homematic-ready');
-                    this.publishBridge();
-                });
-                return;
-            }
+            this.debug('publishBridge');
             if (this.bridge.isPublished) {
                 this.log('bridge already published (' + this.bridge.bridgedAccessories.length + ' Accessories) ' + this.name + ' ' + this.username + ' on port ' + this.port);
                 return;
@@ -112,12 +105,16 @@ module.exports = function (RED) {
         }
 
         waitForAccessories() {
+            this.trace('publish waitForAccessories');
             clearTimeout(this.waitForAccessoriesTimer);
             this.waitForAccessoriesTimer = setTimeout(() => {
-                if (!this.waitForHomematic) {
+                this.trace('publish waitForAccessories timeout waitForHomematic=' + this.waitForHomematic);
+                if (this.waitForHomematic) {
+                    this.waitForAccessories();
+                } else {
                     this.publishBridge();
                 }
-            }, 3000);
+            }, 5000);
         }
 
         accessory(config) {
