@@ -4,7 +4,7 @@ module.exports = class HmipPcbs2 extends Accessory {
     init(config, node) {
         const {ccu} = node;
 
-        // Todo configuration for disabling channels
+        // Todo configuration for disabling channels and Service Type
 
         this.addService('Switch', ccu.channelNames[config.description.ADDRESS + ':4'])
             .get('On', config.deviceAddress + ':4.STATE')
