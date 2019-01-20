@@ -462,6 +462,10 @@
                                 addChannels(addr, 3, 3, {type: outletTypes});
                                 break;
 
+                            case 'hmip-sam':
+                                addChannels(addr, 1, 1, {type: ['ContactSensor', 'Door', 'Window', 'GarageDoorOpener']});
+                                break;
+
                             case 'hmip-slo':
                                 break;
 
