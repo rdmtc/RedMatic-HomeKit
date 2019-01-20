@@ -8,6 +8,38 @@ module.exports = class HmSecSc extends Accessory {
         let actualValue;
 
         switch (type) {
+            case 'GarageDoorOpener':
+                service = this.addService(type, config.name, type);
+
+                service.get('CurrentDoorState', config.deviceAddress + ':1.STATE', value => {
+                    actualValue = value;
+                    value = value ? 0 : 1;
+                    service.update('TargetDoorState', value);
+                    return value;
+                });
+
+                service.get('TargetDoorState', config.deviceAddress + ':1.STATE', value => {
+                    actualValue = value;
+                    value = value ? 0 : 1;
+                    service.update('TargetDoorState', value);
+                    return value;
+                });
+
+                service.set('TargetDoorState', (value, callback) => {
+                    value = actualValue ? 0 : 1;
+                    callback();
+                    setTimeout(() => {
+                        service.update('CurrentDoorState', value);
+                        service.update('TargetDoorState', value);
+                    }, 100);
+                });
+
+                service.get('ObstructionDetected', config.deviceAddress + ':1.ERROR', value => {
+                    return Boolean(value);
+                });
+
+                break;
+
             case 'Door':
             case 'Window':
                 service = this.addService(type, config.name, type);

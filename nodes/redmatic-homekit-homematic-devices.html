@@ -329,7 +329,7 @@
                             case 'hm-sec-sc-2':
                             case 'hm-sec-sc':
                             case 'hm-sec-sco':
-                                addChannels(addr, 1, 1, {type: ['ContactSensor', 'Door', 'Window']});
+                                addChannels(addr, 1, 1, {type: ['ContactSensor', 'Door', 'Window', 'GarageDoorOpener']});
                                 break;
 
                             case 'hm-sec-sd-2':
@@ -337,6 +337,7 @@
                                 break;
 
                             case 'hm-sec-tis':
+                                addChannels(addr, 1, 1, {type: ['ContactSensor', 'Door', 'Window', 'GarageDoorOpener']});
                                 break;
 
                             case 'hm-sec-wds-2':
@@ -505,7 +506,7 @@
                             case 'hmip-swdm':
                             case 'hmip-swdo-i':
                             case 'hmip-swdo':
-                                addChannels(addr, 1, 1, {type: ['ContactSensor', 'Door', 'Window']});
+                                addChannels(addr, 1, 1, {type: ['ContactSensor', 'Door', 'Window', 'GarageDoorOpener']});
                                 break;
 
                             case 'hmip-swo-b':
