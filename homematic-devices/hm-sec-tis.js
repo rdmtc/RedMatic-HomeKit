@@ -69,7 +69,8 @@ module.exports = class HmSecTis extends Accessory {
                     })
                     .get('BatteryLevel', config.deviceAddress + ':0.LOWBAT', value => {
                         return value ? 0 : 100;
-                    });
+                    })
+                    .update('ChargingState', 2);
 
                 break;
 

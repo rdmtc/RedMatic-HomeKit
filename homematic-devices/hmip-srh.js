@@ -71,6 +71,7 @@ module.exports = class HmipSrh extends Accessory {
             .get('StatusLowBattery', config.deviceAddress + ':0.LOW_BAT', (value, c) => {
                 return value ? c.BATTERY_LEVEL_LOW : c.BATTERY_LEVEL_NORMAL;
             })
-            .get('BatteryLevel', config.deviceAddress + ':0.OPERATING_VOLTAGE', value => this.percent(value, null, 1, 1.5));
+            .get('BatteryLevel', config.deviceAddress + ':0.OPERATING_VOLTAGE', value => this.percent(value, null, 1, 1.5))
+            .update('ChargingState', 2);
     }
 };

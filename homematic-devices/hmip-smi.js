@@ -10,7 +10,8 @@ module.exports = class HmipSmi extends Accessory {
             .get('StatusLowBattery', config.deviceAddress + ':0.LOW_BAT', (value, c) => {
                 return value ? c.BATTERY_LEVEL_LOW : c.BATTERY_LEVEL_NORMAL;
             })
-            .get('BatteryLevel', config.deviceAddress + ':0.OPERATING_VOLTAGE', this.percent);
+            .get('BatteryLevel', config.deviceAddress + ':0.OPERATING_VOLTAGE', this.percent)
+            .update('ChargingState', 2);
 
         if (this.option('LightSensor')) {
             this.addService('LightSensor', config.name)

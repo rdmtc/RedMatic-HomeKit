@@ -95,6 +95,7 @@ module.exports = class HmipSam extends Accessory {
             .get('StatusLowBattery', config.deviceAddress + ':0.LOW_BAT', (value, c) => {
                 return value ? c.BATTERY_LEVEL_LOW : c.BATTERY_LEVEL_NORMAL;
             })
-            .get('BatteryLevel', config.deviceAddress + ':0.OPERATING_VOLTAGE', value => this.percent(value, null, 2, 3));
+            .get('BatteryLevel', config.deviceAddress + ':0.OPERATING_VOLTAGE', value => this.percent(value, null, 2, 3))
+            .update('ChargingState', 2);
     }
 };
