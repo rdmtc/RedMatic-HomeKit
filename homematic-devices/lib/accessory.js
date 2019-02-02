@@ -82,7 +82,7 @@ module.exports = class Accessory {
 
     ccuSetValue(address, value, callback) {
         const [iface, channel, dp] = address.split('.');
-        this.ccu.setValue(iface, channel, dp, value)
+        this.ccu.setValueQueued(iface, channel, dp, value)
             .then(() => {
                 if (typeof callback === 'function') {
                     callback();
@@ -221,7 +221,7 @@ module.exports = class Accessory {
             }
             const [iface, channel, dp] = datapointName.split('.');
             this.node.debug('set ' + this.config.name + ' (' + subtype + ') ' + characteristic + ' ' + valueOrig + ' -> ' + datapointName + ' ' + value);
-            this.ccu.setValue(iface, channel, dp, value)
+            this.ccu.setValueQueued(iface, channel, dp, value)
                 .then(() => {
                     callback();
                 })
