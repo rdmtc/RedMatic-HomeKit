@@ -1,0 +1,348 @@
+<script type="text/javascript">
+    RED.nodes.registerType('redmatic-homekit-homematic-garage', {
+        category: 'redmatic homekit',
+        defaults: {
+            bridgeConfig: {value: 'CC:22:3D:E3:CE:C7:51826', type: 'redmatic-homekit-bridge', required: true},
+            name: {value: ''},
+            ccuConfig: {value: 'localhost', type: 'ccu-connection', required: true},
+            ifaceActuator: {value: '', required: true},
+            channelActuator: {value: ''},
+            channelActuatorOpen: {value: ''},
+            channelActuatorClose: {value: ''},
+            channelActuatorType: {value: '1'},
+            ifaceSensor: {value: '', required: true},
+            channelSensorOpened: {value: ''},
+            channelSensorClosed: {value: ''},
+            channelSensorType: {value: 'c'},
+            onTime: {value: 0.4, required: true},
+            directionOpened: {value: 'true'},
+            directionClosed: {value: 'true'},
+            duration: {value: 15, required: true}
+        },
+        inputs: 0,
+        outputs: 0,
+        icon: 'homekit2.png',
+        color: '#E2D96E',
+        paletteLabel: 'garage',
+        align: 'left',
+        label() {
+            return this.name || 'garage';
+        },
+        labelStyle() {
+            return this.name ? 'node_label_italic' : '';
+        },
+        oneditprepare() {
+            const $nodeInputCcuConfig = $('#node-input-ccuConfig');
+            const $nodeInputIfaceActuator = $('#node-input-ifaceActuator');
+            const $nodeInputIfaceSensor = $('#node-input-ifaceSensor');
+            const $nodeInputChannelActuatorType = $('#node-input-channelActuatorType');
+            const $nodeInputChannelSensorType = $('#node-input-channelSensorType');
+            const $nodeInputChannelActuator = $('#node-input-channelActuator');
+            const $nodeInputChannelActuatorOpen = $('#node-input-channelActuatorOpen');
+            const $nodeInputChannelActuatorClose = $('#node-input-channelActuatorClose');
+            const $nodeInputChannelSensorOpened = $('#node-input-channelSensorOpened');
+            const $nodeInputChannelSensorClosed = $('#node-input-channelSensorClosed');
+
+            $nodeInputChannelActuator.autocomplete({
+                source: [],
+                close: () => {},
+                delay: 0,
+                minLength: 0
+            });
+
+            $nodeInputChannelActuator.on('focus', () => {
+                $nodeInputChannelActuator.autocomplete('search');
+            });
+
+            $nodeInputChannelActuatorOpen.autocomplete({
+                source: [],
+                close: () => {},
+                delay: 0,
+                minLength: 0
+            });
+
+            $nodeInputChannelActuatorOpen.on('focus', () => {
+                $nodeInputChannelActuatorOpen.autocomplete('search');
+            });
+
+            $nodeInputChannelActuatorClose.autocomplete({
+                source: [],
+                close: () => {},
+                delay: 0,
+                minLength: 0
+            });
+
+            $nodeInputChannelActuatorClose.on('focus', () => {
+                $nodeInputChannelActuatorClose.autocomplete('search');
+            });
+
+            $nodeInputChannelSensorClosed.autocomplete({
+                source: [],
+                close: () => {},
+                delay: 0,
+                minLength: 0
+            });
+
+            $nodeInputChannelSensorClosed.on('focus', () => {
+                $nodeInputChannelSensorClosed.autocomplete('search');
+            });
+
+            $nodeInputChannelSensorOpened.autocomplete({
+                source: [],
+                close: () => {},
+                delay: 0,
+                minLength: 0
+            });
+
+            $nodeInputChannelSensorOpened.on('focus', () => {
+                $nodeInputChannelSensorOpened.autocomplete('search');
+            });
+
+            $nodeInputChannelActuatorType.change(() => {
+                if ($nodeInputChannelActuatorType.val() === '1') {
+                    $('.garage-actuator-2').hide();
+                    $('.garage-actuator-1').show();
+                } else {
+                    $('.garage-actuator-1').hide();
+                    $('.garage-actuator-2').show();
+                }
+            });
+
+            $nodeInputChannelSensorType.change(() => {
+                if ($nodeInputChannelSensorType.val().includes('c')) {
+                    $('.garage-sensor-c').show();
+                } else {
+                    $('.garage-sensor-c').hide();
+                }
+                if ($nodeInputChannelSensorType.val().includes('o')) {
+                    $('.garage-sensor-o').show();
+                } else {
+                    $('.garage-sensor-o').hide();
+                }
+            });
+
+            let data;
+
+            this.loadIfaces = cb => {
+                console.log('loadIfaces()');
+                const nodeId = $nodeInputCcuConfig.val();
+                if (nodeId !== '_ADD_') {
+                    const url = 'ccu?config=' + nodeId + '&type=ifaces';
+                    $.getJSON(url, d => {
+                        console.log(d);
+                        $nodeInputIfaceActuator.html('');
+                        $nodeInputIfaceSensor.html('');
+                        Object.keys(d).forEach(i => {
+                            if (i !== 'ReGaHSS' && i !== 'VirtualDevices') {
+                                console.log('append', i)
+                                $nodeInputIfaceActuator.append('<option' + (d[i].enabled ? '' : ' disabled') + (i === this.ifaceActuator ? ' selected' : '') + '>' + i + '</option>');
+                                $nodeInputIfaceSensor.append('<option' + (d[i].enabled ? '' : ' disabled') + (i === this.ifaceSensor ? ' selected' : '') + '>' + i + '</option>');
+                            }
+                        });
+                        cb();
+                    });
+                }
+            }
+
+            function paramsetName(iface, device, paramset) {
+                let cType = '';
+                let d;
+                if (device) {
+                    if (device.PARENT) {
+                        // channel
+                        cType = device.TYPE;
+                        d = data.metadata.devices[iface][device.PARENT];
+                    } else {
+                        // device
+                        d = device;
+                    }
+                    return [iface, d.TYPE, d.FIRMWARE, d.VERSION, cType, paramset].join('/');
+                }
+            }
+
+            function autoCompleteActuator() {
+                const iface = $nodeInputIfaceActuator.val();
+                const arr = [];
+
+                Object.keys(data.metadata.devices[iface]).forEach(addr => {
+                    if (addr.includes(':')) {
+                        const psName = paramsetName(iface, data.metadata.devices[iface][addr]) + 'VALUES';
+                        const ps = data.paramsetDescriptions[psName];
+                        if (ps && ps.STATE && (ps.STATE.OPERATIONS & 2)) {
+                            console.log(addr, data.channelNames[addr], ps.STATE);
+                            let name = addr;
+                            if (data.channelNames[addr]) {
+                                name = name + ' ' + data.channelNames[addr];
+                            }
+                            arr.push(name);
+                        }
+
+                    }
+                });
+
+                $nodeInputChannelActuator.autocomplete('option', 'source', arr);
+                $nodeInputChannelActuatorOpen.autocomplete('option', 'source', arr);
+                $nodeInputChannelActuatorClose.autocomplete('option', 'source', arr);
+            }
+
+            function autoCompleteSensor() {
+                const iface = $nodeInputIfaceSensor.val();
+                const arr = [];
+
+                Object.keys(data.metadata.devices[iface]).forEach(addr => {
+                    if (addr.includes(':')) {
+                        const psName = paramsetName(iface, data.metadata.devices[iface][addr]) + 'VALUES';
+                        const ps = data.paramsetDescriptions[psName];
+                        if (
+                            (ps && ps.STATE && !(ps.STATE.OPERATIONS & 2))
+                            || (ps && ps.MOTION)
+                        ) {
+                            let name = addr;
+                            if (data.channelNames[addr]) {
+                                name = name + ' ' + data.channelNames[addr];
+                            }
+                            arr.push(name);
+                        }
+
+                    }
+                });
+
+                $nodeInputChannelSensorOpened.autocomplete('option', 'source', arr);
+                $nodeInputChannelSensorClosed.autocomplete('option', 'source', arr);
+            }
+
+            function loadConfig() {
+
+                const nodeId = $nodeInputCcuConfig.val();
+                const url = 'ccu?config=' + nodeId;
+                $.getJSON(url, d => {
+                    data = d;
+                    console.log(data);
+                    autoCompleteActuator();
+                });
+
+            }
+
+            $nodeInputCcuConfig.change(() => {
+                this.loadIfaces(() => {
+                    $nodeInputIfaceActuator.removeAttr('disabled');
+                    $nodeInputIfaceSensor.removeAttr('disabled');
+                    loadConfig();
+                });
+            });
+
+            $nodeInputIfaceActuator.change(() => {
+                //$nodeInputChannelActuator.val('');
+                //$nodeInputChannelActuatorOpen.val('');
+                //$nodeInputChannelActuatorClose.val('');
+                if (data) {
+                    autoCompleteActuator();
+                }
+            });
+
+            $nodeInputIfaceSensor.change(() => {
+                //$nodeInputChannelSensorClosed.val('');
+                //$nodeInputChannelSensorOpened.val('');
+                if (data) {
+                    autoCompleteSensor();
+                }
+            });
+
+        },
+        oneditsave() {
+
+        }
+    });
+</script>
+
+<script type="text/x-red" data-template-name="redmatic-homekit-homematic-garage">
+
+    <div class="form-row">
+        <label for="node-input-bridgeConfig"><i class="icon-globe"></i> Bridge</label>
+        <input type="text" id="node-input-bridgeConfig">
+    </div>
+    <div class="form-row">
+        <label for="node-input-name"><i class="icon-globe"></i> Name</label>
+        <input type="text" id="node-input-name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-ccuConfig"><i class="icon-globe"></i> CCU</label>
+        <input type="text" id="node-input-ccuConfig">
+    </div>
+    <div class="form-row">
+        <label for="node-input-ifaceActuator"><i class="fa fa-empire"></i> Interface Aktor</label>
+        <select id="node-input-ifaceActuator" disabled></select>
+    </div>
+    <div class="form-row">
+        <label for="node-input-channelActuatorType"><i class="icon-tags"></i> Aktor</label>
+        <select id="node-input-channelActuatorType">
+            <option value="1">Öffnen/Schließen mit einem Kanal</option>
+            <option value="2">Öffnen/Schließen getrennt mit zwei Kanälen</option>
+        </select>
+    </div>
+    <div class="form-row garage-actuator-1">
+        <label for="node-input-channelActuator"><i class="icon-tags"></i> Kanal Aktor</label>
+        <input type="text" id="node-input-channelActuator">
+    </div>
+    <div class="form-row garage-actuator-2">
+        <label for="node-input-channelActuatorOpen"><i class="icon-tags"></i> Kanal Aktor öffnen</label>
+        <input type="text" id="node-input-channelActuatorOpen">
+    </div>
+    <div class="form-row garage-actuator-2">
+        <label for="node-input-channelActuatoCloser"><i class="icon-tags"></i> Kanal Aktor schließen</label>
+        <input type="text" id="node-input-channelActuatorClose">
+    </div>
+    <div class="form-row">
+        <label for="node-input-onTime"><i class="icon-tags"></i> Schaltdauer Aktor</label>
+        <input type="number" id="node-input-onTime">
+    </div>
+    <div class="form-row">
+        <label for="node-input-ifaceSensor"><i class="fa fa-empire"></i> Interface Sensor</label>
+        <select id="node-input-ifaceSensor" disabled></select>
+    </div>
+    <div class="form-row">
+        <label for="node-input-channelSensorType"><i class="icon-tags"></i> Sensor</label>
+        <select id="node-input-channelSensorType">
+            <option value="c">Ein Sensor detektiert geschlossen</option>
+            <option value="o">Ein Sensor detektiert offen</option>
+            <option value="co">Zwei Sensoren detektieren offen und geschlossen</option>
+        </select>
+    </div>
+
+    <div class="form-row garage-sensor-c">
+        <label for="node-input-channelSensorClosed"><i class="icon-tags"></i> Kanal Sensor geschlossen</label>
+        <input type="text" id="node-input-channelSensorClosed">
+    </div>
+    <div class="form-row garage-sensor-c">
+        <label for="node-input-directionClosed"><i class="icon-tags"></i> Richtung Sensor geschlossen</label>
+        <select id="node-input-directionClosed">
+            <option value="true">true = geschlossen</option>
+            <option value="">true = nicht geschlossen</option>
+        </select>
+    </div>
+    <div class="form-row garage-sensor-o">
+        <label for="node-input-channelSensorOpened"><i class="icon-tags"></i> Kanal Sensor offen</label>
+        <input type="text" id="node-input-channelSensorOpened">
+    </div>
+    <div class="form-row garage-sensor-o">
+        <label for="node-input-directionOpened"><i class="icon-tags"></i> Richtung Sensor offen</label>
+        <select id="node-input-directionOpened">
+            <option value="true">true = offen</option>
+            <option value="">true = nicht offen</option>
+        </select>
+    </div>
+    <div class="form-row">
+        <label for="node-input-duration"><i class="icon-tags"></i> Fahrzeit Tor</label>
+        <input type="number" id="node-input-duration">
+    </div>
+    <style>
+        .form-row select {
+            width: 70%;
+        }
+    </style>
+
+</script>
+
+<script type="text/x-red" data-help-name="redmatic-homekit-homematic-garage">
+
+</script>
