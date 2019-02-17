@@ -1,17 +1,39 @@
 const Accessory = require('./lib/accessory');
 
 module.exports = class HmipBroll extends Accessory {
-    init(config) {
-        this.addService('WindowCovering', config.name)
-            .get('CurrentPosition', config.deviceAddress + ':4.LEVEL', value => {
-                return value * 100;
-            })
+    init(config, node) {
+        const {ccu} = node;
+
+        let intermediatePosition;
+        let targetPosition;
+
+        ccu.subscribe({
+            datapointName: config.deviceAddress + ':4.LEVEL',
+            cache: true,
+            stable: false
+        }, msg => {
+            intermediatePosition = msg.value * 100;
+            node.debug(config.name + ' intermediatePosition ' + intermediatePosition);
+        });
+
+        const service = this.addService('WindowCovering', config.name);
+
+        service.get('CurrentPosition', config.deviceAddress + ':4.LEVEL', value => {
+            targetPosition = value;
+            intermediatePosition = value * 100;
+            return value * 100;
+        })
 
             .get('TargetPosition', config.deviceAddress + ':4.LEVEL', value => {
-                return value * 100;
+                if (typeof targetPosition === 'undefined') {
+                    targetPosition = value;
+                }
+                return targetPosition * 100;
             })
             .set('TargetPosition', config.deviceAddress + ':4.LEVEL', value => {
-                return value / 100;
+                targetPosition = value / 100;
+                service.update('CurrentPosition', intermediatePosition);
+                return targetPosition;
             })
 
             .get('PositionState', config.deviceAddress + ':4.ACTIVITY_STATE', (value, c) => {

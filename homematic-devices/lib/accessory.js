@@ -81,8 +81,9 @@ module.exports = class Accessory {
     }
 
     ccuSetValue(address, value, callback) {
+        const force = this.ccu.values[address] && this.ccu.values[address].stable === false;
         const [iface, channel, dp] = address.split('.');
-        this.ccu.setValueQueued(iface, channel, dp, value)
+        this.ccu.setValueQueued(iface, channel, dp, value, false, force)
             .then(() => {
                 if (typeof callback === 'function') {
                     callback();
@@ -200,7 +201,7 @@ module.exports = class Accessory {
         this.subscriptions.push(this.ccu.subscribe({
             cache: true,
             change: true,
-            stable: true,
+            stable: !datapointName.endsWith('.DIRECTION') && !datapointName.endsWith('.ACTIVITY_STATE'),
             datapointName
         }, msg => {
             const valueOrig = msg.value;
@@ -219,9 +220,10 @@ module.exports = class Accessory {
             if (typeof transform === 'function') {
                 value = transform(value, this.hap.Characteristic[characteristic]);
             }
+            const force = this.ccu.values[datapointName] && this.ccu.values[datapointName].stable === false;
             const [iface, channel, dp] = datapointName.split('.');
             this.node.debug('set ' + this.config.name + ' (' + subtype + ') ' + characteristic + ' ' + valueOrig + ' -> ' + datapointName + ' ' + value);
-            this.ccu.setValueQueued(iface, channel, dp, value)
+            this.ccu.setValueQueued(iface, channel, dp, value, false, force)
                 .then(() => {
                     callback();
                 })
