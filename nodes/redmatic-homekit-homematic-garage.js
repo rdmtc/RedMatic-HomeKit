@@ -214,8 +214,12 @@ module.exports = function (RED) {
                 service.getCharacteristic(hap.Characteristic.CurrentDoorState).removeListener('get', getCurrentDoorStateListener);
                 service.getCharacteristic(hap.Characteristic.TargetDoorState).removeListener('get', getTargetDoorStateListener);
                 service.getCharacteristic(hap.Characteristic.TargetDoorState).removeListener('set', setTargetDoorStateListener);
-                this.ccu.unsubscribe(this.idSubSensorClosed);
-                this.ccu.unsubscribe(this.idSubSensorOpened);
+                if (this.idSubSensorClosed) {
+                    this.ccu.unsubscribe(this.idSubSensorClosed);
+                }
+                if (this.idSubSensorOpened) {
+                    this.ccu.unsubscribe(this.idSubSensorOpened);
+                }
             });
         }
     }
