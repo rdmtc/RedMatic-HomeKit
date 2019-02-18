@@ -13,7 +13,6 @@ module.exports = class HmipBroll extends Accessory {
             stable: false
         }, msg => {
             intermediatePosition = msg.value * 100;
-            node.debug(config.name + ' intermediatePosition ' + intermediatePosition);
         });
 
         const service = this.addService('WindowCovering', config.name);
@@ -30,8 +29,16 @@ module.exports = class HmipBroll extends Accessory {
                 }
                 return targetPosition * 100;
             })
+
             .set('TargetPosition', config.deviceAddress + ':4.LEVEL', value => {
                 targetPosition = value / 100;
+                targetPosition = value / 100;
+                if (value === 0 && intermediatePosition === 0) {
+                    intermediatePosition = 1;
+                } else if (value === 100 && intermediatePosition === 100) {
+                    intermediatePosition = 99;
+                }
+                node.debug(config.name + ' intermediatePosition ' + intermediatePosition);
                 service.update('CurrentPosition', intermediatePosition);
                 return targetPosition;
             })
