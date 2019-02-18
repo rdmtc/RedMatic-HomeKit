@@ -134,7 +134,6 @@
                         $nodeInputIfaceSensor.html('');
                         Object.keys(d).forEach(i => {
                             if (i !== 'ReGaHSS' && i !== 'VirtualDevices') {
-                                console.log('append', i)
                                 $nodeInputIfaceActuator.append('<option' + (d[i].enabled ? '' : ' disabled') + (i === this.ifaceActuator ? ' selected' : '') + '>' + i + '</option>');
                                 $nodeInputIfaceSensor.append('<option' + (d[i].enabled ? '' : ' disabled') + (i === this.ifaceSensor ? ' selected' : '') + '>' + i + '</option>');
                             }
@@ -142,7 +141,7 @@
                         cb();
                     });
                 }
-            }
+            };
 
             function paramsetName(iface, device, paramset) {
                 let cType = '';
@@ -196,6 +195,7 @@
                         if (
                             (ps && ps.STATE && !(ps.STATE.OPERATIONS & 2))
                             || (ps && ps.MOTION)
+                            || (ps && ps.SENSOR)
                         ) {
                             let name = addr;
                             if (data.channelNames[addr]) {

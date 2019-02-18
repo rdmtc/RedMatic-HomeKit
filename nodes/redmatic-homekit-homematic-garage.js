@@ -148,7 +148,7 @@ module.exports = function (RED) {
                 this.idSubSensorClosed = this.ccu.subscribe({
                     iface: config.ifaceSensor,
                     channel: config.channelSensorClosed.split(' ')[0],
-                    datapoint: /STATE|MOTION/
+                    datapoint: /STATE|MOTION|SENSOR/
                 }, msg => {
                     this.closed = config.directionClosed ? msg.value : !msg.value;
                     this.log(config.channelSensorClosed + ' ' + msg.value + ' ' + this.closed);
@@ -161,7 +161,7 @@ module.exports = function (RED) {
                 this.idSubSensorOpened = this.ccu.subscribe({
                     iface: config.ifaceSensor,
                     channel: config.channelSensorOpened.split(' ')[0],
-                    datapoint: /STATE|MOTION/
+                    datapoint: /STATE|MOTION|SENSOR/
                 }, msg => {
                     this.opened = config.directionOpened ? msg.value : !msg.value;
                     this.log(config.channelSensorOpened + ' ' + msg.value + ' ' + this.opened);
