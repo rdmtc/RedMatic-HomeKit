@@ -1,4 +1,23 @@
+const fs = require('fs');
+const path = require('path');
+
 module.exports = function (RED) {
+    const homematicValidDevices = [];
+    const devPath = path.join(__dirname, '..', 'homematic-devices');
+    fs.readdir(devPath, (error, files) => {
+        if (!error && files) {
+            files.forEach(file => {
+                if (file.endsWith('.js')) {
+                    homematicValidDevices.push(file.replace('.js', ''));
+                }
+            });
+        }
+    });
+
+    RED.httpAdmin.get('/redmatic-homekit/homematic-devices', (req, res) => {
+        res.status(200).send(JSON.stringify(homematicValidDevices));
+    });
+
     class RedMaticHomeKitHomematicDevices {
         constructor(config) {
             RED.nodes.createNode(this, config);
@@ -20,53 +39,6 @@ module.exports = function (RED) {
             this.ccu.register(this);
 
             this.homematicDevices = {};
-            this.homematicInvalidDevices = [
-                'hm-cc-vd',
-                'hm-dis-ep-wm55',
-                'hm-dis-wm55',
-                'hm-ou-cf-pl',
-                'hm-ou-cfm-pl',
-                'hm-ou-led16',
-                'hm-pb-2-wm',
-                'hm-pb-2-wm55',
-                'hm-pb-2-wm55-2',
-                'hm-pb-4dis-wm',
-                'hm-pb-4dis-wm-2',
-                'hm-pb-4-wm',
-                'hm-pb-6-wm55',
-                'hm-pbi-4-fm',
-                'hm-rc-2-pbu-fm',
-                'hm-rc-4-2',
-                'hm-rc-4-3',
-                'hm-rc-4-b',
-                'hm-rc-8',
-                'hm-rc-12',
-                'hm-rc-12-b',
-                'hm-rc-19',
-                'hm-rc-19-b',
-                'hm-rc-19-sw',
-                'hm-rc-dis-h-x-eu',
-                'hm-rc-key3',
-                'hm-rc-key3-b',
-                'hm-rc-key4-2',
-                'hm-rc-p1',
-                'hm-rc-sec3',
-                'hm-rc-sec3-b',
-                'hm-rcv-50',
-                'hm-sec-sd-2-team',
-                'hm-sec-sd-team',
-                'hm-sec-sfa-sm',
-                'hm-sen-rd-o',
-                'hm-sen-wa-od',
-                'hm-wdc7000',
-                'hmw-rcv-50',
-                'hmip-asir',
-                'hmip-brc2',
-                'hmip-krca',
-                'hmip-pmfs',
-                'hmip-wrc2',
-                'hmip-wrc6'
-            ];
         }
 
         publishDevices(callback) {
@@ -127,7 +99,7 @@ module.exports = function (RED) {
                 return;
             }
             type = type.toLowerCase();
-            if (this.homematicInvalidDevices.includes(type)) {
+            if (!homematicValidDevices.includes(type)) {
                 return;
             }
             if (!this.homematicDevices[type]) {
@@ -136,7 +108,6 @@ module.exports = function (RED) {
                     this.debug('loaded homematic-devices/' + type);
                 } catch (error) {
                     this.warn('missing homematic-devices/' + type);
-                    this.homematicInvalidDevices.push(type);
                     return;
                 }
             }
@@ -150,7 +121,6 @@ module.exports = function (RED) {
                 }
             }
             this.error('invalid homematic-devices/' + type);
-            this.homematicInvalidDevices.push(type);
         }
 
         setStatus(data) {

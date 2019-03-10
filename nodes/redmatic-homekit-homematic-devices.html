@@ -21,9 +21,14 @@
         oneditprepare() {
             const that = this;
             let data;
+            let homematicValidDevices;
 
-            function addChannels(addr, first, last, dropdowns) {
-                for (let i = first; i <= last; i++) {
+            function addChannels(addr, first, last, step, dropdowns) {
+                if (typeof dropdowns === 'undefined' && typeof step !== 'number') {
+                    dropdowns = step;
+                    step = 1;
+                }
+                for (let i = first; i <= last; i += step) {
                     const ch = addr + ':' + i;
                     const name = data.channelNames[ch];
                     let checked = true;
@@ -79,57 +84,6 @@
                     that.devices = {};
                 }
 
-                const homematicInvalidDevices = [
-                    'hm-cc-vd',
-                    'hm-dis-ep-wm55',
-                    'hm-dis-wm55',
-                    'hm-ou-cf-pl',
-                    'hm-ou-cfm-pl',
-                    'hm-ou-led16',
-                    'hm-pb-2-wm',
-                    'hm-pb-2-wm55',
-                    'hm-pb-2-wm55-2',
-                    'hm-pb-4dis-wm',
-                    'hm-pb-4dis-wm-2',
-                    'hm-pb-4-wm',
-                    'hm-pb-6-wm55',
-                    'hm-pbi-4-fm',
-                    'hm-rc-2-pbu-fm',
-                    'hm-rc-4-2',
-                    'hm-rc-4-3',
-                    'hm-rc-4-b',
-                    'hm-rc-8',
-                    'hm-rc-12',
-                    'hm-rc-12-b',
-                    'hm-rc-19',
-                    'hm-rc-19-b',
-                    'hm-rc-19-sw',
-                    'hm-rc-dis-h-x-eu',
-                    'hm-rc-key3',
-                    'hm-rc-key3-b',
-                    'hm-rc-key4-2',
-                    'hm-rc-p1',
-                    'hm-rc-sec3',
-                    'hm-rc-sec3-b',
-                    'hm-rcv-50',
-                    'hm-sec-sd-2-team',
-                    'hm-sec-sd-team',
-                    'hm-sec-sfa-sm',
-                    'hm-sen-rd-o',
-                    'hm-sen-wa-od',
-                    'hm-wdc7000',
-                    'hmw-rcv-50',
-                    'hmip-asir',
-                    'hmip-brc2',
-                    'hmip-krca',
-                    'hmip-pmfs',
-                    'hmip-wrc2',
-                    'hmip-wrc6'
-                ];
-
-                if (homematicInvalidDevices.indexOf(type.toLowerCase()) !== -1) {
-                    return;
-                }
                 const switchTypes = ['Switch', 'Outlet', 'Lightbulb', 'Fan', 'Valve', 'ValveIrrigation'];
                 const outletTypes = ['Outlet', 'Switch', 'Lightbulb', 'Fan', 'Valve', 'ValveIrrigation'];
 
@@ -552,6 +506,18 @@
                                 addChannels(addr, 1, 12, {type: ['ContactSensor', 'Door', 'Window']});
                                 break;
 
+                            case 'hmipw-drs4':
+                            case 'hmipw-drs8':
+                                addOption(addr, 'SingleAccessory');
+                                addChannels(addr, 2, channelCount - 2, 4, {type: switchTypes});
+                                break;
+
+                            case 'hmipw-dri16':
+                            case 'hmipw-dri32':
+                                addOption(addr, 'SingleAccessory');
+                                addChannels(addr, 2, channelCount - 2, 1, {type: ['ContactSensor', 'Door', 'Window']});
+                                break;
+
                             default:
                     }
 
@@ -561,42 +527,46 @@
             if (this.ccuConfig) {
                 $('#spinner').show();
                 $('.config').hide();
-                const url = 'ccu?config=' + this.ccuConfig;
-                $.getJSON(url, d => {
-                    data = d;
-                    const devs = [];
-                    Object.keys(d.metadata.devices).forEach(iface => {
-                        if (d.enabledIfaces.includes(iface)) {
-                            console.log(iface)
-                            Object.keys(d.metadata.devices[iface]).forEach(addr => {
-                                const dev = d.metadata.devices[iface][addr];
-                                console.log(dev);
-                                devs.push({addr, type: dev.TYPE, name: d.channelNames[addr] || addr, channelCount: dev.CHILDREN && dev.CHILDREN.length});
-                            });
-                        }
-                    });
-
-                    devs.sort((a, b) => a.name.localeCompare(b.name)).forEach(dev => {
-                        addDevice(dev.addr, dev.type, dev.name, dev.channelCount);
-                    });
-
-                    $('.option-hide').each(function () {
-                        $(this).change(function () {
-                            const addr = $(this).data('addr');
-                            if ($(this).is(':checked')) {
-                                $('.device-options[data-addr="' + addr + '"]').show();
-                            } else {
-                                $('.device-options[data-addr="' + addr + '"]').hide();
+                $.getJSON('redmatic-homekit/homematic-devices', res => {
+                    homematicValidDevices = res;
+                    const url = 'ccu?config=' + this.ccuConfig;
+                    $.getJSON(url, d => {
+                        data = d;
+                        const devs = [];
+                        Object.keys(d.metadata.devices).forEach(iface => {
+                            if (d.enabledIfaces.includes(iface)) {
+                                Object.keys(d.metadata.devices[iface]).forEach(addr => {
+                                    const dev = d.metadata.devices[iface][addr];
+                                    if (homematicValidDevices.includes((dev.TYPE && dev.TYPE.toLowerCase())) || (dev.PARENT_TYPE && homematicValidDevices.includes(dev.PARENT_TYPE.toLowerCase()))) {
+                                        devs.push({addr, type: dev.TYPE, name: d.channelNames[addr] || addr, channelCount: dev.CHILDREN && dev.CHILDREN.length});
+                                    }
+                                });
                             }
-                        })
+                        });
+
+                        devs.sort((a, b) => a.name.localeCompare(b.name)).forEach(dev => {
+                            addDevice(dev.addr, dev.type, dev.name, dev.channelCount);
+                        });
+
+                        $('.option-hide').each(function () {
+                            $(this).change(function () {
+                                const addr = $(this).data('addr');
+                                if ($(this).is(':checked')) {
+                                    $('.device-options[data-addr="' + addr + '"]').show();
+                                } else {
+                                    $('.device-options[data-addr="' + addr + '"]').hide();
+                                }
+                            })
+                        });
+                        $('.option-hide').each(function () {
+                            $(this).trigger('change');
+                        });
+                        $('#spinner').hide();
+                        $('.config').show();
                     });
-                    $('.option-hide').each(function () {
-                        $(this).trigger('change');
-                    });
-                    $('#spinner').hide();
-                    $('.config').show();
                 });
             }
+
             $('#disable-all').click(() => {
                 $('.option-hide').each(function () {
                     $(this).removeAttr('checked').trigger('change');
