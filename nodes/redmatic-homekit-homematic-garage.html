@@ -17,7 +17,8 @@
             onTime: {value: 0.4, required: true},
             directionOpened: {value: 'true'},
             directionClosed: {value: 'true'},
-            duration: {value: 15, required: true}
+            duration: {value: 15, required: true},
+            durationClose: {value: 15, required: true}
         },
         inputs: 0,
         outputs: 0,
@@ -219,6 +220,7 @@
                     data = d;
                     console.log(data);
                     autoCompleteActuator();
+                    autoCompleteSensor();
                 });
 
             }
@@ -332,7 +334,11 @@
         </select>
     </div>
     <div class="form-row">
-        <label for="node-input-duration"><i class="icon-tags"></i> Fahrzeit Tor</label>
+        <label for="node-input-durationClose"><i class="icon-tags"></i> Fahrzeit schließen</label>
+        <input type="number" id="node-input-durationClose">
+    </div>
+    <div class="form-row">
+        <label for="node-input-duration"><i class="icon-tags"></i> Fahrzeit öffnen</label>
         <input type="number" id="node-input-duration">
     </div>
     <style>
