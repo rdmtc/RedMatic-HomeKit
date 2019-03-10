@@ -1,1 +1,1 @@
-module.exports = require('./generic-switch');
+module.exports = require('./lib/generic-switch');

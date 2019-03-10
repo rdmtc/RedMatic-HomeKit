@@ -1,6 +1,6 @@
 /* eslint-disable no-new */
 
-const Accessory = require('./lib/accessory');
+const Accessory = require('./accessory');
 
 function addService(type, dp, name) {
     switch (type) {
