@@ -1,0 +1,174 @@
+<script type="text/javascript">
+    RED.nodes.registerType('redmatic-homekit-homematic-irrigation', {
+        category: 'redmatic homekit',
+        defaults: {
+            bridgeConfig: {value: 'CC:22:3D:E3:CE:C7:51826', type: 'redmatic-homekit-bridge', required: true},
+            name: {value: ''},
+            ccuConfig: {value: 'localhost', type: 'ccu-connection', required: true},
+            iface: {value: '', required: true},
+            channel: {value: ''},
+            onTime: {value: 15, required: true}
+        },
+        inputs: 1,
+        outputs: 2,
+        outputLabels: ['InUse', 'RemainingDuration'],
+        icon: 'homekit2.png',
+        color: '#E2D96E',
+        paletteLabel: 'irrigation',
+        align: 'left',
+        label() {
+            return this.name || 'irrigation';
+        },
+        labelStyle() {
+            return this.name ? 'node_label_italic' : '';
+        },
+        oneditprepare() {
+            const $nodeInputCcuConfig = $('#node-input-ccuConfig');
+            const $nodeInputIface = $('#node-input-iface');
+            const $nodeInputChannel = $('#node-input-channel');
+            const $nodeInputOnTime = $('#node-input-onTime');
+
+            $nodeInputChannel.autocomplete({
+                source: [],
+                close: () => {},
+                delay: 0,
+                minLength: 0
+            });
+
+            $nodeInputChannel.on('focus', () => {
+                $nodeInputChannel.autocomplete('search');
+            });
+
+            let data;
+
+            this.loadIfaces = cb => {
+                console.log('loadIfaces()');
+                const nodeId = $nodeInputCcuConfig.val();
+                if (nodeId !== '_ADD_') {
+                    const url = 'ccu?config=' + nodeId + '&type=ifaces';
+                    $.getJSON(url, d => {
+                        console.log(d);
+                        $nodeInputIface.html('');
+                        Object.keys(d).forEach(i => {
+                            if (i !== 'ReGaHSS' && i !== 'VirtualDevices') {
+                                $nodeInputIface.append('<option' + (d[i].enabled ? '' : ' disabled') + (i === this.iface ? ' selected' : '') + '>' + i + '</option>');
+                            }
+                        });
+                        cb();
+                    });
+                }
+            };
+
+            function paramsetName(iface, device, paramset) {
+                let cType = '';
+                let d;
+                if (device) {
+                    if (device.PARENT) {
+                        // channel
+                        cType = device.TYPE;
+                        d = data.metadata.devices[iface][device.PARENT];
+                    } else {
+                        // device
+                        d = device;
+                    }
+                    return [iface, d.TYPE, d.FIRMWARE, d.VERSION, cType, paramset].join('/');
+                }
+            }
+
+            function autoCompleteActuator() {
+                const iface = $nodeInputIface.val();
+                const arr = [];
+
+                Object.keys(data.metadata.devices[iface]).forEach(addr => {
+                    if (addr.includes(':')) {
+                        const psName = paramsetName(iface, data.metadata.devices[iface][addr]) + 'VALUES';
+                        const ps = data.paramsetDescriptions[psName];
+                        if (ps && ps.STATE && (ps.STATE.OPERATIONS & 2)) {
+                            console.log(addr, data.channelNames[addr], ps.STATE);
+                            let name = addr;
+                            if (data.channelNames[addr]) {
+                                name = name + ' ' + data.channelNames[addr];
+                            }
+                            arr.push(name);
+                        }
+
+                    }
+                });
+
+                $nodeInputChannel.autocomplete('option', 'source', arr);
+            }
+
+
+            function loadConfig() {
+
+                const nodeId = $nodeInputCcuConfig.val();
+                const url = 'ccu?config=' + nodeId;
+                $.getJSON(url, d => {
+                    data = d;
+                    console.log(data);
+                    autoCompleteActuator();
+                });
+
+            }
+
+            $nodeInputCcuConfig.change(() => {
+                this.loadIfaces(() => {
+                    $nodeInputIface.removeAttr('disabled');
+                    loadConfig();
+                });
+            });
+
+            $nodeInputIface.change(() => {
+                //$nodeInputChannel.val('');
+                if (data) {
+                    autoCompleteActuator();
+                }
+            });
+
+        },
+        oneditsave() {
+
+        }
+    });
+</script>
+
+<script type="text/x-red" data-template-name="redmatic-homekit-homematic-irrigation">
+
+    <div class="form-row">
+        <label for="node-input-bridgeConfig"><i class="icon-globe"></i> Bridge</label>
+        <input type="text" id="node-input-bridgeConfig">
+    </div>
+    <div class="form-row">
+        <label for="node-input-name"><i class="icon-globe"></i> Name</label>
+        <input type="text" id="node-input-name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-ccuConfig"><i class="icon-globe"></i> CCU</label>
+        <input type="text" id="node-input-ccuConfig">
+    </div>
+    <div class="form-row">
+        <label for="node-input-iface"><i class="fa fa-empire"></i> Interface</label>
+        <select id="node-input-iface" disabled></select>
+    </div>
+
+    <div class="form-row irrigation-actuator-1">
+        <label for="node-input-channel"><i class="icon-tags"></i> Kanal</label>
+        <input type="text" id="node-input-channel">
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-onTime"><i class="icon-tags"></i> Dauer (Minuten)</label>
+        <input type="number" id="node-input-onTime">
+    </div>
+
+    <style>
+        .form-row select {
+            width: 70%;
+        }
+    </style>
+
+</script>
+
+<script type="text/x-red" data-help-name="redmatic-homekit-homematic-irrigation">
+
+</script>
