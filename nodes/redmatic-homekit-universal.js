@@ -77,7 +77,7 @@ module.exports = function (RED) {
 
             const changeListener = obj => {
                 const topic = subtype + '/' + cName;
-                this.debug('hap ->', topic, obj.newValue);
+                this.debug('hap -> ' + topic + ' ' + obj.newValue);
                 if (obj && obj.context && obj.context.request) {
                     this.send({
                         topic,
