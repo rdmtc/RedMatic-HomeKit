@@ -18,7 +18,8 @@
             directionOpened: {value: 'true'},
             directionClosed: {value: 'true'},
             duration: {value: 15, required: true},
-            durationClose: {value: 15, required: true}
+            durationClose: {value: 15, required: true},
+            revertTime: {value: 0.5, required: true}
         },
         inputs: 0,
         outputs: 0,
@@ -340,6 +341,10 @@
     <div class="form-row">
         <label for="node-input-duration"><i class="icon-tags"></i> Fahrzeit öffnen</label>
         <input type="number" id="node-input-duration">
+    </div>
+    <div class="form-row">
+        <label for="node-input-revertTime"><i class="icon-tags"></i> Wartezeit Richtungsumkehr</label>
+        <input type="number" id="node-input-revertTime">
     </div>
     <style>
         .form-row select {

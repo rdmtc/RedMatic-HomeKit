@@ -48,7 +48,7 @@ module.exports = function (RED) {
                                 this.updateSensor();
                                 setTimeout(() => {
                                     move(direction).then(resolve).catch(reject);
-                                }, 500);
+                                }, (parseFloat(config.revertTime) || 0.5) * 1000);
                             } else {
                                 resolve();
                             }
@@ -64,7 +64,7 @@ module.exports = function (RED) {
                                                 this.updateSensor();
                                                 setTimeout(() => {
                                                     move(direction).then(resolve).catch(reject);
-                                                }, 500);
+                                                }, (parseFloat(config.revertTime) || 0.5) * 1000);
                                             } else {
                                                 resolve();
                                             }
