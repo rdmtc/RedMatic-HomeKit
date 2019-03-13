@@ -38,23 +38,21 @@ module.exports = function (RED) {
                 const ps = this.ccu.getParamsetDescription(config.ifaceActuator, dev, 'VALUES');
 
                 return new Promise((resolve, reject) => {
-                    if (ps && ps.STATE) {
-                        if (ps.ON_TIME) {
-                            this.ccu.methodCall(config.ifaceActuator, 'putParamset', [channel, 'VALUES', {
-                                STATE: true,
-                                ON_TIME: parseFloat(config.onTime) || 0.4
-                            }]).then(() => {
-                                if (revert) {
-                                    this.valueCurrent = 4;
-                                    this.updateSensor();
-                                    setTimeout(() => {
-                                        move(direction).then(resolve).catch(reject);
-                                    }, 500);
-                                } else {
-                                    resolve();
-                                }
-                            }).catch(reject);
-                        }
+                    if (ps && ps.ON_TIME) {
+                        this.ccu.methodCall(config.ifaceActuator, 'putParamset', [channel, 'VALUES', {
+                            STATE: true,
+                            ON_TIME: parseFloat(config.onTime) || 0.4
+                        }]).then(() => {
+                            if (revert) {
+                                this.valueCurrent = 4;
+                                this.updateSensor();
+                                setTimeout(() => {
+                                    move(direction).then(resolve).catch(reject);
+                                }, 500);
+                            } else {
+                                resolve();
+                            }
+                        }).catch(reject);
                     } else {
                         this.ccu.setValue(config.ifaceActuator, channel, 'STATE', true)
                             .then(() => {
@@ -71,7 +69,7 @@ module.exports = function (RED) {
                                                 resolve();
                                             }
                                         }).catch(reject);
-                                }, (config.onTime || 0.4) * 1000);
+                                }, (parseFloat(config.onTime) || 0.4) * 1000);
                             })
                             .catch(reject);
                     }
