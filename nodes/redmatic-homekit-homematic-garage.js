@@ -114,7 +114,13 @@ module.exports = function (RED) {
                     case 'o': {
                         this.debug('updateSensor opened=' + this.opened + ' lastMove=' + this.lastMove);
                         if (this.moving) {
-                            valueCurrent = this.opened ? 0 : this.moving;
+                            if (this.opened) {
+                                valueCurrent = 0;
+                                clearTimeout(this.timer);
+                                this.moving = false;
+                            } else {
+                                valueCurrent = this.moving;
+                            }
                         } else if (timeout && this.lastMove === 2) {
                             if (this.opened) {
                                 valueCurrent = 0;
@@ -135,7 +141,13 @@ module.exports = function (RED) {
                     case 'c': {
                         this.debug('updateSensor closed=' + this.closed + ' lastMove=' + this.lastMove);
                         if (this.moving) {
-                            valueCurrent = this.closed ? 1 : this.moving;
+                            if (this.closed) {
+                                valueCurrent = 1;
+                                clearTimeout(this.timer);
+                                this.moving = false;
+                            } else {
+                                valueCurrent = this.moving;
+                            }
                         } else if (timeout && this.lastMove === 3) {
                             if (this.closed) {
                                 valueCurrent = 1;
@@ -158,8 +170,12 @@ module.exports = function (RED) {
                         this.debug('updateSensor opened=' + this.opened + ' closed=' + this.closed + ' lastMove=' + this.lastMove);
                         if (this.opened && !this.closed) {
                             valueCurrent = 0;
+                            clearTimeout(this.timer);
+                            this.moving = false;
                         } else if (this.closed && !this.opened) {
                             valueCurrent = 1;
+                            clearTimeout(this.timer);
+                            this.moving = false;
                         } else if (this.moving) {
                             valueCurrent = this.moving;
                         } else if (timeout) {
