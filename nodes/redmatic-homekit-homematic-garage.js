@@ -114,7 +114,7 @@ module.exports = function (RED) {
                     case 'o': {
                         this.debug('updateSensor opened=' + this.opened + ' lastMove=' + this.lastMove);
                         if (this.moving) {
-                            if (this.opened) {
+                            if (this.opened && this.lastMove === 2) {
                                 valueCurrent = 0;
                                 clearTimeout(this.timer);
                                 this.moving = false;
@@ -141,7 +141,7 @@ module.exports = function (RED) {
                     case 'c': {
                         this.debug('updateSensor closed=' + this.closed + ' lastMove=' + this.lastMove);
                         if (this.moving) {
-                            if (this.closed) {
+                            if (this.closed && this.lastMove === 3) {
                                 valueCurrent = 1;
                                 clearTimeout(this.timer);
                                 this.moving = false;
