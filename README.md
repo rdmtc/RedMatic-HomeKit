@@ -5,9 +5,9 @@
 
 > RedMatic based HomeKit Addon for the CCU3 and RaspberryMatic
 
-This package isn't meant to be installed manually, it is included in [RedMatic](https://github.com/hobbyquaker/RedMatic)
+This package isn't meant to be installed manually, it is included in [RedMatic](https://github.com/rdmtc/RedMatic)
 
-See https://github.com/hobbyquaker/RedMatic/wiki/Homekit
+See https://github.com/rdmtc/RedMatic/wiki/Homekit
 
 
 ## License
