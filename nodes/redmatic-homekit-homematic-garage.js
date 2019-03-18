@@ -33,6 +33,7 @@ module.exports = function (RED) {
                         break;
                     default:
                 }
+
                 channel = channel.split(' ')[0];
                 const dev = this.ccu.metadata.devices[config.ifaceActuator] && this.ccu.metadata.devices[config.ifaceActuator][channel];
                 const ps = this.ccu.getParamsetDescription(config.ifaceActuator, dev, 'VALUES');
@@ -105,14 +106,14 @@ module.exports = function (RED) {
             Characteristic.CurrentDoorState.STOPPED = 4;
              */
 
-            this.updateSensor = timeout => {
+            this.updateSensor = (timeout, source) => {
                 let valueCurrent = 4;
                 let obstruction = false;
-                this.debug('updateSensor timeout=' + timeout + ' moving=' + this.moving + ' current=' + this.valueCurrent + ' target=' + this.valueTarget);
+                this.debug('input updateSensor timeout=' + timeout + ' moving=' + this.moving + ' current=' + this.valueCurrent + ' target=' + this.valueTarget);
 
                 switch (config.channelSensorType) {
                     case 'o': {
-                        this.debug('updateSensor opened=' + this.opened + ' lastMove=' + this.lastMove);
+                        this.debug('o updateSensor opened=' + this.opened + ' lastMove=' + this.lastMove);
                         if (this.moving) {
                             if (this.opened && this.lastMove === 2) {
                                 valueCurrent = 0;
@@ -136,10 +137,12 @@ module.exports = function (RED) {
                         } else {
                             valueCurrent = this.opened ? 0 : 1;
                         }
+
                         break;
                     }
+
                     case 'c': {
-                        this.debug('updateSensor closed=' + this.closed + ' lastMove=' + this.lastMove);
+                        this.debug('c updateSensor closed=' + this.closed + ' lastMove=' + this.lastMove);
                         if (this.moving) {
                             if (this.closed && this.lastMove === 3) {
                                 valueCurrent = 1;
@@ -166,20 +169,47 @@ module.exports = function (RED) {
 
                         break;
                     }
+
                     default: {
-                        this.debug('updateSensor opened=' + this.opened + ' closed=' + this.closed + ' lastMove=' + this.lastMove);
+                        this.debug('co updateSensor moving=' + this.moving + ' opened=' + this.opened + ' closed=' + this.closed + ' lastMove=' + this.lastMove + ' source=' + source);
                         if (this.opened && !this.closed) {
-                            valueCurrent = 0;
-                            clearTimeout(this.timer);
-                            this.moving = false;
+                            if (this.lastMove === 2 || !this.moving) {
+                                valueCurrent = 0;
+                                clearTimeout(this.timer);
+                                this.moving = false;
+                            } else if (this.moving) {
+                                valueCurrent = this.moving;
+                            }
                         } else if (this.closed && !this.opened) {
-                            valueCurrent = 1;
-                            clearTimeout(this.timer);
-                            this.moving = false;
+                            if (this.lastMove === 3 || !this.moving) {
+                                valueCurrent = 1;
+                                clearTimeout(this.timer);
+                                this.moving = false;
+                            } else if (this.moving) {
+                                valueCurrent = this.moving;
+                            }
                         } else if (this.moving) {
                             valueCurrent = this.moving;
                         } else if (timeout) {
                             obstruction = true;
+                        } else if (source === 'o' && !this.opened) {
+                            this.moving = 3;
+                            this.lastMove = 3;
+                            valueCurrent = 3;
+                            this.valueTarget = 1;
+                            this.timer = setTimeout(() => {
+                                this.moving = false;
+                                this.updateSensor(true);
+                            }, config.durationClose * 1000);
+                        } else if (source === 'c' && !this.closed) {
+                            this.moving = 2;
+                            this.lastMove = 2;
+                            valueCurrent = 2;
+                            this.valueTarget = 0;
+                            this.timer = setTimeout(() => {
+                                this.moving = false;
+                                this.updateSensor(true);
+                            }, config.duration * 1000);
                         }
                     }
                 }
@@ -194,7 +224,7 @@ module.exports = function (RED) {
                     this.valueTarget = valueCurrent;
                 }
 
-                this.debug('updateSensor timeout=' + timeout + ' moving=' + this.moving + ' current=' + this.valueCurrent + ' target=' + this.valueTarget);
+                this.debug('result updateSensor timeout=' + timeout + ' moving=' + this.moving + ' current=' + this.valueCurrent + ' target=' + this.valueTarget);
 
                 let text = obstruction ? 'obstruction' : 'stopped';
                 let fill = obstruction ? 'red' : 'yellow';
@@ -220,6 +250,7 @@ module.exports = function (RED) {
                         break;
                     default:
                 }
+
                 this.status({fill, shape, text});
 
                 this.debug('update GarageDoorOpener 0 CurrentDoorState ' + this.valueCurrent);
@@ -233,26 +264,30 @@ module.exports = function (RED) {
             if (config.channelSensorType.includes('c')) {
                 this.debug('subscribe ' + config.channelSensorClosed);
                 this.idSubSensorClosed = this.ccu.subscribe({
+                    cache: true,
+                    change: true,
                     iface: config.ifaceSensor,
                     channel: config.channelSensorClosed.split(' ')[0],
                     datapoint: /STATE|MOTION|SENSOR/
                 }, msg => {
                     this.closed = config.directionClosed ? msg.value : !msg.value;
-                    this.log(config.channelSensorClosed + ' ' + msg.value + ' ' + this.closed);
-                    this.updateSensor();
+                    this.log(config.channelSensorClosed + ' ' + msg.value + ' closed=' + this.closed);
+                    this.updateSensor(false, 'c');
                 });
             }
 
             if (config.channelSensorType.includes('o')) {
                 this.debug('subscribe ' + config.channelSensorOpened);
                 this.idSubSensorOpened = this.ccu.subscribe({
+                    cache: true,
+                    change: true,
                     iface: config.ifaceSensor,
                     channel: config.channelSensorOpened.split(' ')[0],
                     datapoint: /STATE|MOTION|SENSOR/
                 }, msg => {
                     this.opened = config.directionOpened ? msg.value : !msg.value;
-                    this.log(config.channelSensorOpened + ' ' + msg.value + ' ' + this.opened);
-                    this.updateSensor();
+                    this.log(config.channelSensorOpened + ' ' + msg.value + ' openend=' + this.opened);
+                    this.updateSensor(false, 'o');
                 });
             }
 
@@ -303,6 +338,7 @@ module.exports = function (RED) {
                 if (this.idSubSensorClosed) {
                     this.ccu.unsubscribe(this.idSubSensorClosed);
                 }
+
                 if (this.idSubSensorOpened) {
                     this.ccu.unsubscribe(this.idSubSensorOpened);
                 }
