@@ -46,6 +46,7 @@ module.exports = function (RED) {
                     this.error('invalid topic ' + msg.topic);
                     return;
                 }
+
                 const subtype = String(button);
 
                 let val;

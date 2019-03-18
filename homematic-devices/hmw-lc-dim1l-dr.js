@@ -15,6 +15,7 @@ module.exports = class HmwDim extends Accessory {
                 if (!valueBrightness || !value) {
                     return value ? 1 : 0;
                 }
+
                 return valueBrightness / 100;
             })
 

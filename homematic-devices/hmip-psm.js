@@ -24,6 +24,7 @@ module.exports = class HmipPsm extends Accessory {
                     });
                 break;
             }
+
             case 'Lightbulb':
             // intentional fallthrough
             case 'Fan':

@@ -32,6 +32,7 @@ module.exports = class HbUniSenAct extends Accessory {
                     return value ? c.CONTACT_NOT_DETECTED : c.CONTACT_DETECTED;
                 });
         }
+
         this.addService('BatteryService')
             .get('StatusLowBattery', config.deviceAddress + ':0.LOWBAT', (value, c) => {
                 return value ? c.BATTERY_LEVEL_LOW : c.BATTERY_LEVEL_NORMAL;

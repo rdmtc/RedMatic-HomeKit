@@ -22,6 +22,7 @@ module.exports = class HmLcRgbw extends Accessory {
                 if (!valueBrightness || !value) {
                     return value ? 1 : 0;
                 }
+
                 return valueBrightness / 100;
             })
 

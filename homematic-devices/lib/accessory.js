@@ -11,6 +11,7 @@ class Service {
         } else {
             this.acc.datapointGet(this.subtype, characteristic, datapointNameOrCallback, transform);
         }
+
         return this;
     }
 
@@ -20,6 +21,7 @@ class Service {
         } else {
             this.acc.datapointSet(this.subtype, characteristic, datapointNameOrCallback, transform);
         }
+
         return this;
     }
 
@@ -104,6 +106,7 @@ module.exports = class Accessory {
             this.node.debug('add service ' + type + ' (' + subtype + ') to ' + this.config.description.TYPE + ' ' + this.config.name);
             this.acc.addService(this.hap.Service[type], name, subtype);
         }
+
         this.datapointUnreach(this.config.deviceAddress + ':0.UNREACH');
         return new Service(this, subtype);
     }
@@ -163,6 +166,7 @@ module.exports = class Accessory {
         if (!transformArr) {
             transformArr = [];
         }
+
         const values = {};
         datapointNameArr.forEach((dp, i) => {
             this.subscriptions.push(this.ccu.subscribe({
@@ -175,6 +179,7 @@ module.exports = class Accessory {
                 if (typeof transformArr[i] === 'function') {
                     value = transformArr[i](value);
                 }
+
                 Object.keys(values).forEach(key => {
                     if (values[key]) {
                         value = this.hap.Characteristic.StatusFault.GENERAL_FAULT;
@@ -193,6 +198,7 @@ module.exports = class Accessory {
             if (typeof transform === 'function') {
                 value = transform(value, this.hap.Characteristic[characteristic]);
             }
+
             this.node.debug('get ' + this.config.name + ' (' + subtype + ') ' + characteristic + ' ' + valueOrig + ' -> ' + this.getError() + ' ' + value);
             callback(this.getError(), value);
         });
@@ -209,6 +215,7 @@ module.exports = class Accessory {
             if (typeof transform === 'function') {
                 value = transform(value, this.hap.Characteristic[characteristic]);
             }
+
             this.node.debug('update ' + this.config.name + ' (' + subtype + ') ' + characteristic + ' ' + valueOrig + ' -> ' + this.getError() + ' ' + value);
             this.acc.getService(subtype).updateCharacteristic(this.hap.Characteristic[characteristic], value);
         }));
@@ -220,6 +227,7 @@ module.exports = class Accessory {
             if (typeof transform === 'function') {
                 value = transform(value, this.hap.Characteristic[characteristic]);
             }
+
             const force = this.ccu.values[datapointName] && this.ccu.values[datapointName].stable === false;
             const [iface, channel, dp] = datapointName.split('.');
             this.node.debug('set ' + this.config.name + ' (' + subtype + ') ' + characteristic + ' ' + valueOrig + ' -> ' + datapointName + ' ' + value);
@@ -267,6 +275,7 @@ module.exports = class Accessory {
         } else {
             res = !(this.config.options[addr] && this.config.options[addr].disabled);
         }
+
         this.node.debug('option ' + addr + ' ' + id + ' ' + option + ' ' + res);
         return res;
     }
@@ -278,6 +287,7 @@ module.exports = class Accessory {
         } else if (p > 100) {
             p = 100;
         }
+
         return p;
     }
 

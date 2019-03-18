@@ -21,6 +21,7 @@ module.exports = class HmipEtrv extends Accessory {
                     // Auto / Party
                     target = 3;
             }
+
             return target;
         }
 

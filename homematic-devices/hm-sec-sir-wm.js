@@ -52,6 +52,7 @@ module.exports = class HmSecSir extends Accessory {
                         break;
                     default:
                 }
+
                 this.currentState = val;
                 return val;
             })
@@ -66,6 +67,7 @@ module.exports = class HmSecSir extends Accessory {
                         break;
                     default:
                 }
+
                 this.currentState = val;
                 return val;
             })
@@ -80,6 +82,7 @@ module.exports = class HmSecSir extends Accessory {
                         break;
                     default:
                 }
+
                 this.currentState = value;
                 return val;
             })

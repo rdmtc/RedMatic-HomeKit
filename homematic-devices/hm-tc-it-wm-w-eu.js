@@ -39,6 +39,7 @@ module.exports = class HmTcItWmWEu extends Accessory {
                     break;
                 default:
             }
+
             return controlMode === 3 ? 1 : target;
         }
 
@@ -168,6 +169,7 @@ module.exports = class HmTcItWmWEu extends Accessory {
                         dp = 'AUTO_MODE';
                         value = true;
                     }
+
                     this.ccuSetValue(config.iface + '.' + config.description.ADDRESS + ':2.' + dp, value, res => {
                         links.forEach((link, i) => {
                             const linkedDevice = link.split(':')[0];

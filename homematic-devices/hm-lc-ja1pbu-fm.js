@@ -69,6 +69,7 @@ module.exports = class HmLcJa1 extends Accessory {
                 value = levelSlats;
                 dp = config.deviceAddress + ':1.LEVEL_SLATS';
             }
+
             that.ccuSetValue(dp, value, error => {
                 if (error) {
                     service.updateCharacteristic('TargetPosition', error);

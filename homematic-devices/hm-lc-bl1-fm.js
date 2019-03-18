@@ -27,6 +27,7 @@ module.exports = class HmLcBl1 extends Accessory {
                 if (typeof targetPosition === 'undefined') {
                     targetPosition = value;
                 }
+
                 return targetPosition * 100;
             })
 
@@ -37,6 +38,7 @@ module.exports = class HmLcBl1 extends Accessory {
                 } else if (value === 100 && intermediatePosition === 100) {
                     intermediatePosition = 99;
                 }
+
                 node.debug(config.name + ' intermediatePosition ' + intermediatePosition);
                 service.update('CurrentPosition', intermediatePosition);
                 return targetPosition;

@@ -22,6 +22,7 @@ module.exports = class HmipWth extends Accessory {
                     // Auto / Party
                     target = 3;
             }
+
             return target;
         }
 

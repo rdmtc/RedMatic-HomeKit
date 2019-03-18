@@ -20,6 +20,7 @@ function addService(type, dp, name) {
                 });
             break;
         }
+
         case 'Lightbulb':
         // intentional fallthrough
         case 'Fan':
@@ -56,6 +57,7 @@ class AccMultiService extends Accessory {
             if (!this.option(i) || !(ccu.metadata.devices[config.iface][ch] && ccu.metadata.devices[config.iface][ch].TYPE === 'SWITCH')) {
                 continue;
             }
+
             const name = ccu.channelNames[ch];
             const dp = config.iface + '.' + ch + '.STATE';
             const type = this.option(i, 'type') || 'Switch';
@@ -85,6 +87,7 @@ module.exports = class GenericSwitch {
                 if (!this.option(ch) || !(ccu.metadata.devices[config.iface][ch] && ccu.metadata.devices[config.iface][ch].TYPE === 'SWITCH')) {
                     continue;
                 }
+
                 const name = ccu.channelNames[ch];
 
                 const chConfig = Object.assign({}, config, {accChannel: ch, name});

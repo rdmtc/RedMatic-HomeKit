@@ -46,19 +46,23 @@ module.exports = function (RED) {
                 this.error('ccu.channelNames missing');
                 return;
             }
+
             if (!this.ccu.metadata.devices) {
                 this.error('ccu.metadata.devices missing');
                 return;
             }
+
             if (!this.devices) {
                 this.devices = {};
             }
+
             const queue = [];
 
             Object.keys(this.ccu.channelNames).forEach(address => {
                 if (this.devices[address] && this.devices[address].disabled) {
                     return;
                 }
+
                 if (!address.match(/:\d+$/)) {
                     const iface = this.ccu.findIface(address);
                     if (iface && this.ccu.enabledIfaces.includes(iface) && this.ccu.metadata.devices[iface]) {
@@ -98,10 +102,12 @@ module.exports = function (RED) {
                 this.error('invalid homematic device type ' + type);
                 return;
             }
+
             type = type.toLowerCase();
             if (!homematicValidDevices.includes(type)) {
                 return;
             }
+
             if (!this.homematicDevices[type]) {
                 try {
                     this.homematicDevices[type] = require('../homematic-devices/' + type);
@@ -111,6 +117,7 @@ module.exports = function (RED) {
                     return;
                 }
             }
+
             if (this.homematicDevices[type] && typeof this.homematicDevices[type] === 'function') {
                 try {
                     return new this.homematicDevices[type](dev, this);
@@ -120,6 +127,7 @@ module.exports = function (RED) {
                     return;
                 }
             }
+
             this.error('invalid homematic-devices/' + type);
         }
 

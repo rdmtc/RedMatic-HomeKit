@@ -47,6 +47,7 @@ module.exports = function (RED) {
                             } else {
                                 msg.payload = RED.util.evaluateNodeProperty(this.payload, this.payloadType, this, msg);
                             }
+
                             this.send(msg);
                         } catch (error) {
                             this.error(error, msg);
@@ -67,6 +68,7 @@ module.exports = function (RED) {
                         acc.getService(subtype).updateCharacteristic(hap.Characteristic.On, false);
                     }, 250);
                 }
+
                 callback();
             };
 

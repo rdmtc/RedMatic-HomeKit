@@ -39,6 +39,7 @@ module.exports = function (RED) {
                     this.debug('addService ' + s.subtype + ' ' + s.service + ' ' + s.name);
                     service = acc.addService(hap.Service[s.service], s.name, s.subtype);
                 }
+
                 service.characteristics.forEach(c => {
                     this.addListener(s.subtype, c);
                 });
@@ -51,6 +52,7 @@ module.exports = function (RED) {
                     if (!this.hasListener(subtype, c)) {
                         this.addListener(subtype, service.getCharacteristic(hap.Characteristic[c]));
                     }
+
                     if (typeof msg.payload === 'object') {
                         this.debug('setProps ' + msg.topic + ' ' + JSON.stringify(msg.payload));
                         service.getCharacteristic(hap.Characteristic[c]).setProps(msg.payload);

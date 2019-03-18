@@ -13,9 +13,11 @@ module.exports = class HmSecKey extends Accessory {
             if (jammed) {
                 return hap.Characteristic.LockCurrentState.JAMMED;
             }
+
             if (unknown) {
                 return hap.Characteristic.LockCurrentState.UNKNOWN;
             }
+
             return state;
         }
 

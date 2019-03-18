@@ -19,6 +19,7 @@ module.exports = class HmLcDim extends Accessory {
                         } else {
                             value = valueBrightness / 100;
                         }
+
                         this.ccuSetValue(config.deviceAddress + ':1.LEVEL', value, callback);
                     }, 100);
                 } else {

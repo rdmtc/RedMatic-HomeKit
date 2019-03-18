@@ -175,6 +175,7 @@ module.exports = function (RED) {
                 if (!state) {
                     stop();
                 }
+
                 this.debug('update Valve 0 InUse ' + msg.value);
                 service.updateCharacteristic(hap.Characteristic.InUse, msg.value);
                 this.debug('update Valve 0 Active ' + msg.value ? 1 : 0);
@@ -255,6 +256,7 @@ module.exports = function (RED) {
                         if (this.remaining === 0 && !state) {
                             this.status({fill: 'grey', shape: 'ring', text: (this.onTime * 60) + 's'});
                         }
+
                         this.debug('update Valve 0 SetDuration ' + this.onTime * 60);
                         service.updateCharacteristic(hap.Characteristic.SetDuration, this.onTime * 60);
                     }

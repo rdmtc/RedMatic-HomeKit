@@ -31,6 +31,7 @@ module.exports = class HmCcRtDn extends Accessory {
                     break;
                 default:
             }
+
             return controlMode === 3 ? 1 : target;
         }
 

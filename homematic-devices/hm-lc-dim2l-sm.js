@@ -32,6 +32,7 @@ module.exports = class HmLcDim2 extends Accessory {
                             } else {
                                 value = valueBrightness / 100;
                             }
+
                             this.ccuSetValue(dp, value, callback);
                         }, 100);
                     } else {

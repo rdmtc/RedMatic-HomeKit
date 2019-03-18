@@ -29,10 +29,12 @@ module.exports = function (RED) {
                 this.error('username missing');
                 return;
             }
+
             if (!config.pincode) {
                 this.error('pincode missing');
                 return;
             }
+
             if (!config.port) {
                 this.error('port missing');
                 return;
@@ -53,6 +55,7 @@ module.exports = function (RED) {
                 this.bridge = new hap.Bridge(this.name, hap.uuid.generate(this.username));
                 bridges[this.username] = this.bridge;
             }
+
             this.waitForAccessories();
 
             this.on('close', (remove, done) => {
@@ -60,6 +63,7 @@ module.exports = function (RED) {
                 //    this.bridge.unpublish();
                 //    this.log('unpublished bridge ' + this.name + ' ' + this.username + ' on port ' + this.port);
                 }
+
                 done();
             });
         }
@@ -136,6 +140,7 @@ module.exports = function (RED) {
                 acc = new hap.Accessory(config.name, uuid, hap.Accessory.Categories.OTHER);
                 this.bridge.addBridgedAccessory(acc);
             }
+
             this.waitForAccessories();
 
             return acc;

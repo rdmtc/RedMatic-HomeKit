@@ -89,6 +89,7 @@ module.exports = class GenericContactSensor {
                 if (!this.option(ch)) {
                     continue;
                 }
+
                 const name = ccu.channelNames[ch];
 
                 const chConfig = Object.assign({}, config, {accChannel: ch, name});

@@ -24,6 +24,7 @@ module.exports = class HmEsPmsw1 extends Accessory {
                     });
                 break;
             }
+
             case 'Lightbulb':
             // intentional fallthrough
             case 'Fan':

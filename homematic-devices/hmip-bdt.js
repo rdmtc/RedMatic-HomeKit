@@ -19,6 +19,7 @@ module.exports = class HmipBdt extends Accessory {
                         } else {
                             value = valueBrightness / 100;
                         }
+
                         this.ccuSetValue(config.deviceAddress + ':4.LEVEL', value, callback);
                     }, 100);
                 } else {

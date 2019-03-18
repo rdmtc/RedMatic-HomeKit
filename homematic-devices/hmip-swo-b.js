@@ -17,6 +17,7 @@ module.exports = class HmipSwo extends Accessory {
             this.addService('HumiditySensor', config.name, 'HumiditySensor')
                 .get('CurrentRelativeHumidity', config.deviceAddress + ':1.HUMIDITY');
         }
+
         if (this.option('LightSensor')) {
             this.addService('LightSensor', config.name, 'LightSensor')
                 .get('CurrentAmbientLightLevel', config.deviceAddress + ':1.ILLUMINATION');
