@@ -252,6 +252,7 @@ module.exports = function (RED) {
                 }
 
                 this.status({fill, shape, text});
+                this.send({topic: this.name, payload: this.valueCurrent === 1, text, CurrentDoorState: this.valueCurrent, ObstructionDetected: obstruction, TargetDoorState: this.valueTarget});
 
                 this.debug('update GarageDoorOpener 0 CurrentDoorState ' + this.valueCurrent);
                 service.updateCharacteristic(hap.Characteristic.CurrentDoorState, this.valueCurrent);
@@ -326,6 +327,39 @@ module.exports = function (RED) {
                     callback(new Error(hap.HAPServer.Status.SERVICE_COMMUNICATION_FAILURE));
                 });
             };
+
+            this.on('input', msg => {
+                let value;
+                switch (msg.payload) {
+                    case 'close':
+                        value = 1;
+                        break;
+                    case 'open':
+                        value = 0;
+                        break;
+                    default:
+                        value = value ? 1 : 0;
+                }
+
+                if (!this.moving && this.valueCurrent === value) {
+                    return;
+                }
+
+                const revert = this.moving && ((this.moving - 2) !== value);
+
+                this.moving = value + 2;
+                this.lastMove = this.moving;
+                this.valueTarget = value;
+
+                move(value, revert).then(() => {
+                    this.timer = setTimeout(() => {
+                        this.moving = false;
+                        this.updateSensor(true);
+                    }, (value ? config.duration : config.durationClose) * 1000);
+                }).catch(error => {
+                    this.error(error);
+                });
+            });
 
             service.getCharacteristic(hap.Characteristic.CurrentDoorState).on('get', getCurrentDoorStateListener);
             service.getCharacteristic(hap.Characteristic.TargetDoorState).on('get', getTargetDoorStateListener);

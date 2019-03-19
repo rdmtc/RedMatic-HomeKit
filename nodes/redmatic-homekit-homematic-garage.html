@@ -21,8 +21,8 @@
             durationClose: {value: 15, required: true},
             revertTime: {value: 0.5, required: true}
         },
-        inputs: 0,
-        outputs: 0,
+        inputs: 1,
+        outputs: 1,
         icon: 'homekit2.png',
         color: '#E2D96E',
         paletteLabel: 'garage',
@@ -355,5 +355,62 @@
 </script>
 
 <script type="text/x-red" data-help-name="redmatic-homekit-homematic-garage">
+<h3>Inputs</h3>
+    <dl class="message-properties">
+        <dt>payload
+            <span class="property-type">string</span>
+        </dt>
+        <dd><code>open</code> oder <code>close</code> </dd>
+    </dl>
+<h3>Outputs</h3>
+    <dl class="message-properties">
+        <dt>payload
+            <span class="property-type">boolean</span>
+        </dt>
+        <dd><code>true</code> wenn das Tor geschlossen ist, anderenfalls <code>false</code> </dd>
 
+        <dt>text
+            <span class="property-type">string</span>
+        </dt>
+        <dd>
+            <ul>
+                <li><code>open</code></li>
+                <li><code>closed</code></li>
+                <li><code>opening</code></li>
+                <li><code>closed</code></li>
+                <li><code>stopped</code></li>
+                <li><code>obstruction</code></li>
+             </ul>
+         </dd>
+
+        <dt>CurrentDoorState
+            <span class="property-type">number</span>
+        </dt>
+        <dd>
+            <ul>
+                <li><code>0</code> (open)</li>
+                <li><code>1</code> (closed)</li>
+                <li><code>2</code> (opening)</li>
+                <li><code>3</code> (closed)</li>
+                <li><code>4</code> (stopped)</li>
+             </ul>
+        </dd>
+
+        <dt>TargetDoorState
+            <span class="property-type">number</span>
+        </dt>
+        <dd>
+            <ul>
+                <li><code>0</code> (open)</li>
+                <li><code>1</code> (closed)</li>
+             </ul>
+        </dd>
+
+        <dt>ObstructionDetected
+            <span class="property-type">boolean</span>
+        </dt>
+        <dd>
+
+        </dd>
+    </dl>
 </script>
