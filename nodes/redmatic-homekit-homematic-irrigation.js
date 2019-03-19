@@ -13,12 +13,10 @@ module.exports = function (RED) {
                 return;
             }
 
-            this.debug('irrigation constructor');
-
             this.iface = config.iface;
 
             this.onTime = this.context().get('onTime') || parseFloat(config.onTime) || 5;
-            this.remaining = 0;
+            this.remaining = this.onTime * 60;
 
             const channel = config.channel.split(' ')[0];
 
@@ -34,6 +32,7 @@ module.exports = function (RED) {
                 return new Promise((resolve, reject) => {
                     this.ccu.setValue(config.iface, channel, 'STATE', false)
                         .then(() => {
+                            // this.state = false;
                             this.status({fill: 'grey', shape: 'ring', text: (this.onTime * 60) + 's'});
                             this.send([{topic: config.topic, payload: false}, {topic: config.topic, payload: this.onTime}]);
                             resolve();
@@ -42,6 +41,7 @@ module.exports = function (RED) {
                             // try again
                             this.ccu.setValue(config.iface, channel, 'STATE', false)
                                 .then(() => {
+                                    this.state = false;
                                     this.send([{topic: config.topic, payload: false}, {topic: config.topic, payload: this.onTime}]);
                                     this.status({fill: 'grey', shape: 'ring', text: (this.onTime * 60) + 's'});
                                     resolve();
@@ -79,12 +79,13 @@ module.exports = function (RED) {
                         const ps = this.ccu.getParamsetDescription(config.iface, dev, 'VALUES');
                         if (ps && ps.STATE) {
                             if (ps.ON_TIME) {
-                                this.debug('starting with ON_TIME');
+                                this.debug('starting with ON_TIME ' + (this.onTime * 60));
 
                                 this.ccu.methodCall(config.iface, 'putParamset', [channel, 'VALUES', {
-                                    STATE: true,
-                                    ON_TIME: this.onTime * 60
+                                    ON_TIME: this.ccu.paramCast(config.iface, channel, 'VALUES', 'ON_TIME', this.onTime * 60),
+                                    STATE: true
                                 }]).then(() => {
+                                    // this.state = true;
                                     this.remaining = this.onTime * 60;
                                     this.debug('update Valve 0 RemainingDuration ' + this.remaining);
                                     service.updateCharacteristic(hap.Characteristic.RemainingDuration, this.remaining);
@@ -94,7 +95,6 @@ module.exports = function (RED) {
                                     this.debug('update Valve 0 InUse true');
                                     service.updateCharacteristic(hap.Characteristic.Active, true);
 
-                                    this.log('start resolve!');
                                     resolve();
                                     startInterval();
                                 }).catch(reject);
@@ -102,6 +102,7 @@ module.exports = function (RED) {
                                 this.debug('starting with timeout');
                                 this.ccu.setValue(config.iface, channel, 'STATE', true)
                                     .then(() => {
+                                        // this.state = true;
                                         this.remaining = this.onTime * 60;
                                         this.debug('update Valve 0 RemainingDuration ' + this.remaining);
                                         service.updateCharacteristic(hap.Characteristic.RemainingDuration, this.remaining);
@@ -113,7 +114,6 @@ module.exports = function (RED) {
                                         setTimeout(() => {
                                             stop();
                                         }, (this.onTime * 60 * 1000) + 1000);
-                                        this.log('start resolve!');
                                         resolve();
                                         startInterval();
                                     })
@@ -152,15 +152,13 @@ module.exports = function (RED) {
 
             this.debug('update Valve 0 ValveType 1');
             service.updateCharacteristic(hap.Characteristic.ValveType, 1);
-            this.debug('update Valve 0 RemainingDuration ' + this.onTime * 60);
-            service.updateCharacteristic(hap.Characteristic.RemainingDuration, this.onTime * 60);
-            this.debug('update Valve 0 SetDuration ' + this.onTime * 60);
+            this.debug('update Valve 0 RemainingDuration ' + (this.onTime * 60));
+            service.updateCharacteristic(hap.Characteristic.RemainingDuration, 0);
+            this.debug('update Valve 0 SetDuration ' + (this.onTime * 60));
             service.updateCharacteristic(hap.Characteristic.SetDuration, this.onTime * 60);
 
-            let state = false;
-
-            let changeTimer;
             let changeExpected;
+            let changeTimer;
 
             this.debug('ccu subscribe ' + config.iface + ' ' + channel);
             this.ccu.subscribe({
@@ -171,18 +169,21 @@ module.exports = function (RED) {
                 change: true,
                 stable: true
             }, msg => {
-                state = msg.value;
-                if (!state) {
+                this.state = msg.value;
+                if (!this.state) {
                     stop();
                 }
 
+                this.debug('this.state=' + this.state);
                 this.debug('update Valve 0 InUse ' + msg.value);
                 service.updateCharacteristic(hap.Characteristic.InUse, msg.value);
-                this.debug('update Valve 0 Active ' + msg.value ? 1 : 0);
+                this.debug('update Valve 0 Active ' + (msg.value ? 1 : 0));
                 service.updateCharacteristic(hap.Characteristic.Active, msg.value ? 1 : 0);
                 if (!changeExpected) {
-                    this.status({fill: state ? 'green' : 'grey', shape: 'ring', text: '?'});
+                    this.status({fill: this.state ? 'green' : 'grey', shape: 'ring', text: '?'});
                     this.send([{topic: config.topic, payload: true}, {topic: config.topic, payload: 0}]);
+                    this.debug('update Valve 0 RemainingDuration 0');
+                    service.updateCharacteristic(hap.Characteristic.RemainingDuration, 0);
                 }
             });
 
@@ -190,6 +191,7 @@ module.exports = function (RED) {
                 this.debug('set Valve 0 Active ' + value);
                 changeExpected = true;
                 clearTimeout(changeExpected);
+                clearTimeout(changeTimer);
                 changeTimer = setTimeout(() => {
                     changeExpected = false;
                 }, 5000);
@@ -213,25 +215,21 @@ module.exports = function (RED) {
             };
 
             const getActive = callback => {
-                this.debug('get Valve 0 Active ' + (state ? 1 : 0));
-                callback(state ? 1 : 0);
+                this.debug('get Valve 0 Active ' + (this.state ? 1 : 0));
+                callback(this.state ? 1 : 0);
             };
 
             const getInUse = callback => {
-                this.debug('get Valve 0 InUse ' + state);
-                callback(state);
+                this.debug('get Valve 0 InUse ' + this.state);
+                callback(this.state);
             };
 
             const setSetDuration = (value, callback) => {
                 this.debug('set Valve 0 SetDuration ' + value);
                 this.onTime = value / 60;
                 this.context().set('onTime', this.onTime);
+                this.status({fill: 'grey', shape: 'ring', text: value + 's'});
                 callback();
-            };
-
-            const getSetDuration = callback => {
-                this.debug('get Valve 0 SetDuration ' + this.onTime * 60);
-                callback(this.onTime * 60);
             };
 
             const getRemainingDuration = callback => {
@@ -240,25 +238,24 @@ module.exports = function (RED) {
                 callback(res);
             };
 
-            const setRemainingDuration = (value, callback) => {
-                this.debug('set Valve 0 RemainingDuration ' + value);
-                callback();
-            };
-
             this.on('input', msg => {
                 if (typeof msg.payload === 'boolean') {
-                    msg.payload ? start() : stop();
+                    if (msg.payload) {
+                        start();
+                    } else {
+                        stop();
+                    }
                 } else {
                     const time = parseFloat(msg.payload) || 0;
                     if (time) {
                         this.onTime = time;
                         this.context().set('onTime', this.onTime);
-                        if (this.remaining === 0 && !state) {
+                        if (this.remaining === 0 && !this.state) {
                             this.status({fill: 'grey', shape: 'ring', text: (this.onTime * 60) + 's'});
                         }
 
-                        this.debug('update Valve 0 SetDuration ' + this.onTime * 60);
-                        service.updateCharacteristic(hap.Characteristic.SetDuration, this.onTime * 60);
+                        this.debug('update Valve 0 SetDuration ' + (this.onTime * 60));
+                        service.updateCharacteristic(hap.Characteristic.SetDuration, (this.onTime * 60));
                     }
                 }
             });
@@ -267,18 +264,14 @@ module.exports = function (RED) {
             service.getCharacteristic(hap.Characteristic.Active).on('set', setActive);
             service.getCharacteristic(hap.Characteristic.InUse).on('get', getInUse);
             service.getCharacteristic(hap.Characteristic.SetDuration).on('set', setSetDuration);
-            service.getCharacteristic(hap.Characteristic.SetDuration).on('get', getSetDuration);
             service.getCharacteristic(hap.Characteristic.RemainingDuration).on('get', getRemainingDuration);
-            service.getCharacteristic(hap.Characteristic.RemainingDuration).on('set', setRemainingDuration);
 
             this.on('close', () => {
                 service.getCharacteristic(hap.Characteristic.Active).removeListener('get', getActive);
                 service.getCharacteristic(hap.Characteristic.Active).removeListener('set', setActive);
                 service.getCharacteristic(hap.Characteristic.InUse).removeListener('get', getInUse);
                 service.getCharacteristic(hap.Characteristic.SetDuration).removeListener('set', setSetDuration);
-                service.getCharacteristic(hap.Characteristic.SetDuration).removeListener('get', getSetDuration);
                 service.getCharacteristic(hap.Characteristic.RemainingDuration).removeListener('get', getRemainingDuration);
-                service.getCharacteristic(hap.Characteristic.RemainingDuration).removeListener('set', setRemainingDuration);
             });
         }
     }

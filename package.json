@@ -1,6 +1,6 @@
 {
   "name": "redmatic-homekit",
-  "version": "2.0.4",
+  "version": "2.1.0",
   "description": "RedMatic based HomeKit Addon for the CCU3 and RaspberryMatic",
   "main": "none",
   "author": "Sebastian Raff <hobbyquaker@gmail.com>",
@@ -10,6 +10,7 @@
       "redmatic-homekit-bridge": "nodes/redmatic-homekit-bridge.js",
       "redmatic-homekit-homematic-devices": "nodes/redmatic-homekit-homematic-devices.js",
       "redmatic-homekit-homematic-garage": "nodes/redmatic-homekit-homematic-garage.js",
+      "redmatic-homekit-homematic-irrigation": "nodes/redmatic-homekit-homematic-irrigation.js",
       "redmatic-homekit-switch": "nodes/redmatic-homekit-switch.js",
       "redmatic-homekit-pseudobutton": "nodes/redmatic-homekit-pseudobutton.js",
       "redmatic-homekit-statelessprogrammableswitch": "nodes/redmatic-homekit-statelessprogrammableswitch.js",
