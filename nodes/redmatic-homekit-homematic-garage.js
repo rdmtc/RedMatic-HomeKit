@@ -42,7 +42,7 @@ module.exports = function (RED) {
                     if (ps && ps.ON_TIME) {
                         this.ccu.methodCall(config.ifaceActuator, 'putParamset', [channel, 'VALUES', {
                             STATE: true,
-                            ON_TIME: parseFloat(config.onTime) || 0.4
+                            ON_TIME: this.ccu.paramCast(config.ifaceActuator, channel, 'VALUES', 'ON_TIME', config.onTime || 0.4)
                         }]).then(() => {
                             if (revert) {
                                 this.valueCurrent = 4;
