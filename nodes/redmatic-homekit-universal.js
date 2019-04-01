@@ -45,9 +45,7 @@ module.exports = function (RED) {
                 service.characteristics.forEach(c => {
                     this.addListener(s.subtype, c);
                 });
-                this.debug('...' + s.service)
                 if (s.service === 'Television') {
-                    this.debug('TV!!!')
                     tvService = s;
                 } else if (s.service === 'InputSource' || s.service === 'TelevisionSpeaker') {
                     tvServiceLinks.push(s);
