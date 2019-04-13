@@ -19,7 +19,7 @@
     }
   },
   "dependencies": {
-    "hap-nodejs": "0.4.48",
+    "hap-nodejs": "0.4.49",
     "homebridge-camera-ffmpeg": "0.1.11"
   },
   "devDependencies": {
