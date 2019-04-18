@@ -33,9 +33,6 @@ module.exports = function (RED) {
 
             this.listeners = [];
 
-            let tvService;
-            const tvServiceLinks = [];
-
             this.services.forEach(s => {
                 let service = acc.getService(s.subtype);
                 if (!service) {
@@ -46,20 +43,7 @@ module.exports = function (RED) {
                 service.characteristics.forEach(c => {
                     this.addListener(s.subtype, c);
                 });
-                if (s.service === 'Television') {
-                    tvService = s;
-                } else if (s.service === 'InputSource') { // || s.service === 'TelevisionSpeaker') {
-                    tvServiceLinks.push(s);
-                }
             });
-
-            if (tvService) {
-                this.debug('add linked services to ' + tvService.subtype + ' ' + tvService.service + ' ' + tvService.name);
-                tvServiceLinks.forEach(s => {
-                    this.debug('addLinkedService ' + s.subtype + ' ' + s.service + ' ' + s.name);
-                    acc.getService(tvService.subtype).addLinkedService(acc.getService(s.subtype));
-                });
-            }
 
             this.on('input', msg => {
                 const [subtype, c] = msg.topic.split('/');

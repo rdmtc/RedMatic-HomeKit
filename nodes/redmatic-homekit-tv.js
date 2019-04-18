@@ -11,7 +11,6 @@ module.exports = function (RED) {
     hap.init(path.join(RED.settings.userDir, 'homekit'));
 
     RED.httpAdmin.get('/redmatic-homekit-tv', (req, res) => {
-        console.log('homekit-tv', req.query.config, Object.keys(accessories));
         if (req.query.config) {
             const acc = accessories[req.query.config];
             if (acc) {
@@ -28,183 +27,237 @@ module.exports = function (RED) {
         constructor(config) {
             RED.nodes.createNode(this, config);
 
-            const that = this;
+            this.name = config.name || ('TV ' + config.id);
 
-            function logger(...args) {
-                let str = args.join(' ');
-                if (str.match(/^(error: )/i)) {
-                    str = str.replace(/^error: (.*)/i, '$1');
-                    that.error(str);
-                } else {
-                    that.debug(str);
-                }
-            }
+            let acc;
+            let tvService;
+            let speakerService;
 
-            if (accessories[this.id]) {
-                this.debug('tv already configured ' + this.name + ' ' + this.id + ' ' + this.username);
-                return;
-            }
+            if (!accessories[config.id]) {
+                acc = new Accessory(this.name, uuid.generate(config.id));
+                accessories[config.id] = acc;
 
-            const [firstLogger] = Object.keys(RED.settings.logging);
-            config.debug = (RED.settings.logging[firstLogger].level === 'debug' || RED.settings.logging[firstLogger].level === 'trace');
+                this.debug('tv created ' + this.name + ' ' + config.id + ' ' + config.username);
 
-            this.id = config.id;
-            this.pincode = config.pincode;
-            this.port = config.port;
-            this.username = config.username;
-            this.name = config.name || ('TV ' + this.id);
+                acc.getService(Service.AccessoryInformation)
+                    .setCharacteristic(hap.Characteristic.Manufacturer, 'RedMatic')
+                    .setCharacteristic(hap.Characteristic.Model, 'TV')
+                    .setCharacteristic(hap.Characteristic.SerialNumber, config.username)
+                    .setCharacteristic(hap.Characteristic.FirmwareRevision, pkg.version);
 
-            const tv = new Accessory(this.name, uuid.generate(config.id), Accessory.Categories.TELEVISION);
-            accessories[this.id] = tv;
+                tvService = acc.addService(Service.Television, this.name, 'Television');
 
-            this.debug('tv created ' + this.name + ' ' + this.id + ' ' + config.username);
+                tvService.setCharacteristic(Characteristic.ConfiguredName, this.name);
 
-            tv.getService(Service.AccessoryInformation)
-                .setCharacteristic(hap.Characteristic.Manufacturer, 'RedMatic')
-                .setCharacteristic(hap.Characteristic.Model, 'TV')
-                .setCharacteristic(hap.Characteristic.SerialNumber, config.username)
-                .setCharacteristic(hap.Characteristic.FirmwareRevision, pkg.version);
-
-            // Add the actual TV Service and listen for change events from iOS.
-            // We can see the complete list of Services and Characteristics in `lib/gen/HomeKitTypes.js`
-            const televisionService = tv.addService(Service.Television, 'Television', 'Television');
-
-            televisionService
-                .setCharacteristic(Characteristic.ConfiguredName, 'Television');
-
-            televisionService
-                .setCharacteristic(
+                tvService.setCharacteristic(
                     Characteristic.SleepDiscoveryMode,
                     Characteristic.SleepDiscoveryMode.ALWAYS_DISCOVERABLE
                 );
 
-            televisionService
-                .getCharacteristic(Characteristic.Active)
-                .on('set', (newValue, callback) => {
-                    console.log('set Active => setNewValue: ' + newValue);
-                    callback(null);
+                tvService.setCharacteristic(Characteristic.ActiveIdentifier, 1);
+
+                speakerService = acc.addService(Service.TelevisionSpeaker, this.name, 'Speaker');
+
+                speakerService
+                    .setCharacteristic(Characteristic.Active, Characteristic.Active.ACTIVE)
+                    .setCharacteristic(Characteristic.VolumeControlType, Characteristic.VolumeControlType.ABSOLUTE);
+
+                this.debug('creating ' + config.inputsources.length + ' input sources');
+                config.inputsources.forEach((src, i) => {
+                    const id = i + 1;
+                    const inputService = acc.addService(Service.InputSource, src.name, src.name);
+                    inputService
+                        .setCharacteristic(Characteristic.Identifier, id)
+                        .setCharacteristic(Characteristic.ConfiguredName, src.name)
+                        .setCharacteristic(Characteristic.IsConfigured, Characteristic.IsConfigured.CONFIGURED)
+                        .setCharacteristic(Characteristic.InputSourceType, src.type);
+
+                    tvService.addLinkedService(inputService);
                 });
 
-            televisionService
-                .setCharacteristic(Characteristic.ActiveIdentifier, 1);
+                //tvService.addLinkedService(speakerService);
 
-            televisionService
-                .getCharacteristic(Characteristic.ActiveIdentifier)
-                .on('set', (newValue, callback) => {
-                    console.log('set Active Identifier => setNewValue: ' + newValue);
-                    callback(null);
-                });
+                this.log('publishing tv ' + this.name + ' ' + config.username);
+                const testPort = net.createServer()
+                    .once('error', err => {
+                        this.error(err);
+                        this.status({fill: 'red', shape: 'dot', text: err.message});
+                    })
+                    .once('listening', () => {
+                        testPort.once('close', () => {
+                            acc.publish({
+                                username: config.username,
+                                port: config.port,
+                                pincode: config.pincode,
+                                category: Accessory.Categories.TELEVISION
+                            });
 
-            televisionService
-                .getCharacteristic(Characteristic.RemoteKey)
-                .on('set', (newValue, callback) => {
-                    console.log('set Remote Key => setNewValue: ' + newValue);
-                    callback(null);
-                });
+                            acc._server.on('listening', () => {
+                                this.log('tv ' + this.name + ' listening on port ' + config.port);
+                                this.status({shape: 'ring', fill: 'grey', text: ' '});
+                            });
 
-            televisionService
-                .getCharacteristic(Characteristic.PictureMode)
-                .on('set', (newValue, callback) => {
-                    console.log('set PictureMode => setNewValue: ' + newValue);
-                    callback(null);
-                });
+                            acc._server.on('pair', username => {
+                                this.log('tv ' + this.name + ' paired', username);
+                            });
 
-            televisionService
-                .getCharacteristic(Characteristic.PowerModeSelection)
-                .on('set', (newValue, callback) => {
-                    console.log('set PowerModeSelection => setNewValue: ' + newValue);
-                    callback(null);
-                });
+                            acc._server.on('unpair', username => {
+                                this.log('tv ' + this.name + ' unpaired', username);
+                            });
 
-            // Speaker
+                            acc._server.on('verify', () => {
+                                this.log('tv ' + this.name + ' verify');
+                            });
+                        }).close();
+                    })
+                    .listen(config.port);
+            } else {
+                this.debug('tv already existing ' + this.name + ' ' + config.id);
+                acc = accessories[config.id];
+                tvService = acc.getService('Television');
+                speakerService = acc.getService('Speaker');
+            }
 
-            const speakerService = tv.addService(Service.TelevisionSpeaker);
+            const setActive = (newValue, callback) => {
+                this.send({topic: 'Active', payload: Boolean(newValue)});
+                this.status({shape: newValue ? 'dot' : 'ring', fill: newValue ? 'blue' : 'grey'});
+                callback(null);
+            };
 
-            speakerService
-                .setCharacteristic(Characteristic.Active, Characteristic.Active.ACTIVE)
-                .setCharacteristic(Characteristic.VolumeControlType, Characteristic.VolumeControlType.ABSOLUTE);
+            const setActiveIdentifier = (newValue, callback) => {
+                this.status({shape: 'dot', fill: 'blue', text: config.inputsources[newValue - 1].name});
+                this.send({topic: 'InputSource', payload: config.inputsources[newValue - 1].name, identifier: newValue});
+                callback(null);
+            };
+
+            const setPowerModeSelection = (newValue, callback) => {
+                this.send({topic: 'PowerModeSelection', payload: newValue});
+                callback(null);
+            };
+
+            const setRemoteKey = (newValue, callback) => {
+                const msg = {topic: 'RemoteKey'};
+                switch (newValue) {
+                    case 0:
+                        msg.payload = 'REWIND';
+                        msg.lgtv = 'REWIND';
+                        break;
+                    case 1:
+                        msg.payload = 'FAST_FORWARD';
+                        msg.lgtv = 'FASTFORWARD';
+                        break;
+                    case 2:
+                        msg.payload = 'NEXT_TRACK';
+                        break;
+                    case 3:
+                        msg.payload = 'PREVIOUS_TRACK';
+                        break;
+                    case 4:
+                        msg.payload = 'ARROW_UP';
+                        msg.lgtv = 'UP';
+                        break;
+                    case 5:
+                        msg.payload = 'ARROW_DOWN';
+                        msg.lgtv = 'DOWN';
+                        break;
+                    case 6:
+                        msg.payload = 'ARROW_LEFT';
+                        msg.lgtv = 'LEFT';
+                        break;
+                    case 7:
+                        msg.payload = 'ARROW_RIGHT';
+                        msg.lgtv = 'RIGHT';
+                        break;
+                    case 8:
+                        msg.payload = 'SELECT';
+                        msg.lgtv = 'ENTER';
+                        break;
+                    case 9:
+                        msg.payload = 'BACK';
+                        msg.lgtv = 'BACK';
+                        break;
+                    case 10:
+                        msg.payload = 'EXIT';
+                        msg.lgtv = 'EXIT';
+                        break;
+                    case 11:
+                        msg.payload = 'PLAY_PAUSE';
+                        break;
+                    case 15:
+                        msg.payload = 'INFORMATION';
+                        msg.lgtv = 'INFO';
+                    default:
+                }
+                msg.characteristicValue = newValue;
+                this.send(msg);
+                callback(null);
+            };
+
+            const setVolumeSelector = (newValue, callback) => {
+                this.send({topic: 'VolumeSelector', payload: newValue ? 'VOLUMEDOWN' : 'VOLUMEUP'});
+                callback(null);
+            };
+
+            this.debug('add event listeners');
+
+            tvService.getCharacteristic(Characteristic.Active)
+                .on('set', setActive);
+
+            tvService.getCharacteristic(Characteristic.ActiveIdentifier)
+                .on('set', setActiveIdentifier);
+
+            tvService.getCharacteristic(Characteristic.RemoteKey)
+                .on('set', setRemoteKey);
+
+            tvService.getCharacteristic(Characteristic.PowerModeSelection)
+                .on('set', setPowerModeSelection);
 
             speakerService.getCharacteristic(Characteristic.VolumeSelector)
-                .on('set', (newValue, callback) => {
-                    console.log('set VolumeSelector => setNewValue: ' + newValue);
-                    callback(null);
-                });
+                .on('set', setVolumeSelector);
 
-            // HDMI 1
+            this.on('input', msg => {
+                switch (msg.topic) {
+                    case 'InputSource':
+                        let identifier = msg.payload;
+                        if (typeof msg.payload === 'string') {
+                            config.inputsources.forEach((src, i) => {
+                                if (msg.payload === src.name) {
+                                    identifier = i + 1;
+                                }
+                            });
+                        }
 
-            const inputHDMI1 = tv.addService(Service.InputSource, 'hdmi1', 'HDMI 1');
+                        if (config.inputsources[identifier - 1]) {
+                            this.debug('set ActiveIdentifier ' + identifier + ' (payload was ' + msg.payload + ')');
+                            this.status({shape: 'dot', fill: 'blue', text: config.inputsources[identifier - 1].name});
+                            tvService.updateCharacteristic(Characteristic.ActiveIdentifier, identifier);
+                        }
 
-            inputHDMI1
-                .setCharacteristic(Characteristic.Identifier, 1)
-                .setCharacteristic(Characteristic.ConfiguredName, 'HDMI 1')
-                .setCharacteristic(Characteristic.IsConfigured, Characteristic.IsConfigured.CONFIGURED)
-                .setCharacteristic(Characteristic.InputSourceType, Characteristic.InputSourceType.HDMI);
-
-            // HDMI 2
-
-            const inputHDMI2 = tv.addService(Service.InputSource, 'hdmi2', 'HDMI 2');
-
-            inputHDMI2
-                .setCharacteristic(Characteristic.Identifier, 2)
-                .setCharacteristic(Characteristic.ConfiguredName, 'HDMI 2')
-                .setCharacteristic(Characteristic.IsConfigured, Characteristic.IsConfigured.CONFIGURED)
-                .setCharacteristic(Characteristic.InputSourceType, Characteristic.InputSourceType.HDMI);
-
-            // Netflix
-
-            const inputNetflix = tv.addService(Service.InputSource, 'netflix', 'Netflix');
-
-            inputNetflix
-                .setCharacteristic(Characteristic.Identifier, 3)
-                .setCharacteristic(Characteristic.ConfiguredName, 'Netflix')
-                .setCharacteristic(Characteristic.IsConfigured, Characteristic.IsConfigured.CONFIGURED)
-                .setCharacteristic(Characteristic.InputSourceType, Characteristic.InputSourceType.APPLICATION);
-
-            televisionService.addLinkedService(inputHDMI1);
-            televisionService.addLinkedService(inputHDMI2);
-            televisionService.addLinkedService(inputNetflix);
-
-            tv.on('identify', (paired, callback) => {
-                this.log('identify ' + this.id + ' ' + this.username + ' ' + paired);
-                callback();
+                        break;
+                    default:
+                        this.debug('set Active ' + msg.payload);
+                        this.status({shape: msg.payload ? 'dot' : 'ring', fill: msg.payload ? 'blue' : 'grey'});
+                        tvService.updateCharacteristic(Characteristic.Active, msg.payload ? 1 : 0);
+                }
             });
 
-            this.log('publishing tv ' + this.name + ' ' + config.username);
-            const testPort = net.createServer()
-                .once('error', err => {
-                    this.error(err);
-                    this.status({fill: 'red', shape: 'dot', text: err.message});
-                })
-                .once('listening', () => {
-                    testPort.once('close', () => {
-                        tv.publish({
-                            username: config.username,
-                            port: config.port,
-                            pincode: config.pincode,
-                            category: Accessory.Categories.TELEVISION
-                        });
-
-                        tv._server.on('listening', () => {
-                            this.log('tv ' + this.name + ' listening on port ' + config.port);
-                            this.status({fill: 'green', shape: 'ring', text: ' '});
-                        });
-
-                        tv._server.on('pair', username => {
-                            this.log('tv ' + this.name + ' paired', username);
-                        });
-
-                        tv._server.on('unpair', username => {
-                            this.log('tv ' + this.name + ' unpaired', username);
-                        });
-
-                        tv._server.on('verify', () => {
-                            this.log('tv ' + this.name + ' verify');
-                        });
-                    }).close();
-                })
-                .listen(config.port);
-
             this.on('close', () => {
+                this.debug('remove event listeners');
+
+                tvService.getCharacteristic(Characteristic.Active)
+                    .removeListener('set', setActive);
+
+                tvService.getCharacteristic(Characteristic.ActiveIdentifier)
+                    .removeListener('set', setActiveIdentifier);
+
+                tvService.getCharacteristic(Characteristic.RemoteKey)
+                    .removeListener('set', setRemoteKey);
+
+                tvService.getCharacteristic(Characteristic.PowerModeSelection)
+                    .removeListener('set', setPowerModeSelection);
+
+                speakerService.getCharacteristic(Characteristic.VolumeSelector)
+                    .removeListener('set', setVolumeSelector);
             });
         }
     }

@@ -14,10 +14,16 @@
             port: {value: 51952, type: Number, required: true, validate: function (val) {
                     return val > 1024 && val < 65536;
                 }
+            },
+            inputsources: {
+                value: [
+                    {name: 'HDMI 1', type: 'HDMI'},
+                    {name: 'HDMI 2', type: 'HDMI'}
+                ]
             }
         },
-        inputs: 0,
-        outputs: 0,
+        inputs: 1,
+        outputs: 1,
         icon: 'homekit2.png',
         color: '#E2D96E',
         paletteLabel: 'tv',
@@ -45,10 +51,60 @@
                     new QRCode(document.getElementById("qrcode"), data.setupURI);
                 }
             });
+            const sourcetypes = [
+                'OTHER',
+                'HOME_SCREEN',
+                'TUNER',
+                'HDMI',
+                'COMPOSITE_VIDEO',
+                'S_VIDEO',
+                'COMPONENT_VIDEO',
+                'DVI',
+                'AIRPLAY',
+                'USB',
+                'APPLICATION'
+            ];
 
+            $('ol#inputsources').editableList({
+                removable: true,
+                sortable: true,
+                addItem: function (row, index, data) {
+                    let html = '<input class="name" value="' + (data.name || '') + '">';
+                    html += '<select class="sourcetype">';
+                    sourcetypes.forEach((s, i) => {
+                        const selected = s === data.type ? ' selected' : '';
+                        html += '<option value="' + i + '"' + selected + '>' + s + '</option>';
+                    });
+                    html += '</select>';
+                    $(row).html(html);
+
+                },
+                removeItem: function (data) {
+                    const inputsources = [];
+                    const items = $('ol#inputsources').editableList('items');
+                    items.each(function () {
+                        inputsources.push({
+                            name: $(this).find('.name').val(),
+                            type: $(this).find('.sourcetype').val()
+                        });
+                    });
+                    $('ol#inputsources').editableList('empty');
+                    $('ol#inputsources').editableList('addItems', services);
+                }
+            });
+
+            $('ol#inputsources').editableList('addItems', this.inputsources);
         },
         oneditsave() {
-
+            const items = $('ol#inputsources').editableList('items');
+            const inputsources = [];
+            items.each(function () {
+                inputsources.push({
+                    name: $(this).find('.name').val(),
+                    type: $(this).find('.sourcetype').val()
+                });
+            });
+            this.inputsources = inputsources;
         }
     });
 </script>
@@ -71,6 +127,26 @@
         <label for="node-input-port"><i class="icon-globe"></i> port</label>
         <input type="number" id="node-input-port">
     </div>
+    <style>
+        input.name {
+            width: calc(100% - 270px);
+            background-color: #ffffff;
+            border: 1px solid #ccc;
+            box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
+            height: 30px;
+            margin-right: 6px;
+            padding-right: 6px;
+            font-size: 14px;
+            line-height: 20px;
+            color: #555555;
+            vertical-align: middle;
+            border-radius: 4px;
+        }
+    </style>
+    <div class="form-row">
+        <ol id="inputsources">
+        </ol>
+    </div>
 
     <div class="form-fow" style="padding-top: 20px; display: flex; justify-content: center;">
         <div id="qrcode" style=""></div>
@@ -78,7 +154,6 @@
     <div class="form-fow" style="display: flex; justify-content: center;">
         <div id="uri" style=""></div>
     </div>
-
 
 </script>
 
