@@ -70,7 +70,9 @@ module.exports = function (RED) {
                         .setCharacteristic(Characteristic.Identifier, id)
                         .setCharacteristic(Characteristic.ConfiguredName, src.name)
                         .setCharacteristic(Characteristic.IsConfigured, Characteristic.IsConfigured.CONFIGURED)
-                        .setCharacteristic(Characteristic.InputSourceType, src.type);
+                        .setCharacteristic(Characteristic.InputSourceType, src.type)
+                        .setCharacteristic(Characteristic.CurrentVisibilityState, Characteristic.CurrentVisibilityState.SHOWN)
+                        .setCharacteristic(Characteristic.TargetVisibilityState, Characteristic.TargetVisibilityState.SHOWN);
 
                     tvService.addLinkedService(inputService);
                 });
