@@ -19,7 +19,8 @@ module.exports = class HmCcVg1 extends Accessory {
 
         const lowbatDps = {};
 
-        let valueDevice;
+        let valueChannel = null;
+        let humidityDp;
 
         const group = ccu.groups && ccu.groups[config.deviceAddress.replace(/VirtualDevices\.INT0*/, '')];
 
@@ -32,17 +33,18 @@ module.exports = class HmCcVg1 extends Accessory {
         group.groupMembers.forEach(member => {
             if (member.memberType.id.startsWith('HM-CC')) {
                 valveDevices.push('BidCos-RF.' + member.id);
-                valueDevice = valueDevice || ('BidCos-RF.' + member.id);
+                valueChannel = valueChannel || ('BidCos-RF.' + member.id + ':4');
             } else if (member.memberType.id.startsWith('HM-TC')) {
-                valueDevice = 'BidCos-RF.' + member.id;
+                valueChannel = 'BidCos-RF.' + member.id + ':2';
+                humidityDp = 'BidCos-RF.' + member.id + ':1.HUMIDITY';
             }
 
             lowbatDps['BidCos-RF.' + member.id + ':0.LOWBAT'] = false;
             node.debug(config.deviceAddress + ' member ' + member.memberType.id + ' ' + member.id);
         });
 
-        if (valueDevice) {
-            node.debug(config.deviceAddress + ' valueDevice ' + valueDevice);
+        if (valueChannel) {
+            node.debug(config.deviceAddress + ' valueChannel ' + valueChannel);
         } else {
             node.error(config.deviceAddress + ' group has neither thermostat nor valve device');
             return;
@@ -83,10 +85,10 @@ module.exports = class HmCcVg1 extends Accessory {
 
         serviceThermostat
             .setProps('CurrentTemperature', {minValue: -40, maxValue: 80})
-            .get('CurrentTemperature', valueDevice + ':2.ACTUAL_TEMPERATURE')
+            .get('CurrentTemperature', valueChannel + '.ACTUAL_TEMPERATURE')
 
             .setProps('TargetTemperature', {minValue: 4.5, maxValue: 30.5, minStep: 0.5})
-            .get('TargetTemperature', valueDevice + ':2.SET_TEMPERATURE', value => {
+            .get('TargetTemperature', valueChannel + '.SET_TEMPERATURE', value => {
                 valueSetpoint = value;
                 updateHeatingCoolingState();
                 return value;
@@ -94,7 +96,7 @@ module.exports = class HmCcVg1 extends Accessory {
             .set('TargetTemperature', config.deviceAddress + ':1.SET_TEMPERATURE')
 
             .setProps('CurrentHeatingCoolingState', {validValues: [0, 1], maxValue: 1})
-            .get('CurrentHeatingCoolingState', valueDevice + ':2.SET_TEMPERATURE', () => {
+            .get('CurrentHeatingCoolingState', valueChannel + '.SET_TEMPERATURE', () => {
                 setTimeout(() => {
                     updateHeatingCoolingState();
                 }, 1000);
@@ -102,7 +104,7 @@ module.exports = class HmCcVg1 extends Accessory {
             })
 
             .setProps('TargetHeatingCoolingState', {validValues: [0, 1, 3]})
-            .get('TargetHeatingCoolingState', valueDevice + ':2.SET_TEMPERATURE', () => {
+            .get('TargetHeatingCoolingState', valueChannel + '.SET_TEMPERATURE', () => {
                 setTimeout(() => {
                     updateHeatingCoolingState();
                 }, 1000);
@@ -170,7 +172,7 @@ module.exports = class HmCcVg1 extends Accessory {
         this.subscriptions.push(ccu.subscribe({
             cache: true,
             change: true,
-            datapointName: valueDevice + ':2.CONTROL_MODE'
+            datapointName: valueChannel + '.CONTROL_MODE'
         }, msg => {
             controlMode = msg.value;
             node.debug('update ' + config.name + ' controlMode ' + msg.value);
@@ -189,9 +191,9 @@ module.exports = class HmCcVg1 extends Accessory {
             });
         });
 
-        if (this.option('HumiditySensor')) {
+        if (this.option('HumiditySensor') && humidityDp) {
             this.addService('HumiditySensor', config.name, 'HumiditySensor')
-                .get('CurrentRelativeHumidity', valueDevice + ':2.ACTUAL_HUMIDITY');
+                .get('CurrentRelativeHumidity', humidityDp);
         }
 
         if (this.option('BoostSwitch')) {
@@ -212,7 +214,7 @@ module.exports = class HmCcVg1 extends Accessory {
                         callback(res);
                     });
                 })
-                .get('On', valueDevice + ':2.CONTROL_MODE', value => {
+                .get('On', valueChannel + '.CONTROL_MODE', value => {
                     return value === 3;
                 });
         }
