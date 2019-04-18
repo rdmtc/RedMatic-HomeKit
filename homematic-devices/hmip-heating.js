@@ -33,6 +33,7 @@ module.exports = class HmipHeating extends Accessory {
 
         const valveDevices = [];
         let valueDevice;
+        let humidityDp;
 
         const lowbatDps = {};
 
@@ -50,6 +51,7 @@ module.exports = class HmipHeating extends Accessory {
                 valueDevice = valueDevice || ('HmIP-RF.' + member.id);
             } else if (member.memberType.id.startsWith('WALLMOUNTED')) {
                 valueDevice = 'HmIP-RF.' + member.id;
+                humidityDp = 'HmIP-RF.' + member.id + '.HUMIDITY';
             }
 
             lowbatDps['HmIP-RF.' + (member.id.split(':')[0]) + ':0.LOW_BAT'] = false;
@@ -176,9 +178,9 @@ module.exports = class HmipHeating extends Accessory {
             });
         });
 
-        if (this.option('HumiditySensor')) {
+        if (this.option('HumiditySensor') && humidityDp) {
             this.addService('HumiditySensor', config.name)
-                .get('CurrentRelativeHumidity', valueDevice + '.HUMIDITY');
+                .get('CurrentRelativeHumidity', humidityDp);
         }
 
         if (this.option('BoostSwitch')) {
