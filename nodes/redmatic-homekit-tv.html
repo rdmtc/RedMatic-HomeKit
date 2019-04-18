@@ -72,7 +72,7 @@
                     let html = '<input class="name" value="' + (data.name || '') + '">';
                     html += '<select class="sourcetype">';
                     sourcetypes.forEach((s, i) => {
-                        const selected = s === data.type ? ' selected' : '';
+                        const selected = i === data.type ? ' selected' : '';
                         html += '<option value="' + i + '"' + selected + '>' + s + '</option>';
                     });
                     html += '</select>';
@@ -89,7 +89,7 @@
                         });
                     });
                     $('ol#inputsources').editableList('empty');
-                    $('ol#inputsources').editableList('addItems', services);
+                    $('ol#inputsources').editableList('addItems', inputsources);
                 }
             });
 
@@ -101,7 +101,7 @@
             items.each(function () {
                 inputsources.push({
                     name: $(this).find('.name').val(),
-                    type: $(this).find('.sourcetype').val()
+                    type: parseInt($(this).find('.sourcetype').val(), 10) || 0
                 });
             });
             this.inputsources = inputsources;
