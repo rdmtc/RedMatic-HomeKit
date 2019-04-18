@@ -138,7 +138,7 @@ module.exports = class Accessory {
     }
 
     getError() {
-        return this.unreach ? new Error(this.hap.HAPServer.Status.SERVICE_COMMUNICATION_FAILURE) : null;
+        return (this.unreach && !['HM-CC-VG-1', 'HmIP-HEATING'].includes(this.config.description.TYPE)) ? new Error(this.hap.HAPServer.Status.SERVICE_COMMUNICATION_FAILURE) : null;
     }
 
     subscribe(datapointName, callback) {
