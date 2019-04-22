@@ -21,7 +21,7 @@ module.exports = function (RED) {
             const channel = config.channel.split(' ')[0];
 
             this.status({fill: 'grey', shape: 'ring', text: (this.onTime * 60) + 's'});
-            this.send([{topic: config.topic, payload: false}, {topic: config.topic, payload: this.onTime}]);
+            this.send([{topic: config.topic, payload: false}, {topic: config.topic, payload: this.onTime * 60}]);
 
             const stop = () => {
                 clearInterval(this.interval);
