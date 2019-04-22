@@ -43,7 +43,7 @@ class Service {
 module.exports = class Accessory {
     constructor(config, node) {
         const {bridgeConfig, ccu} = node;
-        const {hap} = bridgeConfig;
+        const {hap, FakeGatoHistoryService} = bridgeConfig;
         this.ccu = ccu;
         this.hap = hap;
         this.node = node;

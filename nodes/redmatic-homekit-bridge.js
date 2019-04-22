@@ -42,6 +42,10 @@ module.exports = function (RED) {
 
             this.hap = hap;
 
+            const {EveHomeKitTypes} = require('homebridge-lib');
+            this.EveHomeKitTypes = new EveHomeKitTypes({hap});
+            this.FakeGatoHistoryService = require('fakegato-history')({hap});
+
             this.version = pkg.version;
 
             this.name = config.name || 'RedMatic';

@@ -42,6 +42,7 @@ module.exports = class HmSecSc extends Accessory {
 
             case 'Door':
             case 'Window':
+
                 service = this.addService(type, config.name, type);
 
                 service.update('PositionState', 2);
@@ -83,9 +84,19 @@ module.exports = class HmSecSc extends Accessory {
                 break;
 
             default:
-                this.addService('ContactSensor', config.name)
+
+                this.acc.log = {debug: console.log};
+                this.acc.loggingService = new this.node.bridgeConfig.FakeGatoHistoryService('door', this.acc);
+
+                const eve = this.node.bridgeConfig.EveHomeKitTypes;
+
+                this.acc.loggingService.addOptionalCharacteristic(eve.Characteristic.ResetTotal);
+
+                const serviceContactSensor = this.addService('ContactSensor', config.name)
                     .get('ContactSensorState', config.deviceAddress + ':1.STATE', (value, c) => {
-                        return value ? c.CONTACT_NOT_DETECTED : c.CONTACT_DETECTED;
+                        const status = value ? c.CONTACT_NOT_DETECTED : c.CONTACT_DETECTED;
+                        this.acc.loggingService.addEntry({time: Math.floor((new Date()).getTime() / 1000), status});
+                        return status;
                     })
 
                     .get('StatusLowBattery', config.deviceAddress + ':0.LOWBAT', (value, c) => {
@@ -95,6 +106,13 @@ module.exports = class HmSecSc extends Accessory {
                     .get('StatusTampered', config.deviceAddress + ':1.ERROR', value => {
                         return Boolean(value);
                     });
+
+                serviceContactSensor.addOptionalCharacteristic(eve.Characteristic.TimesOpened);
+
+                serviceContactSensor.addOptionalCharacteristic(eve.Characteristic.OpenDuration);
+                serviceContactSensor.addOptionalCharacteristic(eve.Characteristic.ClosedDuration);
+                serviceContactSensor.addOptionalCharacteristic(eve.Characteristic.LastActivation);
+
         }
     }
 };
