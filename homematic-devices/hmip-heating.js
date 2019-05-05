@@ -175,6 +175,7 @@ module.exports = class HmipHeating extends Accessory {
                     lowbat = lowbat || lowbatDps[ldp];
                 });
                 batteryService.update('StatusLowBattery', lowbat ? hap.Characteristic.StatusLowBattery.BATTERY_LEVEL_LOW : hap.Characteristic.StatusLowBattery.BATTERY_LEVEL_NORMAL);
+                batteryService.update('BatteryLevel', lowbat ? 0 : 100);
             });
         });
 
