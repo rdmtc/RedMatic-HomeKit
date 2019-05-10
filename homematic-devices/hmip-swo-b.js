@@ -10,8 +10,8 @@ module.exports = class HmipSwo extends Accessory {
             .get('StatusLowBattery', config.deviceAddress + ':0.LOW_BAT', (value, c) => {
                 return value ? c.BATTERY_LEVEL_LOW : c.BATTERY_LEVEL_NORMAL;
             })
-            .get('BatteryLevel', config.deviceAddress + ':0.OPERATING_VOLTAGE', val => {
-                return this.percent(val, null, 3, 4.5);
+            .get('BatteryLevel', config.deviceAddress + ':0.LOW_BAT', value => {
+                return value ? 0 : 100;
             })
             .update('ChargingState', 2);
 
