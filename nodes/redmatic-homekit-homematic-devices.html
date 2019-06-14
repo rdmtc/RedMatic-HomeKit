@@ -23,12 +23,55 @@
             let data;
             let homematicValidDevices;
 
+            function addVirtualChannels(addr, first, last, step, dropdowns) {
+                if (typeof dropdowns === 'undefined' && typeof step !== 'number') {
+                    dropdowns = step;
+                    step = 1;
+                }
+                for (let i = first; i <= last; i += step) {
+
+                    const ch = addr + ':' + i;
+                    const name = data.channelNames[ch];
+
+                    const vch1 = addr + ':' + (i + 1);
+                    const vname1 = data.channelNames[vch1];
+                    const vch2 = addr + ':' + (i + 2);
+                    const vname2 = data.channelNames[vch2];
+
+                    if (!that.devices[ch]) {
+                        that.devices[ch] = {};
+                    }
+                    if (!that.devices[vch1]) {
+                        that.devices[vch1] = {};
+                    }
+                    if (!that.devices[vch2]) {
+                        that.devices[vch2] = {};
+                    }
+
+                    let html = '';
+                    let vhtml1 = '';
+                    let vhtml2 = '';
+                    if (dropdowns) {
+                        Object.keys(dropdowns).forEach(option => {
+                            html += addDropdown(ch, option, dropdowns[option]);
+                            vhtml1 += addDropdown(vch1, option, dropdowns[option]);
+                            vhtml2 += addDropdown(vch2, option, dropdowns[option]);
+                        });
+                    }
+
+                    $('#devices').append('<tr class="device-options" data-addr="' + addr + '"><td></td><td class="text small"><input class="channel-enabled device-enabled" data-addr="' + ch + '" type="checkbox"' + (that.devices[ch].disabled ? '' : ' checked') + '>' + name + '</td><td class="text small">' + ch + '</td><td class="text small">' + html + '</td></tr>');
+                    $('#devices').append('<tr class="device-options" data-addr="' + addr + '"><td></td><td class="text small"><input class="vchannel-enabled device-enabled" data-addr="' + vch1 + '" type="checkbox"' + (that.devices[vch1].enabled ? ' checked' : '') + '>' + vname1 + '</td><td class="text small">' + vch1 + '</td><td class="text small">' + vhtml1 + '</td></tr>');
+                    $('#devices').append('<tr class="device-options" data-addr="' + addr + '"><td></td><td class="text small"><input class="vchannel-enabled device-enabled" data-addr="' + vch2 + '" type="checkbox"' + (that.devices[vch2].enabled ? ' checked' : '') + '>' + vname2 + '</td><td class="text small">' + vch2 + '</td><td class="text small">' + vhtml2 + '</td></tr>');
+                }
+            }
+
             function addChannels(addr, first, last, step, dropdowns) {
                 if (typeof dropdowns === 'undefined' && typeof step !== 'number') {
                     dropdowns = step;
                     step = 1;
                 }
                 for (let i = first; i <= last; i += step) {
+
                     const ch = addr + ':' + i;
                     const name = data.channelNames[ch];
                     let checked = true;
@@ -594,11 +637,10 @@
                 }
                 devices[addr][option] = $(this).val();
             });
-            $('.device-enabled').each(function () {
-
+            $('.device-enabled:not(.vchannel-enabled)').each(function () {
                  const addr = $(this).data('addr');
                  const enabled = $(this).is(':checked');
-                 console.log(addr, enabled);
+                 console.log('device, channel', addr, enabled);
                  if (enabled && devices[addr]) {
                      devices[addr].disabled = false;
                  } else if (!enabled) {
@@ -607,6 +649,19 @@
                      }
                      devices[addr].disabled = true;
                  }
+            });
+            $('.device-enabled.vchannel-enabled').each(function () {
+                const addr = $(this).data('addr');
+                const enabled = $(this).is(':checked');
+                console.log('vchannel', addr, enabled);
+                if (!enabled && devices[addr]) {
+                    devices[addr].enabled = false;
+                } else if (enabled) {
+                    if (!devices[addr]) {
+                        devices[addr] = {};
+                    }
+                    devices[addr].enabled = true;
+                }
             });
             this.devices = devices;
         }
@@ -642,7 +697,7 @@
             margin-top: -2px;
         }
 
-        .channel-enabled {
+        .channel-enabled, .vchannel-enabled {
             width: 11px !important;
             margin-top: -1px !important;
             margin-right: 2px !important;
