@@ -4,7 +4,9 @@ module.exports = class HmipBdt extends Accessory {
     init(config) {
         let valueBrightness = 0;
 
-        this.addService('Lightbulb', config.name)
+        const name = ccu.channelNames[config.deviceAddress + ':4'];
+
+        this.addService('Lightbulb', name)
 
             .get('On', config.deviceAddress + ':4.LEVEL', value => {
                 valueBrightness = value;
