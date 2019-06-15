@@ -1,10 +1,11 @@
 const Accessory = require('./lib/accessory');
 
 module.exports = class HmipBdt extends Accessory {
-    init(config) {
-        let valueBrightness = 0;
-
+    init(config, node) {
+        const {ccu} = node;
         const name = ccu.channelNames[config.deviceAddress + ':4'];
+
+        let valueBrightness = 0;
 
         this.addService('Lightbulb', name)
 
