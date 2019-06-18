@@ -1,0 +1,42 @@
+<script type="text/javascript">
+    RED.nodes.registerType('redmatic-homekit-zigbee-devices', {
+        category: 'redmatic homekit',
+        defaults: {
+            shepherd: {value: 'localhost', type: 'zigbee-shepherd', required: true},
+            bridgeConfig: {value: 'CC:22:3D:E3:CE:C7:51826', type: 'redmatic-homekit-bridge', required: true},
+            devices: {value: {}}
+        },
+        inputs: 0,
+        outputs: 0,
+        icon: 'homekit2.png',
+        color: '#E2D96E',
+        paletteLabel: 'zigbee',
+        align: 'left',
+        label() {
+            return this.name || 'zigbee';
+        },
+        labelStyle() {
+            return this.name ? 'node_label_italic' : '';
+        },
+        oneditprepare() {
+
+        },
+        oneditsave() {
+
+        }
+    });
+</script>
+
+<script type="text/x-red" data-template-name="redmatic-homekit-zigbee-devices">
+
+    <div class="form-row">
+        <label for="node-input-shepherd"><i class="icon-global"></i> shepherd</label>
+        <input type="text" id="node-input-shepherd">
+    </div>
+    <div class="form-row">
+        <label for="node-input-bridgeConfig"><i class="icon-globe"></i> Bridge</label>
+        <input type="text" id="node-input-bridgeConfig">
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="redmatic-homekit-zigbee-devices">

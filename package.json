@@ -16,7 +16,8 @@
       "redmatic-homekit-statelessprogrammableswitch": "nodes/redmatic-homekit-statelessprogrammableswitch.js",
       "redmatic-homekit-universal": "nodes/redmatic-homekit-universal.js",
       "redmatic-homekit-camera": "nodes/redmatic-homekit-camera.js",
-      "redmatic-homekit-tv": "nodes/redmatic-homekit-tv.js"
+      "redmatic-homekit-tv": "nodes/redmatic-homekit-tv.js",
+      "redmatic-homekit-zigbee-devices": "nodes/redmatic-homekit-zigbee-devices.js"
     }
   },
   "dependencies": {
