@@ -24,19 +24,6 @@ module.exports = class HmSecSir extends Accessory {
     init(config) {
         this.states = [false, false, false];
 
-        this.subscribe(config.deviceAddress + ':1.STATE', val => {
-            this.states[0] = val;
-            this.checkAlarm();
-        });
-        this.subscribe(config.deviceAddress + ':2.STATE', val => {
-            this.states[1] = val;
-            this.checkAlarm();
-        });
-        this.subscribe(config.deviceAddress + ':3.STATE', val => {
-            this.states[2] = val;
-            this.checkAlarm();
-        });
-
         this.serviceSecuritySystem = this.addService('SecuritySystem', config.name)
             .setProps('SecuritySystemCurrentState', {validValues: [0, 1, 3, 4]})
             .setProps('SecuritySystemTargetState', {validValues: [0, 1, 3]})
@@ -90,6 +77,19 @@ module.exports = class HmSecSir extends Accessory {
             .get('StatusTampered', config.deviceAddress + ':1.ERROR_SABOTAGE', value => {
                 return Boolean(value);
             });
+
+        this.subscribe(config.deviceAddress + ':1.STATE', val => {
+            this.states[0] = val;
+            this.checkAlarm();
+        });
+        this.subscribe(config.deviceAddress + ':2.STATE', val => {
+            this.states[1] = val;
+            this.checkAlarm();
+        });
+        this.subscribe(config.deviceAddress + ':3.STATE', val => {
+            this.states[2] = val;
+            this.checkAlarm();
+        });
 
         this.addService('BatteryService', config.name)
             .get('StatusLowBattery', config.deviceAddress + ':0.LOWBAT', (value, c) => {
