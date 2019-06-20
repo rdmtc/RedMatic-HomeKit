@@ -18,7 +18,7 @@ module.exports = class HmSecSir extends Accessory {
 
     checkAlarm() {
         const isTriggered = this.states[0] || this.states[1] || this.states[2];
-        this.update('SecuritySystemCurrentState', isTriggered ? 4 : this.currentState);
+        this.serviceSecuritySystem.update('SecuritySystemCurrentState', isTriggered ? 4 : this.currentState);
     }
 
     init(config) {
@@ -37,7 +37,7 @@ module.exports = class HmSecSir extends Accessory {
             this.checkAlarm();
         });
 
-        this.addService('SecuritySystem', config.name)
+        this.serviceSecuritySystem = this.addService('SecuritySystem', config.name)
             .setProps('SecuritySystemCurrentState', {validValues: [0, 1, 3, 4]})
             .setProps('SecuritySystemTargetState', {validValues: [0, 1, 3]})
 
