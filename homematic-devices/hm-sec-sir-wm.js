@@ -23,6 +23,7 @@ module.exports = class HmSecSir extends Accessory {
 
     init(config) {
         this.states = [false, false, false];
+        this.currentState = 0;
 
         this.serviceSecuritySystem = this.addService('SecuritySystem', config.name)
             .setProps('SecuritySystemCurrentState', {validValues: [0, 1, 3, 4]})
