@@ -23,6 +23,7 @@
             maxFPS: {value: 10},
             vcodec: {value: 'libx264'},
             audio: {value: '', type: 'boolean'},
+            debug: {value: false, type: 'boolean'},
             packetSize: {value: 1316},
             maxBitrate: {value: 300}
         },
@@ -126,6 +127,11 @@
     <div class="form-row">
         <label for="node-input-maxBitrate"><i class="icon-globe"></i> maxBitrate</label>
         <input type="number" id="node-input-maxBitrate">
+    </div>
+    <div class="form-row">
+        <label for="node-input-debug"><i class="icon-tag"></i> debug</label>
+        <div style="width: 70%; display: inline-block; vertical-align: text-top;">
+        <label><input type="checkbox" style="width: auto !important; margin-top: -3px;" id="node-input-debug"> Enabled</label>
     </div>
     <div class="form-fow" style="padding-top: 20px; display: flex; justify-content: center;">
         <div id="qrcode" style=""></div>
