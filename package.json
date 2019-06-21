@@ -1,6 +1,6 @@
 {
   "name": "redmatic-homekit",
-  "version": "2.3.3",
+  "version": "2.4.0",
   "description": "RedMatic based HomeKit Addon for the CCU3 and RaspberryMatic",
   "main": "none",
   "author": "Sebastian Raff <hobbyquaker@gmail.com>",
@@ -20,7 +20,7 @@
     }
   },
   "dependencies": {
-    "hap-nodejs": "0.4.49",
+    "hap-nodejs": "0.4.52",
     "homebridge-camera-ffmpeg": "0.1.11"
   },
   "devDependencies": {
