@@ -29,7 +29,7 @@ module.exports = class HmSecSir extends Accessory {
             .setProps('SecuritySystemCurrentState', {validValues: [0, 1, 3, 4]})
             .setProps('SecuritySystemTargetState', {validValues: [0, 1, 3]})
 
-            .get('SecuritySystemCurrentState', config.deviceAddress + ':1.ARMSTATE', value => {
+            .get('SecuritySystemCurrentState', config.deviceAddress + ':4.ARMSTATE', value => {
                 let val = 3;
                 switch (value) {
                     case 1:
@@ -44,7 +44,7 @@ module.exports = class HmSecSir extends Accessory {
                 this.currentState = val;
                 return val;
             })
-            .get('SecuritySystemTargetState', config.deviceAddress + ':1.ARMSTATE', value => {
+            .get('SecuritySystemTargetState', config.deviceAddress + ':4.ARMSTATE', value => {
                 let val = 3;
                 switch (value) {
                     case 1:
@@ -59,7 +59,7 @@ module.exports = class HmSecSir extends Accessory {
                 this.currentState = val;
                 return val;
             })
-            .set('SecuritySystemTargetState', config.deviceAddress + ':1.ARMSTATE', value => {
+            .set('SecuritySystemTargetState', config.deviceAddress + ':4.ARMSTATE', value => {
                 let val = 0;
                 switch (value) {
                     case 0:
@@ -75,7 +75,7 @@ module.exports = class HmSecSir extends Accessory {
                 return val;
             })
 
-            .get('StatusTampered', config.deviceAddress + ':1.ERROR_SABOTAGE', value => {
+            .get('StatusTampered', config.deviceAddress + ':4.ERROR_SABOTAGE', value => {
                 return Boolean(value);
             });
 
