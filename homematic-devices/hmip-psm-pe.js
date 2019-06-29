@@ -1,1 +1,1 @@
-module.exports = require('./hmip-psm-ch');
+module.exports = require('./hmip-psm');
