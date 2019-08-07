@@ -145,11 +145,11 @@ module.exports = function (RED) {
             } else if (status === this.ccu.enabledIfaces.length) {
                 this.status({fill: 'green', shape: 'dot', text: 'connected'});
                 if (!this.ccuConnected) {
+                    this.ccuConnected = true;
                     this.publishDevices(() => {
                         this.log('publish done');
                         this.bridgeConfig.waitForHomematic = false;
                         // this.bridgeConfig.emit('homematic-ready');
-                        this.ccuConnected = true;
                     });
                 }
             } else {
