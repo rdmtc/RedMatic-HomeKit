@@ -2,14 +2,18 @@
 
 [![NPM version](https://badge.fury.io/js/redmatic-homekit.svg)](http://badge.fury.io/js/redmatic-homekit)
 
+> HAP-Nodejs based Node-RED nodes to create (bridged) HomeKit Accessories
 
-> RedMatic based HomeKit Addon for the CCU3 and RaspberryMatic
 
-This package isn't meant to be installed manually, it is included in [RedMatic](https://github.com/rdmtc/RedMatic)
+Has a special node that automatically generates HomeKit accessories for Homematic devices connected via 
+[node-red-contrib-ccu](https://github.com/rdmtc/node-red-contrib-ccu) without any need for manual configuration.
 
-See https://github.com/rdmtc/RedMatic/wiki/Homekit
+This is kind of a sub-project of [RedMatic](https://github.com/rdmtc/RedMatic) but can be used also apart of RedMatic 
+and node-red-contrib-ccu. 
+
+Documentation only available in german until now: https://github.com/rdmtc/RedMatic/wiki/Homekit
 
 
 ## License
 
-© 2018 Sebastian Raff and RedMatic-HomeKit Contributors, licensed under [Apache License 2.0](LICENSE)
+© 2018, 2019 Sebastian Raff and RedMatic-HomeKit Contributors, licensed under [Apache License 2.0](LICENSE)
