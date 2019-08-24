@@ -5,8 +5,9 @@
 > HAP-Nodejs based Node-RED nodes to create (bridged) HomeKit Accessories
 
 
-Has a special node that automatically generates HomeKit accessories for Homematic devices connected via 
-[node-red-contrib-ccu](https://github.com/rdmtc/node-red-contrib-ccu) without any need for manual configuration.
+Offers special nodes to conveniently (auto-)create HomeKit accessories from Homematic devices connected via 
+[node-red-contrib-ccu](https://github.com/rdmtc/node-red-contrib-ccu) and universal Nodes to create arbitrary HomeKit
+accessories that can be used with anything available in Node-RED. 
 
 This is kind of a sub-project of [RedMatic](https://github.com/rdmtc/RedMatic) but can be used also apart of RedMatic 
 and node-red-contrib-ccu. 
