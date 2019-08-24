@@ -1,7 +1,7 @@
 {
   "name": "redmatic-homekit",
   "version": "2.4.0",
-  "description": "RedMatic based HomeKit Addon for the CCU3 and RaspberryMatic",
+  "description": "HAP-Nodejs based Node-RED nodes to create HomeKit Accessories",
   "main": "none",
   "author": "Sebastian Raff <hobbyquaker@gmail.com>",
   "license": "Apache-2.0",
