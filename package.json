@@ -5,6 +5,14 @@
   "main": "none",
   "author": "Sebastian Raff <hobbyquaker@gmail.com>",
   "license": "Apache-2.0",
+  "keywords": [
+    "node-red",
+    "smart home automation",
+    "hap",
+    "homekit",
+    "siri",
+    "homematic"
+  ],
   "node-red": {
     "nodes": {
       "redmatic-homekit-bridge": "nodes/redmatic-homekit-bridge.js",
