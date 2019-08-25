@@ -555,7 +555,7 @@
                             case 'hmipw-drs4':
                             case 'hmipw-drs8':
                                 addOption(addr, 'SingleAccessory');
-                                addChannels(addr, 2, channelCount - 2, 4, {type: switchTypes});
+                                addVirtualChannels(addr, 2, channelCount - 2, 4, {type: switchTypes});
                                 break;
 
                             case 'hmipw-dri16':
