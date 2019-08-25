@@ -53,7 +53,7 @@ class AccMultiService extends Accessory {
         const channels = config.description.CHILDREN;
 
         for (let i = 2; i < (channels.length - 1); i += 4) {
-            for (let vi = 0; vi < 3; vi ++) {
+            for (let vi = 0; vi < 3; vi++) {
                 const channelNumber = i + vi;
                 const ch = channels[channelNumber];
                 if (vi === 0 && !this.option(channelNumber)) {
@@ -61,7 +61,6 @@ class AccMultiService extends Accessory {
                 } else if (vi !== 0 && !this.option(channelNumber, 'enabled')) {
                     continue;
                 }
-
 
                 const name = ccu.channelNames[ch];
                 const dp = config.iface + '.' + ch + '.STATE';
@@ -71,7 +70,6 @@ class AccMultiService extends Accessory {
 
                 addService.call(this, type, dp, name);
             }
-
         }
     }
 }
@@ -105,7 +103,7 @@ module.exports = class HmipwDrs {
         } else {
             const channels = config.description.CHILDREN;
             for (let i = 2; i < (channels.length - 1); i += 4) {
-                for (let vi = 0; vi < 3; vi ++) {
+                for (let vi = 0; vi < 3; vi++) {
                     const channelNumber = i + vi;
                     const ch = channels[channelNumber];
                     if (vi === 0 && !this.option(channelNumber)) {
@@ -121,8 +119,6 @@ module.exports = class HmipwDrs {
 
                     new AccSingleService(chConfig, node);
                 }
-
-
             }
         }
     }

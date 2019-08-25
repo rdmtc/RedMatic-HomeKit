@@ -13,40 +13,37 @@ module.exports = class HmipBdt extends Accessory {
 
                 this.addService('Lightbulb', name)
 
-                .get('On', channel + '.LEVEL', value => {
-                    valueBrightness = value;
-                    return value > 0;
-                })
+                    .get('On', channel + '.LEVEL', value => {
+                        valueBrightness = value;
+                        return value > 0;
+                    })
 
-                .set('On', (value, callback) => {
-                    if (value) {
-                        setTimeout(() => {
-                            if (valueBrightness === 0) {
-                                value = 1;
-                            } else {
-                                value = valueBrightness / 100;
-                            }
+                    .set('On', (value, callback) => {
+                        if (value) {
+                            setTimeout(() => {
+                                if (valueBrightness === 0) {
+                                    value = 1;
+                                } else {
+                                    value = valueBrightness / 100;
+                                }
 
-                            this.ccuSetValue(channel + '.LEVEL', value, callback);
-                        }, 100);
-                    } else {
-                        this.ccuSetValue(channel + '.LEVEL', 0, callback);
-                    }
-                })
+                                this.ccuSetValue(channel + '.LEVEL', value, callback);
+                            }, 100);
+                        } else {
+                            this.ccuSetValue(channel + '.LEVEL', 0, callback);
+                        }
+                    })
 
-                .get('Brightness', channel + '.LEVEL', value => {
-                    valueBrightness = value * 100;
-                    return value * 100;
-                })
+                    .get('Brightness', channel + '.LEVEL', value => {
+                        valueBrightness = value * 100;
+                        return value * 100;
+                    })
 
-                .set('Brightness', channel + '.LEVEL', value => {
-                    valueBrightness = value;
-                    return value / 100;
-                });
-
+                    .set('Brightness', channel + '.LEVEL', value => {
+                        valueBrightness = value;
+                        return value / 100;
+                    });
             }
         }
-
-
     }
 };
