@@ -33,7 +33,12 @@ module.exports = function (RED) {
             let tvService;
             let speakerService;
 
-            if (!accessories[config.id]) {
+            if (accessories[config.id]) {
+                this.debug('tv already existing ' + this.name + ' ' + config.id);
+                acc = accessories[config.id];
+                tvService = acc.getService('Television');
+                speakerService = acc.getService('Speaker');
+            } else {
                 acc = new Accessory(this.name, uuid.generate(config.id));
                 accessories[config.id] = acc;
 
@@ -77,7 +82,7 @@ module.exports = function (RED) {
                     tvService.addLinkedService(inputService);
                 });
 
-                //tvService.addLinkedService(speakerService);
+                // tvService.addLinkedService(speakerService);
 
                 this.log('publishing tv ' + this.name + ' ' + config.username);
                 const testPort = net.createServer()
@@ -113,11 +118,6 @@ module.exports = function (RED) {
                         }).close();
                     })
                     .listen(config.port);
-            } else {
-                this.debug('tv already existing ' + this.name + ' ' + config.id);
-                acc = accessories[config.id];
-                tvService = acc.getService('Television');
-                speakerService = acc.getService('Speaker');
             }
 
             const setActive = (newValue, callback) => {
@@ -188,8 +188,10 @@ module.exports = function (RED) {
                     case 15:
                         msg.payload = 'INFORMATION';
                         msg.lgtv = 'INFO';
+                        break;
                     default:
                 }
+
                 msg.characteristicValue = newValue;
                 this.send(msg);
                 callback(null);
@@ -219,7 +221,7 @@ module.exports = function (RED) {
 
             this.on('input', msg => {
                 switch (msg.topic) {
-                    case 'InputSource':
+                    case 'InputSource': {
                         let identifier = msg.payload;
                         if (typeof msg.payload === 'string') {
                             config.inputsources.forEach((src, i) => {
@@ -236,6 +238,8 @@ module.exports = function (RED) {
                         }
 
                         break;
+                    }
+
                     default:
                         this.debug('set Active ' + msg.payload);
                         this.status({shape: msg.payload ? 'dot' : 'ring', fill: msg.payload ? 'blue' : 'grey'});
