@@ -10,7 +10,7 @@ Offers special nodes to conveniently (auto-)create HomeKit accessories from Home
 accessories that can be used with anything available in Node-RED. 
 
 This is kind of a sub-project of [RedMatic](https://github.com/rdmtc/RedMatic) but can be used also apart of RedMatic 
-and node-red-contrib-ccu. 
+and without node-red-contrib-ccu. 
 
 Documentation only available in german until now: https://github.com/rdmtc/RedMatic/wiki/Homekit
 
