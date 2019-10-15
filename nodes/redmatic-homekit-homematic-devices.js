@@ -46,6 +46,7 @@ module.exports = function (RED) {
                 this.error('ccu.channelNames missing');
                 return;
             }
+
             if (Object.keys(this.ccu.channelNames).length === 0) {
                 this.error('ccu.channelNames empty');
                 return;
