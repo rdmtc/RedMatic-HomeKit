@@ -46,6 +46,10 @@ module.exports = function (RED) {
                 this.error('ccu.channelNames missing');
                 return;
             }
+            if (Object.keys(this.ccu.channelNames).length === 0) {
+                this.error('ccu.channelNames empty');
+                return;
+            }
 
             if (!this.ccu.metadata.devices) {
                 this.error('ccu.metadata.devices missing');
@@ -103,7 +107,7 @@ module.exports = function (RED) {
                 return;
             }
 
-            type = type.toLowerCase();
+            type = type.toLowerCase().replace(/ /g, '_');
             if (!homematicValidDevices.includes(type)) {
                 return;
             }
