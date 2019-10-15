@@ -139,12 +139,12 @@ module.exports = function (RED) {
             this.ccuStatus = data;
             let status = 0;
             Object.keys(data.ifaceStatus).forEach(s => {
-                if (data.ifaceStatus[s] || s === 'ReGaHSS') {
+                if (data.ifaceStatus[s]) {
                     status += 1;
                 }
             });
             this.debug(JSON.stringify(data));
-            if (status <= 1) {
+            if (status < 1) {
                 this.status({fill: 'red', shape: 'dot', text: 'disconnected'});
             } else if (status === this.ccu.enabledIfaces.length) {
                 this.status({fill: 'green', shape: 'dot', text: 'connected'});
