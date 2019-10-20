@@ -156,6 +156,15 @@ module.exports = class Accessory {
         }
     }
 
+    identify(paired, callback) {
+        this.node.log('identify ' + (paired ? '(paired)' : '(unpaired)') + ' ' + this.config.name + ' ' + this.config.description.TYPE + ' ' + this.config.description.ADDRESS);
+        try {
+            callback();
+        } catch (error) {
+            this.node.error(error);
+        }
+    }
+
     percent(value, lower = 2, upper = 3) {
         let p = Math.round((value - lower) * (100 / (upper - lower)));
         if (!p || p < 0) {
