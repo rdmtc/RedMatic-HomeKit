@@ -75,6 +75,11 @@ module.exports = function (RED) {
                 return;
             }
 
+            if (this.bridge.bridgedAccessories && this.bridge.bridgedAccessories.length === 0) {
+                this.error('refusing to publish bridge with 0 accessories');
+                return;
+            }
+
             this.bridge.isPublished = true;
 
             this.bridge.on('identify', (paired, callback) => {
