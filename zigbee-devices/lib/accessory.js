@@ -6,12 +6,18 @@ class Service {
     }
 
     get(characteristic, endpoint, cluster, attribute, transform) {
+        if (!transform) {
+            transform = function (data) {
+                return data;
+            };
+        }
+
         this.acc.proxy.on('message', msg => {
             if (msg.device.ieeeAddr === this.acc.device.ieeeAddr && msg.endpoint.ID === endpoint && msg.cluster === cluster && typeof msg.data[attribute] !== 'undefined') {
                 this.acc.node.debug(`msg ${characteristic} ${this.acc.device.meta.name} ${msg.cluster} ${JSON.stringify(msg.data)}`);
 
                 const val = transform(msg.data[attribute]);
-                if (val && !this.suppressUpdate) {
+                if (typeof val !== 'undefined' && !this.suppressUpdate) {
                     this.acc.updateCharacteristic(this.subtype, characteristic, val);
                 }
             }

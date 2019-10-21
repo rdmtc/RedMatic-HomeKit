@@ -16,7 +16,7 @@ module.exports = class LumiWeather extends Accessory {
         const motionService = this.addService('MotionSensor', device.meta.name)
             .get('MotionDetected', 1, 'msOccupancySensing', 'occupancy', (data, cache) => {
                 if (cache) {
-                    return false;
+                    return;
                 }
 
                 clearTimeout(motionTimeout);

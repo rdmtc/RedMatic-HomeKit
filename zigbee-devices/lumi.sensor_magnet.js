@@ -11,7 +11,7 @@ module.exports = class LumiWeather extends Accessory {
 
     init(device) {
         this.addService('ContactSensor', device.meta.name)
-            .get('ContactSensorState', 1, 'genOnOff', 'onOff', data => data);
+            .get('ContactSensorState', 1, 'genOnOff', 'onOff');
 
         this.addService('BatteryService', device.meta.name)
             .get('StatusLowBattery', 1, 'genBasic', '65281', data => {
