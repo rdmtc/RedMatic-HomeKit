@@ -6,7 +6,7 @@ module.exports = class LumiWeather extends Accessory {
     }
 
     static get modelID() {
-        return ['lumi.weather'];
+        return ['lumi.weather', 'lumi.sens', 'lumi.sensor_ht'];
     }
 
     init(device) {
