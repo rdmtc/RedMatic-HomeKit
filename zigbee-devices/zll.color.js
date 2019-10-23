@@ -2,11 +2,15 @@ const Accessory = require('./lib/accessory');
 
 module.exports = class ZllColor extends Accessory {
     static get manufacturerName() {
-        return [];
+        return ['IKEA of Sweden'];
     }
 
     static get modelID() {
-        return [];
+        return [
+            'TRADFRI bulb E27 CWS opal 600lm',
+            'TRADFRI bulb E26 CWS opal 600lm',
+            'TRADFRI bulb E14 CWS opal 600lm'
+        ];
     }
 
     static get deviceID() {

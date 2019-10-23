@@ -2,12 +2,27 @@ const Accessory = require('./lib/accessory');
 
 module.exports = class ZllTw extends Accessory {
     static get manufacturerName() {
-        return [];
+        return ['IKEA of Sweden'];
     }
 
     static get modelID() {
-        return [];
+        return [
+            'TRADFRI bulb E27 WS opal 980lm',
+            'TRADFRI bulb E26 WS opal 980lm',
+            'TRADFRI bulb E27 WS\uFFFDopal 980lm',
+            'TRADFRI bulb E27 WS clear 950lm',
+            'TRADFRI bulb E26 WS clear 950lm',
+            'TRADFRI bulb GU10 WS 400lm',
+            'TRADFRI bulb E14 WS opal 400lm',
+            'TRADFRI bulb E12 WS opal 400lm',
+            'TRADFRI bulb E14 WS opal 600lm',
+            'TRADFRI bulb E27 WS opal 1000lm',
+            'TRADFRI bulb E26 WS opal 1000lm',
+            'TRADFRI bulb E27 WS clear 806lm',
+            'LEPTITER Recessed spot light, dimmable, white spectrum'
+        ];
     }
+
 
     static get deviceID() {
         return [0x0101, 0x0220];
