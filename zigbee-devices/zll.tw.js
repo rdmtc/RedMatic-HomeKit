@@ -23,7 +23,6 @@ module.exports = class ZllTw extends Accessory {
         ];
     }
 
-
     static get deviceID() {
         return [0x0101, 0x0220];
     }

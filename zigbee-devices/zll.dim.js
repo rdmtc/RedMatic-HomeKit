@@ -21,7 +21,6 @@ module.exports = class ZllDim extends Accessory {
         ];
     }
 
-
     static get deviceID() {
         return [0x0100, 0x0110];
     }
