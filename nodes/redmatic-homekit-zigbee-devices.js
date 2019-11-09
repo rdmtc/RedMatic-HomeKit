@@ -55,7 +55,7 @@ module.exports = function (RED) {
                 this.devices = this.herdsman.getDevices();
 
                 console.log(this.deviceConfig);
-                    this.devices.forEach(device => {
+                this.devices.forEach(device => {
                     const Adapter = this.findAdapter(device);
                     if (Adapter) {
                         knownDevices[this.id].push(device);
@@ -64,7 +64,7 @@ module.exports = function (RED) {
                             /* eslint-disable-next-line no-new */
                             new Adapter(this, device);
                         } else {
-                            this.debug(`device disabled ${device.ieeeAddr} ${device.meta.name}`)
+                            this.debug(`device disabled ${device.ieeeAddr} ${device.meta.name}`);
                         }
                     }
                 });
