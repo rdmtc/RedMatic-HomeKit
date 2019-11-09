@@ -1,8 +1,8 @@
 const Accessory = require('./lib/accessory');
 
 module.exports = class HmipModHo extends Accessory {
-    init(config, node) {
-        const {ccu} = node;
+    init(config) { // , node) {
+        // const {ccu} = node;
 
         /*
             DOOR_STATE
@@ -83,6 +83,7 @@ module.exports = class HmipModHo extends Accessory {
                         return 'OPEN';
                     case 1:
                         return 'CLOSE';
+                    default:
                 }
             });
     }
