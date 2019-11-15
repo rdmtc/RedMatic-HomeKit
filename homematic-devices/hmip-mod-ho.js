@@ -30,12 +30,12 @@ module.exports = class HmipModHo extends Accessory {
                 static readonly CLOSED = 1;
          */
 
-        const service = this.addService('GarageDoorOpener', config.name);
+        const garageService = this.addService('GarageDoorOpener', config.name);
 
         let currentDoorState;
         let targetDoorState;
 
-        service.get('CurrentDoorState', config.deviceAddress + ':1.DOOR_STATE', value => {
+        garageService.get('CurrentDoorState', config.deviceAddress + ':1.DOOR_STATE', value => {
             switch (value) {
                 case 0:
                     currentDoorState = 1;
@@ -78,13 +78,18 @@ module.exports = class HmipModHo extends Accessory {
             })
 
             .set('TargetDoorState', config.deviceAddress + ':1.DOOR_COMMAND', value => {
+                targetDoorState = value;
                 switch (value) {
                     case 0:
-                        return 'OPEN';
+                        return 1;
                     case 1:
-                        return 'CLOSE';
+                        return 3;
                     default:
                 }
             });
+
+        this.addService('Lightbulb', config.name)
+            .get('On', config.deviceAddress + ':2.STATE')
+            .set('On', config.deviceAddress + ':2.STATE');
     }
 };
