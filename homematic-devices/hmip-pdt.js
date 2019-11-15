@@ -1,40 +1,49 @@
 const Accessory = require('./lib/accessory');
 
-module.exports = class HmipPdt extends Accessory {
-    init(config) {
+module.exports = class HmipFdt extends Accessory {
+    init(config, node) {
+        const {ccu} = node;
+
         let valueBrightness = 0;
 
-        this.addService('Lightbulb', config.name)
+        for (let i = 3; i <= 5; i++) {
+            if ((i === 3 && this.option(i)) || (i !== 2 && this.option(i, 'enabled'))) {
+                const channel = config.deviceAddress + ':' + i;
+                const name = ccu.channelNames[channel];
 
-            .get('On', config.deviceAddress + ':3.LEVEL', value => {
-                valueBrightness = value;
-                return value > 0;
-            })
+                this.addService('Lightbulb', name)
 
-            .set('On', (value, callback) => {
-                if (value) {
-                    setTimeout(() => {
-                        if (valueBrightness === 0) {
-                            value = 1;
+                    .get('On', channel + '.LEVEL', value => {
+                        valueBrightness = value;
+                        return value > 0;
+                    })
+
+                    .set('On', (value, callback) => {
+                        if (value) {
+                            setTimeout(() => {
+                                if (valueBrightness === 0) {
+                                    value = 1;
+                                } else {
+                                    value = valueBrightness / 100;
+                                }
+
+                                this.ccuSetValue(channel + '.LEVEL', value, callback);
+                            }, 100);
                         } else {
-                            value = valueBrightness / 100;
+                            this.ccuSetValue(channel + '.LEVEL', 0, callback);
                         }
+                    })
 
-                        this.ccuSetValue(config.deviceAddress + ':3.LEVEL', value, callback);
-                    }, 100);
-                } else {
-                    this.ccuSetValue(config.deviceAddress + ':3.LEVEL', 0, callback);
-                }
-            })
+                    .get('Brightness', channel + '.LEVEL', value => {
+                        valueBrightness = value * 100;
+                        return value * 100;
+                    })
 
-            .get('Brightness', config.deviceAddress + ':3.LEVEL', value => {
-                valueBrightness = value * 100;
-                return value * 100;
-            })
-
-            .set('Brightness', config.deviceAddress + ':3.LEVEL', value => {
-                valueBrightness = value;
-                return value / 100;
-            });
+                    .set('Brightness', channel + '.LEVEL', value => {
+                        valueBrightness = value;
+                        return value / 100;
+                    });
+            }
+        }
     }
 };

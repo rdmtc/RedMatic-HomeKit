@@ -6,7 +6,7 @@ module.exports = class HmipFdt extends Accessory {
 
         let valueBrightness = 0;
 
-        for (let i = 2; i <= 2; i++) {
+        for (let i = 2; i <= 4; i++) {
             if ((i === 2 && this.option(i)) || (i !== 2 && this.option(i, 'enabled'))) {
                 const channel = config.deviceAddress + ':' + i;
                 const name = ccu.channelNames[channel];
