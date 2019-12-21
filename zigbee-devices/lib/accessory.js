@@ -163,7 +163,7 @@ module.exports = class Accessory {
     }
 
     identify(paired, callback) {
-        this.node.log('identify ' + (paired ? '(paired)' : '(unpaired)') + ' ' + this.config.name + ' ' + this.config.description.TYPE + ' ' + this.config.description.ADDRESS);
+        this.node.log('identify ' + (paired ? '(paired)' : '(unpaired)') + ' ' + this.device.manufacturerName + ' ' + this.device.meta.name + ' ' + this.device.modelID + ' ' + this.device.ieeeAddr);
         try {
             callback();
         } catch (error) {
