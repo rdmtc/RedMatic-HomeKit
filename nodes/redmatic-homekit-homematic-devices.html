@@ -654,7 +654,6 @@
             $('.channel-option').each(function () {
                 const addr = $(this).data('addr');
                 const option = $(this).data('option');
-                console.log(addr, option)
                 if (!devices[addr]) {
                     devices[addr] = {};
                 }
@@ -663,7 +662,6 @@
             $('.device-enabled:not(.vchannel-enabled)').each(function () {
                  const addr = $(this).data('addr');
                  const enabled = $(this).is(':checked');
-                 console.log('device, channel', addr, enabled);
                  if (enabled && devices[addr]) {
                      devices[addr].disabled = false;
                  } else if (!enabled) {
@@ -676,7 +674,6 @@
             $('.device-enabled.vchannel-enabled').each(function () {
                 const addr = $(this).data('addr');
                 const enabled = $(this).is(':checked');
-                console.log('vchannel', addr, enabled);
                 if (!enabled && devices[addr]) {
                     devices[addr].enabled = false;
                 } else if (enabled) {
