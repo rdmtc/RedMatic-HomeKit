@@ -127,6 +127,7 @@
                     that.devices = {};
                 }
 
+                const blindTypes = ['VerticalTilt Enabled', 'VerticalTilt Disabled'];
                 const switchTypes = ['Switch', 'Outlet', 'Lightbulb', 'Fan', 'Valve', 'ValveIrrigation'];
                 const outletTypes = ['Outlet', 'Switch', 'Lightbulb', 'Fan', 'Valve', 'ValveIrrigation'];
 
@@ -406,12 +407,9 @@
                                 addOption(addr, 'HumiditySensor');
                                 break;
 
-                            case 'hmip-bbl':
-                                break;
                             case 'hmip-bdt':
                                 addVirtualChannels(addr, 4, 4);
                                 break;
-                            case 'hmip-broll':
                                 break;
                             case 'hmip-bsl':
                                 break;
@@ -438,7 +436,11 @@
                                 addOption(addr, 'BoostSwitch');
                                 break;
 
+                            case 'hmip-bbl':
                             case 'hmip-fbl':
+                            case 'hmip-froll':
+                            case 'hmip-broll':
+                                addVirtualChannels(addr, 4, 4, {type: blindTypes});
                                 break;
 
                             case 'hmip-fci1':
@@ -447,8 +449,6 @@
 
                             case 'hmip-fdt':
                                 addVirtualChannels(addr, 2, 2);
-                                break;
-                            case 'hmip-froll':
                                 break;
 
                             case 'hmip-fsm':
@@ -565,6 +565,8 @@
                                 addChannels(addr, 1, 12, {type: ['ContactSensor', 'Door', 'Window']});
                                 break;
 
+
+                            case 'hmip-drsi4':
                             case 'hmipw-drs4':
                             case 'hmipw-drs8':
                                 addOption(addr, 'SingleAccessory');
@@ -576,6 +578,13 @@
                                 addOption(addr, 'SingleAccessory');
                                 addChannels(addr, 2, channelCount - 2, 1, {type: ['ContactSensor', 'Door', 'Window']});
                                 break;
+
+
+                            case 'hmip-drbli4':
+                            case 'hmipw-drbl4':
+                                addVirtualChannels(addr, 2, channelCount - 2, 4, {type: blindTypes});
+                                break;
+
 
                             default:
                     }

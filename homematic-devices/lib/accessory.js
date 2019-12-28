@@ -78,7 +78,9 @@ module.exports = class Accessory {
 
         if (typeof this.init === 'function') {
             node.debug('init accessory ' + config.description.TYPE + ' ' + config.name);
-            this.init(config, node);
+            setImmediate(() => {
+                this.init(config, node);
+            });
         }
     }
 
