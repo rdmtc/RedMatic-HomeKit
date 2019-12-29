@@ -131,7 +131,7 @@ class GenericHmipBlind {
         let channels = [];
         this.config.description.CHILDREN.forEach(channel => {
             const desc = this.ccu.metadata.devices['HmIP-RF'][channel];
-            if (desc.TYPE === 'BLIND_VIRTUAL_RECEIVER' || desc.type === 'SHUTTER_VIRTUAL_RECEIVER') {
+            if (desc.TYPE === 'BLIND_VIRTUAL_RECEIVER' || desc.TYPE === 'SHUTTER_VIRTUAL_RECEIVER') {
                 const name = this.ccu.channelNames[channel];
                 const tilt = desc.TYPE === 'BLIND_VIRTUAL_RECEIVER' &&
                     (!this.config.options[channel] || this.config.options[channel].type !== 'VerticalTilt Disabled');
