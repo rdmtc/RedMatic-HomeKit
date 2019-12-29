@@ -438,9 +438,12 @@
 
                             case 'hmip-bbl':
                             case 'hmip-fbl':
+                                addVirtualChannels(addr, 4, 4, {type: blindTypes});
+                                break;
+
                             case 'hmip-froll':
                             case 'hmip-broll':
-                                addVirtualChannels(addr, 4, 4, {type: blindTypes});
+                                addVirtualChannels(addr, 4, 4);
                                 break;
 
                             case 'hmip-fci1':
