@@ -6,8 +6,8 @@ function createService(channel) {
     console.log('generic-hmip-blind createService', channel);
 
     let intermediatePosition; // 0-100
-    let LEVEL; // 0.0-1.0
-    let LEVEL_2; // 0.0-1.0
+    let LEVEL = 0; // 0.0-1.0
+    let LEVEL_2 = 0; // 0.0-1.0
 
     const channelIndex = channel.channel.split(':')[1];
 
@@ -50,8 +50,19 @@ function createService(channel) {
             const params = {
                 LEVEL
             };
+
             if (channel.tilt) {
                 params.LEVEL_2 = LEVEL_2;
+            }
+
+            if (channel.tilt || this.config.type === 'BLIND_VIRTUAL_RECEIVER') {
+                if (LEVEL === 0) {
+                    params.LEVEL_2 = 0;
+                }
+
+                if (LEVEL === 1) {
+                    params.LEVEL_2 = 1;
+                }
             }
 
             this.node.debug('set ' + this.config.name + ' (WindowCovering) TargetPosition ' + value + ' -> ' + this.config.description.ADDRESS + ':' + channelIndex + ' ' + JSON.stringify(params));
@@ -78,17 +89,23 @@ function createService(channel) {
     if (channel.tilt) {
         service
             .get('CurrentVerticalTiltAngle', this.config.deviceAddress + ':' + channelIndex + '.LEVEL_2', value => {
-                LEVEL_2 = (value * 180) - 90;
-                return LEVEL_2;
+                LEVEL_2 = value;
+                value = (value * 180) - 90;
+                this.node.debug('get CurrentVerticalTiltAngle ' + this.config.name + ' LEVEL_2 ' + LEVEL_2 + ' ' + value);
+                return value;
             })
 
             .get('TargetVerticalTiltAngle', this.config.deviceAddress + ':' + channelIndex + '.LEVEL_2', value => {
-                LEVEL_2 = (value * 180) - 90;
-                return LEVEL_2;
+                LEVEL_2 = value;
+                value = (value * 180) - 90;
+                this.node.debug('get TargetVerticalTiltAngle ' + this.config.name + ' LEVEL_2 ' + LEVEL_2 + ' ' + value);
+                return value;
             })
 
             .set('TargetVerticalTiltAngle', (value, callback) => {
                 LEVEL_2 = (value + 90) / 180;
+                this.node.debug('set TargetVerticalTiltAngle ' + this.config.name + ' LEVEL_2 ' + LEVEL_2 + ' ' + value);
+
                 const params = {
                     LEVEL,
                     LEVEL_2
@@ -140,7 +157,7 @@ class GenericHmipBlind {
                         channels.push({channel, name, tilt});
                     }
                 } else if (this.config.options[channel] && this.config.options[channel].enabled) {
-                    channels.push({channel, name, tilt});
+                    channels.push({channel, name, tilt, type: desc.TYPE});
                 }
 
                 if (++pos === 3) {
