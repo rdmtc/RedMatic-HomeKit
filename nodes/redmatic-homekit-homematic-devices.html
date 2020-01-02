@@ -573,6 +573,10 @@
                                 addChannels(addr, 1, 12, {type: ['ContactSensor', 'Door', 'Window']});
                                 break;
 
+                            case 'hmipw-drd3':
+                                addVirtualChannels(addr, 2, 12, 4);
+                                break;
+
 
                             case 'hmip-drsi4':
                             case 'hmipw-drs4':
