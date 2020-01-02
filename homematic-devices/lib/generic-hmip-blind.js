@@ -3,8 +3,6 @@
 const Accessory = require('./accessory');
 
 function createService(channel) {
-    console.log('generic-hmip-blind createService', channel);
-
     let intermediatePosition; // 0-100
     let LEVEL = 0; // 0.0-1.0
     let LEVEL_2 = 0; // 0.0-1.0
@@ -129,7 +127,6 @@ class GenericHmipBlindAcc extends Accessory {
     }
 
     init() {
-        console.log('GenericHmipBlind', this.channels);
         this.channels.forEach(channel => {
             createService.call(this, channel);
         });
@@ -142,7 +139,6 @@ class GenericHmipBlind {
         this.ccu = ccu;
 
         this.config = config;
-        console.log('GenericHmipBlind', config);
 
         let pos = 0;
         let channels = [];
