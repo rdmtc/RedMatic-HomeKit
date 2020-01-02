@@ -29,8 +29,8 @@
     }
   },
   "dependencies": {
-    "hap-nodejs": "0.4.52",
-    "homebridge-camera-ffmpeg": "0.1.11"
+    "hap-nodejs": "0.5.4",
+    "homebridge-camera-ffmpeg": "0.1.14"
   },
   "devDependencies": {
     "xo": "0.24.0"
