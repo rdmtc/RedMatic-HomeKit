@@ -75,30 +75,12 @@ class AccMultiService extends Accessory {
 }
 
 module.exports = class HmipwDrs {
-    option(id, option) {
-        let addr = this.config.description.ADDRESS;
-        if (!addr.includes(':')) {
-            addr = addr + ':' + id;
-        }
-
-        let res;
-
-        if (option) {
-            res = this.config.options[addr] && this.config.options[addr][option];
-        } else {
-            res = !(this.config.options[addr] && this.config.options[addr].disabled);
-        }
-
-        this.node.debug('option ' + addr + ' ' + id + ' ' + option + ' ' + res);
-        return res;
-    }
-
     constructor(config, node) {
         const {ccu} = node;
         this.node = node;
         this.ccu = ccu;
         this.config = config;
-        if (this.option(config.description.ADDRESS + ':SingleAccessory')) {
+        if (this.option('SingleAccessory')) {
             new AccMultiService(config, node);
         } else {
             const channels = config.description.CHILDREN;

@@ -72,16 +72,12 @@ class AccMultiService extends Accessory {
 }
 
 module.exports = class GenericContactSensor {
-    option(id) {
-        return !(this.config.options[id] && this.config.options[id].disabled);
-    }
-
     constructor(config, node) {
         const {ccu} = node;
         this.ccu = ccu;
         this.config = config;
         const channels = config.description.CHILDREN;
-        if (this.option(config.description.ADDRESS + ':SingleAccessory')) {
+        if (this.option('SingleAccessory')) {
             new AccMultiService(config, node);
         } else {
             for (let i = 1; i < (channels.length - 1); i++) {
