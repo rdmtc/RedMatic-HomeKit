@@ -36,7 +36,9 @@ module.exports = function (RED) {
                     str = str.replace(/^error: (.*)/i, '$1');
                     that.error(str);
                 } else {
-                    that.debug(str);
+                    if (config.debug) {
+                        that.debug(str);
+                    }
                 }
             }
 
@@ -46,7 +48,7 @@ module.exports = function (RED) {
             }
 
             const [firstLogger] = Object.keys(RED.settings.logging);
-            config.debug = (RED.settings.logging[firstLogger].level === 'debug' || RED.settings.logging[firstLogger].level === 'trace');
+            config.debug = config.debug && (RED.settings.logging[firstLogger].level === 'debug' || RED.settings.logging[firstLogger].level === 'trace');
 
             this.name = config.name || ('Camera ' + this.id);
 
