@@ -124,6 +124,7 @@ class GenericHmipBlindAcc extends Accessory {
     constructor(config, node, channels) {
         super(config, node);
         this.channels = channels;
+        node.debug('creating accessory for ' + channels.length + ' channels');
     }
 
     init() {
@@ -140,30 +141,35 @@ class GenericHmipBlind {
 
         this.config = config;
 
+        let acc = 0;
         let pos = 0;
         let channels = [];
         this.config.description.CHILDREN.forEach(channel => {
             const desc = this.ccu.metadata.devices['HmIP-RF'][channel];
             if (desc.TYPE === 'BLIND_VIRTUAL_RECEIVER' || desc.TYPE === 'SHUTTER_VIRTUAL_RECEIVER') {
+                if (!channels[acc]) {
+                    channels[acc] = [];
+                }
                 const name = this.ccu.channelNames[channel];
                 const tilt = desc.TYPE === 'BLIND_VIRTUAL_RECEIVER' &&
                     (!this.config.options[channel] || this.config.options[channel].type !== 'VerticalTilt Disabled');
                 if (pos === 0) {
                     if (!this.config.options[channel] || !this.config.options[channel].disabled) {
-                        channels.push({channel, name, tilt});
+                        channels[acc].push({channel, name, tilt});
                     }
                 } else if (this.config.options[channel] && this.config.options[channel].enabled) {
-                    channels.push({channel, name, tilt, type: desc.TYPE});
+                    channels[acc].push({channel, name, tilt, type: desc.TYPE});
                 }
 
-                if (++pos === 3) {
-                    if (channels.length > 0) {
-                        new GenericHmipBlindAcc(Object.assign({}, config, {name}), node, channels);
-                    }
-
-                    channels = [];
+                if (++pos > 2) {
                     pos = 0;
+                    acc += 1;
                 }
+            }
+        });
+        channels.forEach(accChannels => {
+            if (accChannels.length > 0) {
+                new GenericHmipBlindAcc(Object.assign({}, config, {name: accChannels[0].name}), node, accChannels);
             }
         });
     }
