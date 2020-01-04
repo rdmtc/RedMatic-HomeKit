@@ -156,7 +156,7 @@ class GenericHmipBlind {
                 if (pos === 0) {
                     if (!this.config.options[channel] || !this.config.options[channel].disabled) {
                         channels[acc].push({channel, name, tilt});
-                    }
+                    }0
                 } else if (this.config.options[channel] && this.config.options[channel].enabled) {
                     channels[acc].push({channel, name, tilt, type: desc.TYPE});
                 }
@@ -169,7 +169,9 @@ class GenericHmipBlind {
         });
         channels.forEach(accChannels => {
             if (accChannels.length > 0) {
-                new GenericHmipBlindAcc(Object.assign({}, config, {name: accChannels[0].name}), node, accChannels);
+                const conf = Object.assign({}, config, {name: accChannels[0].name});
+                conf.description = Object.assign({}, config.description, {ADDRESS: accChannels[0].channel});
+                new GenericHmipBlindAcc(conf, node, accChannels);
             }
         });
     }
