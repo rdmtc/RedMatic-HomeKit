@@ -35,10 +35,8 @@ module.exports = function (RED) {
                 if (str.match(/^(error: )/i)) {
                     str = str.replace(/^error: (.*)/i, '$1');
                     that.error(str);
-                } else {
-                    if (config.debug) {
-                        that.debug(str);
-                    }
+                } else if (config.debug) {
+                    that.debug(str);
                 }
             }
 

@@ -92,6 +92,7 @@ module.exports = class HmipwDrs {
         this.node.debug('option ' + addr + ' ' + id + ' ' + option + ' ' + res);
         return res;
     }
+
     constructor(config, node) {
         const {ccu} = node;
         this.node = node;

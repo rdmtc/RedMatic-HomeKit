@@ -48,7 +48,5 @@ module.exports = class HmipwDrd extends Accessory {
                 }
             }
         }
-
-
     }
 };
