@@ -94,7 +94,7 @@ class AccSingleInputService extends Accessory {
         const dp = config.iface + '.' + config.accChannel + '.STATE';
         const {name} = config;
         const type = this.option('', 'type');
-        addService.call(this, type, name, dp);
+        addInputService.call(this, type, name, dp);
     }
 }
 
