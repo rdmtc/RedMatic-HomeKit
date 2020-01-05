@@ -1,6 +1,6 @@
 {
   "name": "redmatic-homekit",
-  "version": "3.0.3",
+  "version": "3.0.4",
   "description": "HAP-Nodejs based Node-RED nodes to create HomeKit Accessories",
   "main": "none",
   "author": "Sebastian Raff <hobbyquaker@gmail.com>",
@@ -29,7 +29,7 @@
     }
   },
   "dependencies": {
-    "hap-nodejs": "0.5.4",
+    "hap-nodejs": "0.4.52",
     "homebridge-camera-ffmpeg": "0.1.14"
   },
   "devDependencies": {
