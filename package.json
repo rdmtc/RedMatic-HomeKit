@@ -1,6 +1,6 @@
 {
   "name": "redmatic-homekit",
-  "version": "3.0.4",
+  "version": "3.0.5",
   "description": "HAP-Nodejs based Node-RED nodes to create HomeKit Accessories",
   "main": "none",
   "author": "Sebastian Raff <hobbyquaker@gmail.com>",
