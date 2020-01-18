@@ -14,17 +14,20 @@ class Service {
 
         this.acc.proxy.on('message', msg => {
             if (msg.device.ieeeAddr === this.acc.device.ieeeAddr && msg.endpoint.ID === endpoint && msg.cluster === cluster && typeof msg.data[attribute] !== 'undefined') {
-                this.acc.node.debug(`msg ${characteristic} ${this.acc.device.meta.name} ${msg.cluster} ${JSON.stringify(msg.data)}`);
+                this.acc.node.debug(`msg ${this.acc.device.meta.name} ${msg.cluster} ${characteristic} ${JSON.stringify(msg.data)}`);
 
                 const val = transform(msg.data[attribute]);
-                if (typeof val !== 'undefined' && val !== null && !this.suppressUpdate) {
+                if (typeof val !== 'undefined' && val !== null /* && !this.suppressUpdate */) {
                     this.acc.updateCharacteristic(this.subtype, characteristic, val);
                 }
             }
         });
 
         if (this.acc.device.getEndpoint(endpoint) && this.acc.device.getEndpoint(endpoint).clusters[cluster]) {
-            this.acc.updateCharacteristic(this.subtype, characteristic, transform(this.acc.device.getEndpoint(endpoint).clusters[cluster].attributes[attribute], true));
+            const val = transform(this.acc.device.getEndpoint(endpoint).clusters[cluster].attributes[attribute]);
+            if (typeof val !== 'undefined' && val !== null) {
+                this.acc.updateCharacteristic(this.subtype, characteristic, val, true);
+            }
         }
 
         return this;
@@ -32,7 +35,7 @@ class Service {
 
     set(characteristic, endpoint, cluster, transform, suppressUpdate) {
         this.acc.addListener('set', this.subtype, characteristic, (value, callback) => {
-            this.acc.node.debug(`set ${this.subtype} ${characteristic} ${value}`);
+            this.acc.node.debug(`set ${this.acc.device.meta.name} ${characteristic} ${value}`);
             const {command, payload} = transform(value);
 
             this.acc.node.debug(`command ${this.acc.device.meta.name} ${cluster} ${command} ${payload ? JSON.stringify(payload) : ''}`);
