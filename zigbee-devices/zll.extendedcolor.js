@@ -27,19 +27,22 @@ module.exports = class ZllExtColor extends Accessory {
                 return {command: 'moveToLevel', payload: {level: Math.round(data * 2.54), transtime: 0}};
             })
 
-            .get('ColorTemperature', ep, 'lightingColorCtrl', 'colorTemperature', data => colormode !== 'hs' && data)
+            .get('ColorTemperature', ep, 'lightingColorCtrl', 'colorTemperature', data => colormode === 'ct' ? data : null)
             .set('ColorTemperature', ep, 'lightingColorCtrl', data => {
+                colormode = 'ct';
                 return {command: 'moveToColorTemp', payload: {colortemp: data, transtime: 0}};
             }, true)
             .setProps('ColorTemperature', {minValue: 153, maxValue: 370})
 
-            .get('Hue', ep, 'lightingColorCtrl', 'enhancedCurrentHue', data => colormode !== 'ct' && Math.round(data / 65535 * 360))
+            .get('Hue', ep, 'lightingColorCtrl', 'enhancedCurrentHue', data => colormode !== 'ct' ? Math.round(data / 65535 * 360) : null)
             .set('Hue', ep, 'lightingColorCtrl', data => {
+                colormode = 'hs';
                 return {command: 'enhancedMoveToHue', payload: {enhancehue: Math.round(data * 65535 / 360), direction: 0, transtime: 0}};
             }, true)
 
-            .get('Saturation', ep, 'lightingColorCtrl', 'currentSaturation', data => colormode !== 'ct' && Math.round(data / 2.54))
+            .get('Saturation', ep, 'lightingColorCtrl', 'currentSaturation', data => colormode !== 'ct' ? Math.round(data / 2.54) : null)
             .set('Saturation', ep, 'lightingColorCtrl', data => {
+                colormode = 'hs';
                 return {command: 'moveToSaturation', payload: {saturation: Math.round(data * 2.54), transtime: 0}};
             }, true);
     }
