@@ -14,6 +14,7 @@ module.exports = class ZllOnOff extends Accessory {
     }
 
     init(device) {
+        this.node.debug(`init zll.onoff ${this.device.ieeeAddr} ${this.device.meta.name}`);
         const ep = device.endpoints[0].ID;
         this.addService('Switch', device.meta.name)
             .get('On', ep, 'genOnOff', 'onOff', data => Boolean(data))

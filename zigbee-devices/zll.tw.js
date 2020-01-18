@@ -28,6 +28,7 @@ module.exports = class ZllTw extends Accessory {
     }
 
     init(device) {
+        this.node.debug(`init zll.tw ${this.device.ieeeAddr} ${this.device.meta.name}`);
         const ep = device.endpoints[0].ID;
         this.addService('Lightbulb', device.meta.name)
             .get('On', ep, 'genOnOff', 'onOff', data => Boolean(data))

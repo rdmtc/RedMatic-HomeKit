@@ -10,6 +10,7 @@ module.exports = class LumiWeather extends Accessory {
     }
 
     init(device) {
+        this.node.debug(`init lumi.weather ${this.device.ieeeAddr} ${this.device.meta.name}`);
         this.addService('TemperatureSensor', device.meta.name)
             .setProps('CurrentTemperature', {minValue: -40, maxValue: 80})
             .get('CurrentTemperature', 1, 'msTemperatureMeasurement', 'measuredValue', data => data / 100);

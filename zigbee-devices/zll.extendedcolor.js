@@ -14,6 +14,7 @@ module.exports = class ZllExtColor extends Accessory {
     }
 
     init(device) {
+        this.node.debug(`init zll.extendendcolor ${this.device.ieeeAddr} ${this.device.meta.name}`);
         const ep = device.endpoints[0].ID;
         let colormode;
         this.addService('Lightbulb', device.meta.name)
@@ -34,13 +35,13 @@ module.exports = class ZllExtColor extends Accessory {
             }, true)
             .setProps('ColorTemperature', {minValue: 153, maxValue: 370})
 
-            .get('Hue', ep, 'lightingColorCtrl', 'enhancedCurrentHue', data => colormode !== 'ct' ? Math.round(data / 65535 * 360) : null)
+            .get('Hue', ep, 'lightingColorCtrl', 'enhancedCurrentHue', data => colormode === 'ct' ? null : Math.round(data / 65535 * 360))
             .set('Hue', ep, 'lightingColorCtrl', data => {
                 colormode = 'hs';
                 return {command: 'enhancedMoveToHue', payload: {enhancehue: Math.round(data * 65535 / 360), direction: 0, transtime: 0}};
             }, true)
 
-            .get('Saturation', ep, 'lightingColorCtrl', 'currentSaturation', data => colormode !== 'ct' ? Math.round(data / 2.54) : null)
+            .get('Saturation', ep, 'lightingColorCtrl', 'currentSaturation', data => colormode === 'ct' ? null : Math.round(data / 2.54))
             .set('Saturation', ep, 'lightingColorCtrl', data => {
                 colormode = 'hs';
                 return {command: 'moveToSaturation', payload: {saturation: Math.round(data * 2.54), transtime: 0}};

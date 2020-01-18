@@ -54,7 +54,6 @@ module.exports = function (RED) {
             this.proxy.on('ready', () => {
                 this.devices = this.herdsman.getDevices();
 
-                console.log(this.deviceConfig);
                 this.devices.forEach(device => {
                     const Adapter = this.findAdapter(device);
                     if (Adapter) {
