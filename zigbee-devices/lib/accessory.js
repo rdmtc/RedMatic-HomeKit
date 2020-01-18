@@ -17,7 +17,7 @@ class Service {
                 this.acc.node.debug(`msg ${this.acc.device.meta.name} ${msg.cluster} ${characteristic} ${JSON.stringify(msg.data)}`);
 
                 const val = transform(msg.data[attribute]);
-                if (typeof val !== 'undefined' && val !== null /* && !this.suppressUpdate */) {
+                if (typeof val !== 'undefined' && val !== null && !this.suppressUpdate) {
                     this.acc.updateCharacteristic(this.subtype, characteristic, val);
                 }
             }
