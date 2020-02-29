@@ -1,4 +1,3 @@
-module.exports = require('./hm-wds30-ot2-sm');
 const Accessory = require('./lib/accessory');
 
 module.exports = class HbUniSenTemp extends Accessory {
