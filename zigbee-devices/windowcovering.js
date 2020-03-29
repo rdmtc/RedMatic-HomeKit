@@ -6,10 +6,13 @@ module.exports = class ZllOnOff extends Accessory {
     }
 
     static get modelID() {
-        return ['FYRTUR block-out roller blind'];
+        return ['FYRTUR block-out roller blind',
+		'KADRILJ roller blind'
+	];
     }
 
     init(device) {
+        this.node.debug(`init windowcovering ${this.device.ieeeAddr} ${this.device.meta.name}`);
         const ep = device.endpoints[0].ID;
         const windowCoveringService = this.addService('WindowCovering', device.meta.name);
 
