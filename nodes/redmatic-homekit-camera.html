@@ -25,9 +25,10 @@
             audio: {value: '', type: 'boolean'},
             debug: {value: false, type: 'boolean'},
             packetSize: {value: 1316},
-            maxBitrate: {value: 300}
+            maxBitrate: {value: 300},
+            doorbell: {value: false, type: 'boolean'}
         },
-        inputs: 0,
+        inputs: 1,
         outputs: 0,
         icon: 'homekit2.png',
         color: '#E2D96E',
@@ -132,6 +133,11 @@
         <label for="node-input-debug"><i class="icon-tag"></i> debug</label>
         <div style="width: 70%; display: inline-block; vertical-align: text-top;">
         <label><input type="checkbox" style="width: auto !important; margin-top: -3px;" id="node-input-debug"> Enabled</label>
+    </div>
+    <div class="form-row">
+        <label for="node-input-doorbell"><i class="icon-tag"></i> doorbell</label>
+        <div style="width: 70%; display: inline-block; vertical-align: text-top;">
+        <label><input type="checkbox" style="width: auto !important; margin-top: -3px;" id="node-input-doorbell"> Enabled</label>
     </div>
     <div class="form-fow" style="padding-top: 20px; display: flex; justify-content: center;">
         <div id="qrcode" style=""></div>

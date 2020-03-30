@@ -35,7 +35,7 @@ module.exports = function (RED) {
                 if (str.match(/^(error: )/i)) {
                     str = str.replace(/^error: (.*)/i, '$1');
                     that.error(str);
-                } else {
+                } else if (config.debug) {
                     that.debug(str);
                 }
             }
@@ -46,7 +46,7 @@ module.exports = function (RED) {
             }
 
             const [firstLogger] = Object.keys(RED.settings.logging);
-            config.debug = (RED.settings.logging[firstLogger].level === 'debug' || RED.settings.logging[firstLogger].level === 'trace');
+            config.debug = config.debug && (RED.settings.logging[firstLogger].level === 'debug' || RED.settings.logging[firstLogger].level === 'trace');
 
             this.name = config.name || ('Camera ' + this.id);
 
@@ -68,7 +68,19 @@ module.exports = function (RED) {
 
             config.audio = Boolean(config.audio);
 
+            if (config.doorbell) {
+                this.debug('add doorbell service');
+                const doorbellService = acc.addService(hap.Service.Doorbell, this.name);
+                this.on('input', msg => {
+                    console.log(msg);
+                    this.debug('update ProgrammableSwitchEvent SINGLE_PRESS');
+                    doorbellService.getCharacteristic(hap.Characteristic.ProgrammableSwitchEvent).updateValue(0);
+                });
+            }
+
             const cameraSource = new FFMPEG(hap, {name: this.name, videoConfig: config}, logger, config.videoProcessor || 'ffmpeg');
+            this.debug('add cameraSource');
+
             acc.configureCameraSource(cameraSource);
 
             this.log('publishing camera ' + this.name + ' ' + config.username);

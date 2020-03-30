@@ -4,7 +4,7 @@
         defaults: {
             herdsman: {value: 'localhost', type: 'zigbee-shepherd', required: true},
             bridgeConfig: {value: 'CC:22:3D:E3:CE:C7:51826', type: 'redmatic-homekit-bridge', required: true},
-            devices: {value: {}}
+            deviceConfig: {value: {}}
         },
         inputs: 0,
         outputs: 0,
@@ -19,10 +19,24 @@
             return this.name ? 'node_label_italic' : '';
         },
         oneditprepare() {
-
+            $.getJSON('redmatic-homekit/zigbee-devices?id=' + this.id, data => {
+                this.deviceConfig = this.deviceConfig || {};
+                const firstRun = Object.keys(this.deviceConfig).length === 0;
+                data.sort((a, b) => String(a.name).localeCompare(b.name)).forEach(device => {
+                    const enabled = firstRun || (this.deviceConfig[device.ieeeAddr] && this.deviceConfig[device.ieeeAddr].enabled);
+                    $('table#devices').append(`<tr>
+                        <td><input class="device-enable" data-addr="${device.ieeeAddr}" type="checkbox"${enabled ? ' checked' : ''}></td>
+                        <td>${device.name}<br>${device.ieeeAddr}</td>
+                        <td>${device.manufacturerName}<br>${device.modelID}</td>
+                    </tr>`);
+                })
+            });
         },
         oneditsave() {
-
+            const node = this;
+            $('input.device-enable').each(function () {
+                node.deviceConfig[$(this).data('addr')] = {enabled: $(this).is(':checked')};
+            });
         }
     });
 </script>
@@ -37,6 +51,19 @@
         <label for="node-input-bridgeConfig"><i class="icon-globe"></i> Bridge</label>
         <input type="text" id="node-input-bridgeConfig">
     </div>
+    <div class="form-row">
+        <table id="devices"></table>
+    </div>
+
+    <style>
+        table#devices input.device-enable {
+            display: inline-block;
+            width: 32px;
+        }
+        table#devices tr td {
+            padding-bottom: 6px;
+        }
+    </style>
 </script>
 
 <script type="text/x-red" data-help-name="redmatic-homekit-zigbee-devices">

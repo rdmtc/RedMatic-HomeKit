@@ -49,6 +49,7 @@ module.exports = class Accessory {
         this.node = node;
         this.config = config;
 
+        node.debug('create accessory ' + config.description.ADDRESS + ' ' + config.name);
         this.acc = bridgeConfig.accessory({id: config.description.ADDRESS, name: config.name});
 
         if (!this.acc) {
@@ -77,8 +78,10 @@ module.exports = class Accessory {
         });
 
         if (typeof this.init === 'function') {
-            node.debug('init accessory ' + config.description.TYPE + ' ' + config.name);
-            this.init(config, node);
+            node.debug('init accessory ' + config.description.ADDRESS + ' ' + config.description.TYPE + ' ' + config.name);
+            setImmediate(() => {
+                this.init(config, node);
+            });
         }
     }
 

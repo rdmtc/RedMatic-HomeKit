@@ -1,6 +1,6 @@
 {
   "name": "redmatic-homekit",
-  "version": "2.5.1",
+  "version": "3.1.0",
   "description": "HAP-Nodejs based Node-RED nodes to create HomeKit Accessories",
   "main": "none",
   "author": "Sebastian Raff <hobbyquaker@gmail.com>",
@@ -16,6 +16,7 @@
   "node-red": {
     "nodes": {
       "redmatic-homekit-bridge": "nodes/redmatic-homekit-bridge.js",
+      "redmatic-homekit-zigbee-devices": "nodes/redmatic-homekit-zigbee-devices.js",
       "redmatic-homekit-homematic-devices": "nodes/redmatic-homekit-homematic-devices.js",
       "redmatic-homekit-homematic-garage": "nodes/redmatic-homekit-homematic-garage.js",
       "redmatic-homekit-homematic-irrigation": "nodes/redmatic-homekit-homematic-irrigation.js",
@@ -24,13 +25,12 @@
       "redmatic-homekit-statelessprogrammableswitch": "nodes/redmatic-homekit-statelessprogrammableswitch.js",
       "redmatic-homekit-universal": "nodes/redmatic-homekit-universal.js",
       "redmatic-homekit-camera": "nodes/redmatic-homekit-camera.js",
-      "redmatic-homekit-tv": "nodes/redmatic-homekit-tv.js",
-      "redmatic-homekit-zigbee-devices": "nodes/redmatic-homekit-zigbee-devices.js"
+      "redmatic-homekit-tv": "nodes/redmatic-homekit-tv.js"
     }
   },
   "dependencies": {
     "hap-nodejs": "0.4.52",
-    "homebridge-camera-ffmpeg": "0.1.11"
+    "homebridge-camera-ffmpeg": "0.1.14"
   },
   "devDependencies": {
     "xo": "0.24.0"

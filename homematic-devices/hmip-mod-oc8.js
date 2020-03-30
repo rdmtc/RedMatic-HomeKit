@@ -98,7 +98,7 @@ module.exports = class HmipModOc8 {
         this.node = node;
         this.ccu = ccu;
         this.config = config;
-        if (this.option(config.description.ADDRESS + ':SingleAccessory')) {
+        if (this.option('SingleAccessory')) {
             new AccMultiService(config, node);
         } else {
             const channels = config.description.CHILDREN;

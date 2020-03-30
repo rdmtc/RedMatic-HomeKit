@@ -10,7 +10,7 @@ module.exports = class HmCcTc extends Accessory {
 
         function targetState() {
             // 0=off, 1=heat, 3=auto
-            return valueSetpoint > 5.5 ? 1 : 0;
+            return valueSetpoint > 0 ? 1 : 0;
         }
 
         function currentState() {
@@ -22,7 +22,7 @@ module.exports = class HmCcTc extends Accessory {
             .setProps('CurrentTemperature', {minValue: -40, maxValue: 80})
             .get('CurrentTemperature', config.deviceAddress + ':1.TEMPERATURE')
 
-            .setProps('TargetTemperature', {minValue: 5.5, maxValue: 30.5, minStep: 0.5})
+            .setProps('TargetTemperature', {minValue: 6, maxValue: 30, minStep: 0.5})
             .get('TargetTemperature', config.deviceAddress + ':2.SETPOINT', value => {
                 valueSetpoint = value;
                 return value;
@@ -48,7 +48,7 @@ module.exports = class HmCcTc extends Accessory {
                 return targetState();
             })
             .set('TargetHeatingCoolingState', config.deviceAddress + ':2.SETPOINT', value => {
-                valueSetpoint = value ? 21 : 5.5;
+                valueSetpoint = value ? 21 : 0;
                 setTimeout(() => {
                     updateHeatingCoolingState();
                 }, 1000);

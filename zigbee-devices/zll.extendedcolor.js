@@ -14,9 +14,10 @@ module.exports = class ZllExtColor extends Accessory {
     }
 
     init(device) {
+        this.node.debug(`init zll.extendendcolor ${this.device.ieeeAddr} ${this.device.meta.name}`);
         const ep = device.endpoints[0].ID;
         let colormode;
-        this.addService('Lightbulb', device.meta.name)
+        const service = this.addService('Lightbulb', device.meta.name)
             .get('On', ep, 'genOnOff', 'onOff', data => Boolean(data))
             .set('On', ep, 'genOnOff', data => {
                 return {command: data ? 'on' : 'off', payload: {}};
@@ -27,20 +28,49 @@ module.exports = class ZllExtColor extends Accessory {
                 return {command: 'moveToLevel', payload: {level: Math.round(data * 2.54), transtime: 0}};
             })
 
-            .get('ColorTemperature', ep, 'lightingColorCtrl', 'colorTemperature', data => colormode !== 'hs' && data)
+            .get('ColorTemperature', ep, 'lightingColorCtrl', 'colorTemperature', data => colormode === 'ct' ? data : null)
             .set('ColorTemperature', ep, 'lightingColorCtrl', data => {
-                return {command: 'moveToColorTemp', payload: {colortemp: data, transtime: 0}};
-            }, true)
+                const current = this.device.getEndpoint(ep) && this.device.getEndpoint(ep).clusters['lightingColorCtrl'] && this.device.getEndpoint(ep).clusters['lightingColorCtrl'].attributes && this.device.getEndpoint(ep).clusters['lightingColorCtrl'].attributes['colorTemperature']
+                if (data !== current) {
+                    colormode = 'ct';
+                    return {command: 'moveToColorTemp', payload: {colortemp: data, transtime: 0}};
+                }
+            }, false)
             .setProps('ColorTemperature', {minValue: 153, maxValue: 370})
 
-            .get('Hue', ep, 'lightingColorCtrl', 'enhancedCurrentHue', data => colormode !== 'ct' && Math.round(data / 65535 * 360))
+            .get('Hue', ep, 'lightingColorCtrl', 'enhancedCurrentHue', data => colormode === 'ct' ? null : Math.round(data / 65535 * 360))
             .set('Hue', ep, 'lightingColorCtrl', data => {
-                return {command: 'enhancedMoveToHue', payload: {enhancehue: Math.round(data * 65535 / 360), direction: 0, transtime: 0}};
-            }, true)
+                colormode = 'hs';
+                return {
+                    command: 'enhancedMoveToHue',
+                    payload: {enhancehue: Math.round(data * 65535 / 360), direction: 0, transtime: 0}
+                };
+            }, false)
 
-            .get('Saturation', ep, 'lightingColorCtrl', 'currentSaturation', data => colormode !== 'ct' && Math.round(data / 2.54))
+            .get('Saturation', ep, 'lightingColorCtrl', 'currentSaturation', data => colormode === 'ct' ? null : Math.round(data / 2.54))
             .set('Saturation', ep, 'lightingColorCtrl', data => {
-                return {command: 'moveToSaturation', payload: {saturation: Math.round(data * 2.54), transtime: 0}};
-            }, true);
+                const saturation = Math.round(data * 2.54);
+                if (saturation !== this.device.getEndpoint(ep).clusters['lightingColorCtrl'].attributes['currentSaturation']) {
+                    //colormode = 'hs';
+                    return {command: 'moveToSaturation', payload: {saturation: saturation, transtime: 0}};
+                }
+
+
+            }, false)
+
+            .sub(ep, 'lightingColorCtrl', 'colorMode', colorMode => {
+                console.log('colorMode', colorMode);
+                switch (colorMode) {
+                    case 0:
+                        colormode = 'hs';
+                        break;
+                    case 1:
+                        colormode = 'xy';
+                        break;
+                    case 2:
+                        colormode = 'ct';
+                        break;
+                }
+            });
     }
 };

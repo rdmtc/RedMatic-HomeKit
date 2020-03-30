@@ -1,6 +1,6 @@
 const Accessory = require('./lib/accessory');
 
-module.exports = class LumiWeather extends Accessory {
+module.exports = class LumiMagnet extends Accessory {
     static get manufacturerName() {
         return ['LUMI'];
     }
@@ -10,8 +10,9 @@ module.exports = class LumiWeather extends Accessory {
     }
 
     init(device) {
+        this.node.debug(`init lumi.magnet ${this.device.ieeeAddr} ${this.device.meta.name}`);
         this.addService('ContactSensor', device.meta.name)
-            .get('ContactSensorState', 1, 'genOnOff', 'onOff', data => data);
+            .get('ContactSensorState', 1, 'genOnOff', 'onOff');
 
         this.addService('BatteryService', device.meta.name)
             .get('StatusLowBattery', 1, 'genBasic', '65281', data => {

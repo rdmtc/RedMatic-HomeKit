@@ -1,6 +1,6 @@
 const Accessory = require('./lib/accessory');
 
-module.exports = class LumiWeather extends Accessory {
+module.exports = class LumiWleak extends Accessory {
     static get manufacturerName() {
         return ['LUMI'];
     }
@@ -10,6 +10,7 @@ module.exports = class LumiWeather extends Accessory {
     }
 
     init(device) {
+        this.node.debug(`init lumi.sensor_wleak ${this.device.ieeeAddr} ${this.device.meta.name}`);
         this.addService('LeakSensor', device.meta.name)
             .get('LeakDetected', 1, 'ssIasZone', 'zonestatus', data => data ? 1 : 0);
 

@@ -5,20 +5,47 @@ class Service {
         return this;
     }
 
-    get(characteristic, endpoint, cluster, attribute, transform) {
+    sub(endpoint, cluster, attribute, callback) {
         this.acc.proxy.on('message', msg => {
             if (msg.device.ieeeAddr === this.acc.device.ieeeAddr && msg.endpoint.ID === endpoint && msg.cluster === cluster && typeof msg.data[attribute] !== 'undefined') {
-                this.acc.node.debug(`msg ${characteristic} ${this.acc.device.meta.name} ${msg.cluster} ${JSON.stringify(msg.data)}`);
+                this.acc.node.debug(`sub msg ${this.acc.device.meta.name} ${msg.cluster} ${JSON.stringify(msg.data)}`);
+                callback(msg.data[attribute]);
+            }
+        });
+
+        if (this.acc.device.getEndpoint(endpoint) && this.acc.device.getEndpoint(endpoint).clusters[cluster]) {
+            const val = this.acc.device.getEndpoint(endpoint).clusters[cluster].attributes[attribute];
+            this.acc.node.debug(`sub initial ${this.acc.device.meta.name} ${cluster} ${val}`);
+            callback(val);
+        }
+    }
+
+    get(characteristic, endpoint, cluster, attribute, transform) {
+        if (!transform) {
+            transform = function (data) {
+                return data;
+            };
+        }
+
+        this.acc.proxy.on('message', msg => {
+            if (msg.device.ieeeAddr === this.acc.device.ieeeAddr && msg.endpoint.ID === endpoint && msg.cluster === cluster && typeof msg.data[attribute] !== 'undefined') {
+                this.acc.node.debug(`msg ${this.acc.device.meta.name} ${msg.cluster} ${characteristic} ${JSON.stringify(msg.data)}`);
 
                 const val = transform(msg.data[attribute]);
-                if (val && !this.suppressUpdate) {
+                if (typeof val !== 'undefined' && val !== null && !this.suppressUpdate) {
                     this.acc.updateCharacteristic(this.subtype, characteristic, val);
                 }
             }
         });
 
         if (this.acc.device.getEndpoint(endpoint) && this.acc.device.getEndpoint(endpoint).clusters[cluster]) {
-            this.acc.updateCharacteristic(this.subtype, characteristic, transform(this.acc.device.getEndpoint(endpoint).clusters[cluster].attributes[attribute], true));
+            let val = transform(this.acc.device.getEndpoint(endpoint).clusters[cluster].attributes[attribute]);
+            if (isNaN(val)) {
+                val = 0;
+            }
+            if (val !== null) {
+                this.acc.updateCharacteristic(this.subtype, characteristic, val, true);
+            }
         }
 
         return this;
@@ -26,8 +53,15 @@ class Service {
 
     set(characteristic, endpoint, cluster, transform, suppressUpdate) {
         this.acc.addListener('set', this.subtype, characteristic, (value, callback) => {
-            this.acc.node.debug(`set ${this.subtype} ${characteristic} ${value}`);
-            const {command, payload} = transform(value);
+            this.acc.node.debug(`set ${this.acc.device.meta.name} ${characteristic} ${value}`);
+            const transformedValue = transform(value);
+
+            if (!transformedValue) {
+                callback();
+                return;
+            }
+
+            const {command, payload} = transformedValue;
 
             this.acc.node.debug(`command ${this.acc.device.meta.name} ${cluster} ${command} ${payload ? JSON.stringify(payload) : ''}`);
             clearTimeout(this.suppressUpdateTimer);
@@ -157,7 +191,7 @@ module.exports = class Accessory {
     }
 
     identify(paired, callback) {
-        this.node.log('identify ' + (paired ? '(paired)' : '(unpaired)') + ' ' + this.config.name + ' ' + this.config.description.TYPE + ' ' + this.config.description.ADDRESS);
+        this.node.log('identify ' + (paired ? '(paired)' : '(unpaired)') + ' ' + this.device.manufacturerName + ' ' + this.device.meta.name + ' ' + this.device.modelID + ' ' + this.device.ieeeAddr);
         try {
             callback();
         } catch (error) {

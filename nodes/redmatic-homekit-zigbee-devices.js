@@ -2,6 +2,24 @@ const fs = require('fs');
 const path = require('path');
 
 module.exports = function (RED) {
+    const knownDevices = {};
+
+    RED.httpAdmin.get('/redmatic-homekit/zigbee-devices', RED.auth.needsPermission('redmatic.read'), (req, res) => {
+        if (knownDevices[req.query.id]) {
+            const devices = knownDevices[req.query.id].map(d => {
+                return {
+                    ieeeAddr: d.ieeeAddr,
+                    name: d.meta.name,
+                    manufacturerName: d.manufacturerName,
+                    modelID: d.modelID
+                };
+            });
+            res.status(200).send(JSON.stringify(devices));
+        } else {
+            res.status(500).send(`500 Internal Server Error: Unknown Herdsman ID ${req.query.id}`);
+        }
+    });
+
     class RedmaticHomekitZigbeeDevices {
         constructor(config) {
             RED.nodes.createNode(this, config);
@@ -17,6 +35,9 @@ module.exports = function (RED) {
             if (!this.herdsmanNode) {
                 return;
             }
+
+            knownDevices[this.id] = [];
+            this.deviceConfig = config.deviceConfig;
 
             this.herdsman = this.herdsmanNode.herdsman;
 
@@ -36,8 +57,14 @@ module.exports = function (RED) {
                 this.devices.forEach(device => {
                     const Adapter = this.findAdapter(device);
                     if (Adapter) {
-                        /* eslint-disable-next-line no-new */
-                        new Adapter(this, device);
+                        knownDevices[this.id].push(device);
+
+                        if (this.deviceConfig[device.ieeeAddr] && this.deviceConfig[device.ieeeAddr].enabled) {
+                            /* eslint-disable-next-line no-new */
+                            new Adapter(this, device);
+                        } else {
+                            this.debug(`device disabled ${device.ieeeAddr} ${device.meta.name}`);
+                        }
                     }
                 });
             });

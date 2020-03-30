@@ -2,11 +2,15 @@ const Accessory = require('./lib/accessory');
 
 module.exports = class ZllColor extends Accessory {
     static get manufacturerName() {
-        return [];
+        return ['IKEA of Sweden'];
     }
 
     static get modelID() {
-        return [];
+        return [
+            'TRADFRI bulb E27 CWS opal 600lm',
+            'TRADFRI bulb E26 CWS opal 600lm',
+            'TRADFRI bulb E14 CWS opal 600lm'
+        ];
     }
 
     static get deviceID() {
@@ -14,6 +18,7 @@ module.exports = class ZllColor extends Accessory {
     }
 
     init(device) {
+        this.node.debug(`init zll.color ${this.device.ieeeAddr} ${this.device.meta.name}`);
         const ep = device.endpoints[0].ID;
         this.addService('Lightbulb', device.meta.name)
             .get('On', ep, 'genOnOff', 'onOff', data => Boolean(data))

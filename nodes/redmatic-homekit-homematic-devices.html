@@ -127,6 +127,7 @@
                     that.devices = {};
                 }
 
+                const blindTypes = ['VerticalTilt Enabled', 'VerticalTilt Disabled'];
                 const switchTypes = ['Switch', 'Outlet', 'Lightbulb', 'Fan', 'Valve', 'ValveIrrigation'];
                 const outletTypes = ['Outlet', 'Switch', 'Lightbulb', 'Fan', 'Valve', 'ValveIrrigation'];
 
@@ -216,8 +217,11 @@
                                 break;
                             case 'hm-lc-bl1-fm-2':
                                 break;
+
                             case 'hm-lc-bl1-fm':
+                            case 'zel stg rm fep 230v':
                                 break;
+
                             case 'hm-lc-bl1-pb-fm':
                                 break;
                             case 'hm-lc-bl1-sm-2':
@@ -308,12 +312,14 @@
                                 addChannels(addr, 1, 3, {type: ['ContactSensor', 'Door', 'Window']});
                                 break;
 
+                            case 'hm-sec-key-o':
                             case 'hm-sec-key-s':
                             case 'hm-sec-key':
                                 addOption(addr, 'OpenOnUnlock');
                                 break;
 
                             case 'hm-sec-mdir-2':
+                            case 'hm-sec-mdir-3':
                             case 'hm-sec-mdir':
                                 addOption(addr, 'LightSensor');
                                 break;
@@ -326,6 +332,7 @@
                             case 'hm-sec-sc-2':
                             case 'hm-sec-sc':
                             case 'hm-sec-sco':
+                            case 'zel stg rm ffk':
                                 addChannels(addr, 1, 1, {type: ['ContactSensor', 'Door', 'Window', 'GarageDoorOpener']});
                                 break;
 
@@ -400,12 +407,9 @@
                                 addOption(addr, 'HumiditySensor');
                                 break;
 
-                            case 'hmip-bbl':
-                                break;
                             case 'hmip-bdt':
                                 addVirtualChannels(addr, 4, 4);
                                 break;
-                            case 'hmip-broll':
                                 break;
                             case 'hmip-bsl':
                                 break;
@@ -432,7 +436,14 @@
                                 addOption(addr, 'BoostSwitch');
                                 break;
 
+                            case 'hmip-bbl':
                             case 'hmip-fbl':
+                                addVirtualChannels(addr, 4, 4, {type: blindTypes});
+                                break;
+
+                            case 'hmip-froll':
+                            case 'hmip-broll':
+                                addVirtualChannels(addr, 4, 4);
                                 break;
 
                             case 'hmip-fci1':
@@ -440,8 +451,7 @@
                                 break;
 
                             case 'hmip-fdt':
-                                break;
-                            case 'hmip-froll':
+                                addVirtualChannels(addr, 2, 2);
                                 break;
 
                             case 'hmip-fsm':
@@ -465,6 +475,7 @@
                                 break;
 
                             case 'hmip-pdt':
+                                addVirtualChannels(addr, 3, 3);
                                 break;
 
                             case 'hmip-ps':
@@ -501,6 +512,11 @@
 
                             case 'hmip-sth':
                             case 'hmip-sthd':
+                                addOption(addr, 'Thermostat');
+                                addOption(addr, 'BoostSwitch');
+                                addOption(addr, 'HumiditySensor');
+                                break;
+
                             case 'hmip-stho-a':
                             case 'hmip-stho':
                                 addOption(addr, 'HumiditySensor');
@@ -509,12 +525,14 @@
                             case 'hmip-swd':
                                 break;
 
+                            case 'hmip-sci':
                             case 'hmip-swdm-b':
                             case 'hmip-swdm-b1':
                             case 'hmip-swdm-b2':
                             case 'hmip-swdm':
                             case 'hmip-swdo-i':
                             case 'hmip-swdo':
+                            case 'hmip-swdo-pl':
                                 addChannels(addr, 1, 1, {type: ['ContactSensor', 'Door', 'Window', 'GarageDoorOpener']});
                                 break;
 
@@ -557,17 +575,36 @@
                                 addChannels(addr, 1, 12, {type: ['ContactSensor', 'Door', 'Window']});
                                 break;
 
+                            case 'hmipw-drd3':
+                                addVirtualChannels(addr, 2, 12, 4);
+                                break;
+
+
+                            case 'hmip-drsi4':
                             case 'hmipw-drs4':
                             case 'hmipw-drs8':
                                 addOption(addr, 'SingleAccessory');
                                 addVirtualChannels(addr, 2, channelCount - 2, 4, {type: switchTypes});
                                 break;
 
+                            case 'hmipw-fio6':
+                                addOption(addr, 'SingleAccessory');
+                                addChannels(addr, 1, 6, {type: ['ContactSensor', 'Door', 'Window']});
+                                addVirtualChannels(addr, 8, channelCount - 3, 4, {type: switchTypes});
+                                break;
+
                             case 'hmipw-dri16':
                             case 'hmipw-dri32':
                                 addOption(addr, 'SingleAccessory');
-                                addChannels(addr, 2, channelCount - 2, 1, {type: ['ContactSensor', 'Door', 'Window']});
+                                addChannels(addr, 1, channelCount - 2, 1, {type: ['ContactSensor', 'Door', 'Window']});
                                 break;
+
+
+                            case 'hmip-drbli4':
+                            case 'hmipw-drbl4':
+                                addVirtualChannels(addr, 2, channelCount - 2, 4, {type: blindTypes});
+                                break;
+
 
                             default:
                     }
@@ -637,7 +674,6 @@
             $('.channel-option').each(function () {
                 const addr = $(this).data('addr');
                 const option = $(this).data('option');
-                console.log(addr, option)
                 if (!devices[addr]) {
                     devices[addr] = {};
                 }
@@ -646,7 +682,6 @@
             $('.device-enabled:not(.vchannel-enabled)').each(function () {
                  const addr = $(this).data('addr');
                  const enabled = $(this).is(':checked');
-                 console.log('device, channel', addr, enabled);
                  if (enabled && devices[addr]) {
                      devices[addr].disabled = false;
                  } else if (!enabled) {
@@ -659,7 +694,6 @@
             $('.device-enabled.vchannel-enabled').each(function () {
                 const addr = $(this).data('addr');
                 const enabled = $(this).is(':checked');
-                console.log('vchannel', addr, enabled);
                 if (!enabled && devices[addr]) {
                     devices[addr].enabled = false;
                 } else if (enabled) {

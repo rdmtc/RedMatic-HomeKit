@@ -1,1 +1,1 @@
-module.exports = require('./hmip-broll');
+module.exports = require('./lib/generic-hmip-blind');

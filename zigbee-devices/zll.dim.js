@@ -2,11 +2,23 @@ const Accessory = require('./lib/accessory');
 
 module.exports = class ZllDim extends Accessory {
     static get manufacturerName() {
-        return [];
+        return ['IKEA of Sweden'];
     }
 
     static get modelID() {
-        return [];
+        return [
+            'TRADFRI bulb E14 W op/ch 400lm',
+            'TRADFRI bulb E12 W op/ch 400lm',
+            'TRADFRI bulb E17 W op/ch 400lm',
+            'TRADFRI bulb E27 WW 806lm',
+            'TRADFRI bulb E26 opal 1000lm',
+            'TRADFRI bulb E26 W opal 1000lm',
+            'TRADFRI bulb E27 WW clear 250lm',
+            'TRADFRI bulb GU10 WW 400lm',
+            'TRADFRI bulb GU10 W 400lm',
+            'TRADFRI bulb E27 opal 1000lm',
+            'TRADFRI bulb E27 W opal 1000lm'
+        ];
     }
 
     static get deviceID() {
@@ -14,6 +26,7 @@ module.exports = class ZllDim extends Accessory {
     }
 
     init(device) {
+        this.node.debug(`init zll.dim ${this.device.ieeeAddr} ${this.device.meta.name}`);
         const ep = device.endpoints[0].ID;
         this.addService('Lightbulb', device.meta.name)
             .get('On', ep, 'genOnOff', 'onOff', data => Boolean(data))

@@ -48,6 +48,7 @@ module.exports = function (RED) {
             this.username = config.username;
             this.pincode = config.pincode;
             this.port = config.port;
+            this.allowInsecureRequest = Boolean(config.allowInsecureRequest);
 
             if (bridges[this.username]) {
                 this.bridge = bridges[this.username];
@@ -75,6 +76,11 @@ module.exports = function (RED) {
                 return;
             }
 
+            if (this.bridge.bridgedAccessories && this.bridge.bridgedAccessories.length === 0) {
+                this.error('refusing to publish bridge with 0 accessories');
+                return;
+            }
+
             this.bridge.isPublished = true;
 
             this.bridge.on('identify', (paired, callback) => {
@@ -99,7 +105,7 @@ module.exports = function (RED) {
                             port: parseInt(this.port, 10),
                             pincode: this.pincode,
                             category: hap.Accessory.Categories.OTHER
-                        });
+                        }, this.allowInsecureRequest);
                         this.log('published bridge (' + this.bridge.bridgedAccessories.length + ' Accessories) ' + this.name + ' ' + this.username + ' on port ' + this.port);
 
                         this.emit('published');

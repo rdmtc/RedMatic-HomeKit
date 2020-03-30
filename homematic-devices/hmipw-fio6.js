@@ -2,7 +2,49 @@
 
 const Accessory = require('./lib/accessory');
 
-function addService(type, dp, name) {
+function addInputService(type, name, dp) {
+    let service;
+    let actualValue;
+
+    switch (type) {
+        case 'Door':
+        case 'Window':
+            service = this.addService(type, name, type);
+
+            service.update('PositionState', 2);
+
+            service.get('CurrentPosition', dp, value => {
+                actualValue = value ? 100 : 0;
+                service.update('TargetPosition', actualValue);
+                return actualValue;
+            });
+
+            service.get('TargetPosition', dp, value => {
+                actualValue = value ? 100 : 0;
+                service.update('TargetPosition', actualValue);
+                return actualValue;
+            });
+
+            service.set('TargetPosition', (value, callback) => {
+                callback();
+                setTimeout(() => {
+                    service.update('CurrentPosition', actualValue);
+                    service.update('TargetPosition', actualValue);
+                    service.update('PositionState', 2);
+                }, 20);
+            });
+
+            break;
+
+        default:
+            this.addService('ContactSensor', name)
+                .get('ContactSensorState', dp, (value, c) => {
+                    return value ? c.CONTACT_NOT_DETECTED : c.CONTACT_DETECTED;
+                });
+    }
+}
+
+function addOutputService(type, dp, name) {
     switch (type) {
         case 'ValveIrrigation':
         // intentional fallthrough
@@ -34,7 +76,7 @@ function addService(type, dp, name) {
     }
 }
 
-class AccSingleService extends Accessory {
+class AccSingleOutputService extends Accessory {
     init(config, node) {
         const {ccu} = node;
         const dp = config.iface + '.' + config.accChannel + '.STATE';
@@ -43,7 +85,16 @@ class AccSingleService extends Accessory {
 
         node.debug(config.accChannel + ' ' + type + ' ' + this.option('', 'type'));
 
-        addService.call(this, type, dp, name);
+        addOutputService.call(this, type, dp, name);
+    }
+}
+
+class AccSingleInputService extends Accessory {
+    init(config) {
+        const dp = config.iface + '.' + config.accChannel + '.STATE';
+        const {name} = config;
+        const type = this.option('', 'type');
+        addInputService.call(this, type, name, dp);
     }
 }
 
@@ -52,7 +103,20 @@ class AccMultiService extends Accessory {
         const {ccu} = node;
         const channels = config.description.CHILDREN;
 
-        for (let i = 2; i < (channels.length - 1); i += 4) {
+        for (let i = 1; i < 7; i++) {
+            const ch = config.description.ADDRESS + ':' + i;
+            if (!this.option(i)) {
+                continue;
+            }
+
+            const dp = config.deviceAddress + ':' + i + '.STATE';
+            const name = node.ccu.channelNames[ch];
+            const type = this.option(i, 'type');
+
+            addInputService.call(this, type, name, dp);
+        }
+
+        for (let i = 8; i < (channels.length - 2); i += 4) {
             for (let vi = 0; vi < 3; vi++) {
                 const channelNumber = i + vi;
                 const ch = channels[channelNumber];
@@ -68,13 +132,13 @@ class AccMultiService extends Accessory {
 
                 node.debug(channelNumber + ' ' + type + ' ' + this.option(channelNumber, 'type'));
 
-                addService.call(this, type, dp, name);
+                addOutputService.call(this, type, dp, name);
             }
         }
     }
 }
 
-module.exports = class HmipwDrs {
+module.exports = class HmipwFio {
     option(id, option) {
         let addr = this.config.description.ADDRESS;
         if (!addr.includes(':')) {
@@ -102,7 +166,21 @@ module.exports = class HmipwDrs {
             new AccMultiService(config, node);
         } else {
             const channels = config.description.CHILDREN;
-            for (let i = 2; i < (channels.length - 1); i += 4) {
+            for (let i = 1; i < 7; i++) {
+                const ch = config.description.ADDRESS + ':' + i;
+                if (!this.option(ch)) {
+                    continue;
+                }
+
+                const name = ccu.channelNames[ch];
+
+                const chConfig = Object.assign({}, config, {accChannel: ch, name});
+                chConfig.description = Object.assign({}, config.description, {ADDRESS: ch});
+
+                new AccSingleInputService(chConfig, node);
+            }
+
+            for (let i = 8; i < (channels.length - 2); i += 4) {
                 for (let vi = 0; vi < 3; vi++) {
                     const channelNumber = i + vi;
                     const ch = channels[channelNumber];
@@ -117,7 +195,7 @@ module.exports = class HmipwDrs {
                     const chConfig = Object.assign({}, config, {accChannel: ch, name});
                     chConfig.description = Object.assign({}, config.description, {ADDRESS: ch});
 
-                    new AccSingleService(chConfig, node);
+                    new AccSingleOutputService(chConfig, node);
                 }
             }
         }
