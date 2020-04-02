@@ -83,12 +83,15 @@ module.exports = class ZllColorXY extends Accessory {
                 switch (colorMode) {
                     case 0:
                         colormode = 'hs';
+                        console.log('colorMode', colormode);
                         break;
                     case 1:
                         colormode = 'xy';
+                        console.log('colorMode', colormode);
                         break;
                     case 2:
                         colormode = 'ct';
+                        console.log('colorMode', colormode);
                         break;
                 }
             });
