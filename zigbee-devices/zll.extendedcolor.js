@@ -50,7 +50,8 @@ module.exports = class ZllExtColor extends Accessory {
             .get('Saturation', ep, 'lightingColorCtrl', 'currentSaturation', data => colormode === 'ct' ? null : Math.round(data / 2.54))
             .set('Saturation', ep, 'lightingColorCtrl', data => {
                 const saturation = Math.round(data * 2.54);
-                if (saturation !== this.device.getEndpoint(ep).clusters['lightingColorCtrl'].attributes['currentSaturation']) {
+                const currentSaturation = this.device.getEndpoint(ep).clusters['lightingColorCtrl'] && this.device.getEndpoint(ep).clusters['lightingColorCtrl'].attributes && this.device.getEndpoint(ep).clusters['lightingColorCtrl'].attributes['currentSaturation'];
+                if (saturation !== currentSaturation) {
                     //colormode = 'hs';
                     return {command: 'moveToSaturation', payload: {saturation: saturation, transtime: 0}};
                 }
