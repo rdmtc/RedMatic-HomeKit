@@ -14,10 +14,11 @@ module.exports = class ZllExtColor extends Accessory {
     }
 
     init(device) {
-        this.node.debug(`init zll.extendendcolor ${this.device.ieeeAddr} ${this.device.meta.name}`);
-        const ep = device.endpoints[0].ID;
         let colormode;
-        const service = this.addService('Lightbulb', device.meta.name)
+        let sat = 0;
+        this.node.debug(`init zll.extendedcolor ${this.device.ieeeAddr} ${this.device.meta.name}`);
+        const ep = device.endpoints[0].ID;
+        this.addService('Lightbulb', device.meta.name)
             .get('On', ep, 'genOnOff', 'onOff', data => Boolean(data))
             .set('On', ep, 'genOnOff', data => {
                 return {command: data ? 'on' : 'off', payload: {}};
@@ -28,39 +29,20 @@ module.exports = class ZllExtColor extends Accessory {
                 return {command: 'moveToLevel', payload: {level: Math.round(data * 2.54), transtime: 0}};
             })
 
-            .get('ColorTemperature', ep, 'lightingColorCtrl', 'colorTemperature', data => colormode === 'ct' ? data : null)
-            .set('ColorTemperature', ep, 'lightingColorCtrl', data => {
-                const current = this.device.getEndpoint(ep) && this.device.getEndpoint(ep).clusters['lightingColorCtrl'] && this.device.getEndpoint(ep).clusters['lightingColorCtrl'].attributes && this.device.getEndpoint(ep).clusters['lightingColorCtrl'].attributes['colorTemperature']
-                if (data !== current) {
-                    colormode = 'ct';
-                    return {command: 'moveToColorTemp', payload: {colortemp: data, transtime: 0}};
-                }
-            }, false)
-            .setProps('ColorTemperature', {minValue: 153, maxValue: 370})
-
-            .get('Hue', ep, 'lightingColorCtrl', 'enhancedCurrentHue', data => colormode === 'ct' ? null : Math.round(data / 65535 * 360))
+            .get('Hue', ep, 'lightingColorCtrl', 'enhancedCurrentHue', data => Math.round(data / 65535 * 360))
             .set('Hue', ep, 'lightingColorCtrl', data => {
-                colormode = 'hs';
-                return {
-                    command: 'enhancedMoveToHue',
-                    payload: {enhancehue: Math.round(data * 65535 / 360), direction: 0, transtime: 0}
-                };
-            }, false)
+                console.log('set Hue', data);
+                return {command: 'enhancedMoveToHueAndSaturation', payload: {enhancehue: Math.round(data * 65535 / 360), saturation: sat, direction: 0, transtime: 0}};
+            })
 
-            .get('Saturation', ep, 'lightingColorCtrl', 'currentSaturation', data => colormode === 'ct' ? null : Math.round(data / 2.54))
+            .get('Saturation', ep, 'lightingColorCtrl', 'currentSaturation', data => Math.round(data / 2.54))
             .set('Saturation', ep, 'lightingColorCtrl', data => {
-                const saturation = Math.round(data * 2.54);
-                const currentSaturation = this.device.getEndpoint(ep).clusters['lightingColorCtrl'] && this.device.getEndpoint(ep).clusters['lightingColorCtrl'].attributes && this.device.getEndpoint(ep).clusters['lightingColorCtrl'].attributes['currentSaturation'];
-                if (saturation !== currentSaturation) {
-                    //colormode = 'hs';
-                    return {command: 'moveToSaturation', payload: {saturation: saturation, transtime: 0}};
-                }
-
-
-            }, false)
-
+                console.log('set Saturation', data);
+                sat = Math.round(data * 2.54);
+                return false;
+                //return {command: 'moveToSaturation', payload: {saturation: Math.round(data * 2.54), transtime: 0}};
+            })
             .sub(ep, 'lightingColorCtrl', 'colorMode', colorMode => {
-                console.log('colorMode', colorMode);
                 switch (colorMode) {
                     case 0:
                         colormode = 'hs';
@@ -72,6 +54,8 @@ module.exports = class ZllExtColor extends Accessory {
                         colormode = 'ct';
                         break;
                 }
+                console.log('colormode', colorMode, colormode);
+
             });
     }
 };
