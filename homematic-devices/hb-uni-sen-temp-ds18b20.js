@@ -14,7 +14,7 @@ module.exports = class HbUniSenTemp extends Accessory {
             const name = ccu.channelNames[channels[i]];
             const dp = config.iface + '.' + channels[i] + '.TEMPERATURE';
 
-            this.addService('TEMPERATURE', name)
+            this.addService('TemperatureSensor', name)
                 .setProps('CurrentTemperature', {minValue: -150, maxValue: 150})
                 .get('CurrentTemperature', dp)
                 .get('StatusLowBattery', config.deviceAddress + ':0.LOWBAT', (value, c) => {
