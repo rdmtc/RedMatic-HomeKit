@@ -112,7 +112,7 @@ module.exports = function (RED) {
                                         this.debug('update Valve 0 InUse true');
                                         service.updateCharacteristic(hap.Characteristic.Active, true);
                                         setTimeout(() => {
-                                            stop();
+                                            stop().catch(() => {});
                                         }, (this.onTime * 60 * 1000) + 1000);
                                         resolve();
                                         startInterval();
@@ -171,7 +171,7 @@ module.exports = function (RED) {
             }, msg => {
                 this.state = msg.value;
                 if (!this.state) {
-                    stop();
+                    stop().catch(() => {});
                 }
 
                 this.debug('this.state=' + this.state);
@@ -241,9 +241,9 @@ module.exports = function (RED) {
             this.on('input', msg => {
                 if (typeof msg.payload === 'boolean') {
                     if (msg.payload) {
-                        start();
+                        start().catch(() => {});
                     } else {
-                        stop();
+                        stop().catch(() => {});
                     }
                 } else {
                     const time = parseFloat(msg.payload) || 0;
