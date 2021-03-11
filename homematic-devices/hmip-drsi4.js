@@ -74,7 +74,7 @@ class AccMultiService extends Accessory {
     }
 }
 
-module.exports = class HmipwDrs {
+module.exports = class HmipDrsi4 {
     option(id, option) {
         let addr = this.config.description.ADDRESS;
         if (!addr.includes(':')) {
