@@ -32,7 +32,6 @@ module.exports = class ZllColor extends Accessory {
                 return {command: 'moveToLevel', payload: {level: Math.round(data * 2.54), transtime: 0}};
             })
 
-
             .get('Hue', ep, 'lightingColorCtrl', 'enhancedCurrentHue', data => Math.round(data / 65535 * 360))
             .set('Hue', ep, 'lightingColorCtrl', data => {
                 console.log('set Hue', data);
@@ -44,7 +43,7 @@ module.exports = class ZllColor extends Accessory {
                 console.log('set Saturation', data);
                 sat = Math.round(data * 2.54);
                 return false;
-                //return {command: 'moveToSaturation', payload: {saturation: Math.round(data * 2.54), transtime: 0}};
-            })
+                // return {command: 'moveToSaturation', payload: {saturation: Math.round(data * 2.54), transtime: 0}};
+            });
     }
 };

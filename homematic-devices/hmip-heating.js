@@ -79,6 +79,7 @@ module.exports = class HmipHeating extends Accessory {
                 if (value > 4.5) {
                     valueSetpoint = value;
                 }
+
                 updateHeatingCoolingState();
                 return value;
             })
@@ -143,7 +144,6 @@ module.exports = class HmipHeating extends Accessory {
             });
 
         function updateHeatingCoolingState() {
-
             serviceThermostat.update('CurrentHeatingCoolingState', currentState());
             serviceThermostat.update('TargetHeatingCoolingState', targetState());
         }

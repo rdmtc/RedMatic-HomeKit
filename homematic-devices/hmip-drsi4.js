@@ -12,12 +12,12 @@ function addService(type, dp, name) {
             service.update('ValveType', type === 'ValveIrrigation' ? 1 : 0);
 
             service
-            .get('Active', dp, val => val ? 1 : 0)
-            .get('InUse', dp, val => val ? 1 : 0)
-            .set('Active', dp, val => {
-                service.update('InUse', val);
-                return Boolean(val);
-            });
+                .get('Active', dp, val => val ? 1 : 0)
+                .get('InUse', dp, val => val ? 1 : 0)
+                .set('Active', dp, val => {
+                    service.update('InUse', val);
+                    return Boolean(val);
+                });
             break;
         }
 
@@ -29,8 +29,8 @@ function addService(type, dp, name) {
         // intentional fallthrough
         default:
             this.addService(type, name, type === 'Switch' ? '' : type)
-            .get('On', dp)
-            .set('On', dp);
+                .get('On', dp)
+                .set('On', dp);
     }
 }
 

@@ -44,6 +44,7 @@ module.exports = class HmipBwth extends Accessory {
                 if (value > 4.5) {
                     valueSetpoint = value;
                 }
+
                 updateHeatingCoolingState();
                 return value;
             })

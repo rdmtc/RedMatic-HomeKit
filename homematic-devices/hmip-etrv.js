@@ -44,6 +44,7 @@ module.exports = class HmipEtrv extends Accessory {
                 if (value !== 4.5) {
                     valueSetpoint = value;
                 }
+
                 updateHeatingCoolingState();
                 return value;
             })
@@ -76,6 +77,7 @@ module.exports = class HmipEtrv extends Accessory {
                         if (valueSetpoint > 4.5) {
                             serviceThermostat.update('TargetTemperature', valueSetpoint);
                         }
+
                         callback();
                     })
                         .catch(() => {

@@ -76,12 +76,14 @@ module.exports = function (RED) {
             if (device.modelID === 'lumi.router') {
                 return;
             }
+
             let dev = this.zigbeeDevices.find(d => (!device.manufacturerName || d.manufacturerName.includes(device.manufacturerName)) && d.modelID.includes(device.modelID));
             if (!dev) {
                 const epFirst = device.endpoints[0];
                 this.debug('search adapter by deviceID ' + epFirst.deviceID);
                 dev = this.zigbeeDevices.find(d => (d.deviceID && d.deviceID.includes(epFirst.deviceID)));
             }
+
             return dev;
         }
     }

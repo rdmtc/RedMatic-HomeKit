@@ -7,8 +7,7 @@ module.exports = class ZllOnOff extends Accessory {
 
     static get modelID() {
         return ['FYRTUR block-out roller blind',
-		'KADRILJ roller blind'
-	];
+            'KADRILJ roller blind'];
     }
 
     init(device) {

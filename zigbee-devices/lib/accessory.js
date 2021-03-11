@@ -43,6 +43,7 @@ class Service {
             if (isNaN(val)) {
                 val = 0;
             }
+
             if (val !== null) {
                 this.acc.updateCharacteristic(this.subtype, characteristic, val, true);
             }

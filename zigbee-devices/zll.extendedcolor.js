@@ -40,7 +40,7 @@ module.exports = class ZllExtColor extends Accessory {
                 console.log('set Saturation', data);
                 sat = Math.round(data * 2.54);
                 return false;
-                //return {command: 'moveToSaturation', payload: {saturation: Math.round(data * 2.54), transtime: 0}};
+                // return {command: 'moveToSaturation', payload: {saturation: Math.round(data * 2.54), transtime: 0}};
             })
             .sub(ep, 'lightingColorCtrl', 'colorMode', colorMode => {
                 switch (colorMode) {
@@ -53,9 +53,10 @@ module.exports = class ZllExtColor extends Accessory {
                     case 2:
                         colormode = 'ct';
                         break;
+                    default:
                 }
-                console.log('colormode', colorMode, colormode);
 
+                console.log('colormode', colorMode, colormode);
             });
     }
 };

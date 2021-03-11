@@ -16,11 +16,11 @@ module.exports = class HmipSte2Pcb extends Accessory {
             const dp = config.iface + '.' + channels[i] + '.ACTUAL_TEMPERATURE';
 
             this.addService('TemperatureSensor', name)
-            .setProps('CurrentTemperature', {minValue: -150, maxValue: 150})
-            .get('CurrentTemperature', dp)
-            .get('StatusLowBattery', config.deviceAddress + ':0.LOW_BAT', (value, c) => {
-                return value ? c.BATTERY_LEVEL_LOW : c.BATTERY_LEVEL_NORMAL;
-            });
+                .setProps('CurrentTemperature', {minValue: -150, maxValue: 150})
+                .get('CurrentTemperature', dp)
+                .get('StatusLowBattery', config.deviceAddress + ':0.LOW_BAT', (value, c) => {
+                    return value ? c.BATTERY_LEVEL_LOW : c.BATTERY_LEVEL_NORMAL;
+                });
         }
     }
 };

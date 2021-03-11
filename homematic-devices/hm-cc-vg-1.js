@@ -94,6 +94,7 @@ module.exports = class HmCcVg1 extends Accessory {
                 if (value > 4.5) {
                     valueSetpoint = value;
                 }
+
                 updateHeatingCoolingState();
                 return value;
             })

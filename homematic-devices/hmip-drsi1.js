@@ -12,12 +12,12 @@ function addService(type, dp, name) {
             service.update('ValveType', type === 'ValveIrrigation' ? 1 : 0);
 
             service
-            .get('Active', dp, val => val ? 1 : 0)
-            .get('InUse', dp, val => val ? 1 : 0)
-            .set('Active', dp, val => {
-                service.update('InUse', val);
-                return Boolean(val);
-            });
+                .get('Active', dp, val => val ? 1 : 0)
+                .get('InUse', dp, val => val ? 1 : 0)
+                .set('Active', dp, val => {
+                    service.update('InUse', val);
+                    return Boolean(val);
+                });
             break;
         }
 
@@ -29,8 +29,8 @@ function addService(type, dp, name) {
         // intentional fallthrough
         default:
             this.addService(type, name, type === 'Switch' ? '' : type)
-            .get('On', dp)
-            .set('On', dp);
+                .get('On', dp)
+                .set('On', dp);
     }
 }
 
@@ -52,7 +52,7 @@ class AccMultiService extends Accessory {
         const {ccu} = node;
         const channels = config.description.CHILDREN;
 
-        let i = 3;
+        const i = 3;
         for (let vi = 0; vi < 3; vi++) {
             const channelNumber = i + vi;
             const ch = channels[channelNumber];
@@ -101,7 +101,7 @@ module.exports = class HmipDrsi1 {
             new AccMultiService(config, node);
         } else {
             const channels = config.description.CHILDREN;
-            let i = 3;
+            const i = 3;
             for (let vi = 0; vi < 3; vi++) {
                 const channelNumber = i + vi;
                 const ch = channels[channelNumber];
@@ -118,7 +118,6 @@ module.exports = class HmipDrsi1 {
 
                 new AccSingleService(chConfig, node);
             }
-
         }
     }
 };
