@@ -6,7 +6,7 @@ module.exports = class HmipEtrv extends Accessory {
         const {hap} = bridgeConfig;
 
         let level = 0;
-        let valueSetpoint;
+        let valueSetpoint = 21;
         let setpointMode;
         let target;
 
@@ -65,7 +65,7 @@ module.exports = class HmipEtrv extends Accessory {
                 if (value === 0 || value === 1) {
                     const params = {
                         CONTROL_MODE: 1,
-                        SET_POINT_TEMPERATURE: value === 0 ? 4.5 : 21
+                        SET_POINT_TEMPERATURE: value === 0 ? 4.5 : valueSetpoint
                     };
                     node.debug('set ' + config.name + ' (' + subtypeThermostat + ') TargetHeatingCoolingState ' + value + ' -> ' + config.description.ADDRESS + ':1 ' + JSON.stringify(params));
                     ccu.methodCall(config.iface, 'putParamset', [config.description.ADDRESS + ':1', 'VALUES', params]).then(() => {
