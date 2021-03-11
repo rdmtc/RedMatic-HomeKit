@@ -468,6 +468,10 @@
                                 addChannels(addr, 2, 2, {type: switchTypes});
                                 break;
 
+                            case 'hmip-fsi16':
+                                addVirtualChannels(addr, 3, 3, {type: switchTypes});
+                                break;
+
                             case 'hmip-mod-oc8':
                                 addOption(addr, 'SingleAccessory');
                                 addVirtualChannels(addr, 10, channelCount - 2, 4, {type: switchTypes});
