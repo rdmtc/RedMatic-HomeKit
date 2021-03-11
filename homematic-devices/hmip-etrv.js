@@ -39,7 +39,9 @@ module.exports = class HmipEtrv extends Accessory {
 
             .setProps('TargetTemperature', {minValue: 4.5, maxValue: 30.5, minStep: 0.5})
             .get('TargetTemperature', config.deviceAddress + ':1.SET_POINT_TEMPERATURE', value => {
-                valueSetpoint = value;
+                if (value !== 4.5) {
+                    valueSetpoint = value;
+                }
                 updateHeatingCoolingState();
                 return value;
             })
