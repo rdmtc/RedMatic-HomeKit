@@ -6,6 +6,7 @@ module.exports = class HmipEtrv extends Accessory {
         const {hap} = bridgeConfig;
 
         let level = 0;
+        let currentSetpoint;
         let valueSetpoint = 21;
         let setpointMode;
         let target;
@@ -15,7 +16,7 @@ module.exports = class HmipEtrv extends Accessory {
             switch (setpointMode) {
                 case 1:
                     // Manu
-                    target = valueSetpoint > 4.5 ? 1 : 0;
+                    target = currentSetpoint > 4.5 ? 1 : 0;
                     break;
                 default:
                     // Auto / Party
@@ -39,6 +40,7 @@ module.exports = class HmipEtrv extends Accessory {
 
             .setProps('TargetTemperature', {minValue: 4.5, maxValue: 30.5, minStep: 0.5})
             .get('TargetTemperature', config.deviceAddress + ':1.SET_POINT_TEMPERATURE', value => {
+                currentSetpoint = value;
                 if (value !== 4.5) {
                     valueSetpoint = value;
                 }
@@ -71,6 +73,9 @@ module.exports = class HmipEtrv extends Accessory {
                     };
                     node.debug('set ' + config.name + ' (' + subtypeThermostat + ') TargetHeatingCoolingState ' + value + ' -> ' + config.description.ADDRESS + ':1 ' + JSON.stringify(params));
                     ccu.methodCall(config.iface, 'putParamset', [config.description.ADDRESS + ':1', 'VALUES', params]).then(() => {
+                        if (valueSetpoint > 4.5) {
+                            serviceThermostat.update('TargetTemperature', valueSetpoint);
+                        }
                         callback();
                     })
                         .catch(() => {

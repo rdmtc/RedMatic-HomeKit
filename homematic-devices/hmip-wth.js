@@ -7,7 +7,8 @@ module.exports = class HmipWth extends Accessory {
 
         const levels = {};
         let level = 0;
-        let valueSetpoint;
+        let valueSetpoint = 21;
+        let currentSetpoint;
         let setpointMode;
         let target;
 
@@ -16,7 +17,7 @@ module.exports = class HmipWth extends Accessory {
             switch (setpointMode) {
                 case 1:
                     // Manu
-                    target = valueSetpoint > 4.5 ? 1 : 0;
+                    target = currentSetpoint > 4.5 ? 1 : 0;
                     break;
                 default:
                     // Auto / Party
@@ -43,7 +44,10 @@ module.exports = class HmipWth extends Accessory {
 
             .setProps('TargetTemperature', {minValue: 4.5, maxValue: 30.5, minStep: 0.5})
             .get('TargetTemperature', config.deviceAddress + ':1.SET_POINT_TEMPERATURE', value => {
-                valueSetpoint = value;
+                currentSetpoint = value;
+                if (value > 4.5) {
+                    valueSetpoint = value;
+                }
                 updateHeatingCoolingState();
                 return value;
             })
@@ -85,11 +89,12 @@ module.exports = class HmipWth extends Accessory {
                     } else {
                         const params = {
                             CONTROL_MODE: 1,
-                            SET_POINT_TEMPERATURE: 21
+                            SET_POINT_TEMPERATURE: valueSetpoint
                         };
                         node.debug('set ' + config.name + ' (' + subtypeThermostat + ') TargetHeatingCoolingState ' + value + ' -> ' + config.description.ADDRESS + ':1 ' + JSON.stringify(params));
                         ccu.methodCall(config.iface, 'putParamset', [config.description.ADDRESS + ':1', 'VALUES', params])
                             .then(() => {
+                                serviceThermostat.update('TargetTemperature', valueSetpoint);
                                 callback();
                             }).catch(() => {
                                 callback(new Error(hap.HAPServer.Status.SERVICE_COMMUNICATION_FAILURE));

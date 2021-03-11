@@ -6,7 +6,8 @@ module.exports = class HmCcRtDn extends Accessory {
         const {hap} = bridgeConfig;
 
         let valveState = 0;
-        let valueSetpoint;
+        let currentSetpoint;
+        let valueSetpoint = 21;
         let controlMode;
         let target;
 
@@ -15,7 +16,7 @@ module.exports = class HmCcRtDn extends Accessory {
             switch (controlMode) {
                 case 1:
                     // Manu
-                    target = valueSetpoint > 4.5 ? 1 : 0;
+                    target = currentSetpoint > 4.5 ? 1 : 0;
                     break;
                 case 0:
                     // Auto
@@ -48,7 +49,10 @@ module.exports = class HmCcRtDn extends Accessory {
 
             .setProps('TargetTemperature', {minValue: 4.5, maxValue: 30.5, minStep: 0.5})
             .get('TargetTemperature', config.deviceAddress + ':4.SET_TEMPERATURE', value => {
-                valueSetpoint = value;
+                currentSetpoint = value;
+                if (value > 4.5) {
+                    valueSetpoint = value;
+                }
                 updateHeatingCoolingState();
                 return value;
             })
@@ -80,8 +84,9 @@ module.exports = class HmCcRtDn extends Accessory {
                             callback(new Error(hap.HAPServer.Status.SERVICE_COMMUNICATION_FAILURE));
                         });
                 } else if (value === 1) {
-                    ccu.setValue(config.iface, config.description.ADDRESS + ':4', 'MANU_MODE', 21)
+                    ccu.setValue(config.iface, config.description.ADDRESS + ':4', 'MANU_MODE', valueSetpoint)
                         .then(() => {
+                            serviceThermostat.update('TargetTemperature', valueSetpoint);
                             callback();
                         })
                         .catch(() => {
