@@ -428,6 +428,11 @@
                             case 'hmip-dbb':
                                 break;
 
+                            case 'hmip-drsi4':
+                                addOption(addr, 'SingleAccessory');
+                                addVirtualChannels(addr, 6, 20, 4, {type: switchTypes});
+                                break;
+
                             case 'hmip-etrv-2':
                             case 'hmip-etrv-b':
                             case 'hmip-etrv-b1':
@@ -583,7 +588,6 @@
                                 break;
 
 
-                            case 'hmip-drsi4':
                             case 'hmipw-drs4':
                             case 'hmipw-drs8':
                                 addOption(addr, 'SingleAccessory');
