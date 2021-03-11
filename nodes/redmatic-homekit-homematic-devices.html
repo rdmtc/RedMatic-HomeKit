@@ -561,6 +561,11 @@
                             case 'hmip-swsd':
                                 break;
 
+                            case 'hmip-whs2':
+                                addOption(addr, 'SingleAccessory');
+                                addVirtualChannels(addr, 2, channelCount - 2, 4, {type: switchTypes});
+                                break;
+
                             case 'hmip-wth-b':
                             case 'hmip-wth-2':
                             case 'hmip-wth':
