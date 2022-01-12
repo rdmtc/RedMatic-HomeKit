@@ -11,8 +11,8 @@
                     return Boolean(String(val).match(/^\d{3}-\d{2}-\d{3}$/));
                 }
             },
-            port: {value: 51912, type: Number, required: true, validate: function (val) {
-                    return val > 1024 && val < 65536;
+            port: {value: '51912', required: true, validate: function (val) {
+                    return RED.validators.number(val) && val > 1024 && val < 65536;
                 }
             },videoProcessor: {value: 'ffmpeg'},
             source: {value: '-re -i rtsp://myfancy_rtsp_stream'},
