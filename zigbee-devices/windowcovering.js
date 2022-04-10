@@ -1,4 +1,4 @@
-const Accessory = require('./lib/accessory');
+const Accessory = require('./lib/accessory.js');
 
 module.exports = class ZllOnOff extends Accessory {
     static get manufacturerName() {
@@ -22,11 +22,9 @@ module.exports = class ZllOnOff extends Accessory {
 
             return 100 - data;
         })
-            .set('TargetPosition', ep, 'closuresWindowCovering', data => {
-                return {command: 'goToLiftPercentage', payload: {percentageliftvalue: 100 - data}};
-            });
+            .set('TargetPosition', ep, 'closuresWindowCovering', data => ({command: 'goToLiftPercentage', payload: {percentageliftvalue: 100 - data}}));
 
-        this.addService('BatteryService', device.meta.name)
+        this.addService('Battery', device.meta.name)
             .get('StatusLowBattery', 1, 'genPowerCfg', 'batteryPercentageRemaining', data => data < 10 ? 1 : 0)
             .get('BatteryLevel', 1, 'genPowerCfg', 'batteryPercentageRemaining', data => data)
             .update('ChargingState', 2);

@@ -1,4 +1,4 @@
-const Accessory = require('./lib/accessory');
+const Accessory = require('./lib/accessory.js');
 
 module.exports = class HmCcTc extends Accessory {
     init(config, node) {
@@ -71,22 +71,16 @@ module.exports = class HmCcTc extends Accessory {
             });
         }
 
-        this.addService('BatteryService', config.name)
-            .get('StatusLowBattery', config.deviceAddress + ':0.LOWBAT', (value, c) => {
-                return value ? c.BATTERY_LEVEL_LOW : c.BATTERY_LEVEL_NORMAL;
-            })
-            .get('BatteryLevel', config.deviceAddress + ':0.LOWBAT', value => {
-                return value ? 0 : 100;
-            })
+        this.addService('Battery', config.name)
+            .get('StatusLowBattery', config.deviceAddress + ':0.LOWBAT', (value, c) => value ? c.BATTERY_LEVEL_LOW : c.BATTERY_LEVEL_NORMAL)
+            .get('BatteryLevel', config.deviceAddress + ':0.LOWBAT', value => value ? 0 : 100)
             .update('ChargingState', 2);
 
         if (this.option('HumiditySensor')) {
             this.addService('HumiditySensor', config.name)
                 .get('CurrentRelativeHumidity', config.deviceAddress + ':1.HUMIDITY')
 
-                .get('StatusLowBattery', config.deviceAddress + ':0.LOWBAT', (value, c) => {
-                    return value ? c.BATTERY_LEVEL_LOW : c.BATTERY_LEVEL_NORMAL;
-                });
+                .get('StatusLowBattery', config.deviceAddress + ':0.LOWBAT', (value, c) => value ? c.BATTERY_LEVEL_LOW : c.BATTERY_LEVEL_NORMAL);
         }
     }
 };

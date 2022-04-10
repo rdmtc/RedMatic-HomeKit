@@ -1,4 +1,4 @@
-const Accessory = require('./lib/accessory');
+const Accessory = require('./lib/accessory.js');
 
 module.exports = class HmSecSir extends Accessory {
     /*
@@ -30,75 +30,69 @@ module.exports = class HmSecSir extends Accessory {
             .setProps('SecuritySystemTargetState', {validValues: [0, 1, 3]})
 
             .get('SecuritySystemCurrentState', config.deviceAddress + ':4.ARMSTATE', value => {
-                let val = 3;
+                let result = 3;
                 switch (value) {
                     case 1:
-                        val = 0;
+                        result = 0;
                         break;
                     case 2:
-                        val = 1;
+                        result = 1;
                         break;
                     default:
                 }
 
-                this.currentState = val;
-                return val;
+                this.currentState = result;
+                return result;
             })
             .get('SecuritySystemTargetState', config.deviceAddress + ':4.ARMSTATE', value => {
-                let val = 3;
+                let result = 3;
                 switch (value) {
                     case 1:
-                        val = 0;
+                        result = 0;
                         break;
                     case 2:
-                        val = 1;
+                        result = 1;
                         break;
                     default:
                 }
 
-                this.currentState = val;
-                return val;
+                this.currentState = result;
+                return result;
             })
             .set('SecuritySystemTargetState', config.deviceAddress + ':4.ARMSTATE', value => {
-                let val = 0;
+                let result = 0;
                 switch (value) {
                     case 0:
-                        val = 1;
+                        result = 1;
                         break;
                     case 1:
-                        val = 2;
+                        result = 2;
                         break;
                     default:
                 }
 
-                this.currentState = value;
-                return val;
+                this.currentState = value; // Todo result instead of value?
+                return result;
             })
 
-            .get('StatusTampered', config.deviceAddress + ':4.ERROR_SABOTAGE', value => {
-                return Boolean(value);
-            });
+            .get('StatusTampered', config.deviceAddress + ':4.ERROR_SABOTAGE', value => Boolean(value));
 
-        this.subscribe(config.deviceAddress + ':1.STATE', val => {
-            this.states[0] = val;
+        this.subscribe(config.deviceAddress + ':1.STATE', value => {
+            this.states[0] = value;
             this.checkAlarm();
         });
-        this.subscribe(config.deviceAddress + ':2.STATE', val => {
-            this.states[1] = val;
+        this.subscribe(config.deviceAddress + ':2.STATE', value => {
+            this.states[1] = value;
             this.checkAlarm();
         });
-        this.subscribe(config.deviceAddress + ':3.STATE', val => {
-            this.states[2] = val;
+        this.subscribe(config.deviceAddress + ':3.STATE', value => {
+            this.states[2] = value;
             this.checkAlarm();
         });
 
-        this.addService('BatteryService', config.name)
-            .get('StatusLowBattery', config.deviceAddress + ':0.LOWBAT', (value, c) => {
-                return value ? c.BATTERY_LEVEL_LOW : c.BATTERY_LEVEL_NORMAL;
-            })
-            .get('BatteryLevel', config.deviceAddress + ':0.LOWBAT', value => {
-                return value ? 0 : 100;
-            })
+        this.addService('Battery', config.name)
+            .get('StatusLowBattery', config.deviceAddress + ':0.LOWBAT', (value, c) => value ? c.BATTERY_LEVEL_LOW : c.BATTERY_LEVEL_NORMAL)
+            .get('BatteryLevel', config.deviceAddress + ':0.LOWBAT', value => value ? 0 : 100)
             .update('ChargingState', 2);
     }
 };

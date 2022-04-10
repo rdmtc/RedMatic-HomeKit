@@ -1,1 +1,1 @@
-module.exports = require('./hmip-swdo');
+module.exports = require('./hmip-swdo.js');

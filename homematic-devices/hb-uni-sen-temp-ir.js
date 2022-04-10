@@ -1,5 +1,6 @@
-const Accessory = require('./lib/accessory');
+const Accessory = require('./lib/accessory.js');
 
+// eslint-disable-next-line unicorn/prevent-abbreviations
 module.exports = class HbUniSenTemp extends Accessory {
     init(config, node) {
         const {ccu} = node;
@@ -18,9 +19,7 @@ module.exports = class HbUniSenTemp extends Accessory {
             this.addService('TemperatureSensor', name)
                 .setProps('CurrentTemperature', {minValue: -450, maxValue: 450})
                 .get('CurrentTemperature', dp)
-                .get('StatusLowBattery', config.deviceAddress + ':0.LOWBAT', (value, c) => {
-                    return value ? c.BATTERY_LEVEL_LOW : c.BATTERY_LEVEL_NORMAL;
-                });
+                .get('StatusLowBattery', config.deviceAddress + ':0.LOWBAT', (value, c) => value ? c.BATTERY_LEVEL_LOW : c.BATTERY_LEVEL_NORMAL);
         }
     }
 };

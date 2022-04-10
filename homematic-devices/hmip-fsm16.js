@@ -1,1 +1,1 @@
-module.exports = require('./hmip-fsm');
+module.exports = require('./hmip-fsm.js');

@@ -1,4 +1,4 @@
-const Accessory = require('./lib/accessory');
+const Accessory = require('./lib/accessory.js');
 
 module.exports = class HmLcJa1 extends Accessory {
     init(config) {
@@ -6,18 +6,12 @@ module.exports = class HmLcJa1 extends Accessory {
         let level = null;
         let levelSlats = null;
 
-        const that = this;
-
         const service = this.addService('WindowCovering', config.name);
 
         service
-            .get('CurrentPosition', config.deviceAddress + ':1.LEVEL', value => {
-                return value * 100;
-            })
+            .get('CurrentPosition', config.deviceAddress + ':1.LEVEL', value => value * 100)
 
-            .get('TargetPosition', config.deviceAddress + ':1.LEVEL', value => {
-                return value * 100;
-            })
+            .get('TargetPosition', config.deviceAddress + ':1.LEVEL', value => value * 100)
             .set('TargetPosition', (value, callback) => {
                 level = value / 100;
                 clearTimeout(timeout);
@@ -38,13 +32,8 @@ module.exports = class HmLcJa1 extends Accessory {
                 }
             })
 
-            .get('CurrentVerticalTiltAngle', config.deviceAddress + ':1.LEVEL_SLATS', value => {
-                return (value * 180) - 90;
-            })
-
-            .get('TargetVerticalTiltAngle', config.deviceAddress + ':1.LEVEL_SLATS', value => {
-                return (value * 180) - 90;
-            })
+            .get('CurrentVerticalTiltAngle', config.deviceAddress + ':1.LEVEL_SLATS', value => (value * 180) - 90)
+            .get('TargetVerticalTiltAngle', config.deviceAddress + ':1.LEVEL_SLATS', value => (value * 180) - 90)
             .set('TargetVerticalTiltAngle', (value, callback) => {
                 levelSlats = (value + 90) / 180;
                 clearTimeout(timeout);
@@ -70,7 +59,7 @@ module.exports = class HmLcJa1 extends Accessory {
                 dp = config.deviceAddress + ':1.LEVEL_SLATS';
             }
 
-            that.ccuSetValue(dp, value, error => {
+            this.ccuSetValue(dp, value, error => {
                 if (error) {
                     service.updateCharacteristic('TargetPosition', error);
                 }

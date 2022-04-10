@@ -1,1 +1,1 @@
-module.exports = require('./hm-wds30-ot2-sm');
+module.exports = require('./hm-wds30-ot2-sm.js');

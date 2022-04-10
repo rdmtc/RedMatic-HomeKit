@@ -2,6 +2,7 @@ class Service {
     constructor(acc, subtype) {
         this.acc = acc;
         this.subtype = subtype;
+        // eslint-disable-next-line no-constructor-return
         return this;
     }
 
@@ -34,8 +35,8 @@ class Service {
         return this;
     }
 
-    fault(datapointNameArr, transformArr) {
-        this.acc.datapointsFault(this.subtype, datapointNameArr, transformArr);
+    fault(datapointNameArray, transformArray) {
+        this.acc.datapointsFault(this.subtype, datapointNameArray, transformArray);
         return this;
     }
 }
@@ -149,9 +150,9 @@ module.exports = class Accessory {
             cache: true,
             change: true,
             stable: true,
-            datapointName
-        }, msg => {
-            callback(msg.value);
+            datapointName,
+        }, message => {
+            callback(message.value);
         }));
     }
 
@@ -159,39 +160,40 @@ module.exports = class Accessory {
         this.subscriptions.push(this.ccu.subscribe({
             cache: true,
             change: true,
-            datapointName
-        }, msg => {
-            this.unreach = msg.value;
+            datapointName,
+        }, message => {
+            this.unreach = message.value;
         }));
     }
 
-    datapointsFault(subtype, datapointNameArr, transformArr) {
-        if (!transformArr) {
-            transformArr = [];
+    datapointsFault(subtype, datapointNameArray, transformArray) {
+        if (!transformArray) {
+            transformArray = [];
         }
 
         const values = {};
-        datapointNameArr.forEach((dp, i) => {
+        for (const [i, dp] of datapointNameArray.entries()) {
             this.subscriptions.push(this.ccu.subscribe({
                 cache: true,
                 change: true,
-                datapointName: dp
-            }, msg => {
-                values[msg.datapointName] = msg.value;
+                datapointName: dp,
+            }, message => {
+                values[message.datapointName] = message.value;
                 let value = this.hap.Characteristic.StatusFault.NO_FAULT;
-                if (typeof transformArr[i] === 'function') {
-                    value = transformArr[i](value);
+                if (typeof transformArray[i] === 'function') {
+                    value = transformArray[i](value);
                 }
 
-                Object.keys(values).forEach(key => {
+                for (const key of Object.keys(values)) {
                     if (values[key]) {
                         value = this.hap.Characteristic.StatusFault.GENERAL_FAULT;
                     }
-                });
+                }
+
                 this.node.debug('update ' + this.config.name + ' (' + subtype + ') StatusFault ' + value);
                 this.acc.getService(subtype).updateCharacteristic(this.hap.Characteristic.StatusFault, value);
             }));
-        });
+        }
     }
 
     datapointGet(subtype, characteristic, datapointName, transform) {
@@ -211,9 +213,9 @@ module.exports = class Accessory {
             cache: true,
             change: true,
             stable: !datapointName.endsWith('.DIRECTION') && !datapointName.endsWith('.ACTIVITY_STATE'),
-            datapointName
-        }, msg => {
-            const valueOrig = msg.value;
+            datapointName,
+        }, message => {
+            const valueOrig = message.value;
             let value = valueOrig;
             if (typeof transform === 'function') {
                 value = transform(value, this.hap.Characteristic[characteristic]);
@@ -271,16 +273,10 @@ module.exports = class Accessory {
             addr = addr + ':' + id;
         }
 
-        let res;
+        const result = option ? this.config.options[addr] && this.config.options[addr][option] : !(this.config.options[addr] && this.config.options[addr].disabled);
 
-        if (option) {
-            res = this.config.options[addr] && this.config.options[addr][option];
-        } else {
-            res = !(this.config.options[addr] && this.config.options[addr].disabled);
-        }
-
-        this.node.debug('option ' + addr + ' ' + id + ' ' + option + ' ' + res);
-        return res;
+        this.node.debug('option ' + addr + ' ' + id + ' ' + option + ' ' + result);
+        return result;
     }
 
     percent(value, _, lower = 2, upper = 3) {

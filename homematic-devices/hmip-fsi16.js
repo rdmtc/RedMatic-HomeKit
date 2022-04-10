@@ -1,1 +1,1 @@
-module.exports = require('./hmip-drsi1');
+module.exports = require('./hmip-drsi1.js');

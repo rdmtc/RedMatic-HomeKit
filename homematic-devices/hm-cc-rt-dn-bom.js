@@ -1,1 +1,1 @@
-module.exports = require('./hm-cc-rt-dn');
+module.exports = require('./hm-cc-rt-dn.js');

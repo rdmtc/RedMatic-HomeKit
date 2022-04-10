@@ -1,1 +1,1 @@
-module.exports = require('./hmw-lc-bl1-dr');
+module.exports = require('./hmw-lc-bl1-dr.js');

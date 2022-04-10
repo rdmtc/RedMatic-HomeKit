@@ -1,4 +1,4 @@
-const Accessory = require('./lib/accessory');
+const Accessory = require('./lib/accessory.js');
 
 module.exports = class ZllTw extends Accessory {
     static get manufacturerName() {
@@ -19,7 +19,7 @@ module.exports = class ZllTw extends Accessory {
             'TRADFRI bulb E27 WS opal 1000lm',
             'TRADFRI bulb E26 WS opal 1000lm',
             'TRADFRI bulb E27 WS clear 806lm',
-            'LEPTITER Recessed spot light, dimmable, white spectrum'
+            'LEPTITER Recessed spot light, dimmable, white spectrum',
         ];
     }
 
@@ -32,18 +32,12 @@ module.exports = class ZllTw extends Accessory {
         const ep = device.endpoints[0].ID;
         this.addService('Lightbulb', device.meta.name)
             .get('On', ep, 'genOnOff', 'onOff', data => Boolean(data))
-            .set('On', ep, 'genOnOff', data => {
-                return {command: data ? 'on' : 'off', payload: {}};
-            })
+            .set('On', ep, 'genOnOff', data => ({command: data ? 'on' : 'off', payload: {}}))
 
             .get('Brightness', ep, 'genLevelCtrl', 'currentLevel', data => Math.round(data / 2.54))
-            .set('Brightness', ep, 'genLevelCtrl', data => {
-                return {command: 'moveToLevel', payload: {level: Math.round(data * 2.54), transtime: 0}};
-            })
+            .set('Brightness', ep, 'genLevelCtrl', data => ({command: 'moveToLevel', payload: {level: Math.round(data * 2.54), transtime: 0}}))
 
             .get('ColorTemperature', ep, 'lightingColorCtrl', 'colorTemperature', data => data)
-            .set('ColorTemperature', ep, 'lightingColorCtrl', data => {
-                return {command: 'moveToColorTemp', payload: {colortemp: data, transtime: 0}};
-            });
+            .set('ColorTemperature', ep, 'lightingColorCtrl', data => ({command: 'moveToColorTemp', payload: {colortemp: data, transtime: 0}}));
     }
 };

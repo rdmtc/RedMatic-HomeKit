@@ -1,4 +1,4 @@
-const Accessory = require('./lib/accessory');
+const Accessory = require('./lib/accessory.js');
 
 module.exports = class TradfriControlOutlet extends Accessory {
     static get manufacturerName() {
@@ -17,8 +17,6 @@ module.exports = class TradfriControlOutlet extends Accessory {
         const ep = device.endpoints[0].ID;
         this.addService('Switch', device.meta.name)
             .get('On', ep, 'genOnOff', 'onOff', data => Boolean(data))
-            .set('On', ep, 'genOnOff', data => {
-                return {command: data ? 'on' : 'off', payload: {}};
-            });
+            .set('On', ep, 'genOnOff', data => ({command: data ? 'on' : 'off', payload: {}}));
     }
 };

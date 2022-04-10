@@ -1,4 +1,4 @@
-const Accessory = require('./lib/accessory');
+const Accessory = require('./lib/accessory.js');
 
 module.exports = class HmEsPmsw1 extends Accessory {
     init(config, node) {
@@ -16,11 +16,11 @@ module.exports = class HmEsPmsw1 extends Accessory {
                 service.update('ValveType', type === 'ValveIrrigation' ? 1 : 0);
 
                 service
-                    .get('Active', dp, val => val ? 1 : 0)
-                    .get('InUse', dp, val => val ? 1 : 0)
-                    .set('Active', dp, val => {
-                        service.update('InUse', val);
-                        return Boolean(val);
+                    .get('Active', dp, value => value ? 1 : 0)
+                    .get('InUse', dp, value => value ? 1 : 0)
+                    .set('Active', dp, value => {
+                        service.update('InUse', value);
+                        return Boolean(value);
                     });
                 break;
             }
