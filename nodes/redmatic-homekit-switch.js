@@ -49,8 +49,8 @@ module.exports = function (RED) {
             acc.getService(subtype).getCharacteristic(hap.Characteristic.On).on('set', setListener);
             acc.getService(subtype).getCharacteristic(hap.Characteristic.On).on('get', getListener);
 
-            this.on('input', msg => {
-                this.valueOn = Boolean(msg.payload);
+            this.on('input', message => {
+                this.valueOn = Boolean(message.payload);
                 update();
             });
 

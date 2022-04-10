@@ -1,1 +1,1 @@
-module.exports = require('./hm-lc-bl1-fm');
+module.exports = require('./hm-lc-bl1-fm.js');

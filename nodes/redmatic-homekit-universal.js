@@ -23,42 +23,42 @@ module.exports = function (RED) {
                     .setCharacteristic(hap.Characteristic.SerialNumber, this.id)
                     .setCharacteristic(hap.Characteristic.FirmwareRevision, version);
 
-                this.services.forEach(s => {
+                for (const s of this.services) {
                     this.debug('addService ' + s.subtype + ' ' + s.service + ' ' + s.name);
                     acc.addService(hap.Service[s.service], s.name, s.subtype);
-                });
+                }
 
                 acc.isConfigured = true;
             }
 
             this.listeners = [];
 
-            this.services.forEach(s => {
+            for (const s of this.services) {
                 let service = acc.getService(s.subtype);
                 if (!service) {
                     this.debug('addService ' + s.subtype + ' ' + s.service + ' ' + s.name);
                     service = acc.addService(hap.Service[s.service], s.name, s.subtype);
                 }
 
-                service.characteristics.forEach(c => {
+                for (const c of service.characteristics) {
                     this.addListener(s.subtype, c);
-                });
-            });
+                }
+            }
 
-            this.on('input', msg => {
-                const [subtype, c] = msg.topic.split('/');
+            this.on('input', message => {
+                const [subtype, c] = message.topic.split('/');
                 const service = acc.getService(subtype);
                 if (service) {
                     if (!this.hasListener(subtype, c)) {
                         this.addListener(subtype, service.getCharacteristic(hap.Characteristic[c]));
                     }
 
-                    if (typeof msg.payload === 'object') {
-                        this.debug('setProps ' + msg.topic + ' ' + JSON.stringify(msg.payload));
-                        service.getCharacteristic(hap.Characteristic[c]).setProps(msg.payload);
+                    if (typeof message.payload === 'object') {
+                        this.debug('setProps ' + message.topic + ' ' + JSON.stringify(message.payload));
+                        service.getCharacteristic(hap.Characteristic[c]).setProps(message.payload);
                     } else {
-                        this.debug('-> hap ' + msg.topic + ' ' + msg.payload);
-                        service.updateCharacteristic(hap.Characteristic[c], msg.payload);
+                        this.debug('-> hap ' + message.topic + ' ' + message.payload);
+                        service.updateCharacteristic(hap.Characteristic[c], message.payload);
                     }
                 } else {
                     this.error('unknown subtype ' + subtype);
@@ -66,10 +66,10 @@ module.exports = function (RED) {
             });
 
             this.on('close', () => {
-                this.listeners.forEach(l => {
+                for (const l of this.listeners) {
                     this.debug('remove change listener ' + l.subtype + ' ' + l.cName);
                     l.characteristic.removeListener('change', l.listener);
-                });
+                }
             });
         }
 
@@ -77,13 +77,13 @@ module.exports = function (RED) {
             const cName = c.displayName.replace(/ /g, '');
             this.debug('create change listener ' + subtype + ' ' + cName);
 
-            const changeListener = obj => {
+            const changeListener = object => {
                 const topic = subtype + '/' + cName;
-                this.debug('hap -> ' + topic + ' ' + obj.newValue);
-                if (obj && obj.context && obj.context.request) {
+                this.debug('hap -> ' + topic + ' ' + object.newValue);
+                if (object && object.context && object.context.request) {
                     this.send({
                         topic,
-                        payload: obj.newValue
+                        payload: object.newValue,
                     });
                 }
             };
@@ -94,13 +94,14 @@ module.exports = function (RED) {
         }
 
         hasListener(subtype, characteristicName) {
-            let res = false;
-            this.listeners.forEach(l => {
+            let result = false;
+            for (const l of this.listeners) {
                 if (subtype === l.subtype && characteristicName === l.cName) {
-                    res = true;
+                    result = true;
                 }
-            });
-            return res;
+            }
+
+            return result;
         }
     }
 

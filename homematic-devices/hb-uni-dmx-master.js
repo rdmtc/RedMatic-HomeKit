@@ -1,4 +1,4 @@
-const Accessory = require('./lib/accessory');
+const Accessory = require('./lib/accessory.js');
 
 module.exports = class HmUniDmx extends Accessory {
     init(config, node) {
@@ -13,9 +13,7 @@ module.exports = class HmUniDmx extends Accessory {
             const ch = config.description.ADDRESS + ':' + i;
             const service = this.addService('Switch', ccu.channelNames[ch]);
 
-            service.get('On', () => {
-                return false;
-            });
+            service.get('On', () => false);
             service.set('On', (value, callback) => {
                 if (value) {
                     ccu.setValue(config.iface, ch, 'PRESS_SHORT', true)

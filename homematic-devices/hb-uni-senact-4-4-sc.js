@@ -1,4 +1,4 @@
-const Accessory = require('./lib/accessory');
+const Accessory = require('./lib/accessory.js');
 
 module.exports = class HbUniSenAct extends Accessory {
     init(config, node) {
@@ -28,9 +28,7 @@ module.exports = class HbUniSenAct extends Accessory {
             const dp = config.iface + '.' + channels[i] + '.STATE';
 
             this.addService('ContactSensor', name)
-                .get('ContactSensorState', dp, (value, c) => {
-                    return value ? c.CONTACT_NOT_DETECTED : c.CONTACT_DETECTED;
-                });
+                .get('ContactSensorState', dp, (value, c) => value ? c.CONTACT_NOT_DETECTED : c.CONTACT_DETECTED);
         }
     }
 };

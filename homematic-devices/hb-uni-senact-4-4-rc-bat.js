@@ -1,4 +1,4 @@
-const Accessory = require('./lib/accessory');
+const Accessory = require('./lib/accessory.js');
 
 module.exports = class HbUniSenAct extends Accessory {
     init(config, node) {
@@ -19,13 +19,9 @@ module.exports = class HbUniSenAct extends Accessory {
                 .set('On', dp);
         }
 
-        this.addService('BatteryService')
-            .get('StatusLowBattery', config.deviceAddress + ':0.LOWBAT', (value, c) => {
-                return value ? c.BATTERY_LEVEL_LOW : c.BATTERY_LEVEL_NORMAL;
-            })
-            .get('BatteryLevel', config.deviceAddress + ':0.LOWBAT', value => {
-                return value ? 0 : 100;
-            })
+        this.addService('Battery')
+            .get('StatusLowBattery', config.deviceAddress + ':0.LOWBAT', (value, c) => value ? c.BATTERY_LEVEL_LOW : c.BATTERY_LEVEL_NORMAL)
+            .get('BatteryLevel', config.deviceAddress + ':0.LOWBAT', value => value ? 0 : 100)
             .update('ChargingState', 2);
     }
 };

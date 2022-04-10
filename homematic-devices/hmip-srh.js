@@ -1,4 +1,4 @@
-const Accessory = require('./lib/accessory');
+const Accessory = require('./lib/accessory.js');
 
 module.exports = class HmipSrh extends Accessory {
     init(config) {
@@ -7,8 +7,8 @@ module.exports = class HmipSrh extends Accessory {
         let service;
         let actualValue;
 
-        function convert(val) {
-            switch (val) {
+        function convert(value) {
+            switch (value) {
                 case 1:
                     return 25;
                 case 2:
@@ -46,31 +46,22 @@ module.exports = class HmipSrh extends Accessory {
                     }, 20);
                 });
 
-                service.get('ObstructionDetected', config.deviceAddress + ':0.SABOTAGE', value => {
-                    return Boolean(value);
-                });
+                service.get('ObstructionDetected', config.deviceAddress + ':0.SABOTAGE', value => Boolean(value));
 
                 break;
 
             default:
                 this.addService('ContactSensor', config.name)
-                    .get('ContactSensorState', config.deviceAddress + ':1.STATE', (value, c) => {
-                        return value > 0 ? c.CONTACT_NOT_DETECTED : c.CONTACT_DETECTED;
-                    })
-
-                    .get('StatusTampered', config.deviceAddress + ':0.SABOTAGE', value => {
-                        return Boolean(value);
-                    })
+                    .get('ContactSensorState', config.deviceAddress + ':1.STATE', (value, c) => value > 0 ? c.CONTACT_NOT_DETECTED : c.CONTACT_DETECTED)
+                    .get('StatusTampered', config.deviceAddress + ':0.SABOTAGE', value => Boolean(value))
 
                     .fault([
-                        config.deviceAddress + ':0.ERROR_CODE'
+                        config.deviceAddress + ':0.ERROR_CODE',
                     ]);
         }
 
-        this.addService('BatteryService', config.name)
-            .get('StatusLowBattery', config.deviceAddress + ':0.LOW_BAT', (value, c) => {
-                return value ? c.BATTERY_LEVEL_LOW : c.BATTERY_LEVEL_NORMAL;
-            })
+        this.addService('Battery', config.name)
+            .get('StatusLowBattery', config.deviceAddress + ':0.LOW_BAT', (value, c) => value ? c.BATTERY_LEVEL_LOW : c.BATTERY_LEVEL_NORMAL)
             .get('BatteryLevel', config.deviceAddress + ':0.OPERATING_VOLTAGE', value => this.percent(value, null, 1, 1.5))
             .update('ChargingState', 2);
     }

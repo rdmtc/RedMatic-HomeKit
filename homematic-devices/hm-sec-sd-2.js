@@ -1,1 +1,1 @@
-module.exports = require('./hm-sec-sd');
+module.exports = require('./hm-sec-sd.js');

@@ -1,4 +1,4 @@
-const Accessory = require('./lib/accessory');
+const Accessory = require('./lib/accessory.js');
 
 module.exports = class HmipFdt extends Accessory {
     init(config, node) {
@@ -21,11 +21,7 @@ module.exports = class HmipFdt extends Accessory {
                     .set('On', (value, callback) => {
                         if (value) {
                             setTimeout(() => {
-                                if (valueBrightness === 0) {
-                                    value = 1;
-                                } else {
-                                    value = valueBrightness / 100;
-                                }
+                                value = valueBrightness === 0 ? 1 : valueBrightness / 100;
 
                                 this.ccuSetValue(channel + '.LEVEL', value, callback);
                             }, 100);

@@ -1,4 +1,4 @@
-const Accessory = require('./lib/accessory');
+const Accessory = require('./lib/accessory.js');
 
 module.exports = class HmSci3Fm extends Accessory {
     init(config, node) {
@@ -43,24 +43,16 @@ module.exports = class HmSci3Fm extends Accessory {
                         }, 20);
                     });
 
-                    this.addService('BatteryService', name, 'Bat')
-                        .get('StatusLowBattery', config.deviceAddress + ':0.LOWBAT', (value, c) => {
-                            return value ? c.BATTERY_LEVEL_LOW : c.BATTERY_LEVEL_NORMAL;
-                        })
-                        .get('BatteryLevel', config.deviceAddress + ':0.LOWBAT', value => {
-                            return value ? 0 : 100;
-                        });
+                    this.addService('Battery', name, 'Bat')
+                        .get('StatusLowBattery', config.deviceAddress + ':0.LOWBAT', (value, c) => value ? c.BATTERY_LEVEL_LOW : c.BATTERY_LEVEL_NORMAL)
+                        .get('BatteryLevel', config.deviceAddress + ':0.LOWBAT', value => value ? 0 : 100);
 
                     break;
 
                 default:
                     this.addService('ContactSensor', name)
-                        .get('ContactSensorState', dp, (value, c) => {
-                            return value ? c.CONTACT_NOT_DETECTED : c.CONTACT_DETECTED;
-                        })
-                        .get('StatusLowBattery', config.deviceAddress + ':0.LOWBAT', (value, c) => {
-                            return value ? c.BATTERY_LEVEL_LOW : c.BATTERY_LEVEL_NORMAL;
-                        });
+                        .get('ContactSensorState', dp, (value, c) => value ? c.CONTACT_NOT_DETECTED : c.CONTACT_DETECTED)
+                        .get('StatusLowBattery', config.deviceAddress + ':0.LOWBAT', (value, c) => value ? c.BATTERY_LEVEL_LOW : c.BATTERY_LEVEL_NORMAL);
             }
         }
     }

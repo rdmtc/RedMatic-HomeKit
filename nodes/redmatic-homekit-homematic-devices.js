@@ -6,16 +6,16 @@ module.exports = function (RED) {
     const devPath = path.join(__dirname, '..', 'homematic-devices');
     fs.readdir(devPath, (error, files) => {
         if (!error && files) {
-            files.forEach(file => {
+            for (const file of files) {
                 if (file.endsWith('.js')) {
                     homematicValidDevices.push(file.replace('.js', ''));
                 }
-            });
+            }
         }
     });
 
-    RED.httpAdmin.get('/redmatic-homekit/homematic-devices', (req, res) => {
-        res.status(200).send(JSON.stringify(homematicValidDevices));
+    RED.httpAdmin.get('/redmatic-homekit/homematic-devices', (_request, response) => {
+        response.status(200).send(JSON.stringify(homematicValidDevices));
     });
 
     class RedMaticHomeKitHomematicDevices {
@@ -63,39 +63,40 @@ module.exports = function (RED) {
 
             const queue = [];
 
-            Object.keys(this.ccu.channelNames).forEach(address => {
+            for (const address of Object.keys(this.ccu.channelNames)) {
                 if (this.devices[address] && this.devices[address].disabled) {
-                    return;
+                    continue;
                 }
 
-                if (!address.match(/:\d+$/)) {
+                if (!/:\d+$/.test(address)) {
                     const iface = this.ccu.findIface(address);
                     if (iface && this.ccu.enabledIfaces.includes(iface) && this.ccu.metadata.devices[iface]) {
                         const options = {};
-                        Object.keys(this.devices).forEach(addr => {
+                        for (const addr of Object.keys(this.devices)) {
+                            // eslint-disable-next-line max-depth
                             if (addr === address || addr.startsWith(address + ':')) {
                                 options[addr] = this.devices[addr];
                             }
-                        });
+                        }
 
-                        queue.push(() => {
-                            return new Promise(resolve => {
-                                this.createHomematicDevice({
-                                    name: this.ccu.channelNames[address],
-                                    iface,
-                                    deviceAddress: iface + '.' + address,
-                                    description: this.ccu.metadata.devices[iface][address],
-                                    options
-                                });
-                                setTimeout(() => {
-                                    resolve();
-                                }, 50);
+                        queue.push(() => new Promise(resolve => {
+                            this.createHomematicDevice({
+                                name: this.ccu.channelNames[address],
+                                iface,
+                                deviceAddress: iface + '.' + address,
+                                description: this.ccu.metadata.devices[iface][address],
+                                options,
                             });
-                        });
+                            setTimeout(() => {
+                                resolve();
+                            }, 50);
+                        }));
                     }
                 }
-            });
+            }
+
             this.log('publish ' + queue.length + ' devices');
+            // eslint-disable-next-line unicorn/no-array-reduce
             queue.reduce((p, task) => p.then(task), Promise.resolve()).then(() => {
                 callback();
             });
@@ -117,7 +118,7 @@ module.exports = function (RED) {
                 try {
                     this.homematicDevices[type] = require('../homematic-devices/' + type);
                     this.debug('loaded homematic-devices/' + type);
-                } catch (error) {
+                } catch {
                     this.warn('missing homematic-devices/' + type);
                     return;
                 }
@@ -139,11 +140,12 @@ module.exports = function (RED) {
         setStatus(data) {
             this.ccuStatus = data;
             let status = 0;
-            Object.keys(data.ifaceStatus).forEach(s => {
+            for (const s of Object.keys(data.ifaceStatus)) {
                 if (data.ifaceStatus[s]) {
                     status += 1;
                 }
-            });
+            }
+
             this.debug(JSON.stringify(data));
             if (status < 1) {
                 this.status({fill: 'red', shape: 'dot', text: 'disconnected'});

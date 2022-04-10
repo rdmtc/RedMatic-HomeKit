@@ -1,4 +1,4 @@
-const Accessory = require('./lib/accessory');
+const Accessory = require('./lib/accessory.js');
 
 module.exports = class HmTcItWmWEu extends Accessory {
     init(config, node) {
@@ -13,8 +13,6 @@ module.exports = class HmTcItWmWEu extends Accessory {
 
         const levels = {};
         let level = 0;
-
-        const that = this;
 
         const links = ccu.getLinks(config.iface, config.description.ADDRESS + ':2') || [];
         node.debug(config.name + ' linked to ' + JSON.stringify(links));
@@ -116,45 +114,44 @@ module.exports = class HmTcItWmWEu extends Accessory {
         function updateHeatingCoolingState() {
             const current = currentState();
             node.debug('update ' + config.name + ' (' + subtypeThermostat + ') CurrentHeatingCoolingState ' + current);
-            that.acc.getService(subtypeThermostat).updateCharacteristic(hap.Characteristic.CurrentHeatingCoolingState, current);
+            this.acc.getService(subtypeThermostat).updateCharacteristic(hap.Characteristic.CurrentHeatingCoolingState, current);
             const target = targetState();
             node.debug('update ' + config.name + ' (' + subtypeThermostat + ') TargetHeatingCoolingState ' + target);
-            that.acc.getService(subtypeThermostat).updateCharacteristic(hap.Characteristic.TargetHeatingCoolingState, target);
+            this.acc.getService(subtypeThermostat).updateCharacteristic(hap.Characteristic.TargetHeatingCoolingState, target);
         }
 
-        links.forEach(link => {
+        for (const link of links) {
             const valveStateDevice = link.split(':')[0];
             const datapointLevel = config.iface + '.' + valveStateDevice + ':4.VALVE_STATE';
             this.subscribe(datapointLevel, value => {
                 levels[datapointLevel] = value;
                 let max = 0;
-                Object.keys(levels).forEach(dp => {
+                for (const dp of Object.keys(levels)) {
                     if (levels[dp] > max) {
                         max = levels[dp];
                     }
-                });
+                }
+
                 if (level !== max) {
                     level = max;
                     node.debug('update ' + config.name + ' level ' + level);
                     updateHeatingCoolingState();
                 }
             });
-        });
+        }
 
         this.subscriptions.push(ccu.subscribe({
             cache: true,
             change: true,
-            datapointName: config.deviceAddress + ':2.CONTROL_MODE'
-        }, msg => {
-            controlMode = msg.value;
-            node.debug('update ' + config.name + ' controlMode ' + msg.value);
+            datapointName: config.deviceAddress + ':2.CONTROL_MODE',
+        }, message => {
+            controlMode = message.value;
+            node.debug('update ' + config.name + ' controlMode ' + message.value);
             updateHeatingCoolingState();
         }));
 
-        this.addService('BatteryService', config.name)
-            .get('StatusLowBattery', config.deviceAddress + ':0.LOWBAT', (value, c) => {
-                return value ? c.BATTERY_LEVEL_LOW : c.BATTERY_LEVEL_NORMAL;
-            })
+        this.addService('Battery', config.name)
+            .get('StatusLowBattery', config.deviceAddress + ':0.LOWBAT', (value, c) => value ? c.BATTERY_LEVEL_LOW : c.BATTERY_LEVEL_NORMAL)
             .get('BatteryLevel', config.deviceAddress + ':2.BATTERY_STATE', this.percent);
 
         if (this.option('HumiditySensor')) {
@@ -176,19 +173,18 @@ module.exports = class HmTcItWmWEu extends Accessory {
                         value = true;
                     }
 
-                    this.ccuSetValue(config.iface + '.' + config.description.ADDRESS + ':2.' + dp, value, res => {
-                        links.forEach((link, i) => {
+                    this.ccuSetValue(config.iface + '.' + config.description.ADDRESS + ':2.' + dp, value, response => {
+                        for (const [i, link] of links.entries()) {
                             const linkedDevice = link.split(':')[0];
                             setTimeout(() => {
                                 this.ccuSetValue(config.iface + '.' + linkedDevice + ':4.' + dp, value);
                             }, i * 3000);
-                        });
-                        callback(res);
+                        }
+
+                        callback(response);
                     });
                 })
-                .get('On', config.deviceAddress + ':2.CONTROL_MODE', value => {
-                    return value === 3;
-                });
+                .get('On', config.deviceAddress + ':2.CONTROL_MODE', value => value === 3);
         }
     }
 };

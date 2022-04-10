@@ -1,4 +1,4 @@
-const Accessory = require('./lib/accessory');
+const Accessory = require('./lib/accessory.js');
 
 module.exports = class HmSecRhs extends Accessory {
     init(config) {
@@ -7,8 +7,8 @@ module.exports = class HmSecRhs extends Accessory {
         let service;
         let actualValue;
 
-        function convert(val) {
-            switch (val) {
+        function convert(value) {
+            switch (value) {
                 case 1:
                     return 25;
                 case 2:
@@ -46,33 +46,19 @@ module.exports = class HmSecRhs extends Accessory {
                     }, 20);
                 });
 
-                service.get('ObstructionDetected', config.deviceAddress + ':1.ERROR', value => {
-                    return Boolean(value);
-                });
+                service.get('ObstructionDetected', config.deviceAddress + ':1.ERROR', value => Boolean(value));
 
-                this.addService('BatteryService', config.name)
-                    .get('StatusLowBattery', config.deviceAddress + ':0.LOWBAT', (value, c) => {
-                        return value ? c.BATTERY_LEVEL_LOW : c.BATTERY_LEVEL_NORMAL;
-                    })
-                    .get('BatteryLevel', config.deviceAddress + ':0.LOWBAT', value => {
-                        return value ? 0 : 100;
-                    });
+                this.addService('Battery', config.name)
+                    .get('StatusLowBattery', config.deviceAddress + ':0.LOWBAT', (value, c) => value ? c.BATTERY_LEVEL_LOW : c.BATTERY_LEVEL_NORMAL)
+                    .get('BatteryLevel', config.deviceAddress + ':0.LOWBAT', value => value ? 0 : 100);
 
                 break;
 
             default:
                 this.addService('ContactSensor', config.name)
-                    .get('ContactSensorState', config.deviceAddress + ':1.STATE', (value, c) => {
-                        return value ? c.CONTACT_NOT_DETECTED : c.CONTACT_DETECTED;
-                    })
-
-                    .get('StatusLowBattery', config.deviceAddress + ':0.LOWBAT', (value, c) => {
-                        return value ? c.BATTERY_LEVEL_LOW : c.BATTERY_LEVEL_NORMAL;
-                    })
-
-                    .get('StatusTampered', config.deviceAddress + ':1.ERROR', value => {
-                        return Boolean(value);
-                    });
+                    .get('ContactSensorState', config.deviceAddress + ':1.STATE', (value, c) => value ? c.CONTACT_NOT_DETECTED : c.CONTACT_DETECTED)
+                    .get('StatusLowBattery', config.deviceAddress + ':0.LOWBAT', (value, c) => value ? c.BATTERY_LEVEL_LOW : c.BATTERY_LEVEL_NORMAL)
+                    .get('StatusTampered', config.deviceAddress + ':1.ERROR', value => Boolean(value));
         }
     }
 };

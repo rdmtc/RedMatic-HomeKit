@@ -1,4 +1,4 @@
-const Accessory = require('./lib/accessory');
+const Accessory = require('./lib/accessory.js');
 
 module.exports = class HmCcVg1 extends Accessory {
     init(config, node) {
@@ -13,8 +13,6 @@ module.exports = class HmCcVg1 extends Accessory {
 
         const levels = {};
         let level = 0;
-
-        const that = this;
 
         const valveDevices = [];
 
@@ -31,7 +29,7 @@ module.exports = class HmCcVg1 extends Accessory {
         }
 
         node.debug(config.deviceAddress + ' ' + group.groupProperties.NAME + ' ' + group.groupType.id + ' has ' + group.groupMembers.length + ' members');
-        group.groupMembers.forEach(member => {
+        for (const member of group.groupMembers) {
             if (member.memberType.id.startsWith('HM-CC')) {
                 valveDevices.push('BidCos-RF.' + member.id);
                 valueChannel = valueChannel || ('BidCos-RF.' + member.id + ':4');
@@ -42,7 +40,7 @@ module.exports = class HmCcVg1 extends Accessory {
 
             lowbatDps['BidCos-RF.' + member.id + ':0.LOWBAT'] = false;
             node.debug(config.deviceAddress + ' member ' + member.memberType.id + ' ' + member.id);
-        });
+        }
 
         if (valueChannel) {
             node.debug(config.deviceAddress + ' valueChannel ' + valueChannel);
@@ -151,52 +149,54 @@ module.exports = class HmCcVg1 extends Accessory {
         function updateHeatingCoolingState() {
             const current = currentState();
             node.debug('update ' + config.name + ' (' + subtypeThermostat + ') CurrentHeatingCoolingState ' + current);
-            that.acc.getService(subtypeThermostat).updateCharacteristic(hap.Characteristic.CurrentHeatingCoolingState, current);
+            this.acc.getService(subtypeThermostat).updateCharacteristic(hap.Characteristic.CurrentHeatingCoolingState, current);
             const target = targetState();
             node.debug('update ' + config.name + ' (' + subtypeThermostat + ') TargetHeatingCoolingState ' + target);
-            that.acc.getService(subtypeThermostat).updateCharacteristic(hap.Characteristic.TargetHeatingCoolingState, target);
+            this.acc.getService(subtypeThermostat).updateCharacteristic(hap.Characteristic.TargetHeatingCoolingState, target);
         }
 
-        valveDevices.forEach(valveStateDevice => {
+        for (const valveStateDevice of valveDevices) {
             const datapointLevel = valveStateDevice + ':4.VALVE_STATE';
             this.subscribe(datapointLevel, value => {
                 levels[datapointLevel] = value;
                 let max = 0;
-                Object.keys(levels).forEach(dp => {
+                for (const dp of Object.keys(levels)) {
                     if (levels[dp] > max) {
                         max = levels[dp];
                     }
-                });
+                }
+
                 if (level !== max) {
                     level = max;
                     node.debug('update ' + config.name + ' level ' + level);
                     updateHeatingCoolingState();
                 }
             });
-        });
+        }
 
         this.subscriptions.push(ccu.subscribe({
             cache: true,
             change: true,
-            datapointName: valueChannel + '.CONTROL_MODE'
-        }, msg => {
-            controlMode = msg.value;
-            node.debug('update ' + config.name + ' controlMode ' + msg.value);
+            datapointName: valueChannel + '.CONTROL_MODE',
+        }, message => {
+            controlMode = message.value;
+            node.debug('update ' + config.name + ' controlMode ' + message.value);
             updateHeatingCoolingState();
         }));
 
-        const batteryService = this.addService('BatteryService', config.name, 'Battery');
-        Object.keys(lowbatDps).forEach(dp => {
+        const battery = this.addService('Battery', config.name, 'Battery');
+        for (const dp of Object.keys(lowbatDps)) {
             this.subscribe(dp, value => {
                 lowbatDps[dp] = value;
                 let lowbat = false;
-                Object.keys(lowbatDps).forEach(ldp => {
+                for (const ldp of Object.keys(lowbatDps)) {
                     lowbat = lowbat || lowbatDps[ldp];
-                });
-                batteryService.update('StatusLowBattery', lowbat ? hap.Characteristic.StatusLowBattery.BATTERY_LEVEL_LOW : hap.Characteristic.StatusLowBattery.BATTERY_LEVEL_NORMAL);
-                batteryService.update('BatteryLevel', lowbat ? 0 : 100);
+                }
+
+                battery.update('StatusLowBattery', lowbat ? hap.Characteristic.StatusLowBattery.BATTERY_LEVEL_LOW : hap.Characteristic.StatusLowBattery.BATTERY_LEVEL_NORMAL);
+                battery.update('BatteryLevel', lowbat ? 0 : 100);
             });
-        });
+        }
 
         if (this.option('HumiditySensor') && humidityDp) {
             this.addService('HumiditySensor', config.name, 'HumiditySensor')
@@ -217,13 +217,11 @@ module.exports = class HmCcVg1 extends Accessory {
                         value = true;
                     }
 
-                    this.ccuSetValue(config.iface + '.' + config.description.ADDRESS + ':1.' + dp, value, res => {
-                        callback(res);
+                    this.ccuSetValue(config.iface + '.' + config.description.ADDRESS + ':1.' + dp, value, response => {
+                        callback(response);
                     });
                 })
-                .get('On', valueChannel + '.CONTROL_MODE', value => {
-                    return value === 3;
-                });
+                .get('On', valueChannel + '.CONTROL_MODE', value => value === 3);
         }
     }
 };

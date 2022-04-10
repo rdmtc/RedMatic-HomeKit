@@ -1,4 +1,4 @@
-const Accessory = require('./lib/accessory');
+const Accessory = require('./lib/accessory.js');
 
 module.exports = class HmSecKey extends Accessory {
     init(config, node) {
@@ -53,13 +53,9 @@ module.exports = class HmSecKey extends Accessory {
             service.update('LockCurrentState', getState());
         });
 
-        this.addService('BatteryService', config.name)
-            .get('StatusLowBattery', config.deviceAddress + ':0.LOWBAT', (value, c) => {
-                return value ? c.BATTERY_LEVEL_LOW : c.BATTERY_LEVEL_NORMAL;
-            })
-            .get('BatteryLevel', config.deviceAddress + ':0.LOWBAT', value => {
-                return value ? 0 : 100;
-            })
+        this.addService('Battery', config.name)
+            .get('StatusLowBattery', config.deviceAddress + ':0.LOWBAT', (value, c) => value ? c.BATTERY_LEVEL_LOW : c.BATTERY_LEVEL_NORMAL)
+            .get('BatteryLevel', config.deviceAddress + ':0.LOWBAT', value => value ? 0 : 100)
             .update('ChargingState', 2);
     }
 };

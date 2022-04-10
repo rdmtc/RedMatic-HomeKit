@@ -8,18 +8,18 @@ const pkg = require('../package.json');
 const accessories = {};
 
 module.exports = function (RED) {
-    hap.init(path.join(RED.settings.userDir, 'homekit'));
+    hap.HAPStorage.setCustomStoragePath(path.join(RED.settings.userDir, 'homekit'));
 
-    RED.httpAdmin.get('/redmatic-homekit-tv', (req, res) => {
-        if (req.query.config) {
-            const acc = accessories[req.query.config];
+    RED.httpAdmin.get('/redmatic-homekit-tv', (request, response) => {
+        if (request.query.config) {
+            const acc = accessories[request.query.config];
             if (acc) {
-                res.status(200).send(JSON.stringify({setupURI: acc.setupURI()}));
+                response.status(200).send(JSON.stringify({setupURI: acc.setupURI()}));
             } else {
-                res.status(500).send(JSON.stringify({}));
+                response.status(500).send(JSON.stringify({}));
             }
         } else {
-            res.status(404).send(JSON.stringify({}));
+            response.status(404).send(JSON.stringify({}));
         }
     });
 
@@ -56,7 +56,7 @@ module.exports = function (RED) {
 
                 tvService.setCharacteristic(
                     Characteristic.SleepDiscoveryMode,
-                    Characteristic.SleepDiscoveryMode.ALWAYS_DISCOVERABLE
+                    Characteristic.SleepDiscoveryMode.ALWAYS_DISCOVERABLE,
                 );
 
                 tvService.setCharacteristic(Characteristic.ActiveIdentifier, 1);
@@ -68,7 +68,7 @@ module.exports = function (RED) {
                     .setCharacteristic(Characteristic.VolumeControlType, Characteristic.VolumeControlType.ABSOLUTE);
 
                 this.debug('creating ' + config.inputsources.length + ' input sources');
-                config.inputsources.forEach((src, i) => {
+                for (const [i, src] of config.inputsources.entries()) {
                     const id = i + 1;
                     const inputService = acc.addService(Service.InputSource, src.name, src.name);
                     inputService
@@ -80,15 +80,15 @@ module.exports = function (RED) {
                         .setCharacteristic(Characteristic.TargetVisibilityState, Characteristic.TargetVisibilityState.SHOWN);
 
                     tvService.addLinkedService(inputService);
-                });
+                }
 
                 // tvService.addLinkedService(speakerService);
 
                 this.log('publishing tv ' + this.name + ' ' + config.username);
                 const testPort = net.createServer()
-                    .once('error', err => {
-                        this.error(err);
-                        this.status({fill: 'red', shape: 'dot', text: err.message});
+                    .once('error', error => {
+                        this.error(error);
+                        this.status({fill: 'red', shape: 'dot', text: error.message});
                     })
                     .once('listening', () => {
                         testPort.once('close', () => {
@@ -96,7 +96,7 @@ module.exports = function (RED) {
                                 username: config.username,
                                 port: config.port,
                                 pincode: config.pincode,
-                                category: Accessory.Categories.TELEVISION
+                                category: hap.Categories.TELEVISION,
                             });
 
                             acc._server.on('listening', () => {
@@ -138,62 +138,62 @@ module.exports = function (RED) {
             };
 
             const setRemoteKey = (newValue, callback) => {
-                const msg = {topic: 'RemoteKey'};
+                const message = {topic: 'RemoteKey'};
                 switch (newValue) {
                     case 0:
-                        msg.payload = 'REWIND';
-                        msg.lgtv = 'REWIND';
+                        message.payload = 'REWIND';
+                        message.lgtv = 'REWIND';
                         break;
                     case 1:
-                        msg.payload = 'FAST_FORWARD';
-                        msg.lgtv = 'FASTFORWARD';
+                        message.payload = 'FAST_FORWARD';
+                        message.lgtv = 'FASTFORWARD';
                         break;
                     case 2:
-                        msg.payload = 'NEXT_TRACK';
+                        message.payload = 'NEXT_TRACK';
                         break;
                     case 3:
-                        msg.payload = 'PREVIOUS_TRACK';
+                        message.payload = 'PREVIOUS_TRACK';
                         break;
                     case 4:
-                        msg.payload = 'ARROW_UP';
-                        msg.lgtv = 'UP';
+                        message.payload = 'ARROW_UP';
+                        message.lgtv = 'UP';
                         break;
                     case 5:
-                        msg.payload = 'ARROW_DOWN';
-                        msg.lgtv = 'DOWN';
+                        message.payload = 'ARROW_DOWN';
+                        message.lgtv = 'DOWN';
                         break;
                     case 6:
-                        msg.payload = 'ARROW_LEFT';
-                        msg.lgtv = 'LEFT';
+                        message.payload = 'ARROW_LEFT';
+                        message.lgtv = 'LEFT';
                         break;
                     case 7:
-                        msg.payload = 'ARROW_RIGHT';
-                        msg.lgtv = 'RIGHT';
+                        message.payload = 'ARROW_RIGHT';
+                        message.lgtv = 'RIGHT';
                         break;
                     case 8:
-                        msg.payload = 'SELECT';
-                        msg.lgtv = 'ENTER';
+                        message.payload = 'SELECT';
+                        message.lgtv = 'ENTER';
                         break;
                     case 9:
-                        msg.payload = 'BACK';
-                        msg.lgtv = 'BACK';
+                        message.payload = 'BACK';
+                        message.lgtv = 'BACK';
                         break;
                     case 10:
-                        msg.payload = 'EXIT';
-                        msg.lgtv = 'EXIT';
+                        message.payload = 'EXIT';
+                        message.lgtv = 'EXIT';
                         break;
                     case 11:
-                        msg.payload = 'PLAY_PAUSE';
+                        message.payload = 'PLAY_PAUSE';
                         break;
                     case 15:
-                        msg.payload = 'INFORMATION';
-                        msg.lgtv = 'INFO';
+                        message.payload = 'INFORMATION';
+                        message.lgtv = 'INFO';
                         break;
                     default:
                 }
 
-                msg.characteristicValue = newValue;
-                this.send(msg);
+                message.characteristicValue = newValue;
+                this.send(message);
                 callback(null);
             };
 
@@ -219,20 +219,20 @@ module.exports = function (RED) {
             speakerService.getCharacteristic(Characteristic.VolumeSelector)
                 .on('set', setVolumeSelector);
 
-            this.on('input', msg => {
-                switch (msg.topic) {
+            this.on('input', message => {
+                switch (message.topic) {
                     case 'InputSource': {
-                        let identifier = msg.payload;
-                        if (typeof msg.payload === 'string') {
-                            config.inputsources.forEach((src, i) => {
-                                if (msg.payload === src.name) {
+                        let identifier = message.payload;
+                        if (typeof message.payload === 'string') {
+                            for (const [i, src] of config.inputsources.entries()) {
+                                if (message.payload === src.name) {
                                     identifier = i + 1;
                                 }
-                            });
+                            }
                         }
 
                         if (config.inputsources[identifier - 1]) {
-                            this.debug('set ActiveIdentifier ' + identifier + ' (payload was ' + msg.payload + ')');
+                            this.debug('set ActiveIdentifier ' + identifier + ' (payload was ' + message.payload + ')');
                             this.status({shape: 'dot', fill: 'blue', text: config.inputsources[identifier - 1].name});
                             tvService.updateCharacteristic(Characteristic.ActiveIdentifier, identifier);
                         }
@@ -241,9 +241,9 @@ module.exports = function (RED) {
                     }
 
                     default:
-                        this.debug('set Active ' + msg.payload);
-                        this.status({shape: msg.payload ? 'dot' : 'ring', fill: msg.payload ? 'blue' : 'grey'});
-                        tvService.updateCharacteristic(Characteristic.Active, msg.payload ? 1 : 0);
+                        this.debug('set Active ' + message.payload);
+                        this.status({shape: message.payload ? 'dot' : 'ring', fill: message.payload ? 'blue' : 'grey'});
+                        tvService.updateCharacteristic(Characteristic.Active, message.payload ? 1 : 0);
                 }
             });
 
