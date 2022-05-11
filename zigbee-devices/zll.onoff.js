@@ -10,7 +10,7 @@ module.exports = class ZllOnOff extends Accessory {
     }
 
     static get deviceID() {
-        return [0x0000, 0x0010];
+        return [0x0000, 0x0010, 0x010A];
     }
 
     init(device) {
