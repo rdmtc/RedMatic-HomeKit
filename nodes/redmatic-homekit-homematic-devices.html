@@ -597,9 +597,9 @@
                                 break;
 
                             case 'hmipw-drd3':
-                                addVirtualChannels(addr, 2, 12, 4);
+                                addOption(addr, 'SingleAccessory');
+                                addVirtualChannels(addr, 2, channelCount -1, 4);
                                 break;
-
 
                             case 'hmipw-drs4':
                             case 'hmipw-drs8':
