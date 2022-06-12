@@ -4,19 +4,17 @@ const path = require('path');
 module.exports = function (RED) {
     const knownDevices = {};
 
-    RED.httpAdmin.get('/redmatic-homekit/zigbee-devices', RED.auth.needsPermission('redmatic.read'), (req, res) => {
-        if (knownDevices[req.query.id]) {
-            const devices = knownDevices[req.query.id].map(d => {
-                return {
-                    ieeeAddr: d.ieeeAddr,
-                    name: d.meta.name,
-                    manufacturerName: d.manufacturerName,
-                    modelID: d.modelID
-                };
-            });
-            res.status(200).send(JSON.stringify(devices));
+    RED.httpAdmin.get('/redmatic-homekit/zigbee-devices', RED.auth.needsPermission('redmatic.read'), (request, response) => {
+        if (knownDevices[request.query.id]) {
+            const devices = knownDevices[request.query.id].map(d => ({
+                ieeeAddr: d.ieeeAddr,
+                name: d.meta.name,
+                manufacturerName: d.manufacturerName,
+                modelID: d.modelID,
+            }));
+            response.status(200).send(JSON.stringify(devices));
         } else {
-            res.status(500).send(`500 Internal Server Error: Unknown Herdsman ID ${req.query.id}`);
+            response.status(500).send(`500 Internal Server Error: Unknown Herdsman ID ${request.query.id}`);
         }
     });
 
@@ -45,16 +43,16 @@ module.exports = function (RED) {
 
             this.zigbeeDevices = [];
 
-            fs.readdirSync(path.join(__dirname, '..', 'zigbee-devices')).forEach(file => {
+            for (const file of fs.readdirSync(path.join(__dirname, '..', 'zigbee-devices'))) {
                 if (file.endsWith('.js')) {
                     this.zigbeeDevices.push(require(path.join(__dirname, '..', 'zigbee-devices', file)));
                 }
-            });
+            }
 
             this.proxy.on('ready', () => {
                 this.devices = this.herdsman.getDevices();
 
-                this.devices.forEach(device => {
+                for (const device of this.devices) {
                     const Adapter = this.findAdapter(device);
                     if (Adapter) {
                         knownDevices[this.id].push(device);
@@ -68,7 +66,7 @@ module.exports = function (RED) {
                     } else {
                         this.debug(`no adapter found for ${device.ieeeAddr} ${device.meta.name}`);
                     }
-                });
+                }
             });
         }
 

@@ -1,6 +1,4 @@
-/* eslint-disable no-new */
-
-const Accessory = require('./lib/accessory');
+const Accessory = require('./lib/accessory.js');
 
 function addService(type, name, channel) {
     let service
@@ -125,4 +123,4 @@ module.exports = class HmipwDrd {
             }
         }
     }
-};
+}

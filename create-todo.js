@@ -2,11 +2,11 @@ const fs = require('fs');
 
 const dir = fs.readdirSync('./homematic-devices');
 
-dir.forEach(file => {
-    if (file.match(/h.*-.*\.js/)) {
-        const len = fs.readFileSync('./homematic-devices/' + file).toString().split('\n').length;
-        if (len > 4) {
+for (const file of dir) {
+    if (/h.*-.*\.js/.test(file)) {
+        const {length} = fs.readFileSync('./homematic-devices/' + file).toString().split('\n');
+        if (length > 4) {
             console.log('- [ ] ' + file.replace('.js', ''));
         }
     }
-});
+}

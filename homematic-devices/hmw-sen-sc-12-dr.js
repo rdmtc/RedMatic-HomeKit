@@ -1,6 +1,6 @@
 /* eslint-disable no-new */
 
-const Accessory = require('./lib/accessory');
+const Accessory = require('./lib/accessory.js');
 
 function addService(type, name, dp) {
     let service;
@@ -38,9 +38,7 @@ function addService(type, name, dp) {
 
         default:
             this.addService('ContactSensor', name)
-                .get('ContactSensorState', dp, (value, c) => {
-                    return value ? c.CONTACT_NOT_DETECTED : c.CONTACT_DETECTED;
-                });
+                .get('ContactSensorState', dp, (value, c) => value ? c.CONTACT_NOT_DETECTED : c.CONTACT_DETECTED);
     }
 }
 

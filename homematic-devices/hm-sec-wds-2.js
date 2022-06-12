@@ -1,1 +1,1 @@
-module.exports = require('./hm-sec-wds');
+module.exports = require('./hm-sec-wds.js');

@@ -1,1 +1,1 @@
-module.exports = require('./hmip-bwth');
+module.exports = require('./hmip-bwth.js');

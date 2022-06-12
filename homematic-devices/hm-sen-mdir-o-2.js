@@ -1,1 +1,1 @@
-module.exports = require('./hm-sen-mdir-sm');
+module.exports = require('./hm-sen-mdir-sm.js');

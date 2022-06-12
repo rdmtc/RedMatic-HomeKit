@@ -1,4 +1,4 @@
-const Accessory = require('./lib/accessory');
+const Accessory = require('./lib/accessory.js');
 
 module.exports = class HmLcBl1 extends Accessory {
     init(config, node) {
@@ -10,9 +10,9 @@ module.exports = class HmLcBl1 extends Accessory {
         ccu.subscribe({
             datapointName: config.deviceAddress + ':1.LEVEL',
             cache: true,
-            stable: false
-        }, msg => {
-            intermediatePosition = msg.value * 100;
+            stable: false,
+        }, message => {
+            intermediatePosition = message.value * 100;
         });
 
         const service = this.addService('WindowCovering', config.name);

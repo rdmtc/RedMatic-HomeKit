@@ -1,6 +1,6 @@
 /* eslint-disable no-new */
 
-const Accessory = require('./accessory');
+const Accessory = require('./accessory.js');
 
 function createService(channel) {
     let intermediatePosition; // 0-100
@@ -12,9 +12,9 @@ function createService(channel) {
     this.ccu.subscribe({
         datapointName: this.config.deviceAddress + ':' + channelIndex + '.LEVEL',
         cache: true,
-        stable: false
-    }, msg => {
-        intermediatePosition = msg.value * 100;
+        stable: false,
+    }, message => {
+        intermediatePosition = message.value * 100;
     });
 
     const service = this.addService('WindowCovering', channel.name, channelIndex);
@@ -45,26 +45,26 @@ function createService(channel) {
             this.node.debug(channel.name + ' intermediatePosition ' + intermediatePosition);
             service.update('CurrentPosition', intermediatePosition);
 
-            const params = {
-                LEVEL
+            const parameters = {
+                LEVEL,
             };
 
             if (channel.tilt) {
-                params.LEVEL_2 = LEVEL_2;
+                parameters.LEVEL_2 = LEVEL_2;
             }
 
             if (channel.tilt || this.config.type === 'BLIND_VIRTUAL_RECEIVER') {
                 if (LEVEL === 0) {
-                    params.LEVEL_2 = 0;
+                    parameters.LEVEL_2 = 0;
                 }
 
                 if (LEVEL === 1) {
-                    params.LEVEL_2 = 1;
+                    parameters.LEVEL_2 = 1;
                 }
             }
 
-            this.node.debug('set ' + this.config.name + ' (WindowCovering) TargetPosition ' + value + ' -> ' + this.config.description.ADDRESS + ':' + channelIndex + ' ' + JSON.stringify(params));
-            this.ccu.methodCall(this.config.iface, 'putParamset', [this.config.description.ADDRESS + ':' + channelIndex, 'VALUES', params])
+            this.node.debug('set ' + this.config.name + ' (WindowCovering) TargetPosition ' + value + ' -> ' + this.config.description.ADDRESS + ':' + channelIndex + ' ' + JSON.stringify(parameters));
+            this.ccu.methodCall(this.config.iface, 'putParamset', [this.config.description.ADDRESS + ':' + channelIndex, 'VALUES', parameters])
                 .then(() => {
                     callback();
                 })
@@ -104,12 +104,12 @@ function createService(channel) {
                 LEVEL_2 = (value + 90) / 180;
                 this.node.debug('set TargetVerticalTiltAngle ' + this.config.name + ' LEVEL_2 ' + LEVEL_2 + ' ' + value);
 
-                const params = {
+                const parameters = {
                     LEVEL,
-                    LEVEL_2
+                    LEVEL_2,
                 };
-                this.node.debug('set ' + channel.name + ' (WindowCovering) TargetVerticalTiltAngle ' + value + ' -> ' + this.config.description.ADDRESS + ':' + channelIndex + ' ' + JSON.stringify(params));
-                this.ccu.methodCall(this.config.iface, 'putParamset', [this.config.description.ADDRESS + ':' + channelIndex, 'VALUES', params])
+                this.node.debug('set ' + channel.name + ' (WindowCovering) TargetVerticalTiltAngle ' + value + ' -> ' + this.config.description.ADDRESS + ':' + channelIndex + ' ' + JSON.stringify(parameters));
+                this.ccu.methodCall(this.config.iface, 'putParamset', [this.config.description.ADDRESS + ':' + channelIndex, 'VALUES', parameters])
                     .then(() => {
                         callback();
                     })
@@ -128,9 +128,9 @@ class GenericHmipBlindAcc extends Accessory {
     }
 
     init() {
-        this.channels.forEach(channel => {
+        for (const channel of this.channels) {
             createService.call(this, channel);
-        });
+        }
     }
 }
 
@@ -144,7 +144,7 @@ class GenericHmipBlind {
         let acc = 0;
         let pos = 0;
         const channels = [];
-        this.config.description.CHILDREN.forEach(channel => {
+        for (const channel of this.config.description.CHILDREN) {
             const desc = this.ccu.metadata.devices['HmIP-RF'][channel];
             if (desc.TYPE === 'BLIND_VIRTUAL_RECEIVER' || desc.TYPE === 'SHUTTER_VIRTUAL_RECEIVER') {
                 if (!channels[acc]) {
@@ -152,8 +152,8 @@ class GenericHmipBlind {
                 }
 
                 const name = this.ccu.channelNames[channel];
-                const tilt = desc.TYPE === 'BLIND_VIRTUAL_RECEIVER' &&
-                    (!this.config.options[channel] || this.config.options[channel].type !== 'VerticalTilt Disabled');
+                const tilt = desc.TYPE === 'BLIND_VIRTUAL_RECEIVER'
+                    && (!this.config.options[channel] || this.config.options[channel].type !== 'VerticalTilt Disabled');
                 if (pos === 0) {
                     if (!this.config.options[channel] || !this.config.options[channel].disabled) {
                         channels[acc].push({channel, name, tilt});
@@ -167,14 +167,15 @@ class GenericHmipBlind {
                     acc += 1;
                 }
             }
-        });
-        channels.forEach(accChannels => {
+        }
+
+        for (const accChannels of channels) {
             if (accChannels.length > 0) {
                 const conf = Object.assign({}, config, {name: accChannels[0].name});
                 conf.description = Object.assign({}, config.description, {ADDRESS: accChannels[0].channel});
                 new GenericHmipBlindAcc(conf, node, accChannels);
             }
-        });
+        }
     }
 }
 
