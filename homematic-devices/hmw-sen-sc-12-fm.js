@@ -1,1 +1,1 @@
-module.exports = require('./hmw-sen-sc-12-dr');
+module.exports = require('./hmw-sen-sc-12-dr.js');

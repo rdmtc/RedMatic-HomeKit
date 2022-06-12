@@ -1,4 +1,4 @@
-const Accessory = require('./lib/accessory');
+const Accessory = require('./lib/accessory.js');
 
 module.exports = class ZllDim extends Accessory {
     static get manufacturerName() {
@@ -17,7 +17,7 @@ module.exports = class ZllDim extends Accessory {
             'TRADFRI bulb GU10 WW 400lm',
             'TRADFRI bulb GU10 W 400lm',
             'TRADFRI bulb E27 opal 1000lm',
-            'TRADFRI bulb E27 W opal 1000lm'
+            'TRADFRI bulb E27 W opal 1000lm',
         ];
     }
 
@@ -30,13 +30,9 @@ module.exports = class ZllDim extends Accessory {
         const ep = device.endpoints[0].ID;
         this.addService('Lightbulb', device.meta.name)
             .get('On', ep, 'genOnOff', 'onOff', data => Boolean(data))
-            .set('On', ep, 'genOnOff', data => {
-                return {command: data ? 'on' : 'off', payload: {}};
-            })
+            .set('On', ep, 'genOnOff', data => ({command: data ? 'on' : 'off', payload: {}}))
 
             .get('Brightness', ep, 'genLevelCtrl', 'currentLevel', data => Math.round(data / 2.54))
-            .set('Brightness', ep, 'genLevelCtrl', data => {
-                return {command: 'moveToLevel', payload: {level: Math.round(data * 2.54), transtime: 0}};
-            });
+            .set('Brightness', ep, 'genLevelCtrl', data => ({command: 'moveToLevel', payload: {level: Math.round(data * 2.54), transtime: 0}}));
     }
 };

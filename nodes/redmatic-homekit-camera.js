@@ -9,18 +9,18 @@ const pkg = require('../package.json');
 const accessories = {};
 
 module.exports = function (RED) {
-    hap.init(path.join(RED.settings.userDir, 'homekit'));
+    hap.HAPStorage.setCustomStoragePath(path.join(RED.settings.userDir, 'homekit'));
 
-    RED.httpAdmin.get('/redmatic-homekit-camera', (req, res) => {
-        if (req.query.config) {
-            const acc = accessories[req.query.config];
+    RED.httpAdmin.get('/redmatic-homekit-camera', (request, response) => {
+        if (request.query.config) {
+            const acc = accessories[request.query.config];
             if (acc) {
-                res.status(200).send(JSON.stringify({setupURI: acc.setupURI()}));
+                response.status(200).send(JSON.stringify({setupURI: acc.setupURI()}));
             } else {
-                res.status(500).send(JSON.stringify({}));
+                response.status(500).send(JSON.stringify({}));
             }
         } else {
-            res.status(404).send(JSON.stringify({}));
+            response.status(404).send(JSON.stringify({}));
         }
     });
 
@@ -28,15 +28,13 @@ module.exports = function (RED) {
         constructor(config) {
             RED.nodes.createNode(this, config);
 
-            const that = this;
-
             function logger(...args) {
-                let str = args.join(' ');
-                if (str.match(/^(error: )/i)) {
-                    str = str.replace(/^error: (.*)/i, '$1');
-                    that.error(str);
+                let string_ = args.join(' ');
+                if (/^(error: )/i.test(string_)) {
+                    string_ = string_.replace(/^error: (.*)/i, '$1');
+                    this.error(string_);
                 } else if (config.debug) {
-                    that.debug(str);
+                    this.debug(string_);
                 }
             }
 
@@ -50,7 +48,7 @@ module.exports = function (RED) {
 
             this.name = config.name || ('Camera ' + this.id);
 
-            const acc = new Accessory(this.name, uuid.generate(config.id), Accessory.Categories.CAMERA);
+            const acc = new Accessory(this.name, uuid.generate(config.id), hap.Categories.CAMERA);
             accessories[this.id] = acc;
 
             this.debug('camera created' + this.name + ' ' + this.id + ' ' + config.username);
@@ -71,8 +69,8 @@ module.exports = function (RED) {
             if (config.doorbell) {
                 this.debug('add doorbell service');
                 const doorbellService = acc.addService(hap.Service.Doorbell, this.name);
-                this.on('input', msg => {
-                    console.log(msg);
+                this.on('input', message => {
+                    console.log(message);
                     this.debug('update ProgrammableSwitchEvent SINGLE_PRESS');
                     doorbellService.getCharacteristic(hap.Characteristic.ProgrammableSwitchEvent).updateValue(0);
                 });
@@ -85,9 +83,9 @@ module.exports = function (RED) {
 
             this.log('publishing camera ' + this.name + ' ' + config.username);
             const testPort = net.createServer()
-                .once('error', err => {
-                    this.error(err);
-                    this.status({fill: 'red', shape: 'dot', text: err.message});
+                .once('error', error => {
+                    this.error(error);
+                    this.status({fill: 'red', shape: 'dot', text: error.message});
                 })
                 .once('listening', () => {
                     testPort.once('close', () => {
@@ -95,7 +93,7 @@ module.exports = function (RED) {
                             username: config.username,
                             port: config.port,
                             pincode: config.pincode,
-                            category: Accessory.Categories.CAMERA
+                            category: hap.Categories.CAMERA,
                         });
 
                         acc._server.on('listening', () => {
@@ -118,8 +116,7 @@ module.exports = function (RED) {
                 })
                 .listen(config.port);
 
-            this.on('close', () => {
-            });
+            this.on('close', () => {});
         }
     }
 

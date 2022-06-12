@@ -34,31 +34,31 @@ module.exports = function (RED) {
             const setListener = (value, callback) => {
                 this.log('set Switch 0 On ' + value);
                 if (value) {
-                    const msg = {};
-                    msg.topic = config.topic;
+                    const message = {};
+                    message.topic = config.topic;
                     if (this.payloadType !== 'flow' && this.payloadType !== 'global') {
                         try {
                             if ((!this.payloadType && !this.payload) || this.payloadType === 'date') {
-                                msg.payload = Date.now();
+                                message.payload = Date.now();
                             } else if (!this.payloadType) {
-                                msg.payload = this.payload;
+                                message.payload = this.payload;
                             } else if (this.payloadType === 'none') {
-                                msg.payload = '';
+                                message.payload = '';
                             } else {
-                                msg.payload = RED.util.evaluateNodeProperty(this.payload, this.payloadType, this, msg);
+                                message.payload = RED.util.evaluateNodeProperty(this.payload, this.payloadType, this, message);
                             }
 
-                            this.send(msg);
+                            this.send(message);
                         } catch (error) {
-                            this.error(error, msg);
+                            this.error(error, message);
                         }
                     } else {
-                        RED.util.evaluateNodeProperty(this.payload, this.payloadType, this, msg, (err, res) => {
-                            if (err) {
-                                this.error(err, msg);
+                        RED.util.evaluateNodeProperty(this.payload, this.payloadType, this, message, (error, response) => {
+                            if (error) {
+                                this.error(error, message);
                             } else {
-                                msg.payload = res;
-                                this.send(msg);
+                                message.payload = response;
+                                this.send(message);
                             }
                         });
                     }

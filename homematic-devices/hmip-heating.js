@@ -1,4 +1,4 @@
-const Accessory = require('./lib/accessory');
+const Accessory = require('./lib/accessory.js');
 
 module.exports = class HmipHeating extends Accessory {
     init(config, node) {
@@ -46,7 +46,7 @@ module.exports = class HmipHeating extends Accessory {
         }
 
         node.debug(config.deviceAddress + ' ' + group.groupProperties.NAME + ' ' + group.groupType.id + ' has ' + group.groupMembers.length + ' members');
-        group.groupMembers.forEach(member => {
+        for (const member of group.groupMembers) {
             if (member.memberType.id.startsWith('RADIATOR')) {
                 valveDevices.push('HmIP-RF.' + member.id);
                 valueDevice = valueDevice || ('HmIP-RF.' + member.id);
@@ -57,7 +57,7 @@ module.exports = class HmipHeating extends Accessory {
 
             lowbatDps['HmIP-RF.' + (member.id.split(':')[0]) + ':0.LOW_BAT'] = false;
             node.debug(config.deviceAddress + ' member ' + member.memberType.id + ' ' + member.id);
-        });
+        }
 
         if (valueDevice) {
             node.debug(config.deviceAddress + ' valueDevice ' + valueDevice);
@@ -104,13 +104,13 @@ module.exports = class HmipHeating extends Accessory {
             .set('TargetHeatingCoolingState', (value, callback) => {
             // 0=off, 1=heat, 3=auto
                 if (value === 0) {
-                    const params = {
+                    const parameters = {
                         CONTROL_MODE: 1,
-                        SET_POINT_TEMPERATURE: 4.5
+                        SET_POINT_TEMPERATURE: 4.5,
                     };
-                    node.debug('set ' + config.name + ' (' + subtypeThermostat + ') TargetHeatingCoolingState ' + value + ' -> ' + config.description.ADDRESS + ':1 ' + JSON.stringify(params));
+                    node.debug('set ' + config.name + ' (' + subtypeThermostat + ') TargetHeatingCoolingState ' + value + ' -> ' + config.description.ADDRESS + ':1 ' + JSON.stringify(parameters));
 
-                    ccu.methodCall(config.iface, 'putParamset', [config.description.ADDRESS + ':1', 'VALUES', params])
+                    ccu.methodCall(config.iface, 'putParamset', [config.description.ADDRESS + ':1', 'VALUES', parameters])
                         .then(() => {
                             setpointMode = 1;
                             callback();
@@ -118,12 +118,12 @@ module.exports = class HmipHeating extends Accessory {
                             callback(new Error(hap.HAPServer.Status.SERVICE_COMMUNICATION_FAILURE));
                         });
                 } else if (value === 1) {
-                    const params = {
+                    const parameters = {
                         CONTROL_MODE: 1,
-                        SET_POINT_TEMPERATURE: valueSetpoint
+                        SET_POINT_TEMPERATURE: valueSetpoint,
                     };
-                    node.debug('set ' + config.name + ' (' + subtypeThermostat + ') TargetHeatingCoolingState ' + value + ' -> ' + config.description.ADDRESS + ':1 ' + JSON.stringify(params));
-                    ccu.methodCall(config.iface, 'putParamset', [config.description.ADDRESS + ':1', 'VALUES', params])
+                    node.debug('set ' + config.name + ' (' + subtypeThermostat + ') TargetHeatingCoolingState ' + value + ' -> ' + config.description.ADDRESS + ':1 ' + JSON.stringify(parameters));
+                    ccu.methodCall(config.iface, 'putParamset', [config.description.ADDRESS + ':1', 'VALUES', parameters])
                         .then(() => {
                             serviceThermostat.update('TargetTemperature', valueSetpoint);
                             setpointMode = 1;
@@ -148,23 +148,24 @@ module.exports = class HmipHeating extends Accessory {
             serviceThermostat.update('TargetHeatingCoolingState', targetState());
         }
 
-        valveDevices.forEach(valveStateDevice => {
+        for (const valveStateDevice of valveDevices) {
             const datapointLevel = valveStateDevice + '.LEVEL';
             this.subscribe(datapointLevel, value => {
                 levels[datapointLevel] = value;
                 let max = 0;
-                Object.keys(levels).forEach(dp => {
+                for (const dp of Object.keys(levels)) {
                     if (levels[dp] > max) {
                         max = levels[dp];
                     }
-                });
+                }
+
                 if (level !== max) {
                     level = max;
                     node.debug('update ' + config.name + ' level ' + level);
                     updateHeatingCoolingState();
                 }
             });
-        });
+        }
 
         this.subscribe(valueDevice + '.SET_POINT_MODE', value => {
             setpointMode = value;
@@ -172,18 +173,19 @@ module.exports = class HmipHeating extends Accessory {
             updateHeatingCoolingState();
         });
 
-        const batteryService = this.addService('BatteryService', config.name, 'Battery');
-        Object.keys(lowbatDps).forEach(dp => {
+        const battery = this.addService('Battery', config.name, 'Battery');
+        for (const dp of Object.keys(lowbatDps)) {
             this.subscribe(dp, value => {
                 lowbatDps[dp] = value;
                 let lowbat = false;
-                Object.keys(lowbatDps).forEach(ldp => {
+                for (const ldp of Object.keys(lowbatDps)) {
                     lowbat = lowbat || lowbatDps[ldp];
-                });
-                batteryService.update('StatusLowBattery', lowbat ? hap.Characteristic.StatusLowBattery.BATTERY_LEVEL_LOW : hap.Characteristic.StatusLowBattery.BATTERY_LEVEL_NORMAL);
-                batteryService.update('BatteryLevel', lowbat ? 0 : 100);
+                }
+
+                battery.update('StatusLowBattery', lowbat ? hap.Characteristic.StatusLowBattery.BATTERY_LEVEL_LOW : hap.Characteristic.StatusLowBattery.BATTERY_LEVEL_NORMAL);
+                battery.update('BatteryLevel', lowbat ? 0 : 100);
             });
-        });
+        }
 
         if (this.option('HumiditySensor') && humidityDp) {
             this.addService('HumiditySensor', config.name)

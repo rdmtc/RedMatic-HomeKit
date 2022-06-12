@@ -1,6 +1,6 @@
 /* eslint-disable no-new */
 
-const Accessory = require('./lib/accessory');
+const Accessory = require('./lib/accessory.js');
 
 function addService(type, name, dp) {
     let service;
@@ -38,9 +38,7 @@ function addService(type, name, dp) {
 
         default:
             this.addService('ContactSensor', name)
-                .get('ContactSensorState', dp, (value, c) => {
-                    return value ? c.CONTACT_NOT_DETECTED : c.CONTACT_DETECTED;
-                });
+                .get('ContactSensorState', dp, (value, c) => value ? c.CONTACT_NOT_DETECTED : c.CONTACT_DETECTED);
     }
 }
 
@@ -78,16 +76,10 @@ module.exports = class GenericContactSensor {
             addr = addr + ':' + id;
         }
 
-        let res;
+        const result = option ? this.config.options[addr] && this.config.options[addr][option] : !(this.config.options[addr] && this.config.options[addr].disabled);
 
-        if (option) {
-            res = this.config.options[addr] && this.config.options[addr][option];
-        } else {
-            res = !(this.config.options[addr] && this.config.options[addr].disabled);
-        }
-
-        this.node.debug('option ' + addr + ' ' + id + ' ' + option + ' ' + res);
-        return res;
+        this.node.debug('option ' + addr + ' ' + id + ' ' + option + ' ' + result);
+        return result;
     }
 
     constructor(config, node) {

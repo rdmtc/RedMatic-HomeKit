@@ -1,4 +1,4 @@
-const Accessory = require('./lib/accessory');
+const Accessory = require('./lib/accessory.js');
 
 module.exports = class HmipEtrv extends Accessory {
     init(config, node) {
@@ -68,12 +68,12 @@ module.exports = class HmipEtrv extends Accessory {
             .set('TargetHeatingCoolingState', (value, callback) => {
                 // 0=off, 1=heat, 3=auto
                 if (value === 0 || value === 1) {
-                    const params = {
+                    const parameters = {
                         CONTROL_MODE: 1,
-                        SET_POINT_TEMPERATURE: value === 0 ? 4.5 : valueSetpoint
+                        SET_POINT_TEMPERATURE: value === 0 ? 4.5 : valueSetpoint,
                     };
-                    node.debug('set ' + config.name + ' (' + subtypeThermostat + ') TargetHeatingCoolingState ' + value + ' -> ' + config.description.ADDRESS + ':1 ' + JSON.stringify(params));
-                    ccu.methodCall(config.iface, 'putParamset', [config.description.ADDRESS + ':1', 'VALUES', params]).then(() => {
+                    node.debug('set ' + config.name + ' (' + subtypeThermostat + ') TargetHeatingCoolingState ' + value + ' -> ' + config.description.ADDRESS + ':1 ' + JSON.stringify(parameters));
+                    ccu.methodCall(config.iface, 'putParamset', [config.description.ADDRESS + ':1', 'VALUES', parameters]).then(() => {
                         if (valueSetpoint > 4.5) {
                             serviceThermostat.update('TargetTemperature', valueSetpoint);
                         }
@@ -111,10 +111,8 @@ module.exports = class HmipEtrv extends Accessory {
             updateHeatingCoolingState();
         });
 
-        this.addService('BatteryService', config.name)
-            .get('StatusLowBattery', config.deviceAddress + ':0.LOW_BAT', (value, c) => {
-                return value ? c.BATTERY_LEVEL_LOW : c.BATTERY_LEVEL_NORMAL;
-            })
+        this.addService('Battery', config.name)
+            .get('StatusLowBattery', config.deviceAddress + ':0.LOW_BAT', (value, c) => value ? c.BATTERY_LEVEL_LOW : c.BATTERY_LEVEL_NORMAL)
             .get('BatteryLevel', config.deviceAddress + ':0.OPERATING_VOLTAGE', this.percent)
             .update('ChargingState', 2);
 

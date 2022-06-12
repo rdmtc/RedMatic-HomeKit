@@ -15,7 +15,7 @@ module.exports = function (RED) {
 
             this.iface = config.iface;
 
-            this.onTime = this.context().get('onTime') || parseFloat(config.onTime) || 5;
+            this.onTime = this.context().get('onTime') || Number.parseFloat(config.onTime) || 5;
             this.remaining = this.onTime * 60;
 
             const channel = config.channel.split(' ')[0];
@@ -72,19 +72,35 @@ module.exports = function (RED) {
                 }, 1000);
             };
 
-            const start = () => {
-                return new Promise((resolve, reject) => {
-                    const dev = this.ccu.metadata.devices[config.iface] && this.ccu.metadata.devices[config.iface][channel];
-                    if (dev) {
-                        const ps = this.ccu.getParamsetDescription(config.iface, dev, 'VALUES');
-                        if (ps && ps.STATE) {
-                            if (ps.ON_TIME) {
-                                this.debug('starting with ON_TIME ' + (this.onTime * 60));
+            const start = () => new Promise((resolve, reject) => {
+                const dev = this.ccu.metadata.devices[config.iface] && this.ccu.metadata.devices[config.iface][channel];
+                if (dev) {
+                    const ps = this.ccu.getParamsetDescription(config.iface, dev, 'VALUES');
+                    if (ps && ps.STATE) {
+                        if (ps.ON_TIME) {
+                            this.debug('starting with ON_TIME ' + (this.onTime * 60));
 
-                                this.ccu.methodCall(config.iface, 'putParamset', [channel, 'VALUES', {
-                                    ON_TIME: this.ccu.paramCast(config.iface, channel, 'VALUES', 'ON_TIME', this.onTime * 60),
-                                    STATE: true
-                                }]).then(() => {
+                            this.ccu.methodCall(config.iface, 'putParamset', [channel, 'VALUES', {
+                                ON_TIME: this.ccu.paramCast(config.iface, channel, 'VALUES', 'ON_TIME', this.onTime * 60),
+                                STATE: true,
+                            }]).then(() => {
+                                // this.state = true;
+                                this.remaining = this.onTime * 60;
+                                this.debug('update Valve 0 RemainingDuration ' + this.remaining);
+                                service.updateCharacteristic(hap.Characteristic.RemainingDuration, this.remaining);
+
+                                this.debug('update Valve 0 Active 1');
+                                service.updateCharacteristic(hap.Characteristic.InUse, 1);
+                                this.debug('update Valve 0 InUse true');
+                                service.updateCharacteristic(hap.Characteristic.Active, true);
+
+                                resolve();
+                                startInterval();
+                            }).catch(reject);
+                        } else {
+                            this.debug('starting with timeout');
+                            this.ccu.setValue(config.iface, channel, 'STATE', true)
+                                .then(() => {
                                     // this.state = true;
                                     this.remaining = this.onTime * 60;
                                     this.debug('update Valve 0 RemainingDuration ' + this.remaining);
@@ -94,39 +110,21 @@ module.exports = function (RED) {
                                     service.updateCharacteristic(hap.Characteristic.InUse, 1);
                                     this.debug('update Valve 0 InUse true');
                                     service.updateCharacteristic(hap.Characteristic.Active, true);
-
+                                    setTimeout(() => {
+                                        stop().catch(() => {});
+                                    }, (this.onTime * 60 * 1000) + 1000);
                                     resolve();
                                     startInterval();
-                                }).catch(reject);
-                            } else {
-                                this.debug('starting with timeout');
-                                this.ccu.setValue(config.iface, channel, 'STATE', true)
-                                    .then(() => {
-                                        // this.state = true;
-                                        this.remaining = this.onTime * 60;
-                                        this.debug('update Valve 0 RemainingDuration ' + this.remaining);
-                                        service.updateCharacteristic(hap.Characteristic.RemainingDuration, this.remaining);
-
-                                        this.debug('update Valve 0 Active 1');
-                                        service.updateCharacteristic(hap.Characteristic.InUse, 1);
-                                        this.debug('update Valve 0 InUse true');
-                                        service.updateCharacteristic(hap.Characteristic.Active, true);
-                                        setTimeout(() => {
-                                            stop().catch(() => {});
-                                        }, (this.onTime * 60 * 1000) + 1000);
-                                        resolve();
-                                        startInterval();
-                                    })
-                                    .catch(reject);
-                            }
-                        } else {
-                            reject();
+                                })
+                                .catch(reject);
                         }
                     } else {
                         reject();
                     }
-                });
-            };
+                } else {
+                    reject();
+                }
+            });
 
             const {hap, version} = this.bridgeConfig;
 
@@ -167,18 +165,18 @@ module.exports = function (RED) {
                 datapoint: 'STATE',
                 cache: true,
                 change: true,
-                stable: true
-            }, msg => {
-                this.state = msg.value;
+                stable: true,
+            }, message => {
+                this.state = message.value;
                 if (!this.state) {
                     stop().catch(() => {});
                 }
 
                 this.debug('this.state=' + this.state);
-                this.debug('update Valve 0 InUse ' + msg.value);
-                service.updateCharacteristic(hap.Characteristic.InUse, msg.value);
-                this.debug('update Valve 0 Active ' + (msg.value ? 1 : 0));
-                service.updateCharacteristic(hap.Characteristic.Active, msg.value ? 1 : 0);
+                this.debug('update Valve 0 InUse ' + message.value);
+                service.updateCharacteristic(hap.Characteristic.InUse, message.value);
+                this.debug('update Valve 0 Active ' + (message.value ? 1 : 0));
+                service.updateCharacteristic(hap.Characteristic.Active, message.value ? 1 : 0);
                 if (!changeExpected) {
                     this.status({fill: this.state ? 'green' : 'grey', shape: 'ring', text: '?'});
                     this.send([{topic: config.topic, payload: true}, {topic: config.topic, payload: 0}]);
@@ -233,20 +231,20 @@ module.exports = function (RED) {
             };
 
             const getRemainingDuration = callback => {
-                const res = this.remaining; // || (this.onTime * 60);
-                this.debug('get Valve 0 RemainingDuration ' + res);
-                callback(res);
+                const result = this.remaining; // || (this.onTime * 60);
+                this.debug('get Valve 0 RemainingDuration ' + result);
+                callback(result);
             };
 
-            this.on('input', msg => {
-                if (typeof msg.payload === 'boolean') {
-                    if (msg.payload) {
+            this.on('input', message => {
+                if (typeof message.payload === 'boolean') {
+                    if (message.payload) {
                         start().catch(() => {});
                     } else {
                         stop().catch(() => {});
                     }
                 } else {
-                    const time = parseFloat(msg.payload) || 0;
+                    const time = Number.parseFloat(message.payload) || 0;
                     if (time) {
                         this.onTime = time;
                         this.context().set('onTime', this.onTime);

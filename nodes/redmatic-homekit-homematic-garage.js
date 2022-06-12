@@ -42,14 +42,14 @@ module.exports = function (RED) {
                     if (ps && ps.ON_TIME) {
                         this.ccu.methodCall(config.ifaceActuator, 'putParamset', [channel, 'VALUES', {
                             STATE: true,
-                            ON_TIME: this.ccu.paramCast(config.ifaceActuator, channel, 'VALUES', 'ON_TIME', config.onTime || 0.4)
+                            ON_TIME: this.ccu.paramCast(config.ifaceActuator, channel, 'VALUES', 'ON_TIME', config.onTime || 0.4),
                         }]).then(() => {
                             if (revert) {
                                 this.valueCurrent = 4;
                                 this.updateSensor();
                                 setTimeout(() => {
                                     move(direction).then(resolve).catch(reject);
-                                }, (parseFloat(config.revertTime) || 0.5) * 1000);
+                                }, (Number.parseFloat(config.revertTime) || 0.5) * 1000);
                             } else {
                                 resolve();
                             }
@@ -65,12 +65,12 @@ module.exports = function (RED) {
                                                 this.updateSensor();
                                                 setTimeout(() => {
                                                     move(direction).then(resolve).catch(reject);
-                                                }, (parseFloat(config.revertTime) || 0.5) * 1000);
+                                                }, (Number.parseFloat(config.revertTime) || 0.5) * 1000);
                                             } else {
                                                 resolve();
                                             }
                                         }).catch(reject);
-                                }, (parseFloat(config.onTime) || 0.4) * 1000);
+                                }, (Number.parseFloat(config.onTime) || 0.4) * 1000);
                             })
                             .catch(reject);
                     }
@@ -106,6 +106,7 @@ module.exports = function (RED) {
             Characteristic.CurrentDoorState.STOPPED = 4;
              */
 
+            // eslint-disable-next-line complexity
             this.updateSensor = (timeout, source) => {
                 let valueCurrent = 4;
                 let obstruction = false;
@@ -269,10 +270,10 @@ module.exports = function (RED) {
                     change: true,
                     iface: config.ifaceSensor,
                     channel: config.channelSensorClosed.split(' ')[0],
-                    datapoint: /STATE|MOTION|SENSOR/
-                }, msg => {
-                    this.closed = config.directionClosed ? msg.value : !msg.value;
-                    this.log(config.channelSensorClosed + ' ' + msg.value + ' closed=' + this.closed);
+                    datapoint: /STATE|MOTION|SENSOR/,
+                }, message => {
+                    this.closed = config.directionClosed ? message.value : !message.value;
+                    this.log(config.channelSensorClosed + ' ' + message.value + ' closed=' + this.closed);
                     this.updateSensor(false, 'c');
                 });
             }
@@ -284,10 +285,10 @@ module.exports = function (RED) {
                     change: true,
                     iface: config.ifaceSensor,
                     channel: config.channelSensorOpened.split(' ')[0],
-                    datapoint: /STATE|MOTION|SENSOR/
-                }, msg => {
-                    this.opened = config.directionOpened ? msg.value : !msg.value;
-                    this.log(config.channelSensorOpened + ' ' + msg.value + ' openend=' + this.opened);
+                    datapoint: /STATE|MOTION|SENSOR/,
+                }, message => {
+                    this.opened = config.directionOpened ? message.value : !message.value;
+                    this.log(config.channelSensorOpened + ' ' + message.value + ' openend=' + this.opened);
                     this.updateSensor(false, 'o');
                 });
             }
@@ -328,9 +329,9 @@ module.exports = function (RED) {
                 });
             };
 
-            this.on('input', msg => {
+            this.on('input', message => {
                 let value;
-                switch (msg.payload) {
+                switch (message.payload) {
                     case 'close':
                         value = 1;
                         break;

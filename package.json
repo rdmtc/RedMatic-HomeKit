@@ -35,16 +35,20 @@
     }
   },
   "dependencies": {
-    "hap-nodejs": "0.4.52",
+    "hap-nodejs": "0.10.0",
     "homebridge-camera-ffmpeg": "0.1.14"
   },
   "devDependencies": {
-    "xo": "0.24.0"
+    "xo": "0.48.0"
   },
   "xo": {
     "space": 4,
+    "prettier": 0,
     "rules": {
       "unicorn/filename-case": 0,
+      "unicorn/prefer-module": 0,
+      "unicorn/numeric-separators-style": 0,
+      "import/extensions": 0,
       "capitalized-comments": 0
     }
   },

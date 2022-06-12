@@ -1,1 +1,1 @@
-module.exports = require('./hm-sec-key');
+module.exports = require('./hm-sec-key.js');

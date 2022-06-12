@@ -1,4 +1,4 @@
-const Accessory = require('./lib/accessory');
+const Accessory = require('./lib/accessory.js');
 
 module.exports = class HmipWth extends Accessory {
     init(config, node) {
@@ -79,13 +79,13 @@ module.exports = class HmipWth extends Accessory {
                 .set('TargetHeatingCoolingState', (value, callback) => {
                     // 0=off, 1=heat, 3=auto
                     if (value === 0) {
-                        const params = {
+                        const parameters = {
                             CONTROL_MODE: 1,
-                            SET_POINT_TEMPERATURE: 4.5
+                            SET_POINT_TEMPERATURE: 4.5,
                         };
-                        node.debug('set ' + config.name + ' (' + subtypeThermostat + ') TargetHeatingCoolingState ' + value + ' -> ' + config.description.ADDRESS + ':1 ' + JSON.stringify(params));
+                        node.debug('set ' + config.name + ' (' + subtypeThermostat + ') TargetHeatingCoolingState ' + value + ' -> ' + config.description.ADDRESS + ':1 ' + JSON.stringify(parameters));
 
-                        ccu.methodCall(config.iface, 'putParamset', [config.description.ADDRESS + ':1', 'VALUES', params])
+                        ccu.methodCall(config.iface, 'putParamset', [config.description.ADDRESS + ':1', 'VALUES', parameters])
                             .then(() => {
                                 callback();
                             }).catch(() => {
@@ -95,13 +95,13 @@ module.exports = class HmipWth extends Accessory {
                         if (setpointMode === 1) {
                             callback();
                         } else {
-                            const params = {
+                            const parameters = {
                                 CONTROL_MODE: 1,
-                                SET_POINT_TEMPERATURE: valueSetpoint
+                                SET_POINT_TEMPERATURE: valueSetpoint,
                             };
 
-                            node.debug('set ' + config.name + ' (' + subtypeThermostat + ') TargetHeatingCoolingState ' + value + ' -> ' + config.description.ADDRESS + ':1 ' + JSON.stringify(params));
-                            ccu.methodCall(config.iface, 'putParamset', [config.description.ADDRESS + ':1', 'VALUES', params])
+                            node.debug('set ' + config.name + ' (' + subtypeThermostat + ') TargetHeatingCoolingState ' + value + ' -> ' + config.description.ADDRESS + ':1 ' + JSON.stringify(parameters));
+                            ccu.methodCall(config.iface, 'putParamset', [config.description.ADDRESS + ':1', 'VALUES', parameters])
                                 .then(() => {
                                     serviceThermostat.update('TargetTemperature', valueSetpoint);
                                     callback();
@@ -110,12 +110,12 @@ module.exports = class HmipWth extends Accessory {
                                 });
                         }
                     } else {
-                        const val = value === 3 ? 0 : 1;
-                        if (setpointMode === val) {
+                        const value_ = value === 3 ? 0 : 1;
+                        if (setpointMode === value_) {
                             callback();
                         } else {
                             node.debug('set ' + config.name + ' (' + subtypeThermostat + ') TargetHeatingCoolingState ' + value + ' -> ' + config.description.ADDRESS + ':1.CONTROL_MODE ' + (value === 3 ? 0 : 1));
-                            ccu.setValue(config.iface, config.description.ADDRESS + ':1', 'CONTROL_MODE', val)
+                            ccu.setValue(config.iface, config.description.ADDRESS + ':1', 'CONTROL_MODE', value_)
                                 .then(() => {
                                     callback();
                                 }).catch(() => {
@@ -125,24 +125,25 @@ module.exports = class HmipWth extends Accessory {
                     }
                 });
 
-            links.forEach(link => {
+            for (const link of links) {
                 const valveStateDevice = link.split(':')[0];
                 const datapointLevel = config.iface + '.' + valveStateDevice + ':1.LEVEL';
                 this.subscribe(datapointLevel, value => {
                     levels[datapointLevel] = value;
                     let max = 0;
-                    Object.keys(levels).forEach(dp => {
+                    for (const dp of Object.keys(levels)) {
                         if (levels[dp] > max) {
                             max = levels[dp];
                         }
-                    });
+                    }
+
                     if (level !== max) {
                         level = max;
                         node.debug('update ' + config.name + ' level ' + level);
                         updateHeatingCoolingState();
                     }
                 });
-            });
+            }
 
             this.subscribe(config.deviceAddress + ':1.SET_POINT_MODE', value => {
                 setpointMode = value;
@@ -154,10 +155,10 @@ module.exports = class HmipWth extends Accessory {
                 this.addService('Switch', 'Boost ' + config.name, 'Boost')
                     .set('On', (value, callback) => {
                         this.ccuSetValue(config.deviceAddress + ':1.BOOST_MODE', value, callback);
-                        links.forEach(link => {
+                        for (const link of links) {
                             const linkedDevice = link.split(':')[0];
                             this.ccuSetValue(config.iface + '.' + linkedDevice + ':1.BOOST_MODE', value);
-                        });
+                        }
                     })
                     .get('On', config.deviceAddress + ':1.BOOST_MODE');
             }
@@ -167,10 +168,8 @@ module.exports = class HmipWth extends Accessory {
                 .get('CurrentTemperature', config.deviceAddress + ':1.ACTUAL_TEMPERATURE');
         }
 
-        this.addService('BatteryService', config.name)
-            .get('StatusLowBattery', config.deviceAddress + ':0.LOW_BAT', (value, c) => {
-                return value ? c.BATTERY_LEVEL_LOW : c.BATTERY_LEVEL_NORMAL;
-            })
+        this.addService('Battery', config.name)
+            .get('StatusLowBattery', config.deviceAddress + ':0.LOW_BAT', (value, c) => value ? c.BATTERY_LEVEL_LOW : c.BATTERY_LEVEL_NORMAL)
             .get('BatteryLevel', config.deviceAddress + ':0.OPERATING_VOLTAGE', this.percent)
             .update('ChargingState', 2);
 
