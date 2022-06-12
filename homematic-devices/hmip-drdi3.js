@@ -4,7 +4,7 @@ const Accessory = require('./lib/accessory');
 
 function addService(type, name, channel) {
     let service
-    this.node.debug("HMIPW-DRD3: "+ name +" "+channel);
+    this.node.debug("HMIP-DRDI3: "+ name +" "+channel);
     switch (type) {
         case 'ValveIrrigation':
         // intentional fallthrough
@@ -73,7 +73,7 @@ class AccMultiService extends Accessory {
                 if ((c === 0 && this.option(i)) || (c !== 0 && this.option(i, 'enabled'))) {
                     const channel = config.deviceAddress + ':' + i;
                     const name = ccu.channelNames[channel];
-                    this.node.debug("HMIPW-DRD3 call MultiService Channel: "+name+" "+channel);
+                    this.node.debug("HMIP-DRDI3 call MultiService Channel: "+name+" "+channel);
                     addService.call(this,"Lightbulb",name,channel)
                 }
             }
@@ -114,7 +114,7 @@ module.exports = class HmipwDrd {
                     if ((c === 0 && this.option(i)) || (c !== 0 && this.option(i, 'enabled'))) {
                         const channel = config.deviceAddress + ':' + i;
                         const name = ccu.channelNames[channel];
-                        this.node.debug("HMIPW-DRD3 call SingleService Channel: "+name+" "+channel);
+                        this.node.debug("HMIP-DRDI3 call SingleService Channel: "+name+" "+channel);
                         
                         const chConfig = Object.assign({}, config, {accChannel: channel,accChannelName: name});
                         chConfig.description = Object.assign({}, config.description, {ADDRESS: channel});
