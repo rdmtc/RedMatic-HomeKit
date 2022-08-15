@@ -1,4 +1,4 @@
-const Accessory = require('./lib/accessory');
+const Accessory = require('./lib/accessory.js');
 
 module.exports = class HmSecWin extends Accessory {
     init(config) {
@@ -13,9 +13,7 @@ module.exports = class HmSecWin extends Accessory {
                 return value * 100;
             })
 
-            .set('TargetPosition', config.deviceAddress + ':1.LEVEL', value => {
-                return value === 0 && this.option('LockOnClose') ? -0.005 : (value / 100);
-            })
+            .set('TargetPosition', config.deviceAddress + ':1.LEVEL', value => value === 0 && this.option('LockOnClose') ? -0.005 : (value / 100))
 
             .get('PositionState', config.deviceAddress + ':1.DIRECTION', (value, c) => {
                 switch (value) {
@@ -28,19 +26,11 @@ module.exports = class HmSecWin extends Accessory {
                 }
             })
 
-            .get('ObstructionDetected', config.deviceAddress + ':1.ERROR', value => {
-                return Boolean(value);
-            });
+            .get('ObstructionDetected', config.deviceAddress + ':1.ERROR', value => Boolean(value));
 
-        this.addService('BatteryService', config.name)
-            .get('StatusLowBattery', config.deviceAddress + ':0.LOWBAT', (value, c) => {
-                return value ? c.BATTERY_LEVEL_LOW : c.BATTERY_LEVEL_NORMAL;
-            })
-            .get('BatteryLevel', config.deviceAddress + ':2.LEVEL', value => {
-                return value * 100;
-            })
-            .get('ChargingState', config.deviceAddress + ':2.STATUS', value => {
-                return value === 2 ? 0 : 1;
-            });
+        this.addService('Battery', config.name)
+            .get('StatusLowBattery', config.deviceAddress + ':0.LOWBAT', (value, c) => value ? c.BATTERY_LEVEL_LOW : c.BATTERY_LEVEL_NORMAL)
+            .get('BatteryLevel', config.deviceAddress + ':2.LEVEL', value => value * 100)
+            .get('ChargingState', config.deviceAddress + ':2.STATUS', value => value === 2 ? 0 : 1);
     }
 };

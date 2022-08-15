@@ -1,1 +1,1 @@
-module.exports = require('./hmip-swo-b');
+module.exports = require('./hmip-swo-b.js');

@@ -1,4 +1,4 @@
-const Accessory = require('./lib/accessory');
+const Accessory = require('./lib/accessory.js');
 
 module.exports = class HmipBwth extends Accessory {
     init(config, node) {
@@ -69,25 +69,25 @@ module.exports = class HmipBwth extends Accessory {
             .set('TargetHeatingCoolingState', (value, callback) => {
                 // 0=off, 1=heat, 3=auto
                 if (value === 0) {
-                    const params = {
+                    const parameters = {
                         CONTROL_MODE: 1,
-                        SET_POINT_TEMPERATURE: 4.5
+                        SET_POINT_TEMPERATURE: 4.5,
                     };
-                    node.debug('set ' + config.name + ' (' + subtypeThermostat + ') TargetHeatingCoolingState ' + value + ' -> ' + config.description.ADDRESS + ':1 ' + JSON.stringify(params));
+                    node.debug('set ' + config.name + ' (' + subtypeThermostat + ') TargetHeatingCoolingState ' + value + ' -> ' + config.description.ADDRESS + ':1 ' + JSON.stringify(parameters));
 
-                    ccu.methodCall(config.iface, 'putParamset', [config.description.ADDRESS + ':1', 'VALUES', params])
+                    ccu.methodCall(config.iface, 'putParamset', [config.description.ADDRESS + ':1', 'VALUES', parameters])
                         .then(() => {
                             callback();
                         }).catch(() => {
                             callback(new Error(hap.HAPServer.Status.SERVICE_COMMUNICATION_FAILURE));
                         });
                 } else if (value === 1) {
-                    const params = {
+                    const parameters = {
                         CONTROL_MODE: 1,
-                        SET_POINT_TEMPERATURE: valueSetpoint
+                        SET_POINT_TEMPERATURE: valueSetpoint,
                     };
-                    node.debug('set ' + config.name + ' (' + subtypeThermostat + ') TargetHeatingCoolingState ' + value + ' -> ' + config.description.ADDRESS + ':1 ' + JSON.stringify(params));
-                    ccu.methodCall(config.iface, 'putParamset', [config.description.ADDRESS + ':1', 'VALUES', params])
+                    node.debug('set ' + config.name + ' (' + subtypeThermostat + ') TargetHeatingCoolingState ' + value + ' -> ' + config.description.ADDRESS + ':1 ' + JSON.stringify(parameters));
+                    ccu.methodCall(config.iface, 'putParamset', [config.description.ADDRESS + ':1', 'VALUES', parameters])
                         .then(() => {
                             serviceThermostat.update('TargetTemperature', valueSetpoint);
                             callback();

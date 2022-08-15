@@ -1,4 +1,4 @@
-const Accessory = require('./lib/accessory');
+const Accessory = require('./lib/accessory.js');
 
 module.exports = class HmCcRtDn extends Accessory {
     init(config, node) {
@@ -121,10 +121,8 @@ module.exports = class HmCcRtDn extends Accessory {
             updateHeatingCoolingState();
         });
 
-        this.addService('BatteryService', config.name)
-            .get('StatusLowBattery', config.deviceAddress + ':0.LOWBAT', (value, c) => {
-                return value ? c.BATTERY_LEVEL_LOW : c.BATTERY_LEVEL_NORMAL;
-            })
+        this.addService('Battery', config.name)
+            .get('StatusLowBattery', config.deviceAddress + ':0.LOWBAT', (value, c) => value ? c.BATTERY_LEVEL_LOW : c.BATTERY_LEVEL_NORMAL)
             .get('BatteryLevel', config.deviceAddress + ':4.BATTERY_STATE', this.percent)
             .update('ChargingState', 2);
 
@@ -165,9 +163,7 @@ module.exports = class HmCcRtDn extends Accessory {
                             });
                     }
                 })
-                .get('On', config.deviceAddress + ':4.CONTROL_MODE', value => {
-                    return value === 3;
-                });
+                .get('On', config.deviceAddress + ':4.CONTROL_MODE', value => value === 3);
         }
     }
 };

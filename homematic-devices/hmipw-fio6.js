@@ -1,6 +1,6 @@
 /* eslint-disable no-new */
 
-const Accessory = require('./lib/accessory');
+const Accessory = require('./lib/accessory.js');
 
 function addInputService(type, name, dp) {
     let service;
@@ -38,9 +38,7 @@ function addInputService(type, name, dp) {
 
         default:
             this.addService('ContactSensor', name)
-                .get('ContactSensorState', dp, (value, c) => {
-                    return value ? c.CONTACT_NOT_DETECTED : c.CONTACT_DETECTED;
-                });
+                .get('ContactSensorState', dp, (value, c) => value ? c.CONTACT_NOT_DETECTED : c.CONTACT_DETECTED);
     }
 }
 
@@ -54,11 +52,11 @@ function addOutputService(type, dp, name) {
             service.update('ValveType', type === 'ValveIrrigation' ? 1 : 0);
 
             service
-                .get('Active', dp, val => val ? 1 : 0)
-                .get('InUse', dp, val => val ? 1 : 0)
-                .set('Active', dp, val => {
-                    service.update('InUse', val);
-                    return Boolean(val);
+                .get('Active', dp, value => value ? 1 : 0)
+                .get('InUse', dp, value => value ? 1 : 0)
+                .set('Active', dp, value => {
+                    service.update('InUse', value);
+                    return Boolean(value);
                 });
             break;
         }
@@ -145,16 +143,10 @@ module.exports = class HmipwFio {
             addr = addr + ':' + id;
         }
 
-        let res;
+        const result = option ? this.config.options[addr] && this.config.options[addr][option] : !(this.config.options[addr] && this.config.options[addr].disabled);
 
-        if (option) {
-            res = this.config.options[addr] && this.config.options[addr][option];
-        } else {
-            res = !(this.config.options[addr] && this.config.options[addr].disabled);
-        }
-
-        this.node.debug('option ' + addr + ' ' + id + ' ' + option + ' ' + res);
-        return res;
+        this.node.debug('option ' + addr + ' ' + id + ' ' + option + ' ' + result);
+        return result;
     }
 
     constructor(config, node) {

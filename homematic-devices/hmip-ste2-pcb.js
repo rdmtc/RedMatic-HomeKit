@@ -1,4 +1,4 @@
-const Accessory = require('./lib/accessory');
+const Accessory = require('./lib/accessory.js');
 
 module.exports = class HmipSte2Pcb extends Accessory {
     init(config, node) {
@@ -18,9 +18,7 @@ module.exports = class HmipSte2Pcb extends Accessory {
             this.addService('TemperatureSensor', name)
                 .setProps('CurrentTemperature', {minValue: -150, maxValue: 150})
                 .get('CurrentTemperature', dp)
-                .get('StatusLowBattery', config.deviceAddress + ':0.LOW_BAT', (value, c) => {
-                    return value ? c.BATTERY_LEVEL_LOW : c.BATTERY_LEVEL_NORMAL;
-                });
+                .get('StatusLowBattery', config.deviceAddress + ':0.LOW_BAT', (value, c) => value ? c.BATTERY_LEVEL_LOW : c.BATTERY_LEVEL_NORMAL);
         }
     }
 };

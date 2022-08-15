@@ -6,18 +6,18 @@ const pkg = require('../package.json');
 const bridges = {};
 
 module.exports = function (RED) {
-    hap.init(path.join(RED.settings.userDir, 'homekit'));
+    hap.HAPStorage.setCustomStoragePath(path.join(RED.settings.userDir, 'homekit'));
 
-    RED.httpAdmin.get('/redmatic-homekit', (req, res) => {
-        if (req.query.config && req.query.config !== '_ADD_') {
-            const config = RED.nodes.getNode(req.query.config);
+    RED.httpAdmin.get('/redmatic-homekit', (request, response) => {
+        if (request.query.config && request.query.config !== '_ADD_') {
+            const config = RED.nodes.getNode(request.query.config);
             if (!config || !config.bridge.isPublished) {
-                res.status(500).send(JSON.stringify({}));
+                response.status(500).send(JSON.stringify({}));
             } else {
-                res.status(200).send(JSON.stringify({setupURI: config.bridge.setupURI()}));
+                response.status(200).send(JSON.stringify({setupURI: config.bridge.setupURI()}));
             }
         } else {
-            res.status(404).send(JSON.stringify({}));
+            response.status(404).send(JSON.stringify({}));
         }
     });
 
@@ -95,16 +95,16 @@ module.exports = function (RED) {
                 .setCharacteristic(hap.Characteristic.FirmwareRevision, pkg.version);
 
             const testPort = net.createServer()
-                .once('error', err => {
-                    this.error(err);
+                .once('error', error => {
+                    this.error(error);
                 })
                 .once('listening', () => {
                     testPort.once('close', () => {
                         this.bridge.publish({
                             username: this.username,
-                            port: parseInt(this.port, 10),
+                            port: Number.parseInt(this.port, 10),
                             pincode: this.pincode,
-                            category: hap.Accessory.Categories.OTHER
+                            category: hap.Categories.OTHER,
                         }, this.allowInsecureRequest);
                         this.log('published bridge (' + this.bridge.bridgedAccessories.length + ' Accessories) ' + this.name + ' ' + this.username + ' on port ' + this.port);
 
@@ -131,11 +131,11 @@ module.exports = function (RED) {
             const uuid = hap.uuid.generate(config.id + (config.uuidAddition ? config.uuidAddition : ''));
             let acc;
 
-            this.bridge.bridgedAccessories.forEach(a => {
+            for (const a of this.bridge.bridgedAccessories) {
                 if (a.UUID === uuid) {
                     acc = a;
                 }
-            });
+            }
 
             if (acc) {
                 this.debug('already existing accessory ' + config.id + ' ' + config.name);
@@ -143,7 +143,7 @@ module.exports = function (RED) {
                 this.error('maximum of 150 accessories per bridge exceeded, can\'t add ' + config.id + ' ' + config.name);
             } else {
                 this.debug('addAccessory ' + config.id + ' ' + config.name);
-                acc = new hap.Accessory(config.name, uuid, hap.Accessory.Categories.OTHER);
+                acc = new hap.Accessory(config.name, uuid, hap.Categories.OTHER);
                 this.bridge.addBridgedAccessory(acc);
             }
 
