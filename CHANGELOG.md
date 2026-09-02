@@ -61,8 +61,8 @@ decisions (D-n) referenced below.
   `hap.init`, `Categories`/`HAPStatus`/`HapStatusError` instead of the
   removed `Accessory.Categories`/`HAPServer.Status`, `Battery` instead of
   the removed `BatteryService` (same service UUID), async `publish()`.
-- Bridge: new **mDNS advertiser** option (`ciao` default, `bonjour-hap`,
-  `avahi`) for network setups where the default does not work (#348); the
+- Bridge: the mDNS advertiser is configurable (see above) for network
+  setups where the default does not work (#348); the
   accessory limit follows hap-nodejs (149 per bridge) with a hint to use a
   second bridge; the bridge label in the editor shows the bridge name
   (#224). A failed publish now reports the error instead of leaving the
