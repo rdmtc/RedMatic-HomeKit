@@ -4,12 +4,15 @@
    wired up. */
 
 class FakeCcu {
-    constructor({iface = 'HmIP-RF', devices = {}, channelNames = {}, values = {}} = {}) {
+    constructor({iface = 'HmIP-RF', devices = {}, channelNames = {}, values = {}, paramsets = {}} = {}) {
         this.enabledIfaces = [iface];
         this.ifaceStatus = {[iface]: true};
         this.metadata = {devices: {[iface]: devices}};
         this.channelNames = channelNames;
         this.values = values;
+        // VALUES paramset descriptions keyed by channel address (fixtures)
+        this.paramsets = paramsets;
+        this.paramsetDescriptions = {};
         this.subscriptions = [];
         this.setCalls = [];
         this.users = {};
@@ -68,6 +71,38 @@ class FakeCcu {
 
     setValue(iface, channel, datapoint, value) {
         return this.setValueQueued(iface, channel, datapoint, value);
+    }
+
+    /** ccu-connection's cache key format: <iface>/<TYPE>/<FIRMWARE>/<VERSION>/<channelTYPE>/<paramset> */
+    paramsetName(iface, device, paramset) {
+        let cType = '';
+        let d = device;
+        if (device.PARENT) {
+            cType = device.TYPE;
+            d = this.metadata.devices[iface][device.PARENT];
+        }
+
+        return [iface, d.TYPE, d.FIRMWARE, d.VERSION, cType, paramset].join('/');
+    }
+
+    /** like ccu-connection: returns the cached description or undefined */
+    getParamsetDescription(iface, device, paramset, parameter) {
+        const description = paramset === 'VALUES' ? this.paramsets[device.ADDRESS] : undefined;
+        if (!description) {
+            return undefined;
+        }
+
+        return parameter ? description[parameter] : description;
+    }
+
+    /** direct links of a channel (sync in ccu-connection) */
+    getLinks(iface, address, _receiver) {
+        return (this.links && this.links[address]) || [];
+    }
+
+    methodCall(iface, method, params) {
+        this.setCalls.push({iface, method, params});
+        return Promise.resolve();
     }
 
     /** the handles ccu-connection keeps for the admin device list */

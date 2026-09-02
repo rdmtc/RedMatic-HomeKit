@@ -20,6 +20,7 @@ const path = require('path');
 
 const devicesDir = path.join(__dirname, '..');
 const options = require('../options.json');
+const generic = require('./generic');
 
 let moduleNames;
 
@@ -124,11 +125,39 @@ function describeDevices(ccu) {
         }
 
         for (const device of Object.values(ifaceDevices)) {
-            if (device.PARENT || !device.TYPE || !hasModule(device.TYPE)) {
+            if (device.PARENT || !device.TYPE) {
                 continue;
             }
 
-            devices.push({iface, ...describeDevice(device, ccu.channelNames)});
+            if (hasModule(device.TYPE)) {
+                devices.push({iface, ...describeDevice(device, ccu.channelNames)});
+                continue;
+            }
+
+            // no per-type module: offer whatever the generic channel mapping finds
+            const p = generic.plan(device, ccu, iface);
+            if (!p.supported) {
+                continue;
+            }
+
+            if (p.delegate && !p.delegate.startsWith('lib/')) {
+                // an existing module handles this device; use its editor definition
+                const described = describeDevice({...device, TYPE: p.delegate}, ccu.channelNames);
+                devices.push({iface, ...described, type: device.TYPE, generic: true, delegate: p.delegate});
+                continue;
+            }
+
+            const rows = generic.editorRows(p);
+            devices.push({
+                iface,
+                address: device.ADDRESS,
+                type: device.TYPE,
+                name: p.name,
+                supported: true,
+                generic: true,
+                options: rows.options,
+                channels: rows.channels,
+            });
         }
     }
 

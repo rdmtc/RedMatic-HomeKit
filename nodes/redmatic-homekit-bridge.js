@@ -7,6 +7,24 @@ const MAX_ACCESSORIES = 149;
 
 const bridges = {};
 
+/** 'auto' → 'avahi' when an avahi-daemon is reachable over D-Bus, else 'ciao' */
+async function resolveAdvertiser(advertiser) {
+    if (advertiser !== 'auto') {
+        return advertiser;
+    }
+
+    try {
+        const {AvahiAdvertiser} = require('@homebridge/hap-nodejs/dist/lib/Advertiser');
+        if (await AvahiAdvertiser.isAvailable()) {
+            return 'avahi';
+        }
+    } catch {
+        // no D-Bus / no avahi: fall through
+    }
+
+    return 'ciao';
+}
+
 module.exports = function (RED) {
     const hap = init(RED);
 
@@ -50,7 +68,9 @@ module.exports = function (RED) {
             this.username = config.username;
             this.pincode = config.pincode;
             this.port = config.port;
-            this.advertiser = config.advertiser || 'ciao';
+            // 'auto' (default): avahi-daemon over D-Bus when the host runs one (OpenCCU),
+            // hap-nodejs' own ciao responder otherwise (official CCU firmware, RedMatic 9 without avahi)
+            this.advertiser = config.advertiser || 'auto';
             this.allowInsecureRequest = Boolean(config.allowInsecureRequest);
 
             if (bridges[this.username]) {
@@ -108,19 +128,25 @@ module.exports = function (RED) {
                 .once('listening', () => {
                     testPort
                         .once('close', () => {
-                            this.bridge
-                                .publish(
-                                    {
-                                        username: this.username,
-                                        port: parseInt(this.port, 10),
-                                        pincode: this.pincode,
-                                        category: hap.Categories.BRIDGE,
-                                        advertiser: this.advertiser,
-                                    },
-                                    this.allowInsecureRequest,
+                            resolveAdvertiser(this.advertiser)
+                                .then((advertiser) =>
+                                    this.bridge
+                                        .publish(
+                                            {
+                                                username: this.username,
+                                                port: parseInt(this.port, 10),
+                                                pincode: this.pincode,
+                                                category: hap.Categories.BRIDGE,
+                                                advertiser,
+                                            },
+                                            this.allowInsecureRequest,
+                                        )
+                                        .then(() => advertiser),
                                 )
-                                .then(() => {
-                                    this.log('published bridge (' + count + ' accessories) ' + where);
+                                .then((advertiser) => {
+                                    this.log(
+                                        'published bridge (' + count + ' accessories) ' + where + ' via ' + advertiser,
+                                    );
                                     this.published = true;
                                     this.emit('published');
                                 })

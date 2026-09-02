@@ -10,8 +10,36 @@ append commits automatically).
 Breaking release. See [ROADMAP.md](ROADMAP.md) for the plan and the
 decisions (D-n) referenced below.
 
+### Added
+
+- **Generic device mapping** (ROADMAP task 7, D-5): Homematic devices
+  without a per-type module are now mapped from their channel roles, which
+  the runtime derives from the paramset descriptions the CCU reports
+  (CONTROL hints, channel types, datapoint names). Switches, dimmers,
+  colour lights (HmIP-RGBW), blinds, contacts, rotary handles, motion and
+  presence sensors, smoke, water and rain detectors, CO₂ and
+  temperature/humidity/light sensors, buttons (as programmable switches),
+  HmIP door locks (HmIP-DLD, HmIP-DLS) and batteries get HomeKit services
+  without any code; HmIP thermostats, locks, garage modules and blinds
+  reuse the existing modules. Covers, among the requested types, HmIP-DLD
+  (#328, #330, #377), HmIP-DRDI3 (#333, #374), HmIP-eTRV-E/-C-2/-B-2
+  (#343, #340, #357), HmIP-WTH-1, HmIPW-STHD (#341), HmIP-SRD (#311),
+  HmIP-DSD-PCB (#377), HmIP-SCTH230 (#325), HmIP-DLS (#337), HmIP-WRC6
+  and other wall buttons (#361), HM-LC-Ja1PBU-FM (#71) and HM-Sen-RD-O
+  (#279). The editor lists these devices with the same options as the
+  hand-written ones (accessory type per channel, SingleAccessory, Battery,
+  HumiditySensor/LightSensor, opt-in virtual channels and buttons).
+- Test suite with device fixtures for 383 device types (from the pydevccu
+  catalogue), role and service snapshots, and an end-to-end harness (fake
+  Node-RED and fake ccu-connection against the real HAP-NodeJS).
+
 ### Changed
 
+- Bridge mDNS: new **auto** default that advertises through a running
+  avahi-daemon (OpenCCU) over D-Bus and falls back to hap-nodejs' own
+  responder on hosts without one (official CCU firmware), so both
+  firmwares work without configuration; `ciao`, `bonjour-hap` and `avahi`
+  can still be forced.
 - **HAP library: `hap-nodejs` 0.4.52 (2019) → `@homebridge/hap-nodejs` 2.x**
   (D-2). Pairings, accessory identities and service numbering are kept
   (storage stays in `<userDir>/homekit`, UUIDs are still derived from the

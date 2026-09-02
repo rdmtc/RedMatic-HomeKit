@@ -27,6 +27,7 @@ class Service {
 
     update(characteristic, value) {
         this.acc.updateCharacteristic(this.subtype, characteristic, value);
+        return this;
     }
 
     setProps(characteristic, props) {
@@ -89,7 +90,7 @@ module.exports = class Accessory {
     }
 
     ccuSetValue(address, value, callback) {
-        const force = this.ccu.values[address] && this.ccu.values[address].stable === false;
+        const force = Boolean(this.ccu.values[address] && this.ccu.values[address].stable === false);
         const [iface, channel, dp] = address.split('.');
         this.ccu
             .setValueQueued(iface, channel, dp, value, false, force)
@@ -321,7 +322,7 @@ module.exports = class Accessory {
                 value = transform(value, this.hap.Characteristic[characteristic]);
             }
 
-            const force = this.ccu.values[datapointName] && this.ccu.values[datapointName].stable === false;
+            const force = Boolean(this.ccu.values[datapointName] && this.ccu.values[datapointName].stable === false);
             const [iface, channel, dp] = datapointName.split('.');
             this.node.debug(
                 'set ' +
@@ -408,3 +409,5 @@ module.exports = class Accessory {
         return Math.round(10 ** (value / 50)) || 1;
     }
 };
+
+module.exports.Service = Service;

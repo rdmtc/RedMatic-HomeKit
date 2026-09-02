@@ -1,4 +1,5 @@
 const catalogue = require('../homematic-devices/lib/catalogue');
+const {GenericDevice} = require('../homematic-devices/lib/generic');
 
 module.exports = function (RED) {
     RED.httpAdmin.get('/redmatic-homekit/homematic-devices', RED.auth.needsPermission('redmatic.read'), (req, res) => {
@@ -22,6 +23,7 @@ module.exports = function (RED) {
         constructor(config) {
             RED.nodes.createNode(this, config);
 
+            this.homematicDevices = {};
             this.bridgeConfig = RED.nodes.getNode(config.bridgeConfig);
 
             if (!this.bridgeConfig) {
@@ -37,8 +39,6 @@ module.exports = function (RED) {
 
             this.bridgeConfig.waitForHomematic = true;
             this.ccu.register(this);
-
-            this.homematicDevices = {};
         }
 
         publishDevices(callback) {
@@ -112,7 +112,19 @@ module.exports = function (RED) {
 
             const type = catalogue.moduleName(rawType);
             if (!catalogue.hasModule(rawType)) {
-                return;
+                // no per-type module: map the device from its channel roles
+                try {
+                    const generic = new GenericDevice(dev, this);
+                    if (generic.plan.supported) {
+                        this.debug('generic mapping for ' + rawType + ' ' + dev.name);
+                    }
+
+                    return generic;
+                } catch (error) {
+                    this.error('generic mapping failed for ' + dev.name + ' ' + rawType);
+                    this.error(error.stack);
+                    return;
+                }
             }
 
             if (!this.homematicDevices[type]) {

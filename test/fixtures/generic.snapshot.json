@@ -1,0 +1,1739 @@
+{
+ "ALPHA-IP-RBG": {
+  "delegate": "hmip-wth",
+  "services": {
+   "ALPHA-IP-RBG": [
+    "Thermostat/0",
+    "Battery/1",
+    "HumiditySensor/2",
+    "Switch/Boost3"
+   ]
+  }
+ },
+ "ASH550": {
+  "ASH550": [
+   "TemperatureSensor/1",
+   "HumiditySensor/1h",
+   "Battery/battery"
+  ]
+ },
+ "ASH550I": {
+  "ASH550I": [
+   "TemperatureSensor/1",
+   "HumiditySensor/1h",
+   "Battery/battery"
+  ]
+ },
+ "BRC-H": {
+  "BRC-H": [
+   "ServiceLabel/label",
+   "StatelessProgrammableSwitch/1",
+   "StatelessProgrammableSwitch/2",
+   "StatelessProgrammableSwitch/3",
+   "StatelessProgrammableSwitch/4",
+   "Battery/battery"
+  ]
+ },
+ "ELV-SH-BS2": {
+  "ELV-SH-BS2": [
+   "Switch/4",
+   "Switch/8"
+  ]
+ },
+ "ELV-SH-CTH": {
+  "ELV-SH-CTH": [
+   "TemperatureSensor/1",
+   "HumiditySensor/1h",
+   "Battery/battery"
+  ]
+ },
+ "ELV-SH-SW1-BAT": {
+  "ELV-SH-SW1-BAT": [
+   "Switch/3",
+   "Battery/battery"
+  ]
+ },
+ "ELV-SH-TACO": {
+  "ELV-SH-TACO": [
+   "TemperatureSensor/1",
+   "MotionSensor/2",
+   "Battery/battery"
+  ]
+ },
+ "ELV-SH-WSM": {
+  "ELV-SH-WSM": [
+   "Valve/4",
+   "Battery/battery"
+  ]
+ },
+ "HB-LC-Bl1-Velux": {
+  "HB-LC-Bl1-Velux": [
+   "WindowCovering/1"
+  ]
+ },
+ "HB-UNI-Sensor-TH-SHT75": {
+  "HB-UNI-Sensor-TH-SHT75": [
+   "TemperatureSensor/1",
+   "HumiditySensor/1h",
+   "Battery/battery"
+  ]
+ },
+ "HB-UNI-Sensor-THPD-BME280": {
+  "HB-UNI-Sensor-THPD-BME280": [
+   "TemperatureSensor/1",
+   "HumiditySensor/1h",
+   "Battery/battery"
+  ]
+ },
+ "HB-UNI-Sensor1": {
+  "HB-UNI-Sensor1": [
+   "TemperatureSensor/1",
+   "HumiditySensor/1h",
+   "LightSensor/1l",
+   "Battery/battery"
+  ]
+ },
+ "HB-WDS40-THP-O": {
+  "HB-WDS40-THP-O": [
+   "TemperatureSensor/1",
+   "HumiditySensor/1h",
+   "Battery/battery"
+  ]
+ },
+ "HBW-LC-RGBWW-IN6-DR": {
+  "HBW-LC-RGBWW-IN6-DR": [
+   "Lightbulb/7",
+   "Lightbulb/8",
+   "Lightbulb/9",
+   "Lightbulb/10",
+   "Lightbulb/11",
+   "Lightbulb/12",
+   "Lightbulb/13",
+   "Lightbulb/14",
+   "ContactSensor/1",
+   "ContactSensor/2",
+   "ContactSensor/3",
+   "ContactSensor/4",
+   "ContactSensor/5",
+   "ContactSensor/6"
+  ]
+ },
+ "HBW-LC4-IN4-DR": {
+  "HBW-LC4-IN4-DR": [
+   "Lightbulb/5",
+   "Lightbulb/6",
+   "Lightbulb/7",
+   "Lightbulb/8",
+   "ContactSensor/1",
+   "ContactSensor/2",
+   "ContactSensor/3",
+   "ContactSensor/4"
+  ]
+ },
+ "HM-Dis-EP-WM55": {
+  "HM-Dis-EP-WM55": [
+   "ServiceLabel/label",
+   "StatelessProgrammableSwitch/1",
+   "StatelessProgrammableSwitch/2",
+   "StatelessProgrammableSwitch/3",
+   "StatelessProgrammableSwitch/4",
+   "StatelessProgrammableSwitch/5",
+   "StatelessProgrammableSwitch/6",
+   "StatelessProgrammableSwitch/7",
+   "StatelessProgrammableSwitch/8",
+   "Battery/battery"
+  ]
+ },
+ "HM-Dis-TD-T": {
+  "HM-Dis-TD-T": [
+   "Switch/1"
+  ]
+ },
+ "HM-Dis-WM55": {
+  "HM-Dis-WM55": [
+   "ServiceLabel/label",
+   "StatelessProgrammableSwitch/1",
+   "StatelessProgrammableSwitch/2",
+   "StatelessProgrammableSwitch/3",
+   "StatelessProgrammableSwitch/4",
+   "StatelessProgrammableSwitch/5",
+   "StatelessProgrammableSwitch/6",
+   "StatelessProgrammableSwitch/7",
+   "StatelessProgrammableSwitch/8",
+   "StatelessProgrammableSwitch/9",
+   "StatelessProgrammableSwitch/10",
+   "Battery/battery"
+  ]
+ },
+ "HM-ES-PMSw1-Pl-DN-R2": {
+  "HM-ES-PMSw1-Pl-DN-R2": [
+   "Switch/1"
+  ]
+ },
+ "HM-ES-PMSw1-Pl-DN-R3": {
+  "HM-ES-PMSw1-Pl-DN-R3": [
+   "Switch/1"
+  ]
+ },
+ "HM-ES-PMSw1-Pl-DN-R4": {
+  "HM-ES-PMSw1-Pl-DN-R4": [
+   "Switch/1"
+  ]
+ },
+ "HM-ES-PMSw1-Pl-DN-R5": {
+  "HM-ES-PMSw1-Pl-DN-R5": [
+   "Switch/1"
+  ]
+ },
+ "HM-ES-PMSwX": {
+  "HM-ES-PMSwX": [
+   "Switch/1"
+  ]
+ },
+ "HM-ES-TX-WM": {
+  "HM-ES-TX-WM": [
+   "Battery/battery"
+  ]
+ },
+ "HM-LC-BlX": {
+  "HM-LC-BlX": [
+   "WindowCovering/1"
+  ]
+ },
+ "HM-LC-DDC1-PCB": {
+  "HM-LC-DDC1-PCB": [
+   "Switch/1"
+  ]
+ },
+ "HM-LC-DW-WM": {
+  "HM-LC-DW-WM": [
+   "Lightbulb/1",
+   "Lightbulb/3",
+   "Lightbulb/5"
+  ]
+ },
+ "HM-LC-Dim2L-CV": {
+  "HM-LC-Dim2L-CV": [
+   "Lightbulb/1",
+   "Lightbulb/2"
+  ]
+ },
+ "HM-LC-JaX": {
+  "HM-LC-JaX": [
+   "WindowCovering/1"
+  ]
+ },
+ "HM-LC-Sw1-SM-ATmega168": {
+  "HM-LC-Sw1-SM-ATmega168": [
+   "Switch/1"
+  ]
+ },
+ "HM-LC-Sw2-SM": {
+  "HM-LC-Sw2-SM": [
+   "Switch/1",
+   "Switch/2"
+  ]
+ },
+ "HM-LC-Sw4-SM-ATmega168": {
+  "HM-LC-Sw4-SM-ATmega168": [
+   "Switch/1",
+   "Switch/2",
+   "Switch/3",
+   "Switch/4"
+  ]
+ },
+ "HM-LC-SwX": {
+  "HM-LC-SwX": [
+   "Switch/1"
+  ]
+ },
+ "HM-MD": {
+  "HM-MD": [
+   "MotionSensor/1",
+   "LightSensor/1l",
+   "Battery/battery"
+  ]
+ },
+ "HM-MOD-EM-8": {
+  "HM-MOD-EM-8": [
+   "ServiceLabel/label",
+   "StatelessProgrammableSwitch/1",
+   "StatelessProgrammableSwitch/2",
+   "StatelessProgrammableSwitch/3",
+   "StatelessProgrammableSwitch/4",
+   "StatelessProgrammableSwitch/5",
+   "StatelessProgrammableSwitch/6",
+   "StatelessProgrammableSwitch/7",
+   "StatelessProgrammableSwitch/8",
+   "Battery/battery"
+  ]
+ },
+ "HM-MOD-EM-8Bit": {
+  "HM-MOD-EM-8Bit": [
+   "ServiceLabel/label",
+   "StatelessProgrammableSwitch/1",
+   "StatelessProgrammableSwitch/2",
+   "Battery/battery"
+  ]
+ },
+ "HM-OU-CF-Pl": {
+  "HM-OU-CF-Pl": [
+   "Switch/1",
+   "Switch/2"
+  ]
+ },
+ "HM-OU-CFM-Pl": {
+  "HM-OU-CFM-Pl": [
+   "Switch/1",
+   "Switch/2"
+  ]
+ },
+ "HM-OU-CFM-TW": {
+  "HM-OU-CFM-TW": [
+   "Switch/1",
+   "Switch/2"
+  ]
+ },
+ "HM-OU-CM-PCB": {
+  "HM-OU-CM-PCB": [
+   "Switch/1"
+  ]
+ },
+ "HM-OU-LED16": {
+  "HM-OU-LED16": [
+   "ServiceLabel/label",
+   "StatelessProgrammableSwitch/1",
+   "StatelessProgrammableSwitch/2",
+   "StatelessProgrammableSwitch/3",
+   "StatelessProgrammableSwitch/4",
+   "StatelessProgrammableSwitch/5",
+   "StatelessProgrammableSwitch/6",
+   "StatelessProgrammableSwitch/7",
+   "StatelessProgrammableSwitch/8",
+   "StatelessProgrammableSwitch/9",
+   "StatelessProgrammableSwitch/10",
+   "StatelessProgrammableSwitch/11",
+   "StatelessProgrammableSwitch/12",
+   "StatelessProgrammableSwitch/13",
+   "StatelessProgrammableSwitch/14",
+   "StatelessProgrammableSwitch/15",
+   "StatelessProgrammableSwitch/16"
+  ]
+ },
+ "HM-OU-X": {
+  "HM-OU-X": [
+   "ServiceLabel/label",
+   "StatelessProgrammableSwitch/1"
+  ]
+ },
+ "HM-PB-2-FM": {
+  "HM-PB-2-FM": [
+   "ServiceLabel/label",
+   "StatelessProgrammableSwitch/1",
+   "StatelessProgrammableSwitch/2",
+   "Battery/battery"
+  ]
+ },
+ "HM-PB-2-WM": {
+  "HM-PB-2-WM": [
+   "ServiceLabel/label",
+   "StatelessProgrammableSwitch/1",
+   "StatelessProgrammableSwitch/2",
+   "Battery/battery"
+  ]
+ },
+ "HM-PB-2-WM55": {
+  "HM-PB-2-WM55": [
+   "ServiceLabel/label",
+   "StatelessProgrammableSwitch/1",
+   "StatelessProgrammableSwitch/2",
+   "Battery/battery"
+  ]
+ },
+ "HM-PB-2-WM55-2": {
+  "HM-PB-2-WM55-2": [
+   "ServiceLabel/label",
+   "StatelessProgrammableSwitch/1",
+   "StatelessProgrammableSwitch/2",
+   "Battery/battery"
+  ]
+ },
+ "HM-PB-4-WM": {
+  "HM-PB-4-WM": [
+   "ServiceLabel/label",
+   "StatelessProgrammableSwitch/1",
+   "StatelessProgrammableSwitch/2",
+   "StatelessProgrammableSwitch/3",
+   "StatelessProgrammableSwitch/4",
+   "Battery/battery"
+  ]
+ },
+ "HM-PB-4Dis-WM": {
+  "HM-PB-4Dis-WM": [
+   "ServiceLabel/label",
+   "StatelessProgrammableSwitch/1",
+   "StatelessProgrammableSwitch/2",
+   "StatelessProgrammableSwitch/3",
+   "StatelessProgrammableSwitch/4",
+   "StatelessProgrammableSwitch/5",
+   "StatelessProgrammableSwitch/6",
+   "StatelessProgrammableSwitch/7",
+   "StatelessProgrammableSwitch/8",
+   "StatelessProgrammableSwitch/9",
+   "StatelessProgrammableSwitch/10",
+   "StatelessProgrammableSwitch/11",
+   "StatelessProgrammableSwitch/12",
+   "StatelessProgrammableSwitch/13",
+   "StatelessProgrammableSwitch/14",
+   "StatelessProgrammableSwitch/15",
+   "StatelessProgrammableSwitch/16",
+   "StatelessProgrammableSwitch/17",
+   "StatelessProgrammableSwitch/18",
+   "StatelessProgrammableSwitch/19",
+   "StatelessProgrammableSwitch/20",
+   "Battery/battery"
+  ]
+ },
+ "HM-PB-4Dis-WM-2": {
+  "HM-PB-4Dis-WM-2": [
+   "ServiceLabel/label",
+   "StatelessProgrammableSwitch/1",
+   "StatelessProgrammableSwitch/2",
+   "StatelessProgrammableSwitch/3",
+   "StatelessProgrammableSwitch/4",
+   "StatelessProgrammableSwitch/5",
+   "StatelessProgrammableSwitch/6",
+   "StatelessProgrammableSwitch/7",
+   "StatelessProgrammableSwitch/8",
+   "StatelessProgrammableSwitch/9",
+   "StatelessProgrammableSwitch/10",
+   "StatelessProgrammableSwitch/11",
+   "StatelessProgrammableSwitch/12",
+   "StatelessProgrammableSwitch/13",
+   "StatelessProgrammableSwitch/14",
+   "StatelessProgrammableSwitch/15",
+   "StatelessProgrammableSwitch/16",
+   "StatelessProgrammableSwitch/17",
+   "StatelessProgrammableSwitch/18",
+   "StatelessProgrammableSwitch/19",
+   "StatelessProgrammableSwitch/20",
+   "Battery/battery"
+  ]
+ },
+ "HM-PB-6-WM55": {
+  "HM-PB-6-WM55": [
+   "ServiceLabel/label",
+   "StatelessProgrammableSwitch/1",
+   "StatelessProgrammableSwitch/2",
+   "StatelessProgrammableSwitch/3",
+   "StatelessProgrammableSwitch/4",
+   "StatelessProgrammableSwitch/5",
+   "StatelessProgrammableSwitch/6",
+   "Battery/battery"
+  ]
+ },
+ "HM-PBI-4-FM": {
+  "HM-PBI-4-FM": [
+   "ServiceLabel/label",
+   "StatelessProgrammableSwitch/1",
+   "StatelessProgrammableSwitch/2",
+   "StatelessProgrammableSwitch/3",
+   "StatelessProgrammableSwitch/4",
+   "Battery/battery"
+  ]
+ },
+ "HM-PBI-X": {
+  "HM-PBI-X": [
+   "ServiceLabel/label",
+   "StatelessProgrammableSwitch/1",
+   "Battery/battery"
+  ]
+ },
+ "HM-RC-12": {
+  "HM-RC-12": [
+   "ServiceLabel/label",
+   "StatelessProgrammableSwitch/1",
+   "StatelessProgrammableSwitch/2",
+   "StatelessProgrammableSwitch/3",
+   "StatelessProgrammableSwitch/4",
+   "StatelessProgrammableSwitch/5",
+   "StatelessProgrammableSwitch/6",
+   "StatelessProgrammableSwitch/7",
+   "StatelessProgrammableSwitch/8",
+   "StatelessProgrammableSwitch/9",
+   "StatelessProgrammableSwitch/10",
+   "StatelessProgrammableSwitch/11",
+   "StatelessProgrammableSwitch/12",
+   "Battery/battery"
+  ]
+ },
+ "HM-RC-12-B": {
+  "HM-RC-12-B": [
+   "ServiceLabel/label",
+   "StatelessProgrammableSwitch/1",
+   "StatelessProgrammableSwitch/2",
+   "StatelessProgrammableSwitch/3",
+   "StatelessProgrammableSwitch/4",
+   "StatelessProgrammableSwitch/5",
+   "StatelessProgrammableSwitch/6",
+   "StatelessProgrammableSwitch/7",
+   "StatelessProgrammableSwitch/8",
+   "StatelessProgrammableSwitch/9",
+   "StatelessProgrammableSwitch/10",
+   "StatelessProgrammableSwitch/11",
+   "StatelessProgrammableSwitch/12",
+   "Battery/battery"
+  ]
+ },
+ "HM-RC-12-SW": {
+  "HM-RC-12-SW": [
+   "ServiceLabel/label",
+   "StatelessProgrammableSwitch/1",
+   "StatelessProgrammableSwitch/2",
+   "StatelessProgrammableSwitch/3",
+   "StatelessProgrammableSwitch/4",
+   "StatelessProgrammableSwitch/5",
+   "StatelessProgrammableSwitch/6",
+   "StatelessProgrammableSwitch/7",
+   "StatelessProgrammableSwitch/8",
+   "StatelessProgrammableSwitch/9",
+   "StatelessProgrammableSwitch/10",
+   "StatelessProgrammableSwitch/11",
+   "StatelessProgrammableSwitch/12",
+   "Battery/battery"
+  ]
+ },
+ "HM-RC-19": {
+  "HM-RC-19": [
+   "ServiceLabel/label",
+   "StatelessProgrammableSwitch/1",
+   "StatelessProgrammableSwitch/2",
+   "StatelessProgrammableSwitch/3",
+   "StatelessProgrammableSwitch/4",
+   "StatelessProgrammableSwitch/5",
+   "StatelessProgrammableSwitch/6",
+   "StatelessProgrammableSwitch/7",
+   "StatelessProgrammableSwitch/8",
+   "StatelessProgrammableSwitch/9",
+   "StatelessProgrammableSwitch/10",
+   "StatelessProgrammableSwitch/11",
+   "StatelessProgrammableSwitch/12",
+   "StatelessProgrammableSwitch/13",
+   "StatelessProgrammableSwitch/14",
+   "StatelessProgrammableSwitch/15",
+   "StatelessProgrammableSwitch/16",
+   "Battery/battery"
+  ]
+ },
+ "HM-RC-19-B": {
+  "HM-RC-19-B": [
+   "ServiceLabel/label",
+   "StatelessProgrammableSwitch/1",
+   "StatelessProgrammableSwitch/2",
+   "StatelessProgrammableSwitch/3",
+   "StatelessProgrammableSwitch/4",
+   "StatelessProgrammableSwitch/5",
+   "StatelessProgrammableSwitch/6",
+   "StatelessProgrammableSwitch/7",
+   "StatelessProgrammableSwitch/8",
+   "StatelessProgrammableSwitch/9",
+   "StatelessProgrammableSwitch/10",
+   "StatelessProgrammableSwitch/11",
+   "StatelessProgrammableSwitch/12",
+   "StatelessProgrammableSwitch/13",
+   "StatelessProgrammableSwitch/14",
+   "StatelessProgrammableSwitch/15",
+   "StatelessProgrammableSwitch/16",
+   "Battery/battery"
+  ]
+ },
+ "HM-RC-19-SW": {
+  "HM-RC-19-SW": [
+   "ServiceLabel/label",
+   "StatelessProgrammableSwitch/1",
+   "StatelessProgrammableSwitch/2",
+   "StatelessProgrammableSwitch/3",
+   "StatelessProgrammableSwitch/4",
+   "StatelessProgrammableSwitch/5",
+   "StatelessProgrammableSwitch/6",
+   "StatelessProgrammableSwitch/7",
+   "StatelessProgrammableSwitch/8",
+   "StatelessProgrammableSwitch/9",
+   "StatelessProgrammableSwitch/10",
+   "StatelessProgrammableSwitch/11",
+   "StatelessProgrammableSwitch/12",
+   "StatelessProgrammableSwitch/13",
+   "StatelessProgrammableSwitch/14",
+   "StatelessProgrammableSwitch/15",
+   "StatelessProgrammableSwitch/16",
+   "Battery/battery"
+  ]
+ },
+ "HM-RC-2-PBU-FM": {
+  "HM-RC-2-PBU-FM": [
+   "ServiceLabel/label",
+   "StatelessProgrammableSwitch/1",
+   "StatelessProgrammableSwitch/2"
+  ]
+ },
+ "HM-RC-2-PBU-FM-2": {
+  "HM-RC-2-PBU-FM-2": [
+   "ServiceLabel/label",
+   "StatelessProgrammableSwitch/1",
+   "StatelessProgrammableSwitch/2"
+  ]
+ },
+ "HM-RC-4": {
+  "HM-RC-4": [
+   "ServiceLabel/label",
+   "StatelessProgrammableSwitch/1",
+   "StatelessProgrammableSwitch/2",
+   "StatelessProgrammableSwitch/3",
+   "StatelessProgrammableSwitch/4",
+   "Battery/battery"
+  ]
+ },
+ "HM-RC-4-2": {
+  "HM-RC-4-2": [
+   "ServiceLabel/label",
+   "StatelessProgrammableSwitch/1",
+   "StatelessProgrammableSwitch/2",
+   "StatelessProgrammableSwitch/3",
+   "StatelessProgrammableSwitch/4",
+   "Battery/battery"
+  ]
+ },
+ "HM-RC-4-3": {
+  "HM-RC-4-3": [
+   "ServiceLabel/label",
+   "StatelessProgrammableSwitch/1",
+   "StatelessProgrammableSwitch/2",
+   "StatelessProgrammableSwitch/3",
+   "StatelessProgrammableSwitch/4",
+   "Battery/battery"
+  ]
+ },
+ "HM-RC-4-3-D": {
+  "HM-RC-4-3-D": [
+   "ServiceLabel/label",
+   "StatelessProgrammableSwitch/1",
+   "StatelessProgrammableSwitch/2",
+   "StatelessProgrammableSwitch/3",
+   "StatelessProgrammableSwitch/4",
+   "Battery/battery"
+  ]
+ },
+ "HM-RC-4-B": {
+  "HM-RC-4-B": [
+   "ServiceLabel/label",
+   "StatelessProgrammableSwitch/1",
+   "StatelessProgrammableSwitch/2",
+   "StatelessProgrammableSwitch/3",
+   "StatelessProgrammableSwitch/4",
+   "Battery/battery"
+  ]
+ },
+ "HM-RC-8": {
+  "HM-RC-8": [
+   "ServiceLabel/label",
+   "StatelessProgrammableSwitch/1",
+   "StatelessProgrammableSwitch/2",
+   "StatelessProgrammableSwitch/3",
+   "StatelessProgrammableSwitch/4",
+   "StatelessProgrammableSwitch/5",
+   "StatelessProgrammableSwitch/6",
+   "StatelessProgrammableSwitch/7",
+   "StatelessProgrammableSwitch/8",
+   "Battery/battery"
+  ]
+ },
+ "HM-RC-Dis-H-x-EU": {
+  "HM-RC-Dis-H-x-EU": [
+   "ServiceLabel/label",
+   "StatelessProgrammableSwitch/1",
+   "StatelessProgrammableSwitch/2",
+   "StatelessProgrammableSwitch/3",
+   "StatelessProgrammableSwitch/4",
+   "StatelessProgrammableSwitch/5",
+   "StatelessProgrammableSwitch/6",
+   "StatelessProgrammableSwitch/7",
+   "StatelessProgrammableSwitch/8",
+   "StatelessProgrammableSwitch/9",
+   "StatelessProgrammableSwitch/10",
+   "StatelessProgrammableSwitch/11",
+   "StatelessProgrammableSwitch/12",
+   "StatelessProgrammableSwitch/13",
+   "StatelessProgrammableSwitch/14",
+   "StatelessProgrammableSwitch/15",
+   "StatelessProgrammableSwitch/16",
+   "StatelessProgrammableSwitch/17",
+   "StatelessProgrammableSwitch/18",
+   "StatelessProgrammableSwitch/19",
+   "StatelessProgrammableSwitch/20",
+   "Battery/battery"
+  ]
+ },
+ "HM-RC-Key3": {
+  "HM-RC-Key3": [
+   "ServiceLabel/label",
+   "StatelessProgrammableSwitch/1",
+   "StatelessProgrammableSwitch/2",
+   "StatelessProgrammableSwitch/3",
+   "Battery/battery"
+  ]
+ },
+ "HM-RC-Key3-B": {
+  "HM-RC-Key3-B": [
+   "ServiceLabel/label",
+   "StatelessProgrammableSwitch/1",
+   "StatelessProgrammableSwitch/2",
+   "StatelessProgrammableSwitch/3",
+   "Battery/battery"
+  ]
+ },
+ "HM-RC-Key4-2": {
+  "HM-RC-Key4-2": [
+   "ServiceLabel/label",
+   "StatelessProgrammableSwitch/1",
+   "StatelessProgrammableSwitch/2",
+   "StatelessProgrammableSwitch/3",
+   "StatelessProgrammableSwitch/4",
+   "Battery/battery"
+  ]
+ },
+ "HM-RC-Key4-3": {
+  "HM-RC-Key4-3": [
+   "ServiceLabel/label",
+   "StatelessProgrammableSwitch/1",
+   "StatelessProgrammableSwitch/2",
+   "StatelessProgrammableSwitch/3",
+   "StatelessProgrammableSwitch/4",
+   "Battery/battery"
+  ]
+ },
+ "HM-RC-P1": {
+  "HM-RC-P1": [
+   "ServiceLabel/label",
+   "StatelessProgrammableSwitch/1",
+   "Battery/battery"
+  ]
+ },
+ "HM-RC-SB-X": {
+  "HM-RC-SB-X": [
+   "ServiceLabel/label",
+   "StatelessProgrammableSwitch/1",
+   "Battery/battery"
+  ]
+ },
+ "HM-RC-Sec3": {
+  "HM-RC-Sec3": [
+   "ServiceLabel/label",
+   "StatelessProgrammableSwitch/1",
+   "StatelessProgrammableSwitch/2",
+   "StatelessProgrammableSwitch/3",
+   "Battery/battery"
+  ]
+ },
+ "HM-RC-Sec3-B": {
+  "HM-RC-Sec3-B": [
+   "ServiceLabel/label",
+   "StatelessProgrammableSwitch/1",
+   "StatelessProgrammableSwitch/2",
+   "StatelessProgrammableSwitch/3",
+   "Battery/battery"
+  ]
+ },
+ "HM-RC-Sec4-2": {
+  "HM-RC-Sec4-2": [
+   "ServiceLabel/label",
+   "StatelessProgrammableSwitch/1",
+   "StatelessProgrammableSwitch/2",
+   "StatelessProgrammableSwitch/3",
+   "StatelessProgrammableSwitch/4",
+   "Battery/battery"
+  ]
+ },
+ "HM-RC-Sec4-3": {
+  "HM-RC-Sec4-3": [
+   "ServiceLabel/label",
+   "StatelessProgrammableSwitch/1",
+   "StatelessProgrammableSwitch/2",
+   "StatelessProgrammableSwitch/3",
+   "StatelessProgrammableSwitch/4",
+   "Battery/battery"
+  ]
+ },
+ "HM-RC-X": {
+  "HM-RC-X": [
+   "ServiceLabel/label",
+   "StatelessProgrammableSwitch/1",
+   "Battery/battery"
+  ]
+ },
+ "HM-ReSC-Win-PCB-xx": {
+  "HM-ReSC-Win-PCB-xx": [
+   "Window/1"
+  ]
+ },
+ "HM-Sec-Key-Generic": {
+  "delegate": "hm-sec-key",
+  "services": {
+   "HM-Sec-Key-Generic": [
+    "LockMechanism/0",
+    "Battery/1"
+   ]
+  }
+ },
+ "HM-Sec-MD": {
+  "HM-Sec-MD": [
+   "MotionSensor/1",
+   "LightSensor/1l",
+   "Battery/battery"
+  ]
+ },
+ "HM-Sec-SD-2-Generic": {
+  "HM-Sec-SD-2-Generic": [
+   "SmokeSensor/1",
+   "Battery/battery"
+  ]
+ },
+ "HM-Sec-SD-Generic": {
+  "HM-Sec-SD-Generic": [
+   "SmokeSensor/1",
+   "Battery/battery"
+  ]
+ },
+ "HM-Sec-SFA-SM": {
+  "HM-Sec-SFA-SM": [
+   "Switch/1"
+  ]
+ },
+ "HM-Sec-Win-Generic": {
+  "HM-Sec-Win-Generic": [
+   "Window/1"
+  ]
+ },
+ "HM-Sec-xx": {
+  "HM-Sec-xx": [
+   "ContactSensor/1",
+   "Battery/battery"
+  ]
+ },
+ "HM-Sen-RD-O": {
+  "HM-Sen-RD-O": [
+   "Switch/2",
+   "LeakSensor/1"
+  ]
+ },
+ "HM-WDC7000": {
+  "HM-WDC7000": [
+   "TemperatureSensor/1",
+   "HumiditySensor/1h",
+   "LightSensor/1l",
+   "TemperatureSensor/2",
+   "HumiditySensor/2h",
+   "LightSensor/2l",
+   "TemperatureSensor/3",
+   "HumiditySensor/3h",
+   "LightSensor/3l",
+   "TemperatureSensor/4",
+   "HumiditySensor/4h",
+   "LightSensor/4l",
+   "TemperatureSensor/5",
+   "HumiditySensor/5h",
+   "LightSensor/5l",
+   "TemperatureSensor/6",
+   "HumiditySensor/6h",
+   "LightSensor/6l",
+   "TemperatureSensor/7",
+   "HumiditySensor/7h",
+   "LightSensor/7l",
+   "TemperatureSensor/8",
+   "HumiditySensor/8h",
+   "LightSensor/8l",
+   "TemperatureSensor/10",
+   "HumiditySensor/10h",
+   "Battery/battery"
+  ]
+ },
+ "HMIP-WRC2": {
+  "HMIP-WRC2": [
+   "ServiceLabel/label",
+   "StatelessProgrammableSwitch/1",
+   "StatelessProgrammableSwitch/2",
+   "Battery/battery"
+  ]
+ },
+ "HMW-IO-12-FM": {
+  "HMW-IO-12-FM": [
+   "ServiceLabel/label",
+   "StatelessProgrammableSwitch/1",
+   "StatelessProgrammableSwitch/2",
+   "StatelessProgrammableSwitch/3",
+   "StatelessProgrammableSwitch/4",
+   "StatelessProgrammableSwitch/5",
+   "StatelessProgrammableSwitch/6",
+   "StatelessProgrammableSwitch/7",
+   "StatelessProgrammableSwitch/8",
+   "StatelessProgrammableSwitch/9",
+   "StatelessProgrammableSwitch/10",
+   "StatelessProgrammableSwitch/11",
+   "StatelessProgrammableSwitch/12"
+  ]
+ },
+ "HMW-IO-12-Sw14-DR": {
+  "HMW-IO-12-Sw14-DR": [
+   "Switch/1",
+   "Switch/2",
+   "Switch/3",
+   "Switch/4",
+   "Switch/5",
+   "Switch/6"
+  ]
+ },
+ "HMW-IO-4-FM": {
+  "HMW-IO-4-FM": [
+   "ServiceLabel/label",
+   "StatelessProgrammableSwitch/1",
+   "StatelessProgrammableSwitch/2",
+   "StatelessProgrammableSwitch/3",
+   "StatelessProgrammableSwitch/4"
+  ]
+ },
+ "HMW-IO-SR-FM": {
+  "HMW-IO-SR-FM": [
+   "Switch/7",
+   "Switch/8",
+   "Switch/9",
+   "Switch/10",
+   "Switch/11",
+   "Switch/12"
+  ]
+ },
+ "HSS-DX": {
+  "HSS-DX": [
+   "Lightbulb/1"
+  ]
+ },
+ "HmIP-ASIR": {
+  "HmIP-ASIR": [
+   "ServiceLabel/label",
+   "StatelessProgrammableSwitch/1",
+   "Battery/battery"
+  ]
+ },
+ "HmIP-ASIR-2": {
+  "HmIP-ASIR-2": [
+   "ServiceLabel/label",
+   "StatelessProgrammableSwitch/1",
+   "Battery/battery"
+  ]
+ },
+ "HmIP-ASIR-O": {
+  "HmIP-ASIR-O": [
+   "ServiceLabel/label",
+   "StatelessProgrammableSwitch/1",
+   "Battery/battery"
+  ]
+ },
+ "HmIP-BRC2": {
+  "HmIP-BRC2": [
+   "ServiceLabel/label",
+   "StatelessProgrammableSwitch/1",
+   "StatelessProgrammableSwitch/2"
+  ]
+ },
+ "HmIP-DLD": {
+  "HmIP-DLD": [
+   "LockMechanism/1",
+   "Battery/battery"
+  ]
+ },
+ "HmIP-DLP": {
+  "HmIP-DLP": [
+   "Switch/4",
+   "Switch/5",
+   "Switch/6",
+   "Switch/7",
+   "Switch/8",
+   "Switch/9",
+   "Switch/10",
+   "Switch/11",
+   "LockMechanism/12",
+   "Battery/battery"
+  ]
+ },
+ "HmIP-DLS": {
+  "HmIP-DLS": [
+   "LockMechanism/1",
+   "Battery/battery"
+  ]
+ },
+ "HmIP-DRDI3": {
+  "HmIP-DRDI3": [
+   "Lightbulb/5",
+   "Lightbulb/9",
+   "Lightbulb/13",
+   "ContactSensor/1",
+   "ContactSensor/2",
+   "ContactSensor/3"
+  ]
+ },
+ "HmIP-DRG-DALI": {
+  "HmIP-DRG-DALI": [
+   "Lightbulb/1",
+   "Lightbulb/2",
+   "Lightbulb/3",
+   "Lightbulb/4",
+   "Lightbulb/5",
+   "Lightbulb/6",
+   "Lightbulb/7",
+   "Lightbulb/8",
+   "Lightbulb/9",
+   "Lightbulb/10",
+   "Lightbulb/11",
+   "Lightbulb/12",
+   "Lightbulb/13",
+   "Lightbulb/14",
+   "Lightbulb/15",
+   "Lightbulb/16",
+   "Lightbulb/17",
+   "Lightbulb/18",
+   "Lightbulb/19",
+   "Lightbulb/20",
+   "Lightbulb/21",
+   "Lightbulb/22",
+   "Lightbulb/23",
+   "Lightbulb/24",
+   "Lightbulb/25",
+   "Lightbulb/26",
+   "Lightbulb/27",
+   "Lightbulb/28",
+   "Lightbulb/29",
+   "Lightbulb/30",
+   "Lightbulb/31",
+   "Lightbulb/32",
+   "Lightbulb/33",
+   "Lightbulb/34",
+   "Lightbulb/35",
+   "Lightbulb/36",
+   "Lightbulb/37",
+   "Lightbulb/38",
+   "Lightbulb/39",
+   "Lightbulb/40",
+   "Lightbulb/41",
+   "Lightbulb/42",
+   "Lightbulb/43",
+   "Lightbulb/44",
+   "Lightbulb/45",
+   "Lightbulb/46",
+   "Lightbulb/47",
+   "Lightbulb/48"
+  ]
+ },
+ "HmIP-DSD-PCB": {
+  "HmIP-DSD-PCB": [
+   "ContactSensor/1",
+   "Battery/battery"
+  ]
+ },
+ "HmIP-ESI": {
+  "HmIP-ESI": [
+   "Battery/battery"
+  ]
+ },
+ "HmIP-FWI": {
+  "HmIP-FWI": [
+   "Switch/10"
+  ]
+ },
+ "HmIP-KRC4": {
+  "HmIP-KRC4": [
+   "ServiceLabel/label",
+   "StatelessProgrammableSwitch/1",
+   "StatelessProgrammableSwitch/2",
+   "StatelessProgrammableSwitch/3",
+   "StatelessProgrammableSwitch/4",
+   "Battery/battery"
+  ]
+ },
+ "HmIP-KRCA": {
+  "HmIP-KRCA": [
+   "ServiceLabel/label",
+   "StatelessProgrammableSwitch/1",
+   "StatelessProgrammableSwitch/2",
+   "StatelessProgrammableSwitch/3",
+   "StatelessProgrammableSwitch/4",
+   "Battery/battery"
+  ]
+ },
+ "HmIP-LSC": {
+  "HmIP-LSC": [
+   "Lightbulb/1"
+  ]
+ },
+ "HmIP-MIO16-PCB": {
+  "HmIP-MIO16-PCB": [
+   "Switch/18",
+   "Switch/22",
+   "Switch/26",
+   "Switch/30",
+   "Switch/34",
+   "Switch/38",
+   "Switch/42",
+   "Switch/46",
+   "ContactSensor/13",
+   "ContactSensor/14",
+   "ContactSensor/15",
+   "ContactSensor/16"
+  ]
+ },
+ "HmIP-MOD-RC8": {
+  "HmIP-MOD-RC8": [
+   "ServiceLabel/label",
+   "StatelessProgrammableSwitch/1",
+   "StatelessProgrammableSwitch/2",
+   "StatelessProgrammableSwitch/3",
+   "StatelessProgrammableSwitch/4",
+   "StatelessProgrammableSwitch/5",
+   "StatelessProgrammableSwitch/6",
+   "StatelessProgrammableSwitch/7",
+   "StatelessProgrammableSwitch/8",
+   "Battery/battery"
+  ]
+ },
+ "HmIP-MP3P": {
+  "HmIP-MP3P": [
+   "Lightbulb/6",
+   "Battery/battery"
+  ]
+ },
+ "HmIP-PSMCO": {
+  "HmIP-PSMCO": [
+   "Switch/3"
+  ]
+ },
+ "HmIP-RC8": {
+  "HmIP-RC8": [
+   "ServiceLabel/label",
+   "StatelessProgrammableSwitch/1",
+   "StatelessProgrammableSwitch/2",
+   "StatelessProgrammableSwitch/3",
+   "StatelessProgrammableSwitch/4",
+   "StatelessProgrammableSwitch/5",
+   "StatelessProgrammableSwitch/6",
+   "StatelessProgrammableSwitch/7",
+   "StatelessProgrammableSwitch/8",
+   "Battery/battery"
+  ]
+ },
+ "HmIP-RCB1": {
+  "HmIP-RCB1": [
+   "ServiceLabel/label",
+   "StatelessProgrammableSwitch/1",
+   "Battery/battery"
+  ]
+ },
+ "HmIP-RCV-50": {
+  "HmIP-RCV-50": [
+   "ServiceLabel/label",
+   "StatelessProgrammableSwitch/1",
+   "StatelessProgrammableSwitch/2",
+   "StatelessProgrammableSwitch/3",
+   "StatelessProgrammableSwitch/4",
+   "StatelessProgrammableSwitch/5",
+   "StatelessProgrammableSwitch/6",
+   "StatelessProgrammableSwitch/7",
+   "StatelessProgrammableSwitch/8",
+   "StatelessProgrammableSwitch/9",
+   "StatelessProgrammableSwitch/10",
+   "StatelessProgrammableSwitch/11",
+   "StatelessProgrammableSwitch/12",
+   "StatelessProgrammableSwitch/13",
+   "StatelessProgrammableSwitch/14",
+   "StatelessProgrammableSwitch/15",
+   "StatelessProgrammableSwitch/16",
+   "StatelessProgrammableSwitch/17",
+   "StatelessProgrammableSwitch/18",
+   "StatelessProgrammableSwitch/19",
+   "StatelessProgrammableSwitch/20",
+   "StatelessProgrammableSwitch/21",
+   "StatelessProgrammableSwitch/22",
+   "StatelessProgrammableSwitch/23",
+   "StatelessProgrammableSwitch/24",
+   "StatelessProgrammableSwitch/25",
+   "StatelessProgrammableSwitch/26",
+   "StatelessProgrammableSwitch/27",
+   "StatelessProgrammableSwitch/28",
+   "StatelessProgrammableSwitch/29",
+   "StatelessProgrammableSwitch/30",
+   "StatelessProgrammableSwitch/31",
+   "StatelessProgrammableSwitch/32",
+   "StatelessProgrammableSwitch/33",
+   "StatelessProgrammableSwitch/34",
+   "StatelessProgrammableSwitch/35",
+   "StatelessProgrammableSwitch/36",
+   "StatelessProgrammableSwitch/37",
+   "StatelessProgrammableSwitch/38",
+   "StatelessProgrammableSwitch/39",
+   "StatelessProgrammableSwitch/40",
+   "StatelessProgrammableSwitch/41",
+   "StatelessProgrammableSwitch/42",
+   "StatelessProgrammableSwitch/43",
+   "StatelessProgrammableSwitch/44",
+   "StatelessProgrammableSwitch/45",
+   "StatelessProgrammableSwitch/46",
+   "StatelessProgrammableSwitch/47",
+   "StatelessProgrammableSwitch/48",
+   "StatelessProgrammableSwitch/49",
+   "StatelessProgrammableSwitch/50"
+  ]
+ },
+ "HmIP-RGBW": {
+  "HmIP-RGBW": [
+   "Lightbulb/1",
+   "Lightbulb/2",
+   "Lightbulb/3",
+   "Lightbulb/4"
+  ]
+ },
+ "HmIP-SCTH230": {
+  "HmIP-SCTH230": [
+   "Switch/8",
+   "Lightbulb/12",
+   "CarbonDioxideSensor/1",
+   "TemperatureSensor/4",
+   "HumiditySensor/4h"
+  ]
+ },
+ "HmIP-SFD": {
+  "HmIP-SFD": [
+   "TemperatureSensor/1",
+   "HumiditySensor/1h"
+  ]
+ },
+ "HmIP-SMO-2": {
+  "HmIP-SMO-2": [
+   "MotionSensor/1",
+   "LightSensor/1l",
+   "Battery/battery"
+  ]
+ },
+ "HmIP-SMO230-A": {
+  "HmIP-SMO230-A": [
+   "Switch/10",
+   "MotionSensor/1",
+   "LightSensor/1l",
+   "MotionSensor/2",
+   "LightSensor/2l",
+   "MotionSensor/3",
+   "LightSensor/3l",
+   "MotionSensor/4",
+   "LightSensor/4l"
+  ]
+ },
+ "HmIP-SRD": {
+  "HmIP-SRD": [
+   "LeakSensor/1"
+  ]
+ },
+ "HmIP-STV": {
+  "HmIP-STV": [
+   "MotionSensor/1",
+   "Battery/battery"
+  ]
+ },
+ "HmIP-SWSD-2": {
+  "HmIP-SWSD-2": [
+   "SmokeSensor/1",
+   "Battery/battery"
+  ]
+ },
+ "HmIP-UDI-SMI55": {
+  "HmIP-UDI-SMI55": [
+   "Lightbulb/7",
+   "MotionSensor/4",
+   "LightSensor/4l"
+  ]
+ },
+ "HmIP-USBSM": {
+  "HmIP-USBSM": [
+   "Switch/3"
+  ]
+ },
+ "HmIP-WGC": {
+  "HmIP-WGC": [
+   "Switch/3",
+   "Battery/battery"
+  ]
+ },
+ "HmIP-WGTC": {
+  "HmIP-WGTC": [
+   "Switch/4",
+   "Thermostat/8"
+  ]
+ },
+ "HmIP-WRC6": {
+  "HmIP-WRC6": [
+   "ServiceLabel/label",
+   "StatelessProgrammableSwitch/1",
+   "StatelessProgrammableSwitch/2",
+   "StatelessProgrammableSwitch/3",
+   "StatelessProgrammableSwitch/4",
+   "StatelessProgrammableSwitch/5",
+   "StatelessProgrammableSwitch/6",
+   "Battery/battery"
+  ]
+ },
+ "HmIP-WRCD": {
+  "HmIP-WRCD": [
+   "ServiceLabel/label",
+   "StatelessProgrammableSwitch/1",
+   "StatelessProgrammableSwitch/2",
+   "Battery/battery"
+  ]
+ },
+ "HmIP-WRCR": {
+  "HmIP-WRCR": [
+   "ServiceLabel/label",
+   "StatelessProgrammableSwitch/1",
+   "StatelessProgrammableSwitch/2",
+   "StatelessProgrammableSwitch/3",
+   "Battery/battery"
+  ]
+ },
+ "HmIP-WTH-1": {
+  "delegate": "hmip-wth",
+  "services": {
+   "HmIP-WTH-1": [
+    "Thermostat/0",
+    "Battery/1",
+    "HumiditySensor/2",
+    "Switch/Boost3"
+   ]
+  }
+ },
+ "HmIP-eTRV-2 I9F": {
+  "delegate": "hmip-etrv",
+  "services": {
+   "HmIP-eTRV-2 I9F": [
+    "Thermostat/0",
+    "Battery/1",
+    "Switch/Boost2"
+   ]
+  }
+ },
+ "HmIP-eTRV-B-2 R4M": {
+  "delegate": "hmip-etrv",
+  "services": {
+   "HmIP-eTRV-B-2 R4M": [
+    "Thermostat/0",
+    "Battery/1",
+    "Switch/Boost2"
+   ]
+  }
+ },
+ "HmIP-eTRV-C-2": {
+  "delegate": "hmip-etrv",
+  "services": {
+   "HmIP-eTRV-C-2": [
+    "Thermostat/0",
+    "Battery/1",
+    "Switch/Boost2"
+   ]
+  }
+ },
+ "HmIP-eTRV-E": {
+  "delegate": "hmip-etrv",
+  "services": {
+   "HmIP-eTRV-E": [
+    "Thermostat/0",
+    "Battery/1",
+    "Switch/Boost2"
+   ]
+  }
+ },
+ "HmIP-eTRV-F": {
+  "delegate": "hmip-etrv",
+  "services": {
+   "HmIP-eTRV-F": [
+    "Thermostat/0",
+    "Battery/1",
+    "Switch/Boost2"
+   ]
+  }
+ },
+ "HmIPW-SCTHD": {
+  "delegate": "hmip-wth",
+  "services": {
+   "HmIPW-SCTHD": [
+    "Thermostat/0",
+    "Battery/1",
+    "HumiditySensor/2",
+    "Switch/Boost3"
+   ]
+  }
+ },
+ "HmIPW-SPI": {
+  "HmIPW-SPI": [
+   "MotionSensor/1",
+   "LightSensor/1l"
+  ]
+ },
+ "HmIPW-STH": {
+  "delegate": "hmip-wth",
+  "services": {
+   "HmIPW-STH": [
+    "Thermostat/0",
+    "Battery/1",
+    "HumiditySensor/2",
+    "Switch/Boost3"
+   ]
+  }
+ },
+ "HmIPW-STHD": {
+  "delegate": "hmip-wth",
+  "services": {
+   "HmIPW-STHD": [
+    "Thermostat/0",
+    "Battery/1",
+    "HumiditySensor/2",
+    "Switch/Boost3"
+   ]
+  }
+ },
+ "HmIPW-WRC6": {
+  "HmIPW-WRC6": [
+   "ServiceLabel/label",
+   "StatelessProgrammableSwitch/1",
+   "StatelessProgrammableSwitch/2",
+   "StatelessProgrammableSwitch/3",
+   "StatelessProgrammableSwitch/4",
+   "StatelessProgrammableSwitch/5",
+   "StatelessProgrammableSwitch/6"
+  ]
+ },
+ "IS-WDS-TH-OD-S-R3": {
+  "IS-WDS-TH-OD-S-R3": [
+   "TemperatureSensor/1",
+   "HumiditySensor/1h",
+   "Battery/battery"
+  ]
+ },
+ "KS550": {
+  "KS550": [
+   "TemperatureSensor/1",
+   "HumiditySensor/1h",
+   "LightSensor/1l",
+   "Battery/battery"
+  ]
+ },
+ "KS550LC": {
+  "KS550LC": [
+   "TemperatureSensor/1",
+   "HumiditySensor/1h",
+   "LightSensor/1l",
+   "Battery/battery"
+  ]
+ },
+ "KS550Tech": {
+  "KS550Tech": [
+   "TemperatureSensor/1",
+   "HumiditySensor/1h",
+   "LightSensor/1l",
+   "Battery/battery"
+  ]
+ },
+ "KS888": {
+  "KS888": [
+   "TemperatureSensor/1",
+   "HumiditySensor/1h",
+   "LightSensor/1l",
+   "Battery/battery"
+  ]
+ },
+ "OLIGO.smart.iq.HM": {
+  "OLIGO.smart.iq.HM": [
+   "Lightbulb/1",
+   "Lightbulb/2",
+   "Lightbulb/3",
+   "Lightbulb/4",
+   "Lightbulb/5",
+   "Lightbulb/6"
+  ]
+ },
+ "RC-H": {
+  "RC-H": [
+   "ServiceLabel/label",
+   "StatelessProgrammableSwitch/1",
+   "StatelessProgrammableSwitch/2",
+   "StatelessProgrammableSwitch/3",
+   "StatelessProgrammableSwitch/4",
+   "Battery/battery"
+  ]
+ },
+ "S550IA": {
+  "S550IA": [
+   "TemperatureSensor/1",
+   "Battery/battery"
+  ]
+ },
+ "ST6-SH": {
+  "ST6-SH": [
+   "Switch/1",
+   "Switch/2",
+   "ContactSensor/3",
+   "ContactSensor/4"
+  ]
+ },
+ "WDF solar": {
+  "WDF solar": [
+   "Window/1",
+   "WindowCovering/2",
+   "WindowCovering/3"
+  ]
+ },
+ "WS550": {
+  "WS550": [
+   "TemperatureSensor/1",
+   "HumiditySensor/1h",
+   "LightSensor/1l",
+   "TemperatureSensor/2",
+   "HumiditySensor/2h",
+   "LightSensor/2l",
+   "TemperatureSensor/3",
+   "HumiditySensor/3h",
+   "LightSensor/3l",
+   "TemperatureSensor/4",
+   "HumiditySensor/4h",
+   "LightSensor/4l",
+   "TemperatureSensor/5",
+   "HumiditySensor/5h",
+   "LightSensor/5l",
+   "TemperatureSensor/6",
+   "HumiditySensor/6h",
+   "LightSensor/6l",
+   "TemperatureSensor/7",
+   "HumiditySensor/7h",
+   "LightSensor/7l",
+   "TemperatureSensor/8",
+   "HumiditySensor/8h",
+   "LightSensor/8l",
+   "TemperatureSensor/10",
+   "HumiditySensor/10h",
+   "Battery/battery"
+  ]
+ },
+ "WS550LCB": {
+  "WS550LCB": [
+   "TemperatureSensor/1",
+   "HumiditySensor/1h",
+   "LightSensor/1l",
+   "TemperatureSensor/2",
+   "HumiditySensor/2h",
+   "LightSensor/2l",
+   "TemperatureSensor/3",
+   "HumiditySensor/3h",
+   "LightSensor/3l",
+   "TemperatureSensor/4",
+   "HumiditySensor/4h",
+   "LightSensor/4l",
+   "TemperatureSensor/5",
+   "HumiditySensor/5h",
+   "LightSensor/5l",
+   "TemperatureSensor/6",
+   "HumiditySensor/6h",
+   "LightSensor/6l",
+   "TemperatureSensor/7",
+   "HumiditySensor/7h",
+   "LightSensor/7l",
+   "TemperatureSensor/8",
+   "HumiditySensor/8h",
+   "LightSensor/8l",
+   "TemperatureSensor/10",
+   "HumiditySensor/10h",
+   "Battery/battery"
+  ]
+ },
+ "WS550LCW": {
+  "WS550LCW": [
+   "TemperatureSensor/1",
+   "HumiditySensor/1h",
+   "LightSensor/1l",
+   "TemperatureSensor/2",
+   "HumiditySensor/2h",
+   "LightSensor/2l",
+   "TemperatureSensor/3",
+   "HumiditySensor/3h",
+   "LightSensor/3l",
+   "TemperatureSensor/4",
+   "HumiditySensor/4h",
+   "LightSensor/4l",
+   "TemperatureSensor/5",
+   "HumiditySensor/5h",
+   "LightSensor/5l",
+   "TemperatureSensor/6",
+   "HumiditySensor/6h",
+   "LightSensor/6l",
+   "TemperatureSensor/7",
+   "HumiditySensor/7h",
+   "LightSensor/7l",
+   "TemperatureSensor/8",
+   "HumiditySensor/8h",
+   "LightSensor/8l",
+   "TemperatureSensor/10",
+   "HumiditySensor/10h",
+   "Battery/battery"
+  ]
+ },
+ "WS550Tech": {
+  "WS550Tech": [
+   "TemperatureSensor/1",
+   "HumiditySensor/1h",
+   "LightSensor/1l",
+   "TemperatureSensor/2",
+   "HumiditySensor/2h",
+   "LightSensor/2l",
+   "TemperatureSensor/3",
+   "HumiditySensor/3h",
+   "LightSensor/3l",
+   "TemperatureSensor/4",
+   "HumiditySensor/4h",
+   "LightSensor/4l",
+   "TemperatureSensor/5",
+   "HumiditySensor/5h",
+   "LightSensor/5l",
+   "TemperatureSensor/6",
+   "HumiditySensor/6h",
+   "LightSensor/6l",
+   "TemperatureSensor/7",
+   "HumiditySensor/7h",
+   "LightSensor/7l",
+   "TemperatureSensor/8",
+   "HumiditySensor/8h",
+   "LightSensor/8l",
+   "TemperatureSensor/10",
+   "HumiditySensor/10h",
+   "Battery/battery"
+  ]
+ },
+ "WS888": {
+  "WS888": [
+   "TemperatureSensor/1",
+   "HumiditySensor/1h",
+   "LightSensor/1l",
+   "TemperatureSensor/2",
+   "HumiditySensor/2h",
+   "LightSensor/2l",
+   "TemperatureSensor/3",
+   "HumiditySensor/3h",
+   "LightSensor/3l",
+   "TemperatureSensor/4",
+   "HumiditySensor/4h",
+   "LightSensor/4l",
+   "TemperatureSensor/5",
+   "HumiditySensor/5h",
+   "LightSensor/5l",
+   "TemperatureSensor/6",
+   "HumiditySensor/6h",
+   "LightSensor/6l",
+   "TemperatureSensor/7",
+   "HumiditySensor/7h",
+   "LightSensor/7l",
+   "TemperatureSensor/8",
+   "HumiditySensor/8h",
+   "LightSensor/8l",
+   "TemperatureSensor/10",
+   "HumiditySensor/10h",
+   "Battery/battery"
+  ]
+ },
+ "ZEL STG RM DWT 10": {
+  "ZEL STG RM DWT 10": [
+   "ServiceLabel/label",
+   "StatelessProgrammableSwitch/1",
+   "StatelessProgrammableSwitch/2",
+   "StatelessProgrammableSwitch/3",
+   "StatelessProgrammableSwitch/4",
+   "StatelessProgrammableSwitch/5",
+   "StatelessProgrammableSwitch/6",
+   "StatelessProgrammableSwitch/7",
+   "StatelessProgrammableSwitch/8",
+   "StatelessProgrammableSwitch/9",
+   "StatelessProgrammableSwitch/10",
+   "StatelessProgrammableSwitch/11",
+   "StatelessProgrammableSwitch/12",
+   "StatelessProgrammableSwitch/13",
+   "StatelessProgrammableSwitch/14",
+   "StatelessProgrammableSwitch/15",
+   "StatelessProgrammableSwitch/16",
+   "StatelessProgrammableSwitch/17",
+   "StatelessProgrammableSwitch/18",
+   "StatelessProgrammableSwitch/19",
+   "StatelessProgrammableSwitch/20",
+   "Battery/battery"
+  ]
+ },
+ "ZEL STG RM FDK": {
+  "ZEL STG RM FDK": [
+   "ContactSensor/1",
+   "ContactSensor/2",
+   "ContactSensor/3",
+   "Battery/battery"
+  ]
+ },
+ "ZEL STG RM FST UP4": {
+  "ZEL STG RM FST UP4": [
+   "ServiceLabel/label",
+   "StatelessProgrammableSwitch/1",
+   "StatelessProgrammableSwitch/2",
+   "StatelessProgrammableSwitch/3",
+   "StatelessProgrammableSwitch/4",
+   "Battery/battery"
+  ]
+ },
+ "ZEL STG RM FWT": {
+  "ZEL STG RM FWT": [
+   "Thermostat/2",
+   "TemperatureSensor/1",
+   "HumiditySensor/1h"
+  ]
+ },
+ "ZEL STG RM FZS": {
+  "ZEL STG RM FZS": [
+   "Switch/1"
+  ]
+ },
+ "ZEL STG RM FZS-2": {
+  "ZEL STG RM FZS-2": [
+   "Switch/1"
+  ]
+ },
+ "ZEL STG RM HS 4": {
+  "ZEL STG RM HS 4": [
+   "ServiceLabel/label",
+   "StatelessProgrammableSwitch/1",
+   "StatelessProgrammableSwitch/2",
+   "StatelessProgrammableSwitch/3",
+   "StatelessProgrammableSwitch/4",
+   "Battery/battery"
+  ]
+ },
+ "ZEL STG RM WT 2": {
+  "ZEL STG RM WT 2": [
+   "ServiceLabel/label",
+   "StatelessProgrammableSwitch/1",
+   "StatelessProgrammableSwitch/2",
+   "Battery/battery"
+  ]
+ },
+ "atent": {
+  "atent": [
+   "ServiceLabel/label",
+   "StatelessProgrammableSwitch/1",
+   "StatelessProgrammableSwitch/2",
+   "StatelessProgrammableSwitch/3",
+   "Battery/battery"
+  ]
+ }
+}

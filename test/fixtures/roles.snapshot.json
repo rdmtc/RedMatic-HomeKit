@@ -1,0 +1,2222 @@
+{
+ "ALPHA-IP-RBG": [
+  "1:thermostat_hmip"
+ ],
+ "ASH550": [
+  "1:weather"
+ ],
+ "ASH550I": [
+  "1:weather"
+ ],
+ "BRC-H": [
+  "1:key",
+  "2:key",
+  "3:key",
+  "4:key"
+ ],
+ "CMM": [],
+ "ELV-SH-BS2": [
+  "1:key",
+  "2:key",
+  "3:state_only",
+  "4:switch",
+  "5:switch*",
+  "6:switch*",
+  "7:state_only",
+  "8:switch",
+  "9:switch*",
+  "10:switch*"
+ ],
+ "ELV-SH-CTH": [
+  "1:weather"
+ ],
+ "ELV-SH-SW1-BAT": [
+  "1:key",
+  "2:state_only",
+  "3:switch",
+  "4:switch*",
+  "5:switch*"
+ ],
+ "ELV-SH-TACO": [
+  "1:weather",
+  "2:motion"
+ ],
+ "ELV-SH-WSM": [
+  "1:key",
+  "3:state_only",
+  "4:valve",
+  "5:valve*",
+  "6:valve*"
+ ],
+ "HB-LC-Bl1-Velux": [
+  "1:blind"
+ ],
+ "HB-LC-Bl1PBU-FM": [
+  "1:blind",
+  "2:key",
+  "3:key"
+ ],
+ "HB-LC-Sw1PBU-FM": [
+  "1:switch",
+  "2:key",
+  "3:key"
+ ],
+ "HB-LC-Sw2PBU-FM": [
+  "1:switch",
+  "2:switch",
+  "3:key",
+  "4:key"
+ ],
+ "HB-UNI-RGB-LED-CTRL": [
+  "1:dimmer"
+ ],
+ "HB-UNI-Sen-PRESS": [],
+ "HB-UNI-Sen-TEMP-DS18B20": [
+  "1:weather",
+  "2:weather",
+  "3:weather",
+  "4:weather",
+  "5:weather",
+  "6:weather",
+  "7:weather",
+  "8:weather"
+ ],
+ "HB-UNI-Sensor-TH-SHT75": [
+  "1:weather"
+ ],
+ "HB-UNI-Sensor-THPD-BME280": [
+  "1:weather"
+ ],
+ "HB-UNI-Sensor1": [
+  "1:weather"
+ ],
+ "HB-WDS40-THP-O": [
+  "1:weather"
+ ],
+ "HBW-LC-RGBWW-IN6-DR": [
+  "1:contact",
+  "2:contact",
+  "3:contact",
+  "4:contact",
+  "5:contact",
+  "6:contact",
+  "7:dimmer",
+  "8:dimmer",
+  "9:dimmer",
+  "10:dimmer",
+  "11:dimmer",
+  "12:dimmer",
+  "13:dimmer",
+  "14:dimmer"
+ ],
+ "HBW-LC4-IN4-DR": [
+  "1:contact",
+  "2:contact",
+  "3:contact",
+  "4:contact",
+  "5:dimmer",
+  "6:dimmer",
+  "7:dimmer",
+  "8:dimmer"
+ ],
+ "HM-CC-RT-DN": [
+  "4:thermostat_hm"
+ ],
+ "HM-CC-RT-DN-BoM": [
+  "4:thermostat_hm"
+ ],
+ "HM-CC-SCD": [],
+ "HM-CC-TC": [
+  "1:weather",
+  "2:thermostat_hm"
+ ],
+ "HM-CC-VD": [],
+ "HM-CC-VG-1": [
+  "1:thermostat_hm",
+  "2:contact"
+ ],
+ "HM-DW-WM": [
+  "1:dimmer",
+  "2:dimmer",
+  "3:dimmer",
+  "4:dimmer",
+  "5:dimmer",
+  "6:dimmer"
+ ],
+ "HM-Dis-EP-WM55": [
+  "1:key",
+  "2:key",
+  "3:key",
+  "4:key",
+  "5:key",
+  "6:key",
+  "7:key",
+  "8:key"
+ ],
+ "HM-Dis-TD-T": [
+  "1:switch"
+ ],
+ "HM-Dis-WM55": [
+  "1:key",
+  "2:key",
+  "3:key",
+  "4:key",
+  "5:key",
+  "6:key",
+  "7:key",
+  "8:key",
+  "9:key",
+  "10:key"
+ ],
+ "HM-ES-PMSw1-DR": [
+  "1:switch",
+  "2:energy"
+ ],
+ "HM-ES-PMSw1-Pl": [
+  "1:switch",
+  "2:energy"
+ ],
+ "HM-ES-PMSw1-Pl-DN-R1": [
+  "1:switch",
+  "2:energy"
+ ],
+ "HM-ES-PMSw1-Pl-DN-R2": [
+  "1:switch",
+  "2:energy"
+ ],
+ "HM-ES-PMSw1-Pl-DN-R3": [
+  "1:switch",
+  "2:energy"
+ ],
+ "HM-ES-PMSw1-Pl-DN-R4": [
+  "1:switch",
+  "2:energy"
+ ],
+ "HM-ES-PMSw1-Pl-DN-R5": [
+  "1:switch",
+  "2:energy"
+ ],
+ "HM-ES-PMSw1-SM": [
+  "1:switch",
+  "2:energy"
+ ],
+ "HM-ES-PMSwX": [
+  "1:switch",
+  "2:energy"
+ ],
+ "HM-ES-TX-WM": [
+  "1:energy"
+ ],
+ "HM-LC-AO-SM": [
+  "1:dimmer",
+  "2:dimmer",
+  "3:dimmer"
+ ],
+ "HM-LC-Bl1-FM": [
+  "1:blind"
+ ],
+ "HM-LC-Bl1-FM-2": [
+  "1:blind"
+ ],
+ "HM-LC-Bl1-PB-FM": [
+  "1:blind"
+ ],
+ "HM-LC-Bl1-SM": [
+  "1:blind"
+ ],
+ "HM-LC-Bl1-SM-2": [
+  "1:blind"
+ ],
+ "HM-LC-Bl1PBU-FM": [
+  "1:blind"
+ ],
+ "HM-LC-BlX": [
+  "1:blind"
+ ],
+ "HM-LC-DDC1-PCB": [
+  "1:switch"
+ ],
+ "HM-LC-DW-WM": [
+  "1:dimmer",
+  "3:dimmer",
+  "5:dimmer"
+ ],
+ "HM-LC-Dim1L-CV": [
+  "1:dimmer"
+ ],
+ "HM-LC-Dim1L-CV-2": [
+  "1:dimmer",
+  "2:dimmer",
+  "3:dimmer"
+ ],
+ "HM-LC-Dim1L-Pl": [
+  "1:dimmer"
+ ],
+ "HM-LC-Dim1L-Pl-2": [
+  "1:dimmer"
+ ],
+ "HM-LC-Dim1L-Pl-3": [
+  "1:dimmer",
+  "2:dimmer",
+  "3:dimmer"
+ ],
+ "HM-LC-Dim1PWM-CV": [
+  "1:dimmer",
+  "2:dimmer",
+  "3:dimmer"
+ ],
+ "HM-LC-Dim1PWM-CV-2": [
+  "1:dimmer",
+  "2:dimmer",
+  "3:dimmer"
+ ],
+ "HM-LC-Dim1T-CV": [
+  "1:dimmer"
+ ],
+ "HM-LC-Dim1T-CV-2": [
+  "1:dimmer",
+  "2:dimmer",
+  "3:dimmer"
+ ],
+ "HM-LC-Dim1T-DR": [
+  "1:dimmer",
+  "2:dimmer",
+  "3:dimmer"
+ ],
+ "HM-LC-Dim1T-FM": [
+  "1:dimmer"
+ ],
+ "HM-LC-Dim1T-FM-2": [
+  "1:dimmer",
+  "2:dimmer",
+  "3:dimmer"
+ ],
+ "HM-LC-Dim1T-FM-LF": [
+  "1:dimmer"
+ ],
+ "HM-LC-Dim1T-Pl": [
+  "1:dimmer"
+ ],
+ "HM-LC-Dim1T-Pl-2": [
+  "1:dimmer"
+ ],
+ "HM-LC-Dim1T-Pl-3": [
+  "1:dimmer",
+  "2:dimmer",
+  "3:dimmer"
+ ],
+ "HM-LC-Dim1TPBU-FM": [
+  "1:dimmer",
+  "2:dimmer",
+  "3:dimmer"
+ ],
+ "HM-LC-Dim1TPBU-FM-2": [
+  "1:dimmer",
+  "2:dimmer",
+  "3:dimmer"
+ ],
+ "HM-LC-Dim2L-CV": [
+  "1:dimmer",
+  "2:dimmer"
+ ],
+ "HM-LC-Dim2L-SM": [
+  "1:dimmer",
+  "2:dimmer"
+ ],
+ "HM-LC-Dim2L-SM-2": [
+  "1:dimmer",
+  "2:dimmer",
+  "3:dimmer",
+  "4:dimmer",
+  "5:dimmer",
+  "6:dimmer"
+ ],
+ "HM-LC-Dim2T-SM": [
+  "1:dimmer",
+  "2:dimmer"
+ ],
+ "HM-LC-Dim2T-SM-2": [
+  "1:dimmer",
+  "2:dimmer",
+  "3:dimmer",
+  "4:dimmer",
+  "5:dimmer",
+  "6:dimmer"
+ ],
+ "HM-LC-Ja1PBU-FM": [
+  "1:jalousie"
+ ],
+ "HM-LC-JaX": [
+  "1:jalousie"
+ ],
+ "HM-LC-RGBW-WM": [
+  "1:dimmer"
+ ],
+ "HM-LC-Sw1-Ba-PCB": [
+  "1:switch"
+ ],
+ "HM-LC-Sw1-DR": [
+  "1:switch"
+ ],
+ "HM-LC-Sw1-FM": [
+  "1:switch"
+ ],
+ "HM-LC-Sw1-FM-2": [
+  "1:switch"
+ ],
+ "HM-LC-Sw1-PB-FM": [
+  "1:switch"
+ ],
+ "HM-LC-Sw1-PCB": [
+  "1:switch"
+ ],
+ "HM-LC-Sw1-Pl": [
+  "1:switch"
+ ],
+ "HM-LC-Sw1-Pl-2": [
+  "1:switch"
+ ],
+ "HM-LC-Sw1-Pl-3": [
+  "1:switch"
+ ],
+ "HM-LC-Sw1-Pl-CT-R1": [
+  "1:switch"
+ ],
+ "HM-LC-Sw1-Pl-CT-R2": [
+  "1:switch"
+ ],
+ "HM-LC-Sw1-Pl-CT-R3": [
+  "1:switch"
+ ],
+ "HM-LC-Sw1-Pl-CT-R4": [
+  "1:switch"
+ ],
+ "HM-LC-Sw1-Pl-CT-R5": [
+  "1:switch"
+ ],
+ "HM-LC-Sw1-Pl-DN-R1": [
+  "1:switch"
+ ],
+ "HM-LC-Sw1-Pl-DN-R2": [
+  "1:switch"
+ ],
+ "HM-LC-Sw1-Pl-DN-R3": [
+  "1:switch"
+ ],
+ "HM-LC-Sw1-Pl-DN-R4": [
+  "1:switch"
+ ],
+ "HM-LC-Sw1-Pl-DN-R5": [
+  "1:switch"
+ ],
+ "HM-LC-Sw1-Pl-OM54": [
+  "1:switch"
+ ],
+ "HM-LC-Sw1-SM": [
+  "1:switch"
+ ],
+ "HM-LC-Sw1-SM-2": [
+  "1:switch"
+ ],
+ "HM-LC-Sw1-SM-ATmega168": [
+  "1:switch"
+ ],
+ "HM-LC-Sw1PBU-FM": [
+  "1:switch"
+ ],
+ "HM-LC-Sw2-DR": [
+  "1:switch",
+  "2:switch"
+ ],
+ "HM-LC-Sw2-DR-2": [
+  "1:switch",
+  "2:switch"
+ ],
+ "HM-LC-Sw2-FM": [
+  "1:switch",
+  "2:switch"
+ ],
+ "HM-LC-Sw2-FM-2": [
+  "1:switch",
+  "2:switch"
+ ],
+ "HM-LC-Sw2-PB-FM": [
+  "1:switch",
+  "2:switch"
+ ],
+ "HM-LC-Sw2-SM": [
+  "1:switch",
+  "2:switch"
+ ],
+ "HM-LC-Sw2PBU-FM": [
+  "1:switch",
+  "2:switch"
+ ],
+ "HM-LC-Sw4-Ba-PCB": [
+  "1:switch",
+  "2:switch",
+  "3:switch",
+  "4:switch"
+ ],
+ "HM-LC-Sw4-DR": [
+  "1:switch",
+  "2:switch",
+  "3:switch",
+  "4:switch"
+ ],
+ "HM-LC-Sw4-DR-2": [
+  "1:switch",
+  "2:switch",
+  "3:switch",
+  "4:switch"
+ ],
+ "HM-LC-Sw4-PCB": [
+  "1:switch",
+  "2:switch",
+  "3:switch",
+  "4:switch"
+ ],
+ "HM-LC-Sw4-PCB-2": [
+  "1:switch",
+  "2:switch",
+  "3:switch",
+  "4:switch"
+ ],
+ "HM-LC-Sw4-SM": [
+  "1:switch",
+  "2:switch",
+  "3:switch",
+  "4:switch"
+ ],
+ "HM-LC-Sw4-SM-2": [
+  "1:switch",
+  "2:switch",
+  "3:switch",
+  "4:switch"
+ ],
+ "HM-LC-Sw4-SM-ATmega168": [
+  "1:switch",
+  "2:switch",
+  "3:switch",
+  "4:switch"
+ ],
+ "HM-LC-Sw4-WM": [
+  "1:switch",
+  "2:switch",
+  "3:switch",
+  "4:switch"
+ ],
+ "HM-LC-Sw4-WM-2": [
+  "1:switch",
+  "2:switch",
+  "3:switch",
+  "4:switch"
+ ],
+ "HM-LC-SwX": [
+  "1:switch"
+ ],
+ "HM-MD": [
+  "1:motion"
+ ],
+ "HM-MOD-EM-8": [
+  "1:key",
+  "2:key",
+  "3:key",
+  "4:key",
+  "5:key",
+  "6:key",
+  "7:key",
+  "8:key"
+ ],
+ "HM-MOD-EM-8Bit": [
+  "1:key",
+  "2:key"
+ ],
+ "HM-MOD-Re-8": [
+  "1:switch",
+  "2:switch",
+  "3:switch",
+  "4:switch",
+  "5:switch",
+  "6:switch",
+  "7:switch",
+  "8:switch"
+ ],
+ "HM-OU-CF-Pl": [
+  "1:switch",
+  "2:switch"
+ ],
+ "HM-OU-CFM-Pl": [
+  "1:switch",
+  "2:switch"
+ ],
+ "HM-OU-CFM-TW": [
+  "1:switch",
+  "2:switch"
+ ],
+ "HM-OU-CM-PCB": [
+  "1:switch"
+ ],
+ "HM-OU-LED16": [
+  "1:key",
+  "2:key",
+  "3:key",
+  "4:key",
+  "5:key",
+  "6:key",
+  "7:key",
+  "8:key",
+  "9:key",
+  "10:key",
+  "11:key",
+  "12:key",
+  "13:key",
+  "14:key",
+  "15:key",
+  "16:key"
+ ],
+ "HM-OU-X": [
+  "1:key"
+ ],
+ "HM-PB-2-FM": [
+  "1:key",
+  "2:key"
+ ],
+ "HM-PB-2-WM": [
+  "1:key",
+  "2:key"
+ ],
+ "HM-PB-2-WM55": [
+  "1:key",
+  "2:key"
+ ],
+ "HM-PB-2-WM55-2": [
+  "1:key",
+  "2:key"
+ ],
+ "HM-PB-4-WM": [
+  "1:key",
+  "2:key",
+  "3:key",
+  "4:key"
+ ],
+ "HM-PB-4Dis-WM": [
+  "1:key",
+  "2:key",
+  "3:key",
+  "4:key",
+  "5:key",
+  "6:key",
+  "7:key",
+  "8:key",
+  "9:key",
+  "10:key",
+  "11:key",
+  "12:key",
+  "13:key",
+  "14:key",
+  "15:key",
+  "16:key",
+  "17:key",
+  "18:key",
+  "19:key",
+  "20:key"
+ ],
+ "HM-PB-4Dis-WM-2": [
+  "1:key",
+  "2:key",
+  "3:key",
+  "4:key",
+  "5:key",
+  "6:key",
+  "7:key",
+  "8:key",
+  "9:key",
+  "10:key",
+  "11:key",
+  "12:key",
+  "13:key",
+  "14:key",
+  "15:key",
+  "16:key",
+  "17:key",
+  "18:key",
+  "19:key",
+  "20:key"
+ ],
+ "HM-PB-6-WM55": [
+  "1:key",
+  "2:key",
+  "3:key",
+  "4:key",
+  "5:key",
+  "6:key"
+ ],
+ "HM-PBI-4-FM": [
+  "1:key",
+  "2:key",
+  "3:key",
+  "4:key"
+ ],
+ "HM-PBI-X": [
+  "1:key"
+ ],
+ "HM-RC-12": [
+  "1:key",
+  "2:key",
+  "3:key",
+  "4:key",
+  "5:key",
+  "6:key",
+  "7:key",
+  "8:key",
+  "9:key",
+  "10:key",
+  "11:key",
+  "12:key"
+ ],
+ "HM-RC-12-B": [
+  "1:key",
+  "2:key",
+  "3:key",
+  "4:key",
+  "5:key",
+  "6:key",
+  "7:key",
+  "8:key",
+  "9:key",
+  "10:key",
+  "11:key",
+  "12:key"
+ ],
+ "HM-RC-12-SW": [
+  "1:key",
+  "2:key",
+  "3:key",
+  "4:key",
+  "5:key",
+  "6:key",
+  "7:key",
+  "8:key",
+  "9:key",
+  "10:key",
+  "11:key",
+  "12:key"
+ ],
+ "HM-RC-19": [
+  "1:key",
+  "2:key",
+  "3:key",
+  "4:key",
+  "5:key",
+  "6:key",
+  "7:key",
+  "8:key",
+  "9:key",
+  "10:key",
+  "11:key",
+  "12:key",
+  "13:key",
+  "14:key",
+  "15:key",
+  "16:key"
+ ],
+ "HM-RC-19-B": [
+  "1:key",
+  "2:key",
+  "3:key",
+  "4:key",
+  "5:key",
+  "6:key",
+  "7:key",
+  "8:key",
+  "9:key",
+  "10:key",
+  "11:key",
+  "12:key",
+  "13:key",
+  "14:key",
+  "15:key",
+  "16:key"
+ ],
+ "HM-RC-19-SW": [
+  "1:key",
+  "2:key",
+  "3:key",
+  "4:key",
+  "5:key",
+  "6:key",
+  "7:key",
+  "8:key",
+  "9:key",
+  "10:key",
+  "11:key",
+  "12:key",
+  "13:key",
+  "14:key",
+  "15:key",
+  "16:key"
+ ],
+ "HM-RC-2-PBU-FM": [
+  "1:key",
+  "2:key"
+ ],
+ "HM-RC-2-PBU-FM-2": [
+  "1:key",
+  "2:key"
+ ],
+ "HM-RC-4": [
+  "1:key",
+  "2:key",
+  "3:key",
+  "4:key"
+ ],
+ "HM-RC-4-2": [
+  "1:key",
+  "2:key",
+  "3:key",
+  "4:key"
+ ],
+ "HM-RC-4-3": [
+  "1:key",
+  "2:key",
+  "3:key",
+  "4:key"
+ ],
+ "HM-RC-4-3-D": [
+  "1:key",
+  "2:key",
+  "3:key",
+  "4:key"
+ ],
+ "HM-RC-4-B": [
+  "1:key",
+  "2:key",
+  "3:key",
+  "4:key"
+ ],
+ "HM-RC-8": [
+  "1:key",
+  "2:key",
+  "3:key",
+  "4:key",
+  "5:key",
+  "6:key",
+  "7:key",
+  "8:key"
+ ],
+ "HM-RC-Dis-H-x-EU": [
+  "1:key",
+  "2:key",
+  "3:key",
+  "4:key",
+  "5:key",
+  "6:key",
+  "7:key",
+  "8:key",
+  "9:key",
+  "10:key",
+  "11:key",
+  "12:key",
+  "13:key",
+  "14:key",
+  "15:key",
+  "16:key",
+  "17:key",
+  "18:key",
+  "19:key",
+  "20:key"
+ ],
+ "HM-RC-Key3": [
+  "1:key",
+  "2:key",
+  "3:key"
+ ],
+ "HM-RC-Key3-B": [
+  "1:key",
+  "2:key",
+  "3:key"
+ ],
+ "HM-RC-Key4-2": [
+  "1:key",
+  "2:key",
+  "3:key",
+  "4:key"
+ ],
+ "HM-RC-Key4-3": [
+  "1:key",
+  "2:key",
+  "3:key",
+  "4:key"
+ ],
+ "HM-RC-P1": [
+  "1:key"
+ ],
+ "HM-RC-SB-X": [
+  "1:key"
+ ],
+ "HM-RC-Sec3": [
+  "1:key",
+  "2:key",
+  "3:key"
+ ],
+ "HM-RC-Sec3-B": [
+  "1:key",
+  "2:key",
+  "3:key"
+ ],
+ "HM-RC-Sec4-2": [
+  "1:key",
+  "2:key",
+  "3:key",
+  "4:key"
+ ],
+ "HM-RC-Sec4-3": [
+  "1:key",
+  "2:key",
+  "3:key",
+  "4:key"
+ ],
+ "HM-RC-X": [
+  "1:key"
+ ],
+ "HM-RCV-50": [],
+ "HM-ReSC-Win-PCB-xx": [
+  "1:window"
+ ],
+ "HM-SCI-3-FM": [
+  "1:contact",
+  "2:contact",
+  "3:contact"
+ ],
+ "HM-Sec-Key": [
+  "1:lock"
+ ],
+ "HM-Sec-Key-Generic": [
+  "1:lock"
+ ],
+ "HM-Sec-Key-O": [
+  "1:lock"
+ ],
+ "HM-Sec-Key-S": [
+  "1:lock"
+ ],
+ "HM-Sec-MD": [
+  "1:motion"
+ ],
+ "HM-Sec-MDIR": [
+  "1:motion"
+ ],
+ "HM-Sec-MDIR-2": [
+  "1:motion"
+ ],
+ "HM-Sec-MDIR-3": [
+  "1:motion"
+ ],
+ "HM-Sec-RHS": [
+  "1:rotary_handle",
+  "2:rotary_handle",
+  "3:rotary_handle"
+ ],
+ "HM-Sec-RHS-2": [
+  "1:rotary_handle",
+  "2:rotary_handle",
+  "3:rotary_handle"
+ ],
+ "HM-Sec-SC": [
+  "1:contact"
+ ],
+ "HM-Sec-SC-2": [
+  "1:contact"
+ ],
+ "HM-Sec-SCo": [
+  "1:contact"
+ ],
+ "HM-Sec-SD": [
+  "1:smoke"
+ ],
+ "HM-Sec-SD-2": [
+  "1:smoke"
+ ],
+ "HM-Sec-SD-2-Generic": [
+  "1:smoke"
+ ],
+ "HM-Sec-SD-Generic": [
+  "1:smoke"
+ ],
+ "HM-Sec-SFA-SM": [
+  "1:switch"
+ ],
+ "HM-Sec-Sir-WM": [
+  "1:switch",
+  "2:switch",
+  "3:switch"
+ ],
+ "HM-Sec-TiS": [
+  "1:contact"
+ ],
+ "HM-Sec-WDS": [
+  "1:water"
+ ],
+ "HM-Sec-WDS-2": [
+  "1:water"
+ ],
+ "HM-Sec-Win": [
+  "1:window"
+ ],
+ "HM-Sec-Win-Generic": [
+  "1:window"
+ ],
+ "HM-Sec-xx": [
+  "1:rotary_handle"
+ ],
+ "HM-Sen-DB-PCB": [
+  "1:key"
+ ],
+ "HM-Sen-EP": [],
+ "HM-Sen-LI-O": [
+  "1:light_sensor"
+ ],
+ "HM-Sen-MDIR-O": [
+  "1:motion"
+ ],
+ "HM-Sen-MDIR-O-2": [
+  "1:motion"
+ ],
+ "HM-Sen-MDIR-O-3": [
+  "1:motion"
+ ],
+ "HM-Sen-MDIR-SM": [
+  "1:motion"
+ ],
+ "HM-Sen-MDIR-WM55": [
+  "1:key",
+  "2:key",
+  "3:motion"
+ ],
+ "HM-Sen-RD-O": [
+  "1:rain",
+  "2:switch"
+ ],
+ "HM-Sen-Wa-Od": [],
+ "HM-Sen-X": [],
+ "HM-SwI-3-FM": [],
+ "HM-SwI-X": [],
+ "HM-Sys-sRP-Pl": [],
+ "HM-TC-IT-WM-W-EU": [
+  "1:weather",
+  "2:thermostat_hm"
+ ],
+ "HM-WDC7000": [
+  "1:weather",
+  "2:weather",
+  "3:weather",
+  "4:weather",
+  "5:weather",
+  "6:weather",
+  "7:weather",
+  "8:weather",
+  "10:weather"
+ ],
+ "HM-WDS10-TH-O": [
+  "1:weather"
+ ],
+ "HM-WDS100-C6-O": [
+  "1:weather"
+ ],
+ "HM-WDS100-C6-O-2": [
+  "1:weather"
+ ],
+ "HM-WDS20-TH-O": [
+  "1:weather"
+ ],
+ "HM-WDS30-OT2-SM": [
+  "1:weather",
+  "2:weather",
+  "3:weather",
+  "4:weather",
+  "5:weather"
+ ],
+ "HM-WDS30-OT2-SM-2": [
+  "1:weather",
+  "2:weather",
+  "3:weather",
+  "4:weather",
+  "5:weather"
+ ],
+ "HM-WDS30-T-O": [
+  "1:weather"
+ ],
+ "HM-WDS40-TH-I": [
+  "1:weather"
+ ],
+ "HM-WDS40-TH-I-2": [
+  "1:weather"
+ ],
+ "HMIP-PS": [
+  "1:key",
+  "2:state_only",
+  "3:switch",
+  "4:switch*",
+  "5:switch*"
+ ],
+ "HMIP-PSM": [
+  "1:key",
+  "2:state_only",
+  "3:switch",
+  "4:switch*",
+  "5:switch*",
+  "6:energy"
+ ],
+ "HMIP-SWDO": [
+  "1:contact"
+ ],
+ "HMIP-WRC2": [
+  "1:key",
+  "2:key"
+ ],
+ "HMW-IO-12-FM": [
+  "1:key",
+  "2:key",
+  "3:key",
+  "4:key",
+  "5:key",
+  "6:key",
+  "7:key",
+  "8:key",
+  "9:key",
+  "10:key",
+  "11:key",
+  "12:key"
+ ],
+ "HMW-IO-12-Sw14-DR": [
+  "1:switch",
+  "2:switch",
+  "3:switch",
+  "4:switch",
+  "5:switch",
+  "6:switch"
+ ],
+ "HMW-IO-12-Sw7-DR": [
+  "1:key",
+  "2:key",
+  "3:key",
+  "4:key",
+  "5:key",
+  "6:key",
+  "7:key",
+  "8:key",
+  "9:key",
+  "10:key",
+  "11:key",
+  "12:key",
+  "13:switch",
+  "14:switch",
+  "15:switch",
+  "16:switch",
+  "17:switch",
+  "18:switch",
+  "19:switch"
+ ],
+ "HMW-IO-4-FM": [
+  "1:key",
+  "2:key",
+  "3:key",
+  "4:key"
+ ],
+ "HMW-IO-SR-FM": [
+  "1:key",
+  "2:key",
+  "3:key",
+  "4:key",
+  "5:key",
+  "6:key",
+  "7:switch",
+  "8:switch",
+  "9:switch",
+  "10:switch",
+  "11:switch",
+  "12:switch"
+ ],
+ "HMW-LC-Bl1-DR": [
+  "1:key",
+  "2:key",
+  "3:blind"
+ ],
+ "HMW-LC-Bl1-DR-2": [
+  "1:key",
+  "2:key",
+  "3:blind"
+ ],
+ "HMW-LC-Dim1L-DR": [
+  "1:key",
+  "2:key",
+  "3:dimmer"
+ ],
+ "HMW-LC-Sw2-DR": [
+  "1:key",
+  "2:key",
+  "3:switch",
+  "4:switch"
+ ],
+ "HMW-RCV-50": [],
+ "HMW-Sen-SC-12-DR": [
+  "1:contact",
+  "2:contact",
+  "3:contact",
+  "4:contact",
+  "5:contact",
+  "6:contact",
+  "7:contact",
+  "8:contact",
+  "9:contact",
+  "10:contact",
+  "11:contact",
+  "12:contact"
+ ],
+ "HMW-Sen-SC-12-FM": [
+  "1:contact",
+  "2:contact",
+  "3:contact",
+  "4:contact",
+  "5:contact",
+  "6:contact",
+  "7:contact",
+  "8:contact",
+  "9:contact",
+  "10:contact",
+  "11:contact",
+  "12:contact"
+ ],
+ "HSS-DX": [
+  "1:dimmer"
+ ],
+ "HmIP-ASIR": [
+  "1:key"
+ ],
+ "HmIP-ASIR-2": [
+  "1:key"
+ ],
+ "HmIP-ASIR-O": [
+  "1:key"
+ ],
+ "HmIP-BDT": [
+  "1:key",
+  "2:key",
+  "3:state_only",
+  "4:dimmer",
+  "5:dimmer*",
+  "6:dimmer*"
+ ],
+ "HmIP-BRC2": [
+  "1:key",
+  "2:key"
+ ],
+ "HmIP-BROLL": [
+  "1:key",
+  "2:key",
+  "3:state_only",
+  "4:shutter_hmip",
+  "5:shutter_hmip*",
+  "6:shutter_hmip*"
+ ],
+ "HmIP-BSL": [
+  "1:key",
+  "2:key",
+  "3:state_only",
+  "4:switch",
+  "5:switch*",
+  "6:switch*",
+  "7:state_only",
+  "8:dimmer",
+  "9:dimmer*",
+  "10:dimmer*",
+  "11:state_only",
+  "12:dimmer",
+  "13:dimmer*",
+  "14:dimmer*"
+ ],
+ "HmIP-BSM": [
+  "1:key",
+  "2:key",
+  "3:state_only",
+  "4:switch",
+  "5:switch*",
+  "6:switch*",
+  "7:energy"
+ ],
+ "HmIP-BWTH": [
+  "1:thermostat_hmip",
+  "9:state_only",
+  "10:switch",
+  "11:switch*",
+  "12:switch*"
+ ],
+ "HmIP-CCU3": [],
+ "HmIP-DBB": [
+  "1:key"
+ ],
+ "HmIP-DLD": [
+  "1:lock_hmip"
+ ],
+ "HmIP-DLP": [
+  "1:key",
+  "4:switch",
+  "5:switch",
+  "6:switch",
+  "7:switch",
+  "8:switch",
+  "9:switch",
+  "10:switch",
+  "11:switch",
+  "12:lock_hmip"
+ ],
+ "HmIP-DLS": [
+  "1:lock_state"
+ ],
+ "HmIP-DRBLI4": [
+  "1:contact",
+  "2:contact",
+  "3:contact",
+  "4:contact",
+  "5:contact",
+  "6:contact",
+  "7:contact",
+  "8:contact",
+  "9:state_only",
+  "10:blind_hmip",
+  "11:blind_hmip*",
+  "12:blind_hmip*",
+  "13:state_only",
+  "14:blind_hmip",
+  "15:blind_hmip*",
+  "16:blind_hmip*",
+  "17:state_only",
+  "18:blind_hmip",
+  "19:blind_hmip*",
+  "20:blind_hmip*",
+  "21:state_only",
+  "22:blind_hmip",
+  "23:blind_hmip*",
+  "24:blind_hmip*"
+ ],
+ "HmIP-DRDI3": [
+  "1:contact",
+  "2:contact",
+  "3:contact",
+  "4:state_only",
+  "5:dimmer",
+  "6:dimmer*",
+  "7:dimmer*",
+  "8:state_only",
+  "9:dimmer",
+  "10:dimmer*",
+  "11:dimmer*",
+  "12:state_only",
+  "13:dimmer",
+  "14:dimmer*",
+  "15:dimmer*"
+ ],
+ "HmIP-DRG-DALI": [
+  "1:light_color",
+  "2:light_color",
+  "3:light_color",
+  "4:light_color",
+  "5:light_color",
+  "6:light_color",
+  "7:light_color",
+  "8:light_color",
+  "9:light_color",
+  "10:light_color",
+  "11:light_color",
+  "12:light_color",
+  "13:light_color",
+  "14:light_color",
+  "15:light_color",
+  "16:light_color",
+  "17:light_color",
+  "18:light_color",
+  "19:light_color",
+  "20:light_color",
+  "21:light_color",
+  "22:light_color",
+  "23:light_color",
+  "24:light_color",
+  "25:light_color",
+  "26:light_color",
+  "27:light_color",
+  "28:light_color",
+  "29:light_color",
+  "30:light_color",
+  "31:light_color",
+  "32:light_color",
+  "33:light_color",
+  "34:light_color",
+  "35:light_color",
+  "36:light_color",
+  "37:light_color",
+  "38:light_color",
+  "39:light_color",
+  "40:light_color",
+  "41:light_color",
+  "42:light_color",
+  "43:light_color",
+  "44:light_color",
+  "45:light_color",
+  "46:light_color",
+  "47:light_color",
+  "48:light_color"
+ ],
+ "HmIP-DRSI1": [
+  "1:contact",
+  "2:state_only",
+  "3:switch",
+  "4:switch*",
+  "5:switch*"
+ ],
+ "HmIP-DRSI4": [
+  "1:contact",
+  "2:contact",
+  "3:contact",
+  "4:contact",
+  "5:state_only",
+  "6:switch",
+  "7:switch*",
+  "8:switch*",
+  "9:state_only",
+  "10:switch",
+  "11:switch*",
+  "12:switch*",
+  "13:state_only",
+  "14:switch",
+  "15:switch*",
+  "16:switch*",
+  "17:state_only",
+  "18:switch",
+  "19:switch*",
+  "20:switch*"
+ ],
+ "HmIP-DSD-PCB": [
+  "1:contact"
+ ],
+ "HmIP-ESI": [
+  "1:energy",
+  "2:energy",
+  "3:energy",
+  "4:energy"
+ ],
+ "HmIP-FAL230-C10": [],
+ "HmIP-FALMOT-C12": [],
+ "HmIP-FBL": [
+  "1:key",
+  "2:key",
+  "3:state_only",
+  "4:blind_hmip",
+  "5:blind_hmip*",
+  "6:blind_hmip*"
+ ],
+ "HmIP-FCI1": [
+  "1:contact"
+ ],
+ "HmIP-FDT": [
+  "1:state_only",
+  "2:dimmer",
+  "3:dimmer*",
+  "4:dimmer*"
+ ],
+ "HmIP-FROLL": [
+  "1:key",
+  "2:key",
+  "3:state_only",
+  "4:shutter_hmip",
+  "5:shutter_hmip*",
+  "6:shutter_hmip*"
+ ],
+ "HmIP-FSI16": [
+  "1:key",
+  "2:state_only",
+  "3:switch",
+  "4:switch*",
+  "5:switch*"
+ ],
+ "HmIP-FSM16": [
+  "1:state_only",
+  "2:switch",
+  "3:switch*",
+  "4:switch*",
+  "5:energy"
+ ],
+ "HmIP-FWI": [
+  "9:state_only",
+  "10:switch",
+  "11:switch*",
+  "12:switch*"
+ ],
+ "HmIP-HAP": [],
+ "HmIP-HDM1": [],
+ "HmIP-HDM2": [],
+ "HmIP-HEATING": [
+  "1:thermostat_hmip",
+  "3:rotary_handle",
+  "4:state_only",
+  "5:key"
+ ],
+ "HmIP-KRC4": [
+  "1:key",
+  "2:key",
+  "3:key",
+  "4:key"
+ ],
+ "HmIP-KRCA": [
+  "1:key",
+  "2:key",
+  "3:key",
+  "4:key"
+ ],
+ "HmIP-LSC": [
+  "1:light_color"
+ ],
+ "HmIP-MIO16-PCB": [
+  "13:contact",
+  "14:contact",
+  "15:contact",
+  "16:contact",
+  "17:state_only",
+  "18:switch",
+  "19:switch*",
+  "20:switch*",
+  "21:state_only",
+  "22:switch",
+  "23:switch*",
+  "24:switch*",
+  "25:state_only",
+  "26:switch",
+  "27:switch*",
+  "28:switch*",
+  "29:state_only",
+  "30:switch",
+  "31:switch*",
+  "32:switch*",
+  "33:state_only",
+  "34:switch",
+  "35:switch*",
+  "36:switch*",
+  "37:state_only",
+  "38:switch",
+  "39:switch*",
+  "40:switch*",
+  "41:state_only",
+  "42:switch",
+  "43:switch*",
+  "44:switch*",
+  "45:state_only",
+  "46:switch",
+  "47:switch*",
+  "48:switch*"
+ ],
+ "HmIP-MOD-HO": [
+  "1:garage",
+  "2:switch"
+ ],
+ "HmIP-MOD-OC8": [
+  "1:key",
+  "2:key",
+  "3:key",
+  "4:key",
+  "5:key",
+  "6:key",
+  "7:key",
+  "8:key",
+  "9:state_only",
+  "10:switch",
+  "11:switch*",
+  "12:switch*",
+  "13:state_only",
+  "14:switch",
+  "15:switch*",
+  "16:switch*",
+  "17:state_only",
+  "18:switch",
+  "19:switch*",
+  "20:switch*",
+  "21:state_only",
+  "22:switch",
+  "23:switch*",
+  "24:switch*",
+  "25:state_only",
+  "26:switch",
+  "27:switch*",
+  "28:switch*",
+  "29:state_only",
+  "30:switch",
+  "31:switch*",
+  "32:switch*",
+  "33:state_only",
+  "34:switch",
+  "35:switch*",
+  "36:switch*",
+  "37:state_only",
+  "38:switch",
+  "39:switch*",
+  "40:switch*"
+ ],
+ "HmIP-MOD-RC8": [
+  "1:key",
+  "2:key",
+  "3:key",
+  "4:key",
+  "5:key",
+  "6:key",
+  "7:key",
+  "8:key"
+ ],
+ "HmIP-MOD-TM": [
+  "1:garage",
+  "2:switch"
+ ],
+ "HmIP-MP3P": [
+  "5:state_only",
+  "6:dimmer",
+  "7:dimmer*",
+  "8:dimmer*"
+ ],
+ "HmIP-PCBS": [
+  "1:key",
+  "2:state_only",
+  "3:switch",
+  "4:switch*",
+  "5:switch*"
+ ],
+ "HmIP-PCBS-BAT": [
+  "1:key",
+  "2:state_only",
+  "3:switch",
+  "4:switch*",
+  "5:switch*"
+ ],
+ "HmIP-PCBS2": [
+  "1:key",
+  "2:key",
+  "3:state_only",
+  "4:switch",
+  "5:switch*",
+  "6:switch*",
+  "7:state_only",
+  "8:switch",
+  "9:switch*",
+  "10:switch*"
+ ],
+ "HmIP-PMFS": [],
+ "HmIP-PSMCO": [
+  "1:key",
+  "2:state_only",
+  "3:switch",
+  "4:switch*",
+  "5:switch*",
+  "6:energy"
+ ],
+ "HmIP-RC8": [
+  "1:key",
+  "2:key",
+  "3:key",
+  "4:key",
+  "5:key",
+  "6:key",
+  "7:key",
+  "8:key"
+ ],
+ "HmIP-RCB1": [
+  "1:key"
+ ],
+ "HmIP-RCV-50": [
+  "1:key",
+  "2:key",
+  "3:key",
+  "4:key",
+  "5:key",
+  "6:key",
+  "7:key",
+  "8:key",
+  "9:key",
+  "10:key",
+  "11:key",
+  "12:key",
+  "13:key",
+  "14:key",
+  "15:key",
+  "16:key",
+  "17:key",
+  "18:key",
+  "19:key",
+  "20:key",
+  "21:key",
+  "22:key",
+  "23:key",
+  "24:key",
+  "25:key",
+  "26:key",
+  "27:key",
+  "28:key",
+  "29:key",
+  "30:key",
+  "31:key",
+  "32:key",
+  "33:key",
+  "34:key",
+  "35:key",
+  "36:key",
+  "37:key",
+  "38:key",
+  "39:key",
+  "40:key",
+  "41:key",
+  "42:key",
+  "43:key",
+  "44:key",
+  "45:key",
+  "46:key",
+  "47:key",
+  "48:key",
+  "49:key",
+  "50:key"
+ ],
+ "HmIP-RFUSB": [],
+ "HmIP-RGBW": [
+  "1:light_color",
+  "2:light_color",
+  "3:light_color",
+  "4:light_color"
+ ],
+ "HmIP-SAM": [
+  "1:motion"
+ ],
+ "HmIP-SCI": [
+  "1:contact"
+ ],
+ "HmIP-SCTH230": [
+  "1:co2",
+  "4:weather",
+  "7:state_only",
+  "8:switch",
+  "9:switch*",
+  "10:switch*",
+  "11:state_only",
+  "12:dimmer",
+  "13:dimmer*",
+  "14:dimmer*"
+ ],
+ "HmIP-SFD": [
+  "1:weather"
+ ],
+ "HmIP-SLO": [
+  "1:light_sensor"
+ ],
+ "HmIP-SMI": [
+  "1:motion"
+ ],
+ "HmIP-SMI55": [
+  "1:key",
+  "2:key",
+  "3:motion"
+ ],
+ "HmIP-SMO": [
+  "1:motion"
+ ],
+ "HmIP-SMO-2": [
+  "1:motion"
+ ],
+ "HmIP-SMO-A": [
+  "1:motion"
+ ],
+ "HmIP-SMO230-A": [
+  "1:motion",
+  "2:motion",
+  "3:motion",
+  "4:motion",
+  "9:state_only",
+  "10:switch",
+  "11:switch*",
+  "12:switch*"
+ ],
+ "HmIP-SPDR": [],
+ "HmIP-SPI": [
+  "1:motion"
+ ],
+ "HmIP-SRD": [
+  "1:rain"
+ ],
+ "HmIP-SRH": [
+  "1:rotary_handle"
+ ],
+ "HmIP-STE2-PCB": [
+  "1:weather",
+  "2:weather",
+  "3:weather"
+ ],
+ "HmIP-STH": [
+  "1:thermostat_hmip"
+ ],
+ "HmIP-STHD": [
+  "1:thermostat_hmip"
+ ],
+ "HmIP-STHO": [
+  "1:weather"
+ ],
+ "HmIP-STHO-A": [
+  "1:weather"
+ ],
+ "HmIP-STV": [
+  "1:motion"
+ ],
+ "HmIP-SWD": [
+  "1:water"
+ ],
+ "HmIP-SWDM": [
+  "1:contact"
+ ],
+ "HmIP-SWDM-B2": [
+  "1:contact"
+ ],
+ "HmIP-SWDO-I": [
+  "1:contact"
+ ],
+ "HmIP-SWO-B": [
+  "1:weather"
+ ],
+ "HmIP-SWO-PL": [
+  "1:weather"
+ ],
+ "HmIP-SWO-PR": [
+  "1:weather"
+ ],
+ "HmIP-SWSD": [
+  "1:smoke"
+ ],
+ "HmIP-SWSD-2": [
+  "1:smoke"
+ ],
+ "HmIP-UDI-SMI55": [
+  "1:key",
+  "2:key",
+  "3:key",
+  "4:motion",
+  "6:state_only",
+  "7:dimmer",
+  "8:dimmer*",
+  "9:dimmer*"
+ ],
+ "HmIP-USBSM": [
+  "1:key",
+  "2:state_only",
+  "3:switch",
+  "4:switch*",
+  "5:switch*",
+  "6:energy"
+ ],
+ "HmIP-WGC": [
+  "1:key",
+  "2:state_only",
+  "3:switch",
+  "4:switch*",
+  "5:switch*"
+ ],
+ "HmIP-WGTC": [
+  "1:key",
+  "3:state_only",
+  "4:switch",
+  "5:switch*",
+  "6:switch*",
+  "8:thermostat_hmip"
+ ],
+ "HmIP-WHS2": [
+  "1:state_only",
+  "2:switch",
+  "3:switch*",
+  "4:switch*",
+  "5:state_only",
+  "6:switch",
+  "7:switch*",
+  "8:switch*"
+ ],
+ "HmIP-WKP": [],
+ "HmIP-WRC6": [
+  "1:key",
+  "2:key",
+  "3:key",
+  "4:key",
+  "5:key",
+  "6:key"
+ ],
+ "HmIP-WRCD": [
+  "1:key",
+  "2:key"
+ ],
+ "HmIP-WRCR": [
+  "1:key",
+  "2:key",
+  "3:key"
+ ],
+ "HmIP-WTH-1": [
+  "1:thermostat_hmip"
+ ],
+ "HmIP-WTH-2": [
+  "1:thermostat_hmip"
+ ],
+ "HmIP-eTRV-2": [
+  "1:thermostat_hmip"
+ ],
+ "HmIP-eTRV-2 I9F": [
+  "1:thermostat_hmip"
+ ],
+ "HmIP-eTRV-B": [
+  "1:thermostat_hmip"
+ ],
+ "HmIP-eTRV-B-2 R4M": [
+  "1:thermostat_hmip"
+ ],
+ "HmIP-eTRV-B1": [
+  "1:thermostat_hmip"
+ ],
+ "HmIP-eTRV-C-2": [
+  "1:thermostat_hmip"
+ ],
+ "HmIP-eTRV-E": [
+  "1:thermostat_hmip"
+ ],
+ "HmIP-eTRV-F": [
+  "1:thermostat_hmip"
+ ],
+ "HmIPW-DRAP": [],
+ "HmIPW-DRBL4": [
+  "1:state_only",
+  "2:blind_hmip",
+  "3:blind_hmip*",
+  "4:blind_hmip*",
+  "5:state_only",
+  "6:blind_hmip",
+  "7:blind_hmip*",
+  "8:blind_hmip*",
+  "9:state_only",
+  "10:blind_hmip",
+  "11:blind_hmip*",
+  "12:blind_hmip*",
+  "13:state_only",
+  "14:blind_hmip",
+  "15:blind_hmip*",
+  "16:blind_hmip*"
+ ],
+ "HmIPW-DRD3": [
+  "1:state_only",
+  "2:dimmer",
+  "3:dimmer*",
+  "4:dimmer*",
+  "5:state_only",
+  "6:dimmer",
+  "7:dimmer*",
+  "8:dimmer*",
+  "9:state_only",
+  "10:dimmer",
+  "11:dimmer*",
+  "12:dimmer*"
+ ],
+ "HmIPW-DRI32": [
+  "1:contact",
+  "2:contact",
+  "3:contact",
+  "4:contact",
+  "5:contact",
+  "6:contact",
+  "7:contact",
+  "8:contact",
+  "9:contact",
+  "10:contact",
+  "11:contact",
+  "12:contact",
+  "13:contact",
+  "14:contact",
+  "15:contact",
+  "16:contact",
+  "17:contact",
+  "18:contact",
+  "19:contact",
+  "20:contact",
+  "21:contact",
+  "22:contact",
+  "23:contact",
+  "24:contact",
+  "25:contact",
+  "26:contact",
+  "27:contact",
+  "28:contact",
+  "29:contact",
+  "30:contact",
+  "31:contact",
+  "32:contact"
+ ],
+ "HmIPW-DRS8": [
+  "1:state_only",
+  "2:switch",
+  "3:switch*",
+  "4:switch*",
+  "5:state_only",
+  "6:switch",
+  "7:switch*",
+  "8:switch*",
+  "9:state_only",
+  "10:switch",
+  "11:switch*",
+  "12:switch*",
+  "13:state_only",
+  "14:switch",
+  "15:switch*",
+  "16:switch*",
+  "17:state_only",
+  "18:switch",
+  "19:switch*",
+  "20:switch*",
+  "21:state_only",
+  "22:switch",
+  "23:switch*",
+  "24:switch*",
+  "25:state_only",
+  "26:switch",
+  "27:switch*",
+  "28:switch*",
+  "29:state_only",
+  "30:switch",
+  "31:switch*",
+  "32:switch*"
+ ],
+ "HmIPW-FAL230-C6": [],
+ "HmIPW-FALMOT-C12": [],
+ "HmIPW-FIO6": [
+  "1:contact",
+  "2:contact",
+  "3:contact",
+  "4:contact",
+  "5:contact",
+  "6:contact",
+  "7:state_only",
+  "8:switch",
+  "9:switch*",
+  "10:switch*",
+  "11:state_only",
+  "12:switch",
+  "13:switch*",
+  "14:switch*",
+  "15:state_only",
+  "16:switch",
+  "17:switch*",
+  "18:switch*",
+  "19:state_only",
+  "20:switch",
+  "21:switch*",
+  "22:switch*",
+  "23:state_only",
+  "24:switch",
+  "25:switch*",
+  "26:switch*",
+  "27:state_only",
+  "28:switch",
+  "29:switch*",
+  "30:switch*"
+ ],
+ "HmIPW-SCTHD": [
+  "1:thermostat_hmip"
+ ],
+ "HmIPW-SMI55": [
+  "1:key",
+  "2:key",
+  "3:motion"
+ ],
+ "HmIPW-SPI": [
+  "1:motion"
+ ],
+ "HmIPW-STH": [
+  "1:thermostat_hmip"
+ ],
+ "HmIPW-STHD": [
+  "1:thermostat_hmip"
+ ],
+ "HmIPW-WRC6": [
+  "1:key",
+  "2:key",
+  "3:key",
+  "4:key",
+  "5:key",
+  "6:key"
+ ],
+ "HmIPW-WTH": [
+  "1:thermostat_hmip"
+ ],
+ "IS-WDS-TH-OD-S-R3": [
+  "1:weather"
+ ],
+ "KS550": [
+  "1:weather"
+ ],
+ "KS550LC": [
+  "1:weather"
+ ],
+ "KS550Tech": [
+  "1:weather"
+ ],
+ "KS888": [
+  "1:weather"
+ ],
+ "OLIGO.smart.iq.HM": [
+  "1:dimmer",
+  "2:dimmer",
+  "3:dimmer",
+  "4:dimmer",
+  "5:dimmer",
+  "6:dimmer"
+ ],
+ "RC-H": [
+  "1:key",
+  "2:key",
+  "3:key",
+  "4:key"
+ ],
+ "RPI-RF-MOD": [],
+ "S550IA": [
+  "1:weather"
+ ],
+ "ST6-SH": [
+  "1:switch",
+  "2:switch",
+  "3:contact",
+  "4:contact",
+  "5:key",
+  "6:key",
+  "7:key",
+  "8:key",
+  "9:key"
+ ],
+ "WDF solar": [
+  "1:window",
+  "2:blind",
+  "3:blind"
+ ],
+ "WS550": [
+  "1:weather",
+  "2:weather",
+  "3:weather",
+  "4:weather",
+  "5:weather",
+  "6:weather",
+  "7:weather",
+  "8:weather",
+  "10:weather"
+ ],
+ "WS550LCB": [
+  "1:weather",
+  "2:weather",
+  "3:weather",
+  "4:weather",
+  "5:weather",
+  "6:weather",
+  "7:weather",
+  "8:weather",
+  "10:weather"
+ ],
+ "WS550LCW": [
+  "1:weather",
+  "2:weather",
+  "3:weather",
+  "4:weather",
+  "5:weather",
+  "6:weather",
+  "7:weather",
+  "8:weather",
+  "10:weather"
+ ],
+ "WS550Tech": [
+  "1:weather",
+  "2:weather",
+  "3:weather",
+  "4:weather",
+  "5:weather",
+  "6:weather",
+  "7:weather",
+  "8:weather",
+  "10:weather"
+ ],
+ "WS888": [
+  "1:weather",
+  "2:weather",
+  "3:weather",
+  "4:weather",
+  "5:weather",
+  "6:weather",
+  "7:weather",
+  "8:weather",
+  "10:weather"
+ ],
+ "ZEL STG RM DWT 10": [
+  "1:key",
+  "2:key",
+  "3:key",
+  "4:key",
+  "5:key",
+  "6:key",
+  "7:key",
+  "8:key",
+  "9:key",
+  "10:key",
+  "11:key",
+  "12:key",
+  "13:key",
+  "14:key",
+  "15:key",
+  "16:key",
+  "17:key",
+  "18:key",
+  "19:key",
+  "20:key"
+ ],
+ "ZEL STG RM FDK": [
+  "1:rotary_handle",
+  "2:rotary_handle",
+  "3:rotary_handle"
+ ],
+ "ZEL STG RM FEP 230V": [
+  "1:blind"
+ ],
+ "ZEL STG RM FFK": [
+  "1:contact"
+ ],
+ "ZEL STG RM FSA": [],
+ "ZEL STG RM FSS UP3": [],
+ "ZEL STG RM FST UP4": [
+  "1:key",
+  "2:key",
+  "3:key",
+  "4:key"
+ ],
+ "ZEL STG RM FWT": [
+  "1:weather",
+  "2:thermostat_hm"
+ ],
+ "ZEL STG RM FZS": [
+  "1:switch"
+ ],
+ "ZEL STG RM FZS-2": [
+  "1:switch"
+ ],
+ "ZEL STG RM HS 4": [
+  "1:key",
+  "2:key",
+  "3:key",
+  "4:key"
+ ],
+ "ZEL STG RM WT 2": [
+  "1:key",
+  "2:key"
+ ],
+ "atent": [
+  "1:key",
+  "2:key",
+  "3:key"
+ ]
+}

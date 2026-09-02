@@ -18,7 +18,7 @@
                     return RED.validators.number(val) && val > 1024 && val < 65536;
                 }
             },
-            advertiser: {value: 'ciao'},
+            advertiser: {value: 'auto'},
             allowInsecureRequest: {
                 value: false,
                 type: 'boolean'
@@ -84,7 +84,8 @@
     <div class="form-row">
         <label for="node-config-input-advertiser"><i class="icon-globe"></i> mDNS</label>
         <select id="node-config-input-advertiser">
-            <option value="ciao">ciao (default)</option>
+            <option value="auto">auto (avahi if running, else ciao)</option>
+            <option value="ciao">ciao</option>
             <option value="bonjour-hap">bonjour-hap</option>
             <option value="avahi">avahi (D-Bus)</option>
         </select>

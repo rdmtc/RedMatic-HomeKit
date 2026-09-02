@@ -14,7 +14,13 @@ and its line in the contents below gets a ✅ marker linking into the archive.
 Decisions are recorded inline as **D-n** and stay here as the record of why
 things are the way they are.
 
-Status 2026-09-02: research and planning only, nothing implemented. Last
+Status 2026-09-02 (evening): `4.0.0-dev.4` on master — camera/zigbee
+removed, tooling/CI/release pipeline in place, hap-nodejs 2.x migration
+done, editor driven by the runtime catalogue, generic channel mapping
+(roles + services + editor rows) implemented with 383 device fixtures and
+snapshot tests. Open: per-model override review with golden files for the
+3.3.0 types, the node fixes of task 9, docs, hardware verification.
+Originally (morning): research and planning only, nothing implemented. Last
 release is 3.3.0 (npm, 2022-05); last commit 2021-03 (plus one 2022 merge);
 the repo carries 142 open issues (2018–2026) and 7 open PRs. Research basis:
 this repo, the sibling repos `../redmatic` (9.0.0-dev, zero native modules,
@@ -161,9 +167,15 @@ Mechanical API changes, all located in the codebase (counts from grep):
   (`MAX_ACCESSORIES`); align and turn it into a clear node status. Consider
   a documented "second bridge" recipe (multiple bridge config nodes already
   work by `username`).
-- mDNS: default advertiser is now `ciao`; expose `advertiser`
-  (`ciao` / `bonjour-hap` / `avahi`) in the bridge config as a hedge for
-  network setups like the Avahi-reflector crash in #348.
+- ✅ mDNS: default advertiser is now `ciao`; `advertiser`
+  (`auto` / `ciao` / `bonjour-hap` / `avahi`) is exposed in the bridge
+  config as a hedge for network setups like the Avahi-reflector crash in
+  #348. **Two firmwares, two mDNS situations** (maintainer note
+  2026-09-02): OpenCCU runs an avahi-daemon, the official CCU3 firmware
+  does not. Two responders on one host fight over port 5353, so `auto`
+  (default) probes avahi over D-Bus at publish time and uses it when
+  present, ciao otherwise — verify both cases in task 13 (OpenCCU VM and
+  the real CCU3).
 - Camera: `configureCameraSource()` is gone (see task 10).
 - Reference: PR #350 (ptweety, 2022, hap 0.10) did the same migration one
   step earlier — take the deprecation fixes as a checklist, not the commits
