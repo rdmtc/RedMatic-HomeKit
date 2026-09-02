@@ -9,8 +9,21 @@ const {FakeCcu} = require('./fake-ccu');
 
 const dir = path.join(__dirname, '..', 'fixtures', 'devices');
 
+let index;
+
+/** fixture file for a type, case-insensitive (pydevccu spells some types in upper case) */
 function fileName(type) {
-    return type.replace(/[^\w.-]/g, '_') + '.json';
+    if (!index) {
+        index = new Map(fs.readdirSync(dir).map((f) => [f.toLowerCase(), f]));
+    }
+
+    const wanted = (type.replace(/[^\w.-]/g, '_') + '.json').toLowerCase();
+    const found = index.get(wanted);
+    if (!found) {
+        throw new Error('no fixture for device type ' + type);
+    }
+
+    return found;
 }
 
 function types() {
