@@ -1,4 +1,5 @@
 const Accessory = require('./lib/accessory');
+const thermostat = require('./lib/thermostat');
 
 module.exports = class HmipBwth extends Accessory {
     init(config, node) {
@@ -7,7 +8,7 @@ module.exports = class HmipBwth extends Accessory {
 
         let state;
         let currentSetpoint;
-        let valueSetpoint = 21;
+        const setpoint = thermostat.createSetpoint();
         let setpointMode;
         let target;
 
@@ -16,11 +17,11 @@ module.exports = class HmipBwth extends Accessory {
             switch (setpointMode) {
                 case 1:
                     // Manu
-                    target = currentSetpoint > 4.5 ? 1 : 0;
+                    target = thermostat.targetState(true, currentSetpoint);
                     break;
                 default:
                     // Auto / Party
-                    target = 3;
+                    target = thermostat.targetState(false, currentSetpoint);
             }
 
             return target;
@@ -32,7 +33,6 @@ module.exports = class HmipBwth extends Accessory {
         }
 
         const serviceThermostat = this.addService('Thermostat', config.name);
-        const subtypeThermostat = serviceThermostat.subtype;
 
         serviceThermostat
             .setProps('CurrentTemperature', {minValue: -40, maxValue: 80})
@@ -41,14 +41,14 @@ module.exports = class HmipBwth extends Accessory {
             .setProps('TargetTemperature', {minValue: 4.5, maxValue: 30.5, minStep: 0.5})
             .get('TargetTemperature', config.deviceAddress + ':1.SET_POINT_TEMPERATURE', (value) => {
                 currentSetpoint = value;
-                if (value > 4.5) {
-                    valueSetpoint = value;
-                }
+                setpoint.read(value);
 
                 updateHeatingCoolingState();
                 return value;
             })
-            .set('TargetTemperature', config.deviceAddress + ':1.SET_POINT_TEMPERATURE')
+            .set('TargetTemperature', config.deviceAddress + ':1.SET_POINT_TEMPERATURE', (value) =>
+                setpoint.write(value),
+            )
 
             .setProps('CurrentHeatingCoolingState', {validValues: [0, 1], maxValue: 1})
             .get('CurrentHeatingCoolingState', config.deviceAddress + ':9.STATE', (value) => {
@@ -66,80 +66,20 @@ module.exports = class HmipBwth extends Accessory {
                 }, 1000);
                 return targetState();
             })
-            .set('TargetHeatingCoolingState', (value, callback) => {
-                // 0=off, 1=heat, 3=auto
-                if (value === 0) {
-                    const params = {
-                        CONTROL_MODE: 1,
-                        SET_POINT_TEMPERATURE: 4.5,
-                    };
-                    node.debug(
-                        'set ' +
-                            config.name +
-                            ' (' +
-                            subtypeThermostat +
-                            ') TargetHeatingCoolingState ' +
-                            value +
-                            ' -> ' +
-                            config.description.ADDRESS +
-                            ':1 ' +
-                            JSON.stringify(params),
-                    );
-
-                    ccu.methodCall(config.iface, 'putParamset', [config.description.ADDRESS + ':1', 'VALUES', params])
-                        .then(() => {
-                            callback();
-                        })
-                        .catch(() => {
-                            callback(new hap.HapStatusError(hap.HAPStatus.SERVICE_COMMUNICATION_FAILURE));
-                        });
-                } else if (value === 1) {
-                    const params = {
-                        CONTROL_MODE: 1,
-                        SET_POINT_TEMPERATURE: valueSetpoint,
-                    };
-                    node.debug(
-                        'set ' +
-                            config.name +
-                            ' (' +
-                            subtypeThermostat +
-                            ') TargetHeatingCoolingState ' +
-                            value +
-                            ' -> ' +
-                            config.description.ADDRESS +
-                            ':1 ' +
-                            JSON.stringify(params),
-                    );
-                    ccu.methodCall(config.iface, 'putParamset', [config.description.ADDRESS + ':1', 'VALUES', params])
-                        .then(() => {
-                            serviceThermostat.update('TargetTemperature', valueSetpoint);
-                            callback();
-                        })
-                        .catch(() => {
-                            callback(new hap.HapStatusError(hap.HAPStatus.SERVICE_COMMUNICATION_FAILURE));
-                        });
-                } else {
-                    node.debug(
-                        'set ' +
-                            config.name +
-                            ' (' +
-                            subtypeThermostat +
-                            ') TargetHeatingCoolingState ' +
-                            value +
-                            ' -> ' +
-                            config.description.ADDRESS +
-                            ':1.CONTROL_MODE ' +
-                            (value === 3 ? 0 : 1),
-                    );
-                    ccu.setValue(config.iface, config.description.ADDRESS + ':1', 'CONTROL_MODE', value === 3 ? 0 : 1)
-                        .then(() => {
-                            callback();
-                        })
-                        .catch(() => {
-                            callback(new hap.HapStatusError(hap.HAPStatus.SERVICE_COMMUNICATION_FAILURE));
-                        });
-                }
-            });
+            .set(
+                'TargetHeatingCoolingState',
+                thermostat.hmipModeSetter({
+                    ccu,
+                    hap,
+                    node,
+                    config,
+                    channel: 1,
+                    setpoint,
+                    service: serviceThermostat,
+                    getMode: () => setpointMode,
+                    getSetpoint: () => currentSetpoint,
+                }),
+            );
 
         function updateHeatingCoolingState() {
             serviceThermostat.update('CurrentHeatingCoolingState', currentState());

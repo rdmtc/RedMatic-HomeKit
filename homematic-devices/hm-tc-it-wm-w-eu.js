@@ -1,4 +1,5 @@
 const Accessory = require('./lib/accessory');
+const thermostat = require('./lib/thermostat');
 
 module.exports = class HmTcItWmWEu extends Accessory {
     init(config, node) {
@@ -6,7 +7,7 @@ module.exports = class HmTcItWmWEu extends Accessory {
         const {hap} = bridgeConfig;
 
         let currentSetpoint;
-        let valueSetpoint = 21;
+        const setpoint = thermostat.createSetpoint();
 
         let controlMode;
         let target;
@@ -24,15 +25,15 @@ module.exports = class HmTcItWmWEu extends Accessory {
             switch (controlMode) {
                 case 1:
                     // Manu
-                    target = currentSetpoint > 4.5 ? 1 : 0;
+                    target = thermostat.targetState(true, currentSetpoint);
                     break;
                 case 0:
                     // Auto
-                    target = 3;
+                    target = thermostat.targetState(false, currentSetpoint);
                     break;
                 case 2:
                     // Party
-                    target = 3;
+                    target = thermostat.targetState(false, currentSetpoint);
                     break;
                 case 3:
                     // Boost
@@ -41,7 +42,7 @@ module.exports = class HmTcItWmWEu extends Accessory {
                 default:
             }
 
-            return controlMode === 3 ? 1 : target;
+            return controlMode === 3 ? 1 : (target ?? 3);
         }
 
         function currentState() {
@@ -59,14 +60,12 @@ module.exports = class HmTcItWmWEu extends Accessory {
             .setProps('TargetTemperature', {minValue: 4.5, maxValue: 30.5, minStep: 0.5})
             .get('TargetTemperature', config.deviceAddress + ':2.SET_TEMPERATURE', (value) => {
                 currentSetpoint = value;
-                if (value > 4.5) {
-                    valueSetpoint = value;
-                }
+                setpoint.read(value);
 
                 updateHeatingCoolingState();
                 return value;
             })
-            .set('TargetTemperature', config.deviceAddress + ':2.SET_TEMPERATURE')
+            .set('TargetTemperature', config.deviceAddress + ':2.SET_TEMPERATURE', (value) => setpoint.write(value))
 
             .setProps('CurrentHeatingCoolingState', {validValues: [0, 1], maxValue: 1})
             .get('CurrentHeatingCoolingState', config.deviceAddress + ':2.SET_TEMPERATURE', () => {
@@ -83,35 +82,18 @@ module.exports = class HmTcItWmWEu extends Accessory {
                 }, 1000);
                 return targetState();
             })
-            .set('TargetHeatingCoolingState', (value, callback) => {
-                // 0=off, 1=heat, 3=auto
-                if (value === 0) {
-                    ccu.setValue(config.iface, config.description.ADDRESS + ':2', 'MANU_MODE', 4.5)
-                        .then(() => {
-                            callback();
-                        })
-                        .catch(() => {
-                            callback(new hap.HapStatusError(hap.HAPStatus.SERVICE_COMMUNICATION_FAILURE));
-                        });
-                } else if (value === 1) {
-                    ccu.setValue(config.iface, config.description.ADDRESS + ':2', 'MANU_MODE', valueSetpoint)
-                        .then(() => {
-                            serviceThermostat.update('TargetTemperature', valueSetpoint);
-                            callback();
-                        })
-                        .catch(() => {
-                            callback(new hap.HapStatusError(hap.HAPStatus.SERVICE_COMMUNICATION_FAILURE));
-                        });
-                } else {
-                    ccu.setValue(config.iface, config.description.ADDRESS + ':2', 'AUTO_MODE', true)
-                        .then(() => {
-                            callback();
-                        })
-                        .catch(() => {
-                            callback(new hap.HapStatusError(hap.HAPStatus.SERVICE_COMMUNICATION_FAILURE));
-                        });
-                }
-            });
+            .set(
+                'TargetHeatingCoolingState',
+                thermostat.hmModeSetter({
+                    ccu,
+                    hap,
+                    node,
+                    config,
+                    channel: 2,
+                    setpoint,
+                    service: serviceThermostat,
+                }),
+            );
 
         function updateHeatingCoolingState() {
             const current = currentState();
@@ -181,7 +163,7 @@ module.exports = class HmTcItWmWEu extends Accessory {
                         dp = 'BOOST_MODE';
                     } else if (target === 0 || target === 1) {
                         dp = 'MANU_MODE';
-                        value = valueSetpoint;
+                        value = setpoint.value;
                     } else {
                         dp = 'AUTO_MODE';
                         value = true;

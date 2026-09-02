@@ -38,6 +38,19 @@ decisions (D-n) referenced below.
 
 ### Fixed
 
+- Thermostats (HmIP-WTH/-BWTH/-STH/-eTRV, HmIP-HEATING groups, HM-CC-RT-DN,
+  HM-TC-IT-WM-W-EU, HM-CC-VG-1): changing the temperature in the Home app
+  no longer makes the thermostat jump to 21 °C first (#245, #225). The
+  setpoint HomeKit restores when switching to HEAT is the one last read or
+  written, the mode write waits for a temperature write from the same
+  request, and a setpoint that was just written is never overridden. A
+  setpoint at the off temperature (4.5 °C) is reported as OFF in every mode
+  instead of "heating to 4.5 °C" after a restart (#335). Shared logic lives
+  in `homematic-devices/lib/thermostat.js` with tests.
+- One unreachable device no longer takes every accessory of the bridge
+  down with it (#312, #194): HAP-NodeJS 2.x answers batched reads with a
+  status per characteristic, so only the unreachable accessory shows
+  "No Response".
 - HmIPW-DRD3: the three dimmer outputs can be split into one accessory
   per output (`SingleAccessory` off), each named after its channel; the
   brightness bookkeeping is per output instead of shared (PR #353 idea,
