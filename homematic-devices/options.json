@@ -1782,6 +1782,10 @@
   ],
   "hmipw-drd3": [
     {
+      "kind": "option",
+      "name": "SingleAccessory"
+    },
+    {
       "kind": "virtual",
       "first": 2,
       "last": 12,

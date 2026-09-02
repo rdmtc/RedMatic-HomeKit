@@ -33,6 +33,16 @@ decisions (D-n) referenced below.
   catalogue), role and service snapshots, and an end-to-end harness (fake
   Node-RED and fake ccu-connection against the real HAP-NodeJS).
 
+### Fixed
+
+- HmIPW-DRD3: the three dimmer outputs can be split into one accessory
+  per output (`SingleAccessory` off), each named after its channel; the
+  brightness bookkeeping is per output instead of shared (PR #353 idea,
+  re-implemented on the existing module so the default layout stays
+  identical for paired homes).
+- TV node: default port stored as a string so Node-RED ≥ 1.3 validates it
+  (PR #345, #344).
+
 ### Changed
 
 - Bridge mDNS: new **auto** default that advertises through a running
