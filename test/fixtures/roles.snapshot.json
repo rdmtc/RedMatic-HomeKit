@@ -1740,7 +1740,7 @@
  ],
  "HmIP-SPDR": [],
  "HmIP-SPI": [
-  "1:motion"
+  "1:presence"
  ],
  "HmIP-SRD": [
   "1:rain"
@@ -2030,7 +2030,7 @@
   "3:motion"
  ],
  "HmIPW-SPI": [
-  "1:motion"
+  "1:presence"
  ],
  "HmIPW-STH": [
   "1:thermostat_hmip"

@@ -57,7 +57,8 @@ test('roles of well-known devices', () => {
     assert.deepEqual(rolesOf('HM-Sec-Key'), ['1:lock']);
     assert.deepEqual(rolesOf('HM-Sec-SC'), ['1:contact']);
     assert.deepEqual(rolesOf('HM-LC-Sw4-DR'), ['1:switch', '2:switch', '3:switch', '4:switch']);
-    assert.deepEqual(rolesOf('HM-LC-Dim1T-FM'), ['1:dimmer', '2:dimmer', '3:dimmer']);
+    assert.deepEqual(rolesOf('HM-LC-Dim1T-FM'), ['1:dimmer']);
+    assert.deepEqual(rolesOf('HM-LC-Dim1TPBU-FM'), ['1:dimmer', '2:dimmer', '3:dimmer']);
     assert.deepEqual(rolesOf('HM-LC-Bl1-FM'), ['1:blind']);
 });
 

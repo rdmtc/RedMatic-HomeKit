@@ -1376,7 +1376,7 @@
  },
  "HmIPW-SPI": {
   "HmIPW-SPI": [
-   "MotionSensor/1",
+   "OccupancySensor/1",
    "LightSensor/1l"
   ]
  },

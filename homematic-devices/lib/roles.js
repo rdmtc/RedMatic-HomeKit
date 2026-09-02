@@ -62,6 +62,11 @@ const ROLE_BY_CONTROL = [
     ['SHUTTER_TRANSMITTER.LEVEL', 'state_only'],
 ];
 
+/** channel types whose CONTROL hints are borrowed from another type; the type wins */
+const ROLE_BY_TYPE_FIRST = {
+    PRESENCEDETECTOR_TRANSCEIVER: 'presence', // carries MOTIONDETECTOR_TRANSCEIVER.* hints
+};
+
 /** channel TYPE → role for channels whose parameters carry no CONTROL hint */
 const ROLE_BY_TYPE = {
     MAINTENANCE: 'maintenance',
@@ -199,6 +204,10 @@ function channelRole(channel, values) {
         return null;
     }
 
+    if (ROLE_BY_TYPE_FIRST[type]) {
+        return ROLE_BY_TYPE_FIRST[type];
+    }
+
     if (values) {
         const controls = new Set();
         for (const p of Object.values(values)) {
@@ -297,6 +306,7 @@ function deviceRoles(device, getChannel, getValues) {
 
 module.exports = {
     ROLE_BY_CONTROL,
+    ROLE_BY_TYPE_FIRST,
     ROLE_BY_TYPE,
     ROLE_BY_DATAPOINT,
     IGNORED_TYPES,
