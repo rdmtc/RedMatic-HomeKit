@@ -38,6 +38,11 @@ decisions (D-n) referenced below.
 
 ### Fixed
 
+- Universal node: writes from HomeKit are forwarded to the node output
+  again. The migration to hap-nodejs 2.x had silently broken this (the
+  change event no longer carries the old request context; the node now
+  forwards on the event's `write` reason). Found in the OpenCCU hardware
+  test, covered by a test now.
 - Thermostats (HmIP-WTH/-BWTH/-STH/-eTRV, HmIP-HEATING groups, HM-CC-RT-DN,
   HM-TC-IT-WM-W-EU, HM-CC-VG-1): changing the temperature in the Home app
   no longer makes the thermostat jump to 21 °C first (#245, #225). The

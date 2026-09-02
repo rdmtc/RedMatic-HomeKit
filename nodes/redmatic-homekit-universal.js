@@ -79,8 +79,10 @@ module.exports = function (RED) {
 
             const changeListener = (obj) => {
                 const topic = subtype + '/' + cName;
-                this.debug('hap -> ' + topic + ' ' + obj.newValue);
-                if (obj && obj.context && obj.context.request) {
+                this.debug('hap -> ' + topic + ' ' + obj.newValue + ' (' + obj.reason + ')');
+                // only writes coming from a HomeKit controller are forwarded; our own
+                // updateValue() calls (msg input) arrive with reason 'update'
+                if (obj && obj.reason === 'write') {
                     this.send({
                         topic,
                         payload: obj.newValue,
