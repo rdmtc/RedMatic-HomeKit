@@ -1,0 +1,1912 @@
+{
+  "hb-lc-bl1pbu-fm": [],
+  "hb-lc-sw1pbu-fm": [
+    {
+      "kind": "option",
+      "name": "SingleAccessory"
+    },
+    {
+      "kind": "channels",
+      "first": 1,
+      "last": {
+        "channelCountMinus": 1
+      },
+      "step": 1,
+      "dropdowns": {
+        "type": ["Switch", "Outlet", "Lightbulb", "Fan", "Valve", "ValveIrrigation"]
+      }
+    }
+  ],
+  "hb-lc-sw2-fm": [
+    {
+      "kind": "option",
+      "name": "SingleAccessory"
+    },
+    {
+      "kind": "channels",
+      "first": 1,
+      "last": {
+        "channelCountMinus": 1
+      },
+      "step": 1,
+      "dropdowns": {
+        "type": ["Switch", "Outlet", "Lightbulb", "Fan", "Valve", "ValveIrrigation"]
+      }
+    }
+  ],
+  "hb-lc-sw2pbu-fm": [
+    {
+      "kind": "option",
+      "name": "SingleAccessory"
+    },
+    {
+      "kind": "channels",
+      "first": 1,
+      "last": {
+        "channelCountMinus": 1
+      },
+      "step": 1,
+      "dropdowns": {
+        "type": ["Switch", "Outlet", "Lightbulb", "Fan", "Valve", "ValveIrrigation"]
+      }
+    }
+  ],
+  "hb-uni-dmx-master": [],
+  "hb-uni-rgb-led-ctrl": [],
+  "hb-uni-sen-press-sc": [],
+  "hb-uni-sen-temp-ds18b20": [],
+  "hb-uni-sen-temp-ir": [
+    {
+      "kind": "channels",
+      "first": 1,
+      "last": 5,
+      "step": 1,
+      "dropdowns": null
+    }
+  ],
+  "hb-uni-sen-wea": [
+    {
+      "kind": "option",
+      "name": "HumiditySensor"
+    },
+    {
+      "kind": "option",
+      "name": "LightSensor"
+    }
+  ],
+  "hb-uni-senact-4-4-rc-bat": [
+    {
+      "kind": "channels",
+      "first": 1,
+      "last": 4,
+      "step": 1,
+      "dropdowns": null
+    }
+  ],
+  "hb-uni-senact-4-4-rc": [
+    {
+      "kind": "channels",
+      "first": 1,
+      "last": 4,
+      "step": 1,
+      "dropdowns": null
+    }
+  ],
+  "hb-uni-senact-4-4-sc-bat": [
+    {
+      "kind": "channels",
+      "first": 1,
+      "last": 8,
+      "step": 1,
+      "dropdowns": null
+    }
+  ],
+  "hb-uni-senact-4-4-sc": [
+    {
+      "kind": "channels",
+      "first": 1,
+      "last": 8,
+      "step": 1,
+      "dropdowns": null
+    }
+  ],
+  "hb-uni-senact-8-8-rc-bat": [
+    {
+      "kind": "channels",
+      "first": 1,
+      "last": 8,
+      "step": 1,
+      "dropdowns": null
+    }
+  ],
+  "hb-uni-senact-8-8-rc": [
+    {
+      "kind": "channels",
+      "first": 1,
+      "last": 8,
+      "step": 1,
+      "dropdowns": null
+    }
+  ],
+  "hb-uni-senact-8-8-sc-bat": [
+    {
+      "kind": "channels",
+      "first": 1,
+      "last": 16,
+      "step": 1,
+      "dropdowns": null
+    }
+  ],
+  "hb-uni-senact-8-8-sc": [
+    {
+      "kind": "channels",
+      "first": 1,
+      "last": 16,
+      "step": 1,
+      "dropdowns": null
+    }
+  ],
+  "hm-cc-rt-dn-bom": [
+    {
+      "kind": "option",
+      "name": "BoostSwitch"
+    }
+  ],
+  "hm-cc-rt-dn": [
+    {
+      "kind": "option",
+      "name": "BoostSwitch"
+    }
+  ],
+  "hm-cc-scd": [],
+  "hm-cc-tc": [
+    {
+      "kind": "option",
+      "name": "HumiditySensor"
+    }
+  ],
+  "hm-dw-wm": [],
+  "hm-es-pmsw1-dr": [
+    {
+      "kind": "channels",
+      "first": 1,
+      "last": 1,
+      "step": 1,
+      "dropdowns": {
+        "type": ["Switch", "Outlet", "Lightbulb", "Fan", "Valve", "ValveIrrigation"]
+      }
+    }
+  ],
+  "hm-es-pmsw1-pl-dn-r1": [
+    {
+      "kind": "channels",
+      "first": 1,
+      "last": 1,
+      "step": 1,
+      "dropdowns": {
+        "type": ["Switch", "Outlet", "Lightbulb", "Fan", "Valve", "ValveIrrigation"]
+      }
+    }
+  ],
+  "hm-es-pmsw1-pl": [
+    {
+      "kind": "channels",
+      "first": 1,
+      "last": 1,
+      "step": 1,
+      "dropdowns": {
+        "type": ["Switch", "Outlet", "Lightbulb", "Fan", "Valve", "ValveIrrigation"]
+      }
+    }
+  ],
+  "hm-lc-ao-sm": [],
+  "hm-lc-bl1-fm-2": [],
+  "hm-lc-bl1-fm": [],
+  "zel_stg_rm_fep_230v": [],
+  "hm-lc-bl1-pb-fm": [],
+  "hm-lc-bl1-sm-2": [],
+  "hm-lc-bl1-sm": [],
+  "hm-lc-bl1pbu-fm": [],
+  "hm-lc-dim1l-cv-2": [],
+  "hm-lc-dim1l-cv": [],
+  "hm-lc-dim1l-pl-2": [],
+  "hm-lc-dim1l-pl-3": [],
+  "hm-lc-dim1l-pl": [],
+  "hm-lc-dim1pwm-cv-2": [],
+  "hm-lc-dim1pwm-cv": [],
+  "hm-lc-dim1t-cv-2": [],
+  "hm-lc-dim1t-cv": [],
+  "hm-lc-dim1t-dr": [],
+  "hm-lc-dim1t-fm-2": [],
+  "hm-lc-dim1t-fm-lf": [],
+  "hm-lc-dim1t-fm": [],
+  "hm-lc-dim1t-pl-2": [],
+  "hm-lc-dim1t-pl-3": [],
+  "hm-lc-dim1t-pl": [],
+  "hm-lc-dim1tpbu-fm-2": [],
+  "hm-lc-dim1tpbu-fm": [],
+  "hm-lc-dim2l-sm-2": [],
+  "hm-lc-dim2l-sm": [],
+  "hm-lc-dim2t-sm-2": [],
+  "hm-lc-dim2t-sm": [],
+  "hm-lc-ja1pbu-fm": [],
+  "hm-lc-rgbw-wm": [],
+  "hm-lc-sw1-ba-pcb": [
+    {
+      "kind": "option",
+      "name": "SingleAccessory"
+    },
+    {
+      "kind": "channels",
+      "first": 1,
+      "last": {
+        "channelCountMinus": 1
+      },
+      "step": 1,
+      "dropdowns": {
+        "type": ["Switch", "Outlet", "Lightbulb", "Fan", "Valve", "ValveIrrigation"]
+      }
+    }
+  ],
+  "hm-lc-sw1-dr": [
+    {
+      "kind": "option",
+      "name": "SingleAccessory"
+    },
+    {
+      "kind": "channels",
+      "first": 1,
+      "last": {
+        "channelCountMinus": 1
+      },
+      "step": 1,
+      "dropdowns": {
+        "type": ["Switch", "Outlet", "Lightbulb", "Fan", "Valve", "ValveIrrigation"]
+      }
+    }
+  ],
+  "hm-lc-sw1-fm-2": [
+    {
+      "kind": "option",
+      "name": "SingleAccessory"
+    },
+    {
+      "kind": "channels",
+      "first": 1,
+      "last": {
+        "channelCountMinus": 1
+      },
+      "step": 1,
+      "dropdowns": {
+        "type": ["Switch", "Outlet", "Lightbulb", "Fan", "Valve", "ValveIrrigation"]
+      }
+    }
+  ],
+  "hm-lc-sw1-fm": [
+    {
+      "kind": "option",
+      "name": "SingleAccessory"
+    },
+    {
+      "kind": "channels",
+      "first": 1,
+      "last": {
+        "channelCountMinus": 1
+      },
+      "step": 1,
+      "dropdowns": {
+        "type": ["Switch", "Outlet", "Lightbulb", "Fan", "Valve", "ValveIrrigation"]
+      }
+    }
+  ],
+  "hm-lc-sw1-pb-fm": [
+    {
+      "kind": "option",
+      "name": "SingleAccessory"
+    },
+    {
+      "kind": "channels",
+      "first": 1,
+      "last": {
+        "channelCountMinus": 1
+      },
+      "step": 1,
+      "dropdowns": {
+        "type": ["Switch", "Outlet", "Lightbulb", "Fan", "Valve", "ValveIrrigation"]
+      }
+    }
+  ],
+  "hm-lc-sw1-pcb": [
+    {
+      "kind": "option",
+      "name": "SingleAccessory"
+    },
+    {
+      "kind": "channels",
+      "first": 1,
+      "last": {
+        "channelCountMinus": 1
+      },
+      "step": 1,
+      "dropdowns": {
+        "type": ["Switch", "Outlet", "Lightbulb", "Fan", "Valve", "ValveIrrigation"]
+      }
+    }
+  ],
+  "hm-lc-sw1-pl-2": [
+    {
+      "kind": "option",
+      "name": "SingleAccessory"
+    },
+    {
+      "kind": "channels",
+      "first": 1,
+      "last": {
+        "channelCountMinus": 1
+      },
+      "step": 1,
+      "dropdowns": {
+        "type": ["Switch", "Outlet", "Lightbulb", "Fan", "Valve", "ValveIrrigation"]
+      }
+    }
+  ],
+  "hm-lc-sw1-pl-3": [
+    {
+      "kind": "option",
+      "name": "SingleAccessory"
+    },
+    {
+      "kind": "channels",
+      "first": 1,
+      "last": {
+        "channelCountMinus": 1
+      },
+      "step": 1,
+      "dropdowns": {
+        "type": ["Switch", "Outlet", "Lightbulb", "Fan", "Valve", "ValveIrrigation"]
+      }
+    }
+  ],
+  "hm-lc-sw1-pl-ct-r1": [
+    {
+      "kind": "option",
+      "name": "SingleAccessory"
+    },
+    {
+      "kind": "channels",
+      "first": 1,
+      "last": {
+        "channelCountMinus": 1
+      },
+      "step": 1,
+      "dropdowns": {
+        "type": ["Switch", "Outlet", "Lightbulb", "Fan", "Valve", "ValveIrrigation"]
+      }
+    }
+  ],
+  "hm-lc-sw1-pl-ct-r2": [
+    {
+      "kind": "option",
+      "name": "SingleAccessory"
+    },
+    {
+      "kind": "channels",
+      "first": 1,
+      "last": {
+        "channelCountMinus": 1
+      },
+      "step": 1,
+      "dropdowns": {
+        "type": ["Switch", "Outlet", "Lightbulb", "Fan", "Valve", "ValveIrrigation"]
+      }
+    }
+  ],
+  "hm-lc-sw1-pl-ct-r3": [
+    {
+      "kind": "option",
+      "name": "SingleAccessory"
+    },
+    {
+      "kind": "channels",
+      "first": 1,
+      "last": {
+        "channelCountMinus": 1
+      },
+      "step": 1,
+      "dropdowns": {
+        "type": ["Switch", "Outlet", "Lightbulb", "Fan", "Valve", "ValveIrrigation"]
+      }
+    }
+  ],
+  "hm-lc-sw1-pl-ct-r4": [
+    {
+      "kind": "option",
+      "name": "SingleAccessory"
+    },
+    {
+      "kind": "channels",
+      "first": 1,
+      "last": {
+        "channelCountMinus": 1
+      },
+      "step": 1,
+      "dropdowns": {
+        "type": ["Switch", "Outlet", "Lightbulb", "Fan", "Valve", "ValveIrrigation"]
+      }
+    }
+  ],
+  "hm-lc-sw1-pl-ct-r5": [
+    {
+      "kind": "option",
+      "name": "SingleAccessory"
+    },
+    {
+      "kind": "channels",
+      "first": 1,
+      "last": {
+        "channelCountMinus": 1
+      },
+      "step": 1,
+      "dropdowns": {
+        "type": ["Switch", "Outlet", "Lightbulb", "Fan", "Valve", "ValveIrrigation"]
+      }
+    }
+  ],
+  "hm-lc-sw1-pl-dn-r1": [
+    {
+      "kind": "option",
+      "name": "SingleAccessory"
+    },
+    {
+      "kind": "channels",
+      "first": 1,
+      "last": {
+        "channelCountMinus": 1
+      },
+      "step": 1,
+      "dropdowns": {
+        "type": ["Switch", "Outlet", "Lightbulb", "Fan", "Valve", "ValveIrrigation"]
+      }
+    }
+  ],
+  "hm-lc-sw1-pl-dn-r2": [
+    {
+      "kind": "option",
+      "name": "SingleAccessory"
+    },
+    {
+      "kind": "channels",
+      "first": 1,
+      "last": {
+        "channelCountMinus": 1
+      },
+      "step": 1,
+      "dropdowns": {
+        "type": ["Switch", "Outlet", "Lightbulb", "Fan", "Valve", "ValveIrrigation"]
+      }
+    }
+  ],
+  "hm-lc-sw1-pl-dn-r3": [
+    {
+      "kind": "option",
+      "name": "SingleAccessory"
+    },
+    {
+      "kind": "channels",
+      "first": 1,
+      "last": {
+        "channelCountMinus": 1
+      },
+      "step": 1,
+      "dropdowns": {
+        "type": ["Switch", "Outlet", "Lightbulb", "Fan", "Valve", "ValveIrrigation"]
+      }
+    }
+  ],
+  "hm-lc-sw1-pl-dn-r4": [
+    {
+      "kind": "option",
+      "name": "SingleAccessory"
+    },
+    {
+      "kind": "channels",
+      "first": 1,
+      "last": {
+        "channelCountMinus": 1
+      },
+      "step": 1,
+      "dropdowns": {
+        "type": ["Switch", "Outlet", "Lightbulb", "Fan", "Valve", "ValveIrrigation"]
+      }
+    }
+  ],
+  "hm-lc-sw1-pl-dn-r5": [
+    {
+      "kind": "option",
+      "name": "SingleAccessory"
+    },
+    {
+      "kind": "channels",
+      "first": 1,
+      "last": {
+        "channelCountMinus": 1
+      },
+      "step": 1,
+      "dropdowns": {
+        "type": ["Switch", "Outlet", "Lightbulb", "Fan", "Valve", "ValveIrrigation"]
+      }
+    }
+  ],
+  "hm-lc-sw1-pl-om54": [
+    {
+      "kind": "option",
+      "name": "SingleAccessory"
+    },
+    {
+      "kind": "channels",
+      "first": 1,
+      "last": {
+        "channelCountMinus": 1
+      },
+      "step": 1,
+      "dropdowns": {
+        "type": ["Switch", "Outlet", "Lightbulb", "Fan", "Valve", "ValveIrrigation"]
+      }
+    }
+  ],
+  "hm-lc-sw1-pl": [
+    {
+      "kind": "option",
+      "name": "SingleAccessory"
+    },
+    {
+      "kind": "channels",
+      "first": 1,
+      "last": {
+        "channelCountMinus": 1
+      },
+      "step": 1,
+      "dropdowns": {
+        "type": ["Switch", "Outlet", "Lightbulb", "Fan", "Valve", "ValveIrrigation"]
+      }
+    }
+  ],
+  "hm-lc-sw1-sm-2": [
+    {
+      "kind": "option",
+      "name": "SingleAccessory"
+    },
+    {
+      "kind": "channels",
+      "first": 1,
+      "last": {
+        "channelCountMinus": 1
+      },
+      "step": 1,
+      "dropdowns": {
+        "type": ["Switch", "Outlet", "Lightbulb", "Fan", "Valve", "ValveIrrigation"]
+      }
+    }
+  ],
+  "hm-lc-sw1-sm": [
+    {
+      "kind": "option",
+      "name": "SingleAccessory"
+    },
+    {
+      "kind": "channels",
+      "first": 1,
+      "last": {
+        "channelCountMinus": 1
+      },
+      "step": 1,
+      "dropdowns": {
+        "type": ["Switch", "Outlet", "Lightbulb", "Fan", "Valve", "ValveIrrigation"]
+      }
+    }
+  ],
+  "hm-lc-sw1pbu-fm": [
+    {
+      "kind": "option",
+      "name": "SingleAccessory"
+    },
+    {
+      "kind": "channels",
+      "first": 1,
+      "last": {
+        "channelCountMinus": 1
+      },
+      "step": 1,
+      "dropdowns": {
+        "type": ["Switch", "Outlet", "Lightbulb", "Fan", "Valve", "ValveIrrigation"]
+      }
+    }
+  ],
+  "hm-lc-sw2-dr-2": [
+    {
+      "kind": "option",
+      "name": "SingleAccessory"
+    },
+    {
+      "kind": "channels",
+      "first": 1,
+      "last": {
+        "channelCountMinus": 1
+      },
+      "step": 1,
+      "dropdowns": {
+        "type": ["Switch", "Outlet", "Lightbulb", "Fan", "Valve", "ValveIrrigation"]
+      }
+    }
+  ],
+  "hm-lc-sw2-dr": [
+    {
+      "kind": "option",
+      "name": "SingleAccessory"
+    },
+    {
+      "kind": "channels",
+      "first": 1,
+      "last": {
+        "channelCountMinus": 1
+      },
+      "step": 1,
+      "dropdowns": {
+        "type": ["Switch", "Outlet", "Lightbulb", "Fan", "Valve", "ValveIrrigation"]
+      }
+    }
+  ],
+  "hm-lc-sw2-fm-2": [
+    {
+      "kind": "option",
+      "name": "SingleAccessory"
+    },
+    {
+      "kind": "channels",
+      "first": 1,
+      "last": {
+        "channelCountMinus": 1
+      },
+      "step": 1,
+      "dropdowns": {
+        "type": ["Switch", "Outlet", "Lightbulb", "Fan", "Valve", "ValveIrrigation"]
+      }
+    }
+  ],
+  "hm-lc-sw2-fm": [
+    {
+      "kind": "option",
+      "name": "SingleAccessory"
+    },
+    {
+      "kind": "channels",
+      "first": 1,
+      "last": {
+        "channelCountMinus": 1
+      },
+      "step": 1,
+      "dropdowns": {
+        "type": ["Switch", "Outlet", "Lightbulb", "Fan", "Valve", "ValveIrrigation"]
+      }
+    }
+  ],
+  "hm-lc-sw2-pb-fm": [
+    {
+      "kind": "option",
+      "name": "SingleAccessory"
+    },
+    {
+      "kind": "channels",
+      "first": 1,
+      "last": {
+        "channelCountMinus": 1
+      },
+      "step": 1,
+      "dropdowns": {
+        "type": ["Switch", "Outlet", "Lightbulb", "Fan", "Valve", "ValveIrrigation"]
+      }
+    }
+  ],
+  "hm-lc-sw2pbu-fm": [
+    {
+      "kind": "option",
+      "name": "SingleAccessory"
+    },
+    {
+      "kind": "channels",
+      "first": 1,
+      "last": {
+        "channelCountMinus": 1
+      },
+      "step": 1,
+      "dropdowns": {
+        "type": ["Switch", "Outlet", "Lightbulb", "Fan", "Valve", "ValveIrrigation"]
+      }
+    }
+  ],
+  "hm-lc-sw4-ba-pcb": [
+    {
+      "kind": "option",
+      "name": "SingleAccessory"
+    },
+    {
+      "kind": "channels",
+      "first": 1,
+      "last": {
+        "channelCountMinus": 1
+      },
+      "step": 1,
+      "dropdowns": {
+        "type": ["Switch", "Outlet", "Lightbulb", "Fan", "Valve", "ValveIrrigation"]
+      }
+    }
+  ],
+  "hm-lc-sw4-dr-2": [
+    {
+      "kind": "option",
+      "name": "SingleAccessory"
+    },
+    {
+      "kind": "channels",
+      "first": 1,
+      "last": {
+        "channelCountMinus": 1
+      },
+      "step": 1,
+      "dropdowns": {
+        "type": ["Switch", "Outlet", "Lightbulb", "Fan", "Valve", "ValveIrrigation"]
+      }
+    }
+  ],
+  "hm-lc-sw4-dr": [
+    {
+      "kind": "option",
+      "name": "SingleAccessory"
+    },
+    {
+      "kind": "channels",
+      "first": 1,
+      "last": {
+        "channelCountMinus": 1
+      },
+      "step": 1,
+      "dropdowns": {
+        "type": ["Switch", "Outlet", "Lightbulb", "Fan", "Valve", "ValveIrrigation"]
+      }
+    }
+  ],
+  "hm-lc-sw4-pcb-2": [
+    {
+      "kind": "option",
+      "name": "SingleAccessory"
+    },
+    {
+      "kind": "channels",
+      "first": 1,
+      "last": {
+        "channelCountMinus": 1
+      },
+      "step": 1,
+      "dropdowns": {
+        "type": ["Switch", "Outlet", "Lightbulb", "Fan", "Valve", "ValveIrrigation"]
+      }
+    }
+  ],
+  "hm-lc-sw4-pcb": [
+    {
+      "kind": "option",
+      "name": "SingleAccessory"
+    },
+    {
+      "kind": "channels",
+      "first": 1,
+      "last": {
+        "channelCountMinus": 1
+      },
+      "step": 1,
+      "dropdowns": {
+        "type": ["Switch", "Outlet", "Lightbulb", "Fan", "Valve", "ValveIrrigation"]
+      }
+    }
+  ],
+  "hm-lc-sw4-sm-2": [
+    {
+      "kind": "option",
+      "name": "SingleAccessory"
+    },
+    {
+      "kind": "channels",
+      "first": 1,
+      "last": {
+        "channelCountMinus": 1
+      },
+      "step": 1,
+      "dropdowns": {
+        "type": ["Switch", "Outlet", "Lightbulb", "Fan", "Valve", "ValveIrrigation"]
+      }
+    }
+  ],
+  "hm-lc-sw4-sm": [
+    {
+      "kind": "option",
+      "name": "SingleAccessory"
+    },
+    {
+      "kind": "channels",
+      "first": 1,
+      "last": {
+        "channelCountMinus": 1
+      },
+      "step": 1,
+      "dropdowns": {
+        "type": ["Switch", "Outlet", "Lightbulb", "Fan", "Valve", "ValveIrrigation"]
+      }
+    }
+  ],
+  "hm-lc-sw4-wm-2": [
+    {
+      "kind": "option",
+      "name": "SingleAccessory"
+    },
+    {
+      "kind": "channels",
+      "first": 1,
+      "last": {
+        "channelCountMinus": 1
+      },
+      "step": 1,
+      "dropdowns": {
+        "type": ["Switch", "Outlet", "Lightbulb", "Fan", "Valve", "ValveIrrigation"]
+      }
+    }
+  ],
+  "hm-lc-sw4-wm": [
+    {
+      "kind": "option",
+      "name": "SingleAccessory"
+    },
+    {
+      "kind": "channels",
+      "first": 1,
+      "last": {
+        "channelCountMinus": 1
+      },
+      "step": 1,
+      "dropdowns": {
+        "type": ["Switch", "Outlet", "Lightbulb", "Fan", "Valve", "ValveIrrigation"]
+      }
+    }
+  ],
+  "hm-mod-re-8": [
+    {
+      "kind": "option",
+      "name": "SingleAccessory"
+    },
+    {
+      "kind": "channels",
+      "first": 1,
+      "last": {
+        "channelCountMinus": 1
+      },
+      "step": 1,
+      "dropdowns": {
+        "type": ["Switch", "Outlet", "Lightbulb", "Fan", "Valve", "ValveIrrigation"]
+      }
+    }
+  ],
+  "hm-sci-3-fm": [
+    {
+      "kind": "channels",
+      "first": 1,
+      "last": 3,
+      "step": 1,
+      "dropdowns": {
+        "type": ["ContactSensor", "Door", "Window"]
+      }
+    }
+  ],
+  "hm-sec-key-o": [
+    {
+      "kind": "option",
+      "name": "OpenOnUnlock"
+    }
+  ],
+  "hm-sec-key-s": [
+    {
+      "kind": "option",
+      "name": "OpenOnUnlock"
+    }
+  ],
+  "hm-sec-key": [
+    {
+      "kind": "option",
+      "name": "OpenOnUnlock"
+    }
+  ],
+  "hm-sec-mdir-2": [
+    {
+      "kind": "option",
+      "name": "LightSensor"
+    }
+  ],
+  "hm-sec-mdir-3": [
+    {
+      "kind": "option",
+      "name": "LightSensor"
+    }
+  ],
+  "hm-sec-mdir": [
+    {
+      "kind": "option",
+      "name": "LightSensor"
+    }
+  ],
+  "hm-sec-rhs-2": [
+    {
+      "kind": "channels",
+      "first": 1,
+      "last": 1,
+      "step": 1,
+      "dropdowns": {
+        "type": ["ContactSensor", "Door", "Window"]
+      }
+    }
+  ],
+  "hm-sec-rhs": [
+    {
+      "kind": "channels",
+      "first": 1,
+      "last": 1,
+      "step": 1,
+      "dropdowns": {
+        "type": ["ContactSensor", "Door", "Window"]
+      }
+    }
+  ],
+  "hm-sec-sc-2": [
+    {
+      "kind": "channels",
+      "first": 1,
+      "last": 1,
+      "step": 1,
+      "dropdowns": {
+        "type": ["ContactSensor", "Door", "Window", "GarageDoorOpener"]
+      }
+    }
+  ],
+  "hm-sec-sc": [
+    {
+      "kind": "channels",
+      "first": 1,
+      "last": 1,
+      "step": 1,
+      "dropdowns": {
+        "type": ["ContactSensor", "Door", "Window", "GarageDoorOpener"]
+      }
+    }
+  ],
+  "hm-sec-sco": [
+    {
+      "kind": "channels",
+      "first": 1,
+      "last": 1,
+      "step": 1,
+      "dropdowns": {
+        "type": ["ContactSensor", "Door", "Window", "GarageDoorOpener"]
+      }
+    }
+  ],
+  "zel_stg_rm_ffk": [
+    {
+      "kind": "channels",
+      "first": 1,
+      "last": 1,
+      "step": 1,
+      "dropdowns": {
+        "type": ["ContactSensor", "Door", "Window", "GarageDoorOpener"]
+      }
+    }
+  ],
+  "hm-sec-sd-2": [],
+  "hm-sec-sd": [],
+  "hm-sec-tis": [
+    {
+      "kind": "channels",
+      "first": 1,
+      "last": 1,
+      "step": 1,
+      "dropdowns": {
+        "type": ["ContactSensor", "Door", "Window", "GarageDoorOpener"]
+      }
+    }
+  ],
+  "hm-sec-wds-2": [],
+  "hm-sec-wds": [],
+  "hm-sec-win": [
+    {
+      "kind": "option",
+      "name": "LockOnClose"
+    }
+  ],
+  "hm-sen-db-pcb": [],
+  "hm-sen-li-o": [],
+  "hm-sen-mdir-o-2": [
+    {
+      "kind": "option",
+      "name": "LightSensor"
+    }
+  ],
+  "hm-sen-mdir-o-3": [
+    {
+      "kind": "option",
+      "name": "LightSensor"
+    }
+  ],
+  "hm-sen-mdir-o": [
+    {
+      "kind": "option",
+      "name": "LightSensor"
+    }
+  ],
+  "hm-sen-mdir-sm": [
+    {
+      "kind": "option",
+      "name": "LightSensor"
+    }
+  ],
+  "hm-sen-mdir-wm55": [
+    {
+      "kind": "option",
+      "name": "LightSensor"
+    }
+  ],
+  "hm-tc-it-wm-w-eu": [
+    {
+      "kind": "option",
+      "name": "BoostSwitch"
+    },
+    {
+      "kind": "option",
+      "name": "HumiditySensor"
+    }
+  ],
+  "hm-cc-vg-1": [
+    {
+      "kind": "option",
+      "name": "BoostSwitch"
+    },
+    {
+      "kind": "option",
+      "name": "HumiditySensor"
+    }
+  ],
+  "hm-wds10-th-o": [
+    {
+      "kind": "option",
+      "name": "HumiditySensor"
+    }
+  ],
+  "hm-wds100-c6-o-2": [
+    {
+      "kind": "option",
+      "name": "HumiditySensor"
+    },
+    {
+      "kind": "option",
+      "name": "LightSensor"
+    }
+  ],
+  "hm-wds100-c6-o": [
+    {
+      "kind": "option",
+      "name": "HumiditySensor"
+    },
+    {
+      "kind": "option",
+      "name": "LightSensor"
+    }
+  ],
+  "hm-wds20-th-o": [
+    {
+      "kind": "option",
+      "name": "HumiditySensor"
+    }
+  ],
+  "hm-wds30-ot2-sm-2": [
+    {
+      "kind": "channels",
+      "first": 1,
+      "last": 5,
+      "step": 1,
+      "dropdowns": null
+    }
+  ],
+  "hm-wds30-ot2-sm": [
+    {
+      "kind": "channels",
+      "first": 1,
+      "last": 5,
+      "step": 1,
+      "dropdowns": null
+    }
+  ],
+  "hm-wds30-t-o": [],
+  "hm-wds40-th-i-2": [
+    {
+      "kind": "option",
+      "name": "HumiditySensor"
+    }
+  ],
+  "hm-wds40-th-i": [
+    {
+      "kind": "option",
+      "name": "HumiditySensor"
+    }
+  ],
+  "hm-ws550st-io": [],
+  "hm-ws550sth-i": [
+    {
+      "kind": "option",
+      "name": "HumiditySensor"
+    }
+  ],
+  "hm-ws550sth-o": [
+    {
+      "kind": "option",
+      "name": "HumiditySensor"
+    }
+  ],
+  "hmip-bdt": [
+    {
+      "kind": "virtual",
+      "first": 4,
+      "last": 4,
+      "step": 1,
+      "dropdowns": null
+    }
+  ],
+  "hmip-bsl": [],
+  "hmip-bsm": [
+    {
+      "kind": "channels",
+      "first": 4,
+      "last": 4,
+      "step": 1,
+      "dropdowns": {
+        "type": ["Switch", "Outlet", "Lightbulb", "Fan", "Valve", "ValveIrrigation"]
+      }
+    }
+  ],
+  "hmip-bwth": [
+    {
+      "kind": "option",
+      "name": "BoostSwitch"
+    },
+    {
+      "kind": "option",
+      "name": "HumiditySensor"
+    }
+  ],
+  "hmip-bwth24": [
+    {
+      "kind": "option",
+      "name": "BoostSwitch"
+    },
+    {
+      "kind": "option",
+      "name": "HumiditySensor"
+    }
+  ],
+  "hmip-heating": [
+    {
+      "kind": "option",
+      "name": "BoostSwitch"
+    },
+    {
+      "kind": "option",
+      "name": "HumiditySensor"
+    }
+  ],
+  "hmip-dbb": [],
+  "hmip-drsi1": [
+    {
+      "kind": "virtual",
+      "first": 3,
+      "last": 3,
+      "step": 1,
+      "dropdowns": {
+        "type": ["Switch", "Outlet", "Lightbulb", "Fan", "Valve", "ValveIrrigation"]
+      }
+    }
+  ],
+  "hmip-drsi4": [
+    {
+      "kind": "option",
+      "name": "SingleAccessory"
+    },
+    {
+      "kind": "virtual",
+      "first": 6,
+      "last": 20,
+      "step": 4,
+      "dropdowns": {
+        "type": ["Switch", "Outlet", "Lightbulb", "Fan", "Valve", "ValveIrrigation"]
+      }
+    }
+  ],
+  "hmip-etrv-2": [
+    {
+      "kind": "option",
+      "name": "BoostSwitch"
+    }
+  ],
+  "hmip-etrv-b": [
+    {
+      "kind": "option",
+      "name": "BoostSwitch"
+    }
+  ],
+  "hmip-etrv-b1": [
+    {
+      "kind": "option",
+      "name": "BoostSwitch"
+    }
+  ],
+  "hmip-etrv-c": [
+    {
+      "kind": "option",
+      "name": "BoostSwitch"
+    }
+  ],
+  "hmip-etrv": [
+    {
+      "kind": "option",
+      "name": "BoostSwitch"
+    }
+  ],
+  "hmip-bbl": [
+    {
+      "kind": "virtual",
+      "first": 4,
+      "last": 4,
+      "step": 1,
+      "dropdowns": {
+        "type": ["VerticalTilt Enabled", "VerticalTilt Disabled"]
+      }
+    }
+  ],
+  "hmip-fbl": [
+    {
+      "kind": "virtual",
+      "first": 4,
+      "last": 4,
+      "step": 1,
+      "dropdowns": {
+        "type": ["VerticalTilt Enabled", "VerticalTilt Disabled"]
+      }
+    }
+  ],
+  "hmip-froll": [
+    {
+      "kind": "virtual",
+      "first": 4,
+      "last": 4,
+      "step": 1,
+      "dropdowns": null
+    }
+  ],
+  "hmip-broll": [
+    {
+      "kind": "virtual",
+      "first": 4,
+      "last": 4,
+      "step": 1,
+      "dropdowns": null
+    }
+  ],
+  "hmip-fci1": [
+    {
+      "kind": "channels",
+      "first": 1,
+      "last": 1,
+      "step": 1,
+      "dropdowns": {
+        "type": ["ContactSensor", "Door", "Window"]
+      }
+    }
+  ],
+  "hmip-fdt": [
+    {
+      "kind": "virtual",
+      "first": 2,
+      "last": 2,
+      "step": 1,
+      "dropdowns": null
+    }
+  ],
+  "hmip-fsm": [
+    {
+      "kind": "channels",
+      "first": 2,
+      "last": 2,
+      "step": 1,
+      "dropdowns": {
+        "type": ["Switch", "Outlet", "Lightbulb", "Fan", "Valve", "ValveIrrigation"]
+      }
+    }
+  ],
+  "hmip-fsm16": [
+    {
+      "kind": "channels",
+      "first": 2,
+      "last": 2,
+      "step": 1,
+      "dropdowns": {
+        "type": ["Switch", "Outlet", "Lightbulb", "Fan", "Valve", "ValveIrrigation"]
+      }
+    }
+  ],
+  "hmip-fsi16": [
+    {
+      "kind": "virtual",
+      "first": 3,
+      "last": 3,
+      "step": 1,
+      "dropdowns": {
+        "type": ["Switch", "Outlet", "Lightbulb", "Fan", "Valve", "ValveIrrigation"]
+      }
+    }
+  ],
+  "hmip-mod-oc8": [
+    {
+      "kind": "option",
+      "name": "SingleAccessory"
+    },
+    {
+      "kind": "virtual",
+      "first": 10,
+      "last": {
+        "channelCountMinus": 2
+      },
+      "step": 4,
+      "dropdowns": {
+        "type": ["Switch", "Outlet", "Lightbulb", "Fan", "Valve", "ValveIrrigation"]
+      }
+    }
+  ],
+  "hmip-pcbs-bat": [
+    {
+      "kind": "channels",
+      "first": 3,
+      "last": 3,
+      "step": 1,
+      "dropdowns": {
+        "type": ["Switch", "Outlet", "Lightbulb", "Fan", "Valve", "ValveIrrigation"]
+      }
+    }
+  ],
+  "hmip-pcbs": [
+    {
+      "kind": "channels",
+      "first": 3,
+      "last": 3,
+      "step": 1,
+      "dropdowns": {
+        "type": ["Switch", "Outlet", "Lightbulb", "Fan", "Valve", "ValveIrrigation"]
+      }
+    }
+  ],
+  "hmip-pcbs2": [
+    {
+      "kind": "channels",
+      "first": 4,
+      "last": 4,
+      "step": 1,
+      "dropdowns": {
+        "type": ["Switch", "Outlet", "Lightbulb", "Fan", "Valve", "ValveIrrigation"]
+      }
+    },
+    {
+      "kind": "channels",
+      "first": 8,
+      "last": 8,
+      "step": 1,
+      "dropdowns": {
+        "type": ["Switch", "Outlet", "Lightbulb", "Fan", "Valve", "ValveIrrigation"]
+      }
+    }
+  ],
+  "hmip-pdt": [
+    {
+      "kind": "virtual",
+      "first": 3,
+      "last": 3,
+      "step": 1,
+      "dropdowns": null
+    }
+  ],
+  "hmip-ps": [
+    {
+      "kind": "channels",
+      "first": 3,
+      "last": 3,
+      "step": 1,
+      "dropdowns": {
+        "type": ["Outlet", "Switch", "Lightbulb", "Fan", "Valve", "ValveIrrigation"]
+      }
+    }
+  ],
+  "hmip-psm": [
+    {
+      "kind": "channels",
+      "first": 3,
+      "last": 3,
+      "step": 1,
+      "dropdowns": {
+        "type": ["Outlet", "Switch", "Lightbulb", "Fan", "Valve", "ValveIrrigation"]
+      }
+    }
+  ],
+  "hmip-sam": [
+    {
+      "kind": "channels",
+      "first": 1,
+      "last": 1,
+      "step": 1,
+      "dropdowns": {
+        "type": ["ContactSensor", "Door", "Window", "GarageDoorOpener"]
+      }
+    }
+  ],
+  "hmip-slo": [],
+  "hmip-smo-a": [
+    {
+      "kind": "option",
+      "name": "LightSensor"
+    }
+  ],
+  "hmip-smo": [
+    {
+      "kind": "option",
+      "name": "LightSensor"
+    }
+  ],
+  "hmip-smi": [
+    {
+      "kind": "option",
+      "name": "LightSensor"
+    }
+  ],
+  "hmip-smi55": [
+    {
+      "kind": "option",
+      "name": "LightSensor"
+    }
+  ],
+  "hmip-spdr": [],
+  "hmip-spi": [
+    {
+      "kind": "option",
+      "name": "LightSensor"
+    }
+  ],
+  "hmip-srh": [
+    {
+      "kind": "channels",
+      "first": 1,
+      "last": 1,
+      "step": 1,
+      "dropdowns": {
+        "type": ["ContactSensor", "Door", "Window"]
+      }
+    }
+  ],
+  "hmip-ste2-pcb": [
+    {
+      "kind": "channels",
+      "first": 1,
+      "last": 3,
+      "step": 1,
+      "dropdowns": null
+    }
+  ],
+  "hmip-sth": [
+    {
+      "kind": "option",
+      "name": "Thermostat"
+    },
+    {
+      "kind": "option",
+      "name": "BoostSwitch"
+    },
+    {
+      "kind": "option",
+      "name": "HumiditySensor"
+    }
+  ],
+  "hmip-sthd": [
+    {
+      "kind": "option",
+      "name": "Thermostat"
+    },
+    {
+      "kind": "option",
+      "name": "BoostSwitch"
+    },
+    {
+      "kind": "option",
+      "name": "HumiditySensor"
+    }
+  ],
+  "hmip-stho-a": [
+    {
+      "kind": "option",
+      "name": "HumiditySensor"
+    }
+  ],
+  "hmip-stho": [
+    {
+      "kind": "option",
+      "name": "HumiditySensor"
+    }
+  ],
+  "hmip-swd": [],
+  "hmip-sci": [
+    {
+      "kind": "channels",
+      "first": 1,
+      "last": 1,
+      "step": 1,
+      "dropdowns": {
+        "type": ["ContactSensor", "Door", "Window", "GarageDoorOpener"]
+      }
+    }
+  ],
+  "hmip-swdm-b": [
+    {
+      "kind": "channels",
+      "first": 1,
+      "last": 1,
+      "step": 1,
+      "dropdowns": {
+        "type": ["ContactSensor", "Door", "Window", "GarageDoorOpener"]
+      }
+    }
+  ],
+  "hmip-swdm-b1": [
+    {
+      "kind": "channels",
+      "first": 1,
+      "last": 1,
+      "step": 1,
+      "dropdowns": {
+        "type": ["ContactSensor", "Door", "Window", "GarageDoorOpener"]
+      }
+    }
+  ],
+  "hmip-swdm-b2": [
+    {
+      "kind": "channels",
+      "first": 1,
+      "last": 1,
+      "step": 1,
+      "dropdowns": {
+        "type": ["ContactSensor", "Door", "Window", "GarageDoorOpener"]
+      }
+    }
+  ],
+  "hmip-swdm": [
+    {
+      "kind": "channels",
+      "first": 1,
+      "last": 1,
+      "step": 1,
+      "dropdowns": {
+        "type": ["ContactSensor", "Door", "Window", "GarageDoorOpener"]
+      }
+    }
+  ],
+  "hmip-swdo-i": [
+    {
+      "kind": "channels",
+      "first": 1,
+      "last": 1,
+      "step": 1,
+      "dropdowns": {
+        "type": ["ContactSensor", "Door", "Window", "GarageDoorOpener"]
+      }
+    }
+  ],
+  "hmip-swdo": [
+    {
+      "kind": "channels",
+      "first": 1,
+      "last": 1,
+      "step": 1,
+      "dropdowns": {
+        "type": ["ContactSensor", "Door", "Window", "GarageDoorOpener"]
+      }
+    }
+  ],
+  "hmip-swdo-pl": [
+    {
+      "kind": "channels",
+      "first": 1,
+      "last": 1,
+      "step": 1,
+      "dropdowns": {
+        "type": ["ContactSensor", "Door", "Window", "GarageDoorOpener"]
+      }
+    }
+  ],
+  "hmip-swo-b": [
+    {
+      "kind": "option",
+      "name": "HumiditySensor"
+    },
+    {
+      "kind": "option",
+      "name": "LightSensor"
+    }
+  ],
+  "hmip-swo-pl": [
+    {
+      "kind": "option",
+      "name": "HumiditySensor"
+    },
+    {
+      "kind": "option",
+      "name": "LightSensor"
+    }
+  ],
+  "hmip-swo-pr": [
+    {
+      "kind": "option",
+      "name": "HumiditySensor"
+    },
+    {
+      "kind": "option",
+      "name": "LightSensor"
+    }
+  ],
+  "hmip-swsd": [],
+  "hmip-whs2": [
+    {
+      "kind": "option",
+      "name": "SingleAccessory"
+    },
+    {
+      "kind": "virtual",
+      "first": 2,
+      "last": {
+        "channelCountMinus": 2
+      },
+      "step": 4,
+      "dropdowns": {
+        "type": ["Switch", "Outlet", "Lightbulb", "Fan", "Valve", "ValveIrrigation"]
+      }
+    }
+  ],
+  "hmip-wth-b": [
+    {
+      "kind": "option",
+      "name": "BoostSwitch"
+    },
+    {
+      "kind": "option",
+      "name": "HumiditySensor"
+    }
+  ],
+  "hmip-wth-2": [
+    {
+      "kind": "option",
+      "name": "BoostSwitch"
+    },
+    {
+      "kind": "option",
+      "name": "HumiditySensor"
+    }
+  ],
+  "hmip-wth": [
+    {
+      "kind": "option",
+      "name": "BoostSwitch"
+    },
+    {
+      "kind": "option",
+      "name": "HumiditySensor"
+    }
+  ],
+  "hmw-io-12-sw7-dr": [
+    {
+      "kind": "option",
+      "name": "SingleAccessory"
+    },
+    {
+      "kind": "channels",
+      "first": 13,
+      "last": 19,
+      "step": 1,
+      "dropdowns": {
+        "type": ["Switch", "Outlet", "Lightbulb", "Fan", "Valve", "ValveIrrigation"]
+      }
+    }
+  ],
+  "hmw-lc-bl1-dr-2": [],
+  "hmw-lc-bl1-dr": [],
+  "hmw-lc-dim1l-dr": [],
+  "hmw-lc-sw2-dr": [
+    {
+      "kind": "option",
+      "name": "SingleAccessory"
+    },
+    {
+      "kind": "channels",
+      "first": 3,
+      "last": 4,
+      "step": 1,
+      "dropdowns": {
+        "type": ["Switch", "Outlet", "Lightbulb", "Fan", "Valve", "ValveIrrigation"]
+      }
+    }
+  ],
+  "hmw-sen-sc-12-dr": [
+    {
+      "kind": "option",
+      "name": "SingleAccessory"
+    },
+    {
+      "kind": "channels",
+      "first": 1,
+      "last": 12,
+      "step": 1,
+      "dropdowns": {
+        "type": ["ContactSensor", "Door", "Window"]
+      }
+    }
+  ],
+  "hmw-sen-sc-12-fm": [
+    {
+      "kind": "option",
+      "name": "SingleAccessory"
+    },
+    {
+      "kind": "channels",
+      "first": 1,
+      "last": 12,
+      "step": 1,
+      "dropdowns": {
+        "type": ["ContactSensor", "Door", "Window"]
+      }
+    }
+  ],
+  "hmipw-drd3": [
+    {
+      "kind": "virtual",
+      "first": 2,
+      "last": 12,
+      "step": 4,
+      "dropdowns": null
+    }
+  ],
+  "hmipw-drs4": [
+    {
+      "kind": "option",
+      "name": "SingleAccessory"
+    },
+    {
+      "kind": "virtual",
+      "first": 2,
+      "last": {
+        "channelCountMinus": 2
+      },
+      "step": 4,
+      "dropdowns": {
+        "type": ["Switch", "Outlet", "Lightbulb", "Fan", "Valve", "ValveIrrigation"]
+      }
+    }
+  ],
+  "hmipw-drs8": [
+    {
+      "kind": "option",
+      "name": "SingleAccessory"
+    },
+    {
+      "kind": "virtual",
+      "first": 2,
+      "last": {
+        "channelCountMinus": 2
+      },
+      "step": 4,
+      "dropdowns": {
+        "type": ["Switch", "Outlet", "Lightbulb", "Fan", "Valve", "ValveIrrigation"]
+      }
+    }
+  ],
+  "hmipw-fio6": [
+    {
+      "kind": "option",
+      "name": "SingleAccessory"
+    },
+    {
+      "kind": "channels",
+      "first": 1,
+      "last": 6,
+      "step": 1,
+      "dropdowns": {
+        "type": ["ContactSensor", "Door", "Window"]
+      }
+    },
+    {
+      "kind": "virtual",
+      "first": 8,
+      "last": {
+        "channelCountMinus": 3
+      },
+      "step": 4,
+      "dropdowns": {
+        "type": ["Switch", "Outlet", "Lightbulb", "Fan", "Valve", "ValveIrrigation"]
+      }
+    }
+  ],
+  "hmipw-dri16": [
+    {
+      "kind": "option",
+      "name": "SingleAccessory"
+    },
+    {
+      "kind": "channels",
+      "first": 1,
+      "last": {
+        "channelCountMinus": 2
+      },
+      "step": 1,
+      "dropdowns": {
+        "type": ["ContactSensor", "Door", "Window"]
+      }
+    }
+  ],
+  "hmipw-dri32": [
+    {
+      "kind": "option",
+      "name": "SingleAccessory"
+    },
+    {
+      "kind": "channels",
+      "first": 1,
+      "last": {
+        "channelCountMinus": 2
+      },
+      "step": 1,
+      "dropdowns": {
+        "type": ["ContactSensor", "Door", "Window"]
+      }
+    }
+  ],
+  "hmip-drbli4": [
+    {
+      "kind": "virtual",
+      "first": 2,
+      "last": {
+        "channelCountMinus": 2
+      },
+      "step": 4,
+      "dropdowns": {
+        "type": ["VerticalTilt Enabled", "VerticalTilt Disabled"]
+      }
+    }
+  ],
+  "hmipw-drbl4": [
+    {
+      "kind": "virtual",
+      "first": 2,
+      "last": {
+        "channelCountMinus": 2
+      },
+      "step": 4,
+      "dropdowns": {
+        "type": ["VerticalTilt Enabled", "VerticalTilt Disabled"]
+      }
+    }
+  ]
+}

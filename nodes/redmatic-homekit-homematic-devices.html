@@ -20,673 +20,100 @@
         },
         oneditprepare() {
             const that = this;
-            let data;
-            let homematicValidDevices;
+            if (!this.devices) {
+                this.devices = {};
+            }
 
-            function addVirtualChannels(addr, first, last, step, dropdowns) {
-                if (typeof dropdowns === 'undefined' && typeof step !== 'number') {
-                    dropdowns = step;
-                    step = 1;
-                }
-                for (let i = first; i <= last; i += step) {
+            function escape(text) {
+                return $('<div>').text(String(text)).html();
+            }
 
-                    const ch = addr + ':' + i;
-                    const name = data.channelNames[ch];
-
-                    const vch1 = addr + ':' + (i + 1);
-                    const vname1 = data.channelNames[vch1];
-                    const vch2 = addr + ':' + (i + 2);
-                    const vname2 = data.channelNames[vch2];
-
+            function dropdownHtml(ch, dropdowns) {
+                let html = '';
+                Object.keys(dropdowns || {}).forEach(option => {
                     if (!that.devices[ch]) {
                         that.devices[ch] = {};
                     }
-                    if (!that.devices[vch1]) {
-                        that.devices[vch1] = {};
-                    }
-                    if (!that.devices[vch2]) {
-                        that.devices[vch2] = {};
-                    }
-
-                    let html = '';
-                    let vhtml1 = '';
-                    let vhtml2 = '';
-                    if (dropdowns) {
-                        Object.keys(dropdowns).forEach(option => {
-                            html += addDropdown(ch, option, dropdowns[option]);
-                            vhtml1 += addDropdown(vch1, option, dropdowns[option]);
-                            vhtml2 += addDropdown(vch2, option, dropdowns[option]);
-                        });
-                    }
-
-                    $('#devices').append('<tr class="device-options" data-addr="' + addr + '"><td></td><td class="text small"><input class="channel-enabled device-enabled" data-addr="' + ch + '" type="checkbox"' + (that.devices[ch].disabled ? '' : ' checked') + '>' + name + '</td><td class="text small">' + ch + '</td><td class="text small">' + html + '</td></tr>');
-                    $('#devices').append('<tr class="device-options" data-addr="' + addr + '"><td></td><td class="text small"><input class="vchannel-enabled device-enabled" data-addr="' + vch1 + '" type="checkbox"' + (that.devices[vch1].enabled ? ' checked' : '') + '>' + vname1 + '</td><td class="text small">' + vch1 + '</td><td class="text small">' + vhtml1 + '</td></tr>');
-                    $('#devices').append('<tr class="device-options" data-addr="' + addr + '"><td></td><td class="text small"><input class="vchannel-enabled device-enabled" data-addr="' + vch2 + '" type="checkbox"' + (that.devices[vch2].enabled ? ' checked' : '') + '>' + vname2 + '</td><td class="text small">' + vch2 + '</td><td class="text small">' + vhtml2 + '</td></tr>');
-                }
-            }
-
-            function addChannels(addr, first, last, step, dropdowns) {
-                if (typeof dropdowns === 'undefined' && typeof step !== 'number') {
-                    dropdowns = step;
-                    step = 1;
-                }
-                for (let i = first; i <= last; i += step) {
-
-                    const ch = addr + ':' + i;
-                    const name = data.channelNames[ch];
-                    let checked = true;
-                    if (!that.devices[ch]) {
-                        that.devices[ch] = {};
-                    }
-                    if (that.devices[ch].disabled) {
-                        checked = false;
-                    }
-                    let html = '';
-                    if (dropdowns) {
-                        Object.keys(dropdowns).forEach(option => {
-                            html += addDropdown(ch, option, dropdowns[option]);
-                        });
-                    }
-
-                    const disabled = first === last ? ' disabled' : '';
-
-                    $('#devices').append('<tr class="device-options" data-addr="' + addr + '"><td></td><td class="text small"><input class="channel-enabled device-enabled" data-addr="' + ch + '" type="checkbox"' + (checked ? ' checked' : '') + disabled + '>' + name + '</td><td class="text small">' + ch + '</td><td class="text small">' + html + '</td></tr>');
-
-
-                }
-            }
-
-            function addOption(addr, option) {
-                const ch = addr + ':' + option;
-                let checked = true;
-                if (!that.devices[ch]) {
-                    that.devices[ch] = {};
-                }
-                if (that.devices[ch].disabled) {
-                    checked = false;
-                }
-                $('#devices').append('<tr class="device-options" data-addr="' + addr + '"><td></td><td class="text small"><input class="channel-enabled device-enabled" data-addr="' + ch + '" type="checkbox"' + (checked ? ' checked' : '') + '>' + option + '</td><td class="text small"></td><td class="text small"></td></tr>');
-            }
-
-            function addDropdown(ch, option, options) {
-                if (!that.devices[ch]) {
-                    that.devices[ch] = {};
-                }
-                const selected = that.devices[ch][option];
-                let html = '<select class="small channel-option" data-addr="' + ch + '" data-option="' + option + '">';
-                options.forEach(val => {
-                    html += '<option' + (selected === val ? ' selected' : '') + '>' + val + '</option>';
+                    const selected = that.devices[ch][option];
+                    html += '<select class="small channel-option" data-addr="' + ch + '" data-option="' + option + '">';
+                    dropdowns[option].forEach(val => {
+                        html += '<option' + (selected === val ? ' selected' : '') + '>' + escape(val) + '</option>';
+                    });
+                    html += '</select>';
                 });
-                html += '</select>';
                 return html;
             }
 
-            function addDevice(addr, type, name, channelCount) {
-
-                if (!that.devices) {
-                    that.devices = {};
-                }
-
-                const blindTypes = ['VerticalTilt Enabled', 'VerticalTilt Disabled'];
-                const switchTypes = ['Switch', 'Outlet', 'Lightbulb', 'Fan', 'Valve', 'ValveIrrigation'];
-                const outletTypes = ['Outlet', 'Switch', 'Lightbulb', 'Fan', 'Valve', 'ValveIrrigation'];
-
-                if (!addr.match(/:\d+$/)) {
-                        if (!that.devices[addr]) {
-                            that.devices[addr] = {};
-                        }
-                        let checked = true;
-                        if (that.devices[addr].disabled) {
-                            checked = false;
-                        }
-
-                        $('#devices').append('<tr><td class="enabled"><input class="device-enabled option-hide" data-addr="' + addr + '" type="checkbox"' + (checked ? ' checked' : '') + '></td><td class="text">' + name + '</td><td class="text small">' + addr + '</td><td class="text small">' + type + '</td></tr>')
-
-                        switch (type.toLowerCase()) {
-
-                            case 'hb-lc-bl1pbu-fm':
-                                break;
-
-                            case 'hb-lc-sw1pbu-fm':
-                            case 'hb-lc-sw2-fm':
-                            case 'hb-lc-sw2pbu-fm':
-                                if (channelCount > 2) {
-                                    addOption(addr, 'SingleAccessory');
-                                }
-                                addChannels(addr, 1, channelCount - 1, {type: switchTypes});
-                                break;
-
-                            case 'hb-uni-dmx-master':
-                                break;
-                            case 'hb-uni-rgb-led-ctrl':
-                                break;
-                            case 'hb-uni-sen-press-sc':
-                                break;
-                            case 'hb-uni-sen-temp-ds18b20':
-                                break;
-
-                            case 'hb-uni-sen-temp-ir':
-                                addChannels(addr, 1, 5);
-                                break;
-
-                            case 'hb-uni-sen-wea':
-                                addOption(addr, 'HumiditySensor');
-                                addOption(addr, 'LightSensor');
-                                break;
-
-                            case 'hb-uni-senact-4-4-rc-bat':
-                            case 'hb-uni-senact-4-4-rc':
-                                addChannels(addr, 1, 4);
-                                break;
-
-                            case 'hb-uni-senact-4-4-sc-bat':
-                            case 'hb-uni-senact-4-4-sc':
-                                addChannels(addr, 1, 8);
-                                break;
-
-                            case 'hb-uni-senact-8-8-rc-bat':
-                            case 'hb-uni-senact-8-8-rc':
-                                addChannels(addr, 1, 8);
-                                break;
-
-                            case 'hb-uni-senact-8-8-sc-bat':
-                            case 'hb-uni-senact-8-8-sc':
-                                addChannels(addr, 1, 16);
-                                break;
-
-                            case 'hm-cc-rt-dn-bom':
-                            case 'hm-cc-rt-dn':
-                                addOption(addr, 'BoostSwitch');
-                                break;
-
-                            case 'hm-cc-scd':
-                                break;
-                            case 'hm-cc-tc':
-                                addOption(addr, 'HumiditySensor');
-                                break;
-                            case 'hm-dw-wm':
-                                break;
-
-                            case 'hm-es-pmsw1-dr':
-                            case 'hm-es-pmsw1-pl-dn-r1':
-                            case 'hm-es-pmsw1-pl':
-                                addChannels(addr, 1, 1, {type: switchTypes});
-                                break;
-
-                            case 'hm-lc-ao-sm':
-                                break;
-                            case 'hm-lc-bl1-fm-2':
-                                break;
-
-                            case 'hm-lc-bl1-fm':
-                            case 'zel stg rm fep 230v':
-                                break;
-
-                            case 'hm-lc-bl1-pb-fm':
-                                break;
-                            case 'hm-lc-bl1-sm-2':
-                                break;
-                            case 'hm-lc-bl1-sm':
-                                break;
-                            case 'hm-lc-bl1pbu-fm':
-                                break;
-
-                            case 'hm-lc-dim1l-cv-2':
-                            case 'hm-lc-dim1l-cv':
-                            case 'hm-lc-dim1l-pl-2':
-                            case 'hm-lc-dim1l-pl-3':
-                            case 'hm-lc-dim1l-pl':
-                            case 'hm-lc-dim1pwm-cv-2':
-                            case 'hm-lc-dim1pwm-cv':
-                            case 'hm-lc-dim1t-cv-2':
-                            case 'hm-lc-dim1t-cv':
-                            case 'hm-lc-dim1t-dr':
-                            case 'hm-lc-dim1t-fm-2':
-                            case 'hm-lc-dim1t-fm-lf':
-                            case 'hm-lc-dim1t-fm':
-                            case 'hm-lc-dim1t-pl-2':
-                            case 'hm-lc-dim1t-pl-3':
-                            case 'hm-lc-dim1t-pl':
-                            case 'hm-lc-dim1tpbu-fm-2':
-                            case 'hm-lc-dim1tpbu-fm':
-                                break;
-
-                            case 'hm-lc-dim2l-sm-2':
-                            case 'hm-lc-dim2l-sm':
-                            case 'hm-lc-dim2t-sm-2':
-                            case 'hm-lc-dim2t-sm':
-                                break;
-
-                            case 'hm-lc-ja1pbu-fm':
-                                break;
-
-                            case 'hm-lc-rgbw-wm':
-                                break;
-
-                            case 'hm-lc-sw1-ba-pcb':
-                            case 'hm-lc-sw1-dr':
-                            case 'hm-lc-sw1-fm-2':
-                            case 'hm-lc-sw1-fm':
-                            case 'hm-lc-sw1-pb-fm':
-                            case 'hm-lc-sw1-pcb':
-                            case 'hm-lc-sw1-pl-2':
-                            case 'hm-lc-sw1-pl-3':
-                            case 'hm-lc-sw1-pl-ct-r1':
-                            case 'hm-lc-sw1-pl-ct-r2':
-                            case 'hm-lc-sw1-pl-ct-r3':
-                            case 'hm-lc-sw1-pl-ct-r4':
-                            case 'hm-lc-sw1-pl-ct-r5':
-                            case 'hm-lc-sw1-pl-dn-r1':
-                            case 'hm-lc-sw1-pl-dn-r2':
-                            case 'hm-lc-sw1-pl-dn-r3':
-                            case 'hm-lc-sw1-pl-dn-r4':
-                            case 'hm-lc-sw1-pl-dn-r5':
-                            case 'hm-lc-sw1-pl-om54':
-                            case 'hm-lc-sw1-pl':
-                            case 'hm-lc-sw1-sm-2':
-                            case 'hm-lc-sw1-sm':
-                            case 'hm-lc-sw1pbu-fm':
-                            case 'hm-lc-sw2-dr-2':
-                            case 'hm-lc-sw2-dr':
-                            case 'hm-lc-sw2-fm-2':
-                            case 'hm-lc-sw2-fm':
-                            case 'hm-lc-sw2-pb-fm':
-                            case 'hm-lc-sw2pbu-fm':
-                            case 'hm-lc-sw4-ba-pcb':
-                            case 'hm-lc-sw4-dr-2':
-                            case 'hm-lc-sw4-dr':
-                            case 'hm-lc-sw4-pcb-2':
-                            case 'hm-lc-sw4-pcb':
-                            case 'hm-lc-sw4-sm-2':
-                            case 'hm-lc-sw4-sm':
-                            case 'hm-lc-sw4-wm-2':
-                            case 'hm-lc-sw4-wm':
-                            case 'hm-mod-re-8':
-                                if (channelCount > 2) {
-                                    addOption(addr, 'SingleAccessory');
-                                }
-                                addChannels(addr, 1, channelCount - 1, {type: switchTypes});
-                                break;
-
-                            case 'hm-sci-3-fm':
-                                addChannels(addr, 1, 3, {type: ['ContactSensor', 'Door', 'Window']});
-                                break;
-
-                            case 'hm-sec-key-o':
-                            case 'hm-sec-key-s':
-                            case 'hm-sec-key':
-                                addOption(addr, 'OpenOnUnlock');
-                                break;
-
-                            case 'hm-sec-mdir-2':
-                            case 'hm-sec-mdir-3':
-                            case 'hm-sec-mdir':
-                                addOption(addr, 'LightSensor');
-                                break;
-
-                            case 'hm-sec-rhs-2':
-                            case 'hm-sec-rhs':
-                                addChannels(addr, 1, 1, {type: ['ContactSensor', 'Door', 'Window']});
-                                break;
-
-                            case 'hm-sec-sc-2':
-                            case 'hm-sec-sc':
-                            case 'hm-sec-sco':
-                            case 'zel stg rm ffk':
-                                addChannels(addr, 1, 1, {type: ['ContactSensor', 'Door', 'Window', 'GarageDoorOpener']});
-                                break;
-
-                            case 'hm-sec-sd-2':
-                            case 'hm-sec-sd':
-                                break;
-
-                            case 'hm-sec-tis':
-                                addChannels(addr, 1, 1, {type: ['ContactSensor', 'Door', 'Window', 'GarageDoorOpener']});
-                                break;
-
-                            case 'hm-sec-wds-2':
-                            case 'hm-sec-wds':
-                                break;
-
-                            case 'hm-sec-win':
-                                addOption(addr, 'LockOnClose');
-                                break;
-
-                            case 'hm-sen-db-pcb':
-                                break;
-
-                            case 'hm-sen-li-o':
-                                break;
-
-                            case 'hm-sen-mdir-o-2':
-                            case 'hm-sen-mdir-o-3':
-                            case 'hm-sen-mdir-o':
-                            case 'hm-sen-mdir-sm':
-                            case 'hm-sen-mdir-wm55':
-                                addOption(addr, 'LightSensor');
-                                break;
-
-                            case 'hm-tc-it-wm-w-eu':
-                            case 'hm-cc-vg-1':
-                                addOption(addr, 'BoostSwitch');
-                                addOption(addr, 'HumiditySensor');
-                                break;
-
-                            case 'hm-wds10-th-o':
-                                addOption(addr, 'HumiditySensor');
-                                break;
-
-                            case 'hm-wds100-c6-o-2':
-                            case 'hm-wds100-c6-o':
-                                addOption(addr, 'HumiditySensor');
-                                addOption(addr, 'LightSensor');
-                                break;
-
-                            case 'hm-wds20-th-o':
-                                addOption(addr, 'HumiditySensor');
-                                break;
-
-                            case 'hm-wds30-ot2-sm-2':
-                            case 'hm-wds30-ot2-sm':
-                                addChannels(addr, 1, 5);
-                                break;
-
-                            case 'hm-wds30-t-o':
-                                break;
-
-                            case 'hm-wds40-th-i-2':
-                            case 'hm-wds40-th-i':
-                                addOption(addr, 'HumiditySensor');
-                                break;
-
-                            case 'hm-ws550st-io':
-                                break;
-
-                            case 'hm-ws550sth-i':
-                            case 'hm-ws550sth-o':
-                                addOption(addr, 'HumiditySensor');
-                                break;
-
-                            case 'hmip-bdt':
-                                addVirtualChannels(addr, 4, 4);
-                                break;
-                            case 'hmip-bsl':
-                                break;
-
-                            case 'hmip-bsm':
-                                addChannels(addr, 4, 4, {type: switchTypes});
-                                break;
-
-                            case 'hmip-bwth':
-                            case 'hmip-bwth24':
-                            case 'hmip-heating':
-                                addOption(addr, 'BoostSwitch');
-                                addOption(addr, 'HumiditySensor');
-                                break;
-
-                            case 'hmip-dbb':
-                                break;
-
-                            case 'hmip-drsi1':
-                                addVirtualChannels(addr, 3, 3, {type: switchTypes});
-                                break;
-
-                            case 'hmip-drsi4':
-                                addOption(addr, 'SingleAccessory');
-                                addVirtualChannels(addr, 6, 20, 4, {type: switchTypes});
-                                break;
-
-                            case 'hmip-etrv-2':
-                            case 'hmip-etrv-b':
-                            case 'hmip-etrv-b1':
-                            case 'hmip-etrv-c':
-                            case 'hmip-etrv':
-                                addOption(addr, 'BoostSwitch');
-                                break;
-
-                            case 'hmip-bbl':
-                            case 'hmip-fbl':
-                                addVirtualChannels(addr, 4, 4, {type: blindTypes});
-                                break;
-
-                            case 'hmip-froll':
-                            case 'hmip-broll':
-                                addVirtualChannels(addr, 4, 4);
-                                break;
-
-                            case 'hmip-fci1':
-                                addChannels(addr, 1, 1, {type: ['ContactSensor', 'Door', 'Window']});
-                                break;
-
-                            case 'hmip-fdt':
-                                addVirtualChannels(addr, 2, 2);
-                                break;
-
-                            case 'hmip-fsm':
-                            case 'hmip-fsm16':
-                                addChannels(addr, 2, 2, {type: switchTypes});
-                                break;
-
-                            case 'hmip-fsi16':
-                                addVirtualChannels(addr, 3, 3, {type: switchTypes});
-                                break;
-
-                            case 'hmip-mod-oc8':
-                                addOption(addr, 'SingleAccessory');
-                                addVirtualChannels(addr, 10, channelCount - 2, 4, {type: switchTypes});
-                                break;
-
-                            case 'hmip-pcbs-bat':
-                            case 'hmip-pcbs':
-                                addChannels(addr, 3, 3, {type: switchTypes});
-                                break;
-
-                            case 'hmip-pcbs2':
-                                addChannels(addr, 4, 4, {type: switchTypes});
-                                addChannels(addr, 8, 8, {type: switchTypes});
-                                break;
-
-                            case 'hmip-pdt':
-                                addVirtualChannels(addr, 3, 3);
-                                break;
-
-                            case 'hmip-ps':
-                            case 'hmip-psm':
-                                addChannels(addr, 3, 3, {type: outletTypes});
-                                break;
-
-                            case 'hmip-sam':
-                                addChannels(addr, 1, 1, {type: ['ContactSensor', 'Door', 'Window', 'GarageDoorOpener']});
-                                break;
-
-                            case 'hmip-slo':
-                                break;
-
-                            case 'hmip-smo-a':
-                            case 'hmip-smo':
-                            case 'hmip-smi':
-                            case 'hmip-smi55':
-                                addOption(addr, 'LightSensor');
-                                break;
-
-                            case 'hmip-spdr':
-                                break;
-
-                            case 'hmip-spi':
-                                addOption(addr, 'LightSensor');
-                                break;
-
-                            case 'hmip-srh':
-                                addChannels(addr, 1, 1, {type: ['ContactSensor', 'Door', 'Window']});
-                                break;
-
-                            case 'hmip-ste2-pcb':
-                                addChannels(addr, 1, 3);
-                                break;
-
-                            case 'hmip-sth':
-                            case 'hmip-sthd':
-                                addOption(addr, 'Thermostat');
-                                addOption(addr, 'BoostSwitch');
-                                addOption(addr, 'HumiditySensor');
-                                break;
-
-                            case 'hmip-stho-a':
-                            case 'hmip-stho':
-                                addOption(addr, 'HumiditySensor');
-                                break;
-
-                            case 'hmip-swd':
-                                break;
-
-                            case 'hmip-sci':
-                            case 'hmip-swdm-b':
-                            case 'hmip-swdm-b1':
-                            case 'hmip-swdm-b2':
-                            case 'hmip-swdm':
-                            case 'hmip-swdo-i':
-                            case 'hmip-swdo':
-                            case 'hmip-swdo-pl':
-                                addChannels(addr, 1, 1, {type: ['ContactSensor', 'Door', 'Window', 'GarageDoorOpener']});
-                                break;
-
-                            case 'hmip-swo-b':
-                            case 'hmip-swo-pl':
-                            case 'hmip-swo-pr':
-                                addOption(addr, 'HumiditySensor');
-                                addOption(addr, 'LightSensor');
-                                break;
-
-                            case 'hmip-swsd':
-                                break;
-
-                            case 'hmip-whs2':
-                                addOption(addr, 'SingleAccessory');
-                                addVirtualChannels(addr, 2, channelCount - 2, 4, {type: switchTypes});
-                                break;
-
-                            case 'hmip-wth-b':
-                            case 'hmip-wth-2':
-                            case 'hmip-wth':
-                                addOption(addr, 'BoostSwitch');
-                                addOption(addr, 'HumiditySensor');
-                                break;
-
-                            case 'hmw-io-12-sw7-dr':
-                                addOption(addr, 'SingleAccessory');
-                                addChannels(addr, 13, 19, {type: switchTypes});
-                                break;
-
-                            case 'hmw-lc-bl1-dr-2':
-                            case 'hmw-lc-bl1-dr':
-                                break;
-
-                            case 'hmw-lc-dim1l-dr':
-                                break;
-
-                            case 'hmw-lc-sw2-dr':
-                                addOption(addr, 'SingleAccessory');
-                                addChannels(addr, 3, 4, {type: switchTypes});
-                                break;
-
-                            case 'hmw-sen-sc-12-dr':
-                            case 'hmw-sen-sc-12-fm':
-                                addOption(addr, 'SingleAccessory');
-                                addChannels(addr, 1, 12, {type: ['ContactSensor', 'Door', 'Window']});
-                                break;
-
-                            case 'hmipw-drd3':
-                                addVirtualChannels(addr, 2, 12, 4);
-                                break;
-
-
-                            case 'hmipw-drs4':
-                            case 'hmipw-drs8':
-                                addOption(addr, 'SingleAccessory');
-                                addVirtualChannels(addr, 2, channelCount - 2, 4, {type: switchTypes});
-                                break;
-
-                            case 'hmipw-fio6':
-                                addOption(addr, 'SingleAccessory');
-                                addChannels(addr, 1, 6, {type: ['ContactSensor', 'Door', 'Window']});
-                                addVirtualChannels(addr, 8, channelCount - 3, 4, {type: switchTypes});
-                                break;
-
-                            case 'hmipw-dri16':
-                            case 'hmipw-dri32':
-                                addOption(addr, 'SingleAccessory');
-                                addChannels(addr, 1, channelCount - 2, 1, {type: ['ContactSensor', 'Door', 'Window']});
-                                break;
-
-
-                            case 'hmip-drbli4':
-                            case 'hmipw-drbl4':
-                                addVirtualChannels(addr, 2, channelCount - 2, 4, {type: blindTypes});
-                                break;
-
-
-                            default:
-                    }
-
-                }
+            function channelRow(addr, ch, name, extra, html) {
+                return '<tr class="device-options" data-addr="' + addr + '"><td></td><td class="text small">' +
+                    '<input class="device-enabled ' + extra + '" data-addr="' + ch + '" type="checkbox">' +
+                    escape(name) + '</td><td class="text small">' + escape(ch) + '</td><td class="text small">' + html + '</td></tr>';
             }
 
-            if (this.ccuConfig) {
+            function addDevice(dev) {
+                const addr = dev.address;
+                if (!that.devices[addr]) {
+                    that.devices[addr] = {};
+                }
+                const checked = !that.devices[addr].disabled;
+                $('#devices').append('<tr><td class="enabled"><input class="device-enabled option-hide" data-addr="' + addr + '" type="checkbox"' + (checked ? ' checked' : '') + '></td><td class="text">' + escape(dev.name) + '</td><td class="text small">' + escape(addr) + '</td><td class="text small">' + escape(dev.type) + '</td></tr>');
+
+                dev.options.forEach(option => {
+                    const ch = addr + ':' + option;
+                    if (!that.devices[ch]) {
+                        that.devices[ch] = {};
+                    }
+                    const $row = $(channelRow(addr, ch, option, 'channel-enabled', ''));
+                    $row.find('input').prop('checked', !that.devices[ch].disabled);
+                    $('#devices').append($row);
+                });
+
+                dev.channels.forEach(channel => {
+                    const ch = channel.address;
+                    if (!that.devices[ch]) {
+                        that.devices[ch] = {};
+                    }
+                    const html = dropdownHtml(ch, channel.dropdowns);
+                    if (channel.virtual) {
+                        // HmIP virtual receiver channels are opt-in (stored as enabled: true)
+                        const $row = $(channelRow(addr, ch, channel.name, 'vchannel-enabled', html));
+                        $row.find('input').prop('checked', Boolean(that.devices[ch].enabled));
+                        $('#devices').append($row);
+                    } else {
+                        const $row = $(channelRow(addr, ch, channel.name, 'channel-enabled', html));
+                        $row.find('input').prop('checked', !that.devices[ch].disabled).prop('disabled', Boolean(channel.fixed));
+                        $('#devices').append($row);
+                    }
+                });
+            }
+
+            if (this.ccuConfig && this.ccuConfig !== '_ADD_') {
                 $('#spinner').show();
                 $('.config').hide();
-                $.getJSON('redmatic-homekit/homematic-devices', res => {
-                    homematicValidDevices = res;
-                    const url = 'ccu?config=' + this.ccuConfig;
-                    $.getJSON(url, d => {
-                        data = d;
-                        const devs = [];
-                        Object.keys(d.metadata.devices).forEach(iface => {
-                            if (d.enabledIfaces.includes(iface)) {
-                                Object.keys(d.metadata.devices[iface]).forEach(addr => {
-                                    const dev = d.metadata.devices[iface][addr];
-                                    if (homematicValidDevices.includes((dev.TYPE && dev.TYPE.toLowerCase())) || (dev.PARENT_TYPE && homematicValidDevices.includes(dev.PARENT_TYPE.toLowerCase()))) {
-                                        devs.push({addr, type: dev.TYPE, name: d.channelNames[addr] || addr, channelCount: dev.CHILDREN && dev.CHILDREN.length});
-                                    }
-                                });
-                            }
-                        });
+                $.getJSON('redmatic-homekit/homematic-devices?config=' + this.ccuConfig, devices => {
+                    devices.forEach(addDevice);
 
-                        devs.sort((a, b) => a.name.localeCompare(b.name)).forEach(dev => {
-                            addDevice(dev.addr, dev.type, dev.name, dev.channelCount);
-                        });
-
-                        $('.option-hide').each(function () {
-                            $(this).change(function () {
-                                const addr = $(this).data('addr');
-                                if ($(this).is(':checked')) {
-                                    $('.device-options[data-addr="' + addr + '"]').show();
-                                } else {
-                                    $('.device-options[data-addr="' + addr + '"]').hide();
-                                }
-                            })
-                        });
-                        $('.option-hide').each(function () {
-                            $(this).trigger('change');
-                        });
-                        $('#spinner').hide();
-                        $('.config').show();
+                    $('.option-hide').each(function () {
+                        $(this).change(function () {
+                            const addr = $(this).data('addr');
+                            $('.device-options[data-addr="' + addr + '"]').toggle($(this).is(':checked'));
+                        }).trigger('change');
                     });
+                    $('#spinner').hide();
+                    $('.config').show();
+                }).fail(() => {
+                    $('#spinner').hide();
+                    $('#devices').html('<tr><td>CCU connection not ready - deploy the CCU config node first</td></tr>');
+                    $('.config').show();
                 });
             }
 
             $('#disable-all').click(() => {
-                $('.option-hide').each(function () {
-                    $(this).removeAttr('checked').trigger('change');
-                });
+                $('.option-hide').prop('checked', false).trigger('change');
             });
             $('#enable-all').click(() => {
-                $('.option-hide').each(function () {
-                    console.log('enable!', this);
-                    $(this).prop('checked', true).trigger('change');
-                    //$(this).trigger('change');
-                });
+                $('.option-hide').prop('checked', true).trigger('change');
             });
-
         },
         oneditsave() {
             const devices = {};
@@ -699,16 +126,16 @@
                 devices[addr][option] = $(this).val();
             });
             $('.device-enabled:not(.vchannel-enabled)').each(function () {
-                 const addr = $(this).data('addr');
-                 const enabled = $(this).is(':checked');
-                 if (enabled && devices[addr]) {
-                     devices[addr].disabled = false;
-                 } else if (!enabled) {
-                     if (!devices[addr]) {
-                         devices[addr] = {};
-                     }
-                     devices[addr].disabled = true;
-                 }
+                const addr = $(this).data('addr');
+                const enabled = $(this).is(':checked');
+                if (enabled && devices[addr]) {
+                    devices[addr].disabled = false;
+                } else if (!enabled) {
+                    if (!devices[addr]) {
+                        devices[addr] = {};
+                    }
+                    devices[addr].disabled = true;
+                }
             });
             $('.device-enabled.vchannel-enabled').each(function () {
                 const addr = $(this).data('addr');
@@ -720,6 +147,13 @@
                         devices[addr] = {};
                     }
                     devices[addr].enabled = true;
+                }
+            });
+            // keep settings of devices that were not listed this time (e.g. CCU
+            // temporarily without that interface) instead of dropping them
+            Object.keys(this.devices || {}).forEach(addr => {
+                if (!devices[addr]) {
+                    devices[addr] = this.devices[addr];
                 }
             });
             this.devices = devices;

@@ -1,21 +1,21 @@
-const fs = require('fs');
-const path = require('path');
+const catalogue = require('../homematic-devices/lib/catalogue');
 
 module.exports = function (RED) {
-    const homematicValidDevices = [];
-    const devPath = path.join(__dirname, '..', 'homematic-devices');
-    fs.readdir(devPath, (error, files) => {
-        if (!error && files) {
-            files.forEach((file) => {
-                if (file.endsWith('.js')) {
-                    homematicValidDevices.push(file.replace('.js', ''));
-                }
-            });
-        }
-    });
+    RED.httpAdmin.get('/redmatic-homekit/homematic-devices', RED.auth.needsPermission('redmatic.read'), (req, res) => {
+        if (req.query.config && req.query.config !== '_ADD_') {
+            // editor: what to offer for every supported device of a ccu-connection node
+            const ccu = RED.nodes.getNode(req.query.config);
+            if (!ccu || !ccu.metadata) {
+                res.status(500).send(JSON.stringify({error: 'ccu-connection node not found or not ready'}));
+                return;
+            }
 
-    RED.httpAdmin.get('/redmatic-homekit/homematic-devices', (req, res) => {
-        res.status(200).send(JSON.stringify(homematicValidDevices));
+            res.status(200).send(JSON.stringify(catalogue.describeDevices(ccu)));
+            return;
+        }
+
+        // list of supported device types (module names), kept for compatibility
+        res.status(200).send(JSON.stringify([...catalogue.supportedTypes()]));
     });
 
     class RedMaticHomeKitHomematicDevices {
@@ -104,14 +104,14 @@ module.exports = function (RED) {
         }
 
         createHomematicDevice(dev) {
-            let type = dev && dev.description && dev.description.TYPE;
-            if (!type) {
-                this.error('invalid homematic device type ' + type);
+            const rawType = dev && dev.description && dev.description.TYPE;
+            if (!rawType) {
+                this.error('invalid homematic device type ' + rawType);
                 return;
             }
 
-            type = type.toLowerCase().replace(/ /g, '_');
-            if (!homematicValidDevices.includes(type)) {
+            const type = catalogue.moduleName(rawType);
+            if (!catalogue.hasModule(rawType)) {
                 return;
             }
 
@@ -156,7 +156,6 @@ module.exports = function (RED) {
                     this.publishDevices(() => {
                         this.log('publish done');
                         this.bridgeConfig.waitForHomematic = false;
-                        // this.bridgeConfig.emit('homematic-ready');
                     });
                 }
             } else {

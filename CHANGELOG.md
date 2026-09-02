@@ -26,6 +26,15 @@ decisions (D-n) referenced below.
   second bridge; the bridge label in the editor shows the bridge name
   (#224). A failed publish now reports the error instead of leaving the
   bridge half-published.
+- Homematic device editor: the device list and the per-channel options are
+  now served by the runtime (`homematic-devices/options.json` +
+  `homematic-devices/lib/catalogue.js`) instead of a 500-line hard-coded
+  table inside the editor; the stored configuration format is unchanged.
+  Devices that are missing from the list can no longer disagree with what
+  the runtime supports. Fixes the two ZEL (Roto) device types, which the
+  old editor spelled differently from the runtime and therefore never
+  listed. Settings of devices that are temporarily not listed (interface
+  down) are kept instead of being dropped on save.
 - TV node: uses the accessory `paired`/`unpaired` events instead of the
   removed HAP server events.
 - Supported platforms: Node.js ≥ 22.12 and Node-RED ≥ 4 (`engines` and
