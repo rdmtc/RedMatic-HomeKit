@@ -141,8 +141,12 @@ To do:
 - Add a CI check that fails on any `gypfile`, `hasInstallScript`,
   `binding.gyp` or `optionalDependencies` in the installed tree (small node
   script, runs after `npm ci`), so D-1 stays true across dependency bumps.
-- Verify a palette-manager install on the RedMatic 9 test box (shallow
-  install strategy, no lockfile, scoped dependency) — part of task 13.
+- ✅ Local equivalent verified 2026-09-02 (dev.5 tarball,
+  `npm install --install-strategy=shallow --no-package-lock` into a fresh
+  Node-RED 5.0.6 user directory on macOS): all node sets load, the bridge
+  publishes via ciao, `dns-sd -B _hap._tcp` sees it, the setup-URI
+  endpoint answers, storage lands in `<userDir>/homekit`. The same on the
+  RedMatic 9 test box is part of task 13.
 
 ## 4. Migrate to @homebridge/hap-nodejs 2.x
 
@@ -363,22 +367,23 @@ group: bugs first.
 
 **homematic-devices / accessory base**
 
-- Thermostat setpoint resets and "4.5 °C on, not off" after restart (#245
-  21 comments, #335, #225, #159): define the HM/HmIP `CONTROL_MODE` +
-  `SET_POINT_TEMPERATURE` state machine once, with tests; today a
-  21 °C default `valueSetpoint` is copied into nine thermostat modules and
-  written back on mode changes.
+- ✅ Thermostat setpoint resets and "4.5 °C on, not off" after restart
+  (#245, #335, #225, #159): `lib/thermostat.js` (dev.6) — setpoint tracked
+  on reads and writes, mode write deferred behind a temperature write from
+  the same request, off temperature = OFF in every mode; eight modules
+  rewired, tests in `test/thermostat.test.js`. Needs the hardware
+  confirmation of task 13 (#159 "current temperature not shown" is a
+  separate symptom to re-test).
 - Status updates missing/delayed after local or direct-link switching
   (#319, #369, #252, #294): verify against ccu 4.0.0 (the `stable`
   filter in `subscribe` and `WORKING` handling), likely a ccu-side event
   question; document findings either way.
-- One unreachable device makes _all_ accessories "No Response" (#312,
-  #194): today every `get` answers `SERVICE_COMMUNICATION_FAILURE` while
-  the device's `UNREACH` is set, and the Home app fetches characteristics
-  of a bridge in one batched request — diagnose whether the error
-  propagates to the whole batch, and switch to reporting `UNREACH` via
-  `StatusFault`/`StatusActive` with the last known value instead of an
-  error (what Homebridge plugins converged on).
+- ✅ One unreachable device makes _all_ accessories "No Response" (#312,
+  #194): resolved by the hap-nodejs 2.x migration — batched reads get a
+  status per characteristic, so the `SERVICE_COMMUNICATION_FAILURE` of an
+  unreachable device stays with its own accessory (the desired signal).
+  Re-check on hardware in task 13; `StatusFault` instead of an error
+  remains an option if the Home app behaves worse than expected.
 - Uncaught exceptions in device code (#286, #270, #179, #295) → task 6
   fixture instantiation + try/catch at the mapping boundary.
 - Remember last dimmer level on "on" (#195): `LEVEL 1.005` / `OLD_LEVEL`
@@ -388,7 +393,9 @@ group: bugs first.
   channels (#310), HM-Sec-Key-S two actions (#288), service messages as
   HomeKit faults (#115).
 
-**garage** (#130 with 52 comments, #210, #184, #296, #301, #286): make
+**garage** (#130 with 52 comments, #210, #184, #296, #301, #286; most of
+#130 was implemented in 2019 — what remains is the single-impulse door that
+auto-closes by itself, asked twice since, and the reversal edge case): make
 the door model explicit (single-impulse actuators with direction reversal,
 open-contact-only, timed close, obstruction/blocked after timeout, state
 from contacts without HomeKit involvement), allow msg-driven state and
@@ -435,9 +442,13 @@ power/energy on POWERMETER channels — after 4.0.0.
 
 ## 12. Issue and PR triage
 
-142 open issues, 7 open PRs (snapshot in appendix B). Plan, executed after
-4.0.0 ships (comment + close, signed as written by Claude on behalf of the
-maintainer, as in RedMatic and ccu):
+142 open issues, 7 open PRs (snapshot in appendix B). **First round done
+2026-09-02** (comments in German, signed as written by Claude on behalf of
+the maintainer): all 7 PRs closed (#345 applied, #353 idea re-implemented,
+the rest superseded by the generic mapping or obsolete), 24 issues closed —
+zigbee (6), camera (11), install/package manager (4), and the resolved
+#248/#209 (hap migration) and #224 (bridge label). 118 issues remain open
+for the second round after the release:
 
 - **Device requests** (~40): link to task 7/8; close each once its type is
   verified against a fixture or live, otherwise ask the reporter for a
