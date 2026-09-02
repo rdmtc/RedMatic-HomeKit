@@ -174,12 +174,15 @@ Mechanical API changes, all located in the codebase (counts from grep):
 - ✅ mDNS: default advertiser is now `ciao`; `advertiser`
   (`auto` / `ciao` / `bonjour-hap` / `avahi`) is exposed in the bridge
   config as a hedge for network setups like the Avahi-reflector crash in
-  #348. **Two firmwares, two mDNS situations** (maintainer note
-  2026-09-02): OpenCCU runs an avahi-daemon, the official CCU3 firmware
-  does not. Two responders on one host fight over port 5353, so `auto`
-  (default) probes avahi over D-Bus at publish time and uses it when
-  present, ciao otherwise — verify both cases in task 13 (OpenCCU VM and
-  the real CCU3).
+  #348. **mDNS on the two firmwares** (verified over ssh 2026-09-02):
+  neither the official CCU3 firmware nor OpenCCU 3.89.8 runs an
+  avahi-daemon. OpenCCU builds `BR2_PACKAGE_AVAHI=y` without
+  `BR2_PACKAGE_AVAHI_DAEMON`, i.e. only `avahi-autoipd` (link-local
+  addressing) and the client libraries ship; on the ova the only sockets
+  on UDP 5353 belong to node-red (our ciao responder). `auto` (default)
+  probes for a daemon over D-Bus at publish time and uses it when present,
+  ciao otherwise — so a future OpenCCU build with the daemon works without
+  a config change, and two responders never fight over port 5353.
 - Camera: `configureCameraSource()` is gone (see task 10).
 - Reference: PR #350 (ptweety, 2022, hap 0.10) did the same migration one
   step earlier — take the deprecation fixes as a checklist, not the commits
