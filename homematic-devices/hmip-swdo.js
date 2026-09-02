@@ -89,7 +89,7 @@ module.exports = class HmipSwdo extends Accessory {
                     .fault([config.deviceAddress + ':0.ERROR_CODE']);
         }
 
-        this.addService('BatteryService', config.name)
+        this.addService('Battery', config.name)
             .get('StatusLowBattery', config.deviceAddress + ':0.LOW_BAT', (value, c) => {
                 return value ? c.BATTERY_LEVEL_LOW : c.BATTERY_LEVEL_NORMAL;
             })

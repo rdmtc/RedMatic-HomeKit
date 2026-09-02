@@ -23,7 +23,7 @@ module.exports = class HmUniDmx extends Accessory {
                             callback();
                         })
                         .catch(() => {
-                            callback(new Error(hap.HAPServer.Status.SERVICE_COMMUNICATION_FAILURE));
+                            callback(new hap.HapStatusError(hap.HAPStatus.SERVICE_COMMUNICATION_FAILURE));
                         });
                     setTimeout(() => {
                         service.update('On', false);

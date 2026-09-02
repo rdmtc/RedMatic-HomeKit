@@ -411,7 +411,7 @@ module.exports = function (RED) {
                         callback(null);
                     })
                     .catch(() => {
-                        callback(new Error(hap.HAPServer.Status.SERVICE_COMMUNICATION_FAILURE));
+                        callback(new hap.HapStatusError(hap.HAPStatus.SERVICE_COMMUNICATION_FAILURE));
                     });
             };
 

@@ -105,7 +105,7 @@ module.exports = class HmipWth extends Accessory {
                                 callback();
                             })
                             .catch(() => {
-                                callback(new Error(hap.HAPServer.Status.SERVICE_COMMUNICATION_FAILURE));
+                                callback(new hap.HapStatusError(hap.HAPStatus.SERVICE_COMMUNICATION_FAILURE));
                             });
                     } else if (value === 1) {
                         if (setpointMode === 1) {
@@ -138,7 +138,7 @@ module.exports = class HmipWth extends Accessory {
                                     callback();
                                 })
                                 .catch(() => {
-                                    callback(new Error(hap.HAPServer.Status.SERVICE_COMMUNICATION_FAILURE));
+                                    callback(new hap.HapStatusError(hap.HAPStatus.SERVICE_COMMUNICATION_FAILURE));
                                 });
                         }
                     } else {
@@ -163,7 +163,7 @@ module.exports = class HmipWth extends Accessory {
                                     callback();
                                 })
                                 .catch(() => {
-                                    callback(new Error(hap.HAPServer.Status.SERVICE_COMMUNICATION_FAILURE));
+                                    callback(new hap.HapStatusError(hap.HAPStatus.SERVICE_COMMUNICATION_FAILURE));
                                 });
                         }
                     }
@@ -211,7 +211,7 @@ module.exports = class HmipWth extends Accessory {
                 .get('CurrentTemperature', config.deviceAddress + ':1.ACTUAL_TEMPERATURE');
         }
 
-        this.addService('BatteryService', config.name)
+        this.addService('Battery', config.name)
             .get('StatusLowBattery', config.deviceAddress + ':0.LOW_BAT', (value, c) => {
                 return value ? c.BATTERY_LEVEL_LOW : c.BATTERY_LEVEL_NORMAL;
             })

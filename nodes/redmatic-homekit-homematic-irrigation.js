@@ -247,7 +247,7 @@ module.exports = function (RED) {
                         })
                         .catch(() => {
                             this.debug('promise rejected!');
-                            callback(new Error(hap.HAPServer.Status.SERVICE_COMMUNICATION_FAILURE));
+                            callback(new hap.HapStatusError(hap.HAPStatus.SERVICE_COMMUNICATION_FAILURE));
                         });
                 } else {
                     stop()
@@ -257,7 +257,7 @@ module.exports = function (RED) {
                         })
                         .catch(() => {
                             this.debug('promise rejected!');
-                            callback(new Error(hap.HAPServer.Status.SERVICE_COMMUNICATION_FAILURE));
+                            callback(new hap.HapStatusError(hap.HAPStatus.SERVICE_COMMUNICATION_FAILURE));
                         });
                 }
             };

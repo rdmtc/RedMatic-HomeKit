@@ -39,7 +39,7 @@ module.exports = class HmSecKey extends Accessory {
                         callback();
                     })
                     .catch(() => {
-                        callback(new Error(hap.HAPServer.Status.SERVICE_COMMUNICATION_FAILURE));
+                        callback(new hap.HapStatusError(hap.HAPStatus.SERVICE_COMMUNICATION_FAILURE));
                     });
             });
 
@@ -53,7 +53,7 @@ module.exports = class HmSecKey extends Accessory {
             service.update('LockCurrentState', getState());
         });
 
-        this.addService('BatteryService', config.name)
+        this.addService('Battery', config.name)
             .get('StatusLowBattery', config.deviceAddress + ':0.LOWBAT', (value, c) => {
                 return value ? c.BATTERY_LEVEL_LOW : c.BATTERY_LEVEL_NORMAL;
             })

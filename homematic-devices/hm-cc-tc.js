@@ -71,7 +71,7 @@ module.exports = class HmCcTc extends Accessory {
             });
         }
 
-        this.addService('BatteryService', config.name)
+        this.addService('Battery', config.name)
             .get('StatusLowBattery', config.deviceAddress + ':0.LOWBAT', (value, c) => {
                 return value ? c.BATTERY_LEVEL_LOW : c.BATTERY_LEVEL_NORMAL;
             })

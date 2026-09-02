@@ -1,17 +1,19 @@
-const path = require('path');
 const net = require('net');
-const hap = require('hap-nodejs');
+const {init} = require('./lib/hap');
 const pkg = require('../package.json');
+
+// hap-nodejs refuses to bridge more than this many accessories
+const MAX_ACCESSORIES = 149;
 
 const bridges = {};
 
 module.exports = function (RED) {
-    hap.init(path.join(RED.settings.userDir, 'homekit'));
+    const hap = init(RED);
 
     RED.httpAdmin.get('/redmatic-homekit', (req, res) => {
         if (req.query.config && req.query.config !== '_ADD_') {
             const config = RED.nodes.getNode(req.query.config);
-            if (!config || !config.bridge.isPublished) {
+            if (!config || !config.bridge || !config.bridge.isPublished) {
                 res.status(500).send(JSON.stringify({}));
             } else {
                 res.status(200).send(JSON.stringify({setupURI: config.bridge.setupURI()}));
@@ -48,11 +50,14 @@ module.exports = function (RED) {
             this.username = config.username;
             this.pincode = config.pincode;
             this.port = config.port;
+            this.advertiser = config.advertiser || 'ciao';
             this.allowInsecureRequest = Boolean(config.allowInsecureRequest);
 
             if (bridges[this.username]) {
                 this.bridge = bridges[this.username];
             } else {
+                // the UUID derived from the username is the bridge's identity in
+                // HomeKit; changing it would unpair every controller (ROADMAP D-4)
                 this.bridge = new hap.Bridge(this.name, hap.uuid.generate(this.username));
                 bridges[this.username] = this.bridge;
             }
@@ -60,32 +65,22 @@ module.exports = function (RED) {
             this.waitForAccessories();
 
             this.on('close', (remove, done) => {
-                if (remove && this.bridge.isPublished) {
-                    //    this.bridge.unpublish();
-                    //    this.log('unpublished bridge ' + this.name + ' ' + this.username + ' on port ' + this.port);
-                }
-
+                // the bridge object is kept across redeploys on purpose: hap-nodejs
+                // cannot re-publish an unpublished bridge on the same port
                 done();
             });
         }
 
         publishBridge() {
             this.debug('publishBridge');
+            const count = this.bridge.bridgedAccessories.length;
+            const where = this.name + ' ' + this.username + ' on port ' + this.port;
             if (this.bridge.isPublished) {
-                this.log(
-                    'bridge already published (' +
-                        this.bridge.bridgedAccessories.length +
-                        ' Accessories) ' +
-                        this.name +
-                        ' ' +
-                        this.username +
-                        ' on port ' +
-                        this.port,
-                );
+                this.log('bridge already published (' + count + ' accessories) ' + where);
                 return;
             }
 
-            if (this.bridge.bridgedAccessories && this.bridge.bridgedAccessories.length === 0) {
+            if (count === 0) {
                 this.error('refusing to publish bridge with 0 accessories');
                 return;
             }
@@ -100,39 +95,39 @@ module.exports = function (RED) {
             this.bridge
                 .getService(hap.Service.AccessoryInformation)
                 .setCharacteristic(hap.Characteristic.Manufacturer, 'RedMatic')
-                .setCharacteristic(hap.Characteristic.Model, 'HAP-Nodejs Bridge')
+                .setCharacteristic(hap.Characteristic.Model, 'HAP-NodeJS Bridge')
                 .setCharacteristic(hap.Characteristic.SerialNumber, this.username)
                 .setCharacteristic(hap.Characteristic.FirmwareRevision, pkg.version);
 
             const testPort = net
                 .createServer()
                 .once('error', (err) => {
-                    this.error(err);
+                    this.bridge.isPublished = false;
+                    this.error('port ' + this.port + ' not available: ' + err.message);
                 })
                 .once('listening', () => {
                     testPort
                         .once('close', () => {
-                            this.bridge.publish(
-                                {
-                                    username: this.username,
-                                    port: parseInt(this.port, 10),
-                                    pincode: this.pincode,
-                                    category: hap.Accessory.Categories.OTHER,
-                                },
-                                this.allowInsecureRequest,
-                            );
-                            this.log(
-                                'published bridge (' +
-                                    this.bridge.bridgedAccessories.length +
-                                    ' Accessories) ' +
-                                    this.name +
-                                    ' ' +
-                                    this.username +
-                                    ' on port ' +
-                                    this.port,
-                            );
-
-                            this.emit('published');
+                            this.bridge
+                                .publish(
+                                    {
+                                        username: this.username,
+                                        port: parseInt(this.port, 10),
+                                        pincode: this.pincode,
+                                        category: hap.Categories.BRIDGE,
+                                        advertiser: this.advertiser,
+                                    },
+                                    this.allowInsecureRequest,
+                                )
+                                .then(() => {
+                                    this.log('published bridge (' + count + ' accessories) ' + where);
+                                    this.published = true;
+                                    this.emit('published');
+                                })
+                                .catch((error) => {
+                                    this.bridge.isPublished = false;
+                                    this.error('publish failed: ' + error.message);
+                                });
                         })
                         .close();
                 })
@@ -153,24 +148,26 @@ module.exports = function (RED) {
         }
 
         accessory(config) {
+            // accessory identity = uuid(id); ids are CCU addresses or node ids and
+            // must stay stable across versions (ROADMAP D-4)
             const uuid = hap.uuid.generate(config.id + (config.uuidAddition ? config.uuidAddition : ''));
-            let acc;
-
-            this.bridge.bridgedAccessories.forEach((a) => {
-                if (a.UUID === uuid) {
-                    acc = a;
-                }
-            });
+            let acc = this.bridge.bridgedAccessories.find((a) => a.UUID === uuid);
 
             if (acc) {
                 this.debug('already existing accessory ' + config.id + ' ' + config.name);
-            } else if (this.bridge.bridgedAccessories.length >= 150) {
+            } else if (this.bridge.bridgedAccessories.length >= MAX_ACCESSORIES) {
                 this.error(
-                    "maximum of 150 accessories per bridge exceeded, can't add " + config.id + ' ' + config.name,
+                    'maximum of ' +
+                        MAX_ACCESSORIES +
+                        " accessories per bridge exceeded, can't add " +
+                        config.id +
+                        ' ' +
+                        config.name +
+                        ' - use a second bridge config node',
                 );
             } else {
                 this.debug('addAccessory ' + config.id + ' ' + config.name);
-                acc = new hap.Accessory(config.name, uuid, hap.Accessory.Categories.OTHER);
+                acc = new hap.Accessory(config.name, uuid, hap.Categories.OTHER);
                 this.bridge.addBridgedAccessory(acc);
             }
 

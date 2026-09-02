@@ -100,7 +100,7 @@ module.exports = class Accessory {
             })
             .catch(() => {
                 if (typeof callback === 'function') {
-                    callback(new Error(this.hap.HAPServer.Status.SERVICE_COMMUNICATION_FAILURE));
+                    callback(new this.hap.HapStatusError(this.hap.HAPStatus.SERVICE_COMMUNICATION_FAILURE));
                 }
             });
     }
@@ -184,7 +184,7 @@ module.exports = class Accessory {
 
     getError() {
         return this.unreach && !['HM-CC-VG-1', 'HmIP-HEATING'].includes(this.config.description.TYPE)
-            ? new Error(this.hap.HAPServer.Status.SERVICE_COMMUNICATION_FAILURE)
+            ? new this.hap.HapStatusError(this.hap.HAPStatus.SERVICE_COMMUNICATION_FAILURE)
             : null;
     }
 
@@ -343,7 +343,7 @@ module.exports = class Accessory {
                     callback();
                 })
                 .catch(() => {
-                    callback(new Error(this.hap.HAPServer.Status.SERVICE_COMMUNICATION_FAILURE));
+                    callback(new this.hap.HapStatusError(this.hap.HAPStatus.SERVICE_COMMUNICATION_FAILURE));
                 });
         });
     }

@@ -6,7 +6,7 @@ module.exports = class HmLcSw1BaPcb extends Accessory {
             .get('On', config.deviceAddress + ':1.STATE')
             .set('On', config.deviceAddress + ':1.STATE');
 
-        this.addService('BatteryService', config.name)
+        this.addService('Battery', config.name)
             .get('StatusLowBattery', config.deviceAddress + ':0.LOWBAT', (value, c) => {
                 return value ? c.BATTERY_LEVEL_LOW : c.BATTERY_LEVEL_NORMAL;
             })

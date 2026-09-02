@@ -1,14 +1,13 @@
-const path = require('path');
 const net = require('net');
-const hap = require('hap-nodejs');
+const {init, hap} = require('./lib/hap');
 
-const {uuid, Accessory, Service, Characteristic} = hap;
+const {uuid, Accessory, Service, Characteristic, Categories} = hap;
 const pkg = require('../package.json');
 
 const accessories = {};
 
 module.exports = function (RED) {
-    hap.init(path.join(RED.settings.userDir, 'homekit'));
+    init(RED);
 
     RED.httpAdmin.get('/redmatic-homekit-tv', (req, res) => {
         if (req.query.config) {
@@ -104,24 +103,23 @@ module.exports = function (RED) {
                                     username: config.username,
                                     port: config.port,
                                     pincode: config.pincode,
-                                    category: Accessory.Categories.TELEVISION,
+                                    category: Categories.TELEVISION,
+                                }).catch((error) => {
+                                    this.error('publish failed: ' + error.message);
+                                    this.status({fill: 'red', shape: 'dot', text: error.message});
                                 });
 
-                                acc._server.on('listening', () => {
+                                acc.on('listening', () => {
                                     this.log('tv ' + this.name + ' listening on port ' + config.port);
                                     this.status({shape: 'ring', fill: 'grey', text: ' '});
                                 });
 
-                                acc._server.on('pair', (username) => {
-                                    this.log('tv ' + this.name + ' paired', username);
+                                acc.on('paired', () => {
+                                    this.log('tv ' + this.name + ' paired');
                                 });
 
-                                acc._server.on('unpair', (username) => {
-                                    this.log('tv ' + this.name + ' unpaired', username);
-                                });
-
-                                acc._server.on('verify', () => {
-                                    this.log('tv ' + this.name + ' verify');
+                                acc.on('unpaired', () => {
+                                    this.log('tv ' + this.name + ' unpaired');
                                 });
                             })
                             .close();

@@ -17,7 +17,7 @@ module.exports = class HbUniSenAct extends Accessory {
             this.addService('Switch', name).get('On', dp).set('On', dp);
         }
 
-        this.addService('BatteryService')
+        this.addService('Battery')
             .get('StatusLowBattery', config.deviceAddress + ':0.LOWBAT', (value, c) => {
                 return value ? c.BATTERY_LEVEL_LOW : c.BATTERY_LEVEL_NORMAL;
             })

@@ -18,6 +18,7 @@
                     return RED.validators.number(val) && val > 1024 && val < 65536;
                 }
             },
+            advertiser: {value: 'ciao'},
             allowInsecureRequest: {
                 value: false,
                 type: 'boolean'
@@ -30,7 +31,7 @@
         paletteLabel: 'homekit bridge',
         align: 'left',
         label() {
-            return this.username + ':' + this.port;
+            return (this.name ? this.name + ' ' : '') + this.username + ':' + this.port;
         },
         labelStyle() {
             return 'node_label_italic';
@@ -79,6 +80,14 @@
     <div class="form-row">
         <label for="node-config-input-port"><i class="icon-globe"></i> Port</label>
         <input type="number" id="node-config-input-port">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-advertiser"><i class="icon-globe"></i> mDNS</label>
+        <select id="node-config-input-advertiser">
+            <option value="ciao">ciao (default)</option>
+            <option value="bonjour-hap">bonjour-hap</option>
+            <option value="avahi">avahi (D-Bus)</option>
+        </select>
     </div>
     <div class="form-row">
         <label for="node-input-allowInsecureRequest"><i class="icon-tag"></i> </label>

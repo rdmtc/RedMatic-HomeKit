@@ -91,7 +91,7 @@ module.exports = class HmipBwth extends Accessory {
                             callback();
                         })
                         .catch(() => {
-                            callback(new Error(hap.HAPServer.Status.SERVICE_COMMUNICATION_FAILURE));
+                            callback(new hap.HapStatusError(hap.HAPStatus.SERVICE_COMMUNICATION_FAILURE));
                         });
                 } else if (value === 1) {
                     const params = {
@@ -116,7 +116,7 @@ module.exports = class HmipBwth extends Accessory {
                             callback();
                         })
                         .catch(() => {
-                            callback(new Error(hap.HAPServer.Status.SERVICE_COMMUNICATION_FAILURE));
+                            callback(new hap.HapStatusError(hap.HAPStatus.SERVICE_COMMUNICATION_FAILURE));
                         });
                 } else {
                     node.debug(
@@ -136,7 +136,7 @@ module.exports = class HmipBwth extends Accessory {
                             callback();
                         })
                         .catch(() => {
-                            callback(new Error(hap.HAPServer.Status.SERVICE_COMMUNICATION_FAILURE));
+                            callback(new hap.HapStatusError(hap.HAPStatus.SERVICE_COMMUNICATION_FAILURE));
                         });
                 }
             });

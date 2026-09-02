@@ -12,6 +12,22 @@ decisions (D-n) referenced below.
 
 ### Changed
 
+- **HAP library: `hap-nodejs` 0.4.52 (2019) → `@homebridge/hap-nodejs` 2.x**
+  (D-2). Pairings, accessory identities and service numbering are kept
+  (storage stays in `<userDir>/homekit`, UUIDs are still derived from the
+  bridge MAC and the CCU addresses), so controllers do not need to re-pair
+  and rooms/automations survive. Internally: `HAPStorage` instead of
+  `hap.init`, `Categories`/`HAPStatus`/`HapStatusError` instead of the
+  removed `Accessory.Categories`/`HAPServer.Status`, `Battery` instead of
+  the removed `BatteryService` (same service UUID), async `publish()`.
+- Bridge: new **mDNS advertiser** option (`ciao` default, `bonjour-hap`,
+  `avahi`) for network setups where the default does not work (#348); the
+  accessory limit follows hap-nodejs (149 per bridge) with a hint to use a
+  second bridge; the bridge label in the editor shows the bridge name
+  (#224). A failed publish now reports the error instead of leaving the
+  bridge half-published.
+- TV node: uses the accessory `paired`/`unpaired` events instead of the
+  removed HAP server events.
 - Supported platforms: Node.js ≥ 22.12 and Node-RED ≥ 4 (`engines` and
   `node-red.version` are declared now; the palette manager refuses older
   runtimes instead of failing later).

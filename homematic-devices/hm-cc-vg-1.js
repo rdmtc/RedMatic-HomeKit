@@ -133,7 +133,7 @@ module.exports = class HmCcVg1 extends Accessory {
                             callback();
                         })
                         .catch(() => {
-                            callback(new Error(hap.HAPServer.Status.SERVICE_COMMUNICATION_FAILURE));
+                            callback(new hap.HapStatusError(hap.HAPStatus.SERVICE_COMMUNICATION_FAILURE));
                         });
                 } else if (value === 1) {
                     ccu.setValue(config.iface, config.description.ADDRESS + ':1', 'MANU_MODE', valueSetpoint)
@@ -143,7 +143,7 @@ module.exports = class HmCcVg1 extends Accessory {
                             callback();
                         })
                         .catch(() => {
-                            callback(new Error(hap.HAPServer.Status.SERVICE_COMMUNICATION_FAILURE));
+                            callback(new hap.HapStatusError(hap.HAPStatus.SERVICE_COMMUNICATION_FAILURE));
                         });
                 } else {
                     ccu.setValue(config.iface, config.description.ADDRESS + ':1', 'AUTO_MODE', true)
@@ -152,7 +152,7 @@ module.exports = class HmCcVg1 extends Accessory {
                             callback();
                         })
                         .catch(() => {
-                            callback(new Error(hap.HAPServer.Status.SERVICE_COMMUNICATION_FAILURE));
+                            callback(new hap.HapStatusError(hap.HAPStatus.SERVICE_COMMUNICATION_FAILURE));
                         });
                 }
             });
@@ -203,7 +203,7 @@ module.exports = class HmCcVg1 extends Accessory {
             ),
         );
 
-        const batteryService = this.addService('BatteryService', config.name, 'Battery');
+        const batteryService = this.addService('Battery', config.name, 'Battery');
         Object.keys(lowbatDps).forEach((dp) => {
             this.subscribe(dp, (value) => {
                 lowbatDps[dp] = value;

@@ -43,7 +43,7 @@ module.exports = class HmSci3Fm extends Accessory {
                         }, 20);
                     });
 
-                    this.addService('BatteryService', name, 'Bat')
+                    this.addService('Battery', name, 'Bat')
                         .get('StatusLowBattery', config.deviceAddress + ':0.LOWBAT', (value, c) => {
                             return value ? c.BATTERY_LEVEL_LOW : c.BATTERY_LEVEL_NORMAL;
                         })

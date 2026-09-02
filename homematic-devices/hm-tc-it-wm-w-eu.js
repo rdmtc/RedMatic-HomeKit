@@ -91,7 +91,7 @@ module.exports = class HmTcItWmWEu extends Accessory {
                             callback();
                         })
                         .catch(() => {
-                            callback(new Error(hap.HAPServer.Status.SERVICE_COMMUNICATION_FAILURE));
+                            callback(new hap.HapStatusError(hap.HAPStatus.SERVICE_COMMUNICATION_FAILURE));
                         });
                 } else if (value === 1) {
                     ccu.setValue(config.iface, config.description.ADDRESS + ':2', 'MANU_MODE', valueSetpoint)
@@ -100,7 +100,7 @@ module.exports = class HmTcItWmWEu extends Accessory {
                             callback();
                         })
                         .catch(() => {
-                            callback(new Error(hap.HAPServer.Status.SERVICE_COMMUNICATION_FAILURE));
+                            callback(new hap.HapStatusError(hap.HAPStatus.SERVICE_COMMUNICATION_FAILURE));
                         });
                 } else {
                     ccu.setValue(config.iface, config.description.ADDRESS + ':2', 'AUTO_MODE', true)
@@ -108,7 +108,7 @@ module.exports = class HmTcItWmWEu extends Accessory {
                             callback();
                         })
                         .catch(() => {
-                            callback(new Error(hap.HAPServer.Status.SERVICE_COMMUNICATION_FAILURE));
+                            callback(new hap.HapStatusError(hap.HAPStatus.SERVICE_COMMUNICATION_FAILURE));
                         });
                 }
             });
@@ -160,7 +160,7 @@ module.exports = class HmTcItWmWEu extends Accessory {
             ),
         );
 
-        this.addService('BatteryService', config.name)
+        this.addService('Battery', config.name)
             .get('StatusLowBattery', config.deviceAddress + ':0.LOWBAT', (value, c) => {
                 return value ? c.BATTERY_LEVEL_LOW : c.BATTERY_LEVEL_NORMAL;
             })

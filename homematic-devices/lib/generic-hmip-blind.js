@@ -86,7 +86,7 @@ function createService(channel) {
                     callback();
                 })
                 .catch(() => {
-                    callback(new Error(this.hap.HAPServer.Status.SERVICE_COMMUNICATION_FAILURE));
+                    callback(new this.hap.HapStatusError(this.hap.HAPStatus.SERVICE_COMMUNICATION_FAILURE));
                 });
         })
 
@@ -153,7 +153,7 @@ function createService(channel) {
                         callback();
                     })
                     .catch(() => {
-                        callback(new Error(this.hap.HAPServer.Status.SERVICE_COMMUNICATION_FAILURE));
+                        callback(new this.hap.HapStatusError(this.hap.HAPStatus.SERVICE_COMMUNICATION_FAILURE));
                     });
             });
     }

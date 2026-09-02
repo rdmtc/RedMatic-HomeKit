@@ -6,7 +6,7 @@ module.exports = class HmipSmi extends Accessory {
             .get('OccupancyDetected', config.deviceAddress + ':1.PRESENCE_DETECTION_STATE')
             .get('StatusTampered', config.deviceAddress + ':0.SABOTAGE');
 
-        this.addService('BatteryService', config.name)
+        this.addService('Battery', config.name)
             .get('StatusLowBattery', config.deviceAddress + ':0.LOW_BAT', (value, c) => {
                 return value ? c.BATTERY_LEVEL_LOW : c.BATTERY_LEVEL_NORMAL;
             })
