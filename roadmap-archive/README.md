@@ -8,4 +8,8 @@ index (marked ✅ there, linking here).
 
 ## Contents
 
-Nothing archived yet (roadmap created 2026-09-02).
+- [task-5.md](task-5.md) — Modernize tooling, CI and release pipeline ✅
+  2026-09-02 (`4.0.0-dev.1`, ESLint 9 + Prettier, ci.yml/release.yml,
+  native-dependency gate, CHANGELOG/AGENTS).
+- [task-10.md](task-10.md) — Camera, TV and Zigbee nodes ✅ 2026-09-02
+  (`4.0.0-dev.0`, camera and zigbee dropped, TV kept and migrated).

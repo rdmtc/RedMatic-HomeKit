@@ -41,12 +41,12 @@ device catalogue, and the full issue/PR backlog.
 
 - [3. Binary-free install (the RedMatic 9 gate)](#3-binary-free-install-the-redmatic-9-gate)
 - [4. Migrate to @homebridge/hap-nodejs 2.x](#4-migrate-to-homebridgehap-nodejs-2x)
-- [5. Modernize tooling, CI and release pipeline](#5-modernize-tooling-ci-and-release-pipeline)
+- 5. Modernize tooling, CI and release pipeline ✅ [archived](roadmap-archive/task-5.md)
 - [6. Tests and device fixtures](#6-tests-and-device-fixtures)
 - [7. Device support — generic channel mapping](#7-device-support--generic-channel-mapping)
 - [8. Device backlog from issues and PRs](#8-device-backlog-from-issues-and-prs)
 - [9. Node fixes and features from the backlog](#9-node-fixes-and-features-from-the-backlog)
-- [10. Camera, TV and Zigbee nodes](#10-camera-tv-and-zigbee-nodes)
+- 10. Camera, TV and Zigbee nodes ✅ [archived](roadmap-archive/task-10.md)
 - [11. Documentation](#11-documentation)
 - [12. Issue and PR triage](#12-issue-and-pr-triage)
 - [13. Verify and release 4.0.0](#13-verify-and-release-400)
@@ -184,33 +184,6 @@ Mechanical API changes, all located in the codebase (counts from grep):
 Acceptance: pairing with an existing `<userDir>/homekit` store from 3.3.0
 keeps the bridge paired and every accessory in its room (D-4), verified
 on hardware in task 13.
-
-## 5. Modernize tooling, CI and release pipeline
-
-Copy the shape of node-red-contrib-ccu (Phase 1 there):
-
-- `package.json`: `engines`, `node-red.version`, `files` whitelist,
-  `repository`, `scripts` (`lint`, `format`, `test`, `test:unit`), drop
-  `main: none` oddities only if Node-RED tolerates it (it does; keep).
-  Remove `create-todo.js`, `.idea` from `.gitignore` → `.editorconfig`,
-  `.gitattributes` (`* text=auto eol=lf`).
-- xo → **ESLint 9 flat config + Prettier + eslint-plugin-html** (editor
-  scripts in `nodes/*.html` get linted too, with `RED`/jQuery globals).
-  `no-unused-vars` with `^_` pattern, `allowEmptyCatch`. Burn-down of the
-  existing code under the new rules is part of the task.
-- `.github/workflows/ci.yml`: lint + test matrix (Node 22/24 × Node-RED
-  4/5) + the D-1 native-module scan (task 3).
-- `.github/workflows/release.yml`: on tag `v*` → `npm publish --provenance`
-  via OIDC trusted publishing, then GitHub release with notes from
-  `CHANGELOG.md` (`.github/release-notes.js` from ccu can be copied as is).
-  Requires configuring the trusted publisher for `redmatic-homekit` on
-  npmjs.com once.
-- `CHANGELOG.md` bootstrapped from the 2019–2022 git history + a 4.0.0
-  section listing every breaking change (task 13).
-- `AGENTS.md` (layout, conventions, "read ROADMAP first") and `CLAUDE.md`
-  (`@AGENTS.md`), same as both siblings.
-- Delete `.github/no-response.yml` (probot no-response is unmaintained);
-  a `stale`/no-response workflow can come back later if wanted.
 
 ## 6. Tests and device fixtures
 
@@ -437,27 +410,6 @@ auto-reset semantics.
 
 **Eve characteristics** (#114, 11 comments): custom characteristics for
 power/energy on POWERMETER channels — after 4.0.0.
-
-## 10. Camera, TV and Zigbee nodes
-
-- **Zigbee (D-6, decided: dropped)**: remove
-  `redmatic-homekit-zigbee-devices` and `zigbee-devices/`. node-red-contrib-zigbee is dead (0.21.0, 2022),
-  depends on native serialport, and cannot be installed on RedMatic 9.
-  Closes #305, #302, #270, #266, #230, #142, PR #351. If someone wants a
-  Zigbee bridge on a CCU, zigbee2mqtt + the universal node is the
-  supported answer (document it).
-- **Camera (D-7, decided: dropped)**: remove `redmatic-homekit-camera`
-  and the `homebridge-camera-ffmpeg` dependency. The node depends on that
-  plugin's internals and on an ffmpeg binary; hap-nodejs 2.x replaced
-  `configureCameraSource` with `CameraController` (a rewrite of the 127
-  lines plus the ffmpeg process handling that lived in the plugin), and
-  RedMatic 9 no longer ships ffmpeg. Point to Homebridge/
-  homebridge-camera-ffmpeg or Scrypted in README and release notes.
-  Closes #158 (25 comments), #162, #272, #261, #198, #132, #152, #344,
-  #347, #304, #100. Flows containing a camera node keep importing (Node-RED
-  shows it as an unknown type); mention that in the 4.0.0 notes.
-- **TV**: pure JS, small; migrate with task 4 and keep. Take the port fix
-  from PR #345 (#344).
 
 ## 11. Documentation
 
