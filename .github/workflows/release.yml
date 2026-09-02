@@ -29,7 +29,11 @@ jobs:
       - run: npm install -g npm@latest
       - run: npm ci
       - run: npm test
-      - run: npm publish --provenance --access public
+      # prereleases (4.0.0-dev.x, -beta.x) go to the `next` dist-tag, releases to `latest`
+      - run: |
+          TAG=latest
+          case "$(node -p 'require("./package.json").version')" in *-*) TAG=next;; esac
+          npm publish --provenance --access public --tag "$TAG"
 
   github-release:
     needs: npm

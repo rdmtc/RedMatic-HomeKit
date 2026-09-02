@@ -503,6 +503,10 @@ Still open on hardware:
 - Device verification with the maintainer's CCU (64 types) and reporter
   feedback for the most-wanted types of task 8 (DLD, DRDI3, BROLL-2,
   eTRV-E/C-2/B-2, SWDM-2, TRV-3).
+- ✅ npm trusted publisher (OIDC) for `rdmtc/RedMatic-HomeKit` →
+  `release.yml` configured on npmjs.com (maintainer, 2026-09-02).
+  `release.yml` publishes prerelease versions (`-dev.x`, `-beta.x`) under
+  the `next` dist-tag, releases under `latest`.
 - Release notes (German, English summary) state the breaking changes:
   scoped hap-nodejs + Node ≥ 22, zigbee node removed, camera node removed
   (D-7), Node-RED 4/5 only, changed device list mechanism.

@@ -31,14 +31,18 @@ from per-model files to a generic channel mapping (D-5).
   lower-cased `TYPE`, spaces → `_`), each a class extending
   `homematic-devices/lib/accessory.js` (fluent `addService().get/set/update`
   DSL over `ccu.subscribe`/`setValueQueued`). Many files are one-line
-  aliases. The editor's device list in
-  `nodes/redmatic-homekit-homematic-devices.html` duplicates the per-type
-  channel/option knowledge — keep both in sync until ROADMAP task 7
-  replaces them.
+  aliases. `lib/roles.js` + `lib/generic.js` map every device type
+  without a module from its paramset descriptions (channel roles);
+  `lib/catalogue.js` + `options.json` describe per type what the editor
+  offers; `lib/thermostat.js` is the shared setpoint/mode logic of the
+  thermostat modules. The editor html renders whatever the catalogue
+  endpoint returns — no per-type knowledge lives in the html anymore.
 - `test/` — `node --test` unit tests (`*.test.js`); fixtures under
   `test/fixtures/`.
 - `tools/` — maintainer scripts, not published (`check-native.js` is the
-  D-1 gate run by CI).
+  D-1 gate run by CI, `smoke-local.sh` installs the packed module into a
+  fresh Node-RED and exercises the bridge, `fixtures-from-pydevccu.js`
+  regenerates `test/fixtures/devices/`).
 - `.github/workflows/` — `ci.yml` (lint, native scan, Node 22/24 ×
   Node-RED 4/5) and `release.yml` (tag `v*` → npm publish with OIDC
   provenance + GitHub release from `CHANGELOG.md`).
