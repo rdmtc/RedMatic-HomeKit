@@ -7,7 +7,7 @@ Written by Claude Fable on behalf of hobbyquaker at the end of the
 
 ## Where things stand
 
-`master` is at **4.0.0-dev.5**, everything pushed, CI green (lint,
+`master` is at **4.0.0-dev.7**, everything pushed, CI green (lint,
 native-dependency scan, Node 22/24 × Node-RED 4/5). **No tags, no npm
 release** — the hardware gate (ROADMAP task 13) is open.
 
@@ -37,6 +37,12 @@ Done today, in commit order:
   (`test/fixtures/*.snapshot.json`, refresh with `UPDATE_SNAPSHOT=1`).
   Bridge mDNS default `auto` (avahi over D-Bus when running — OpenCCU —
   else ciao — official CCU firmware).
+- **dev.6** — shared thermostat setpoint/mode logic (`lib/thermostat.js`,
+  #245/#225/#335), first triage round on GitHub (7 PRs, 24 issues closed).
+- **dev.7** — universal node forwards HomeKit writes again (found on the
+  OpenCCU box; hap 2.x change events have no request context). OpenCCU
+  hardware test done (ROADMAP task 13) — palette install, publish via
+  ciao, mDNS seen from the LAN, HAP read/write loop, restart, upgrade.
 - **dev.5** — golden files for all 190 module types
   (`test/fixtures/modules.snapshot.json`, task 7 step 3 done), HmIPW-DRD3
   SingleAccessory option (the #353 idea), tv port fix (#345), German
@@ -75,11 +81,17 @@ device type with its paramset descriptions.
    model (#130), universal node colour/props (#104/#221).
 4. **Task 11** — README German first + README.en.md, inline help via
    `locales/`, wiki page. **Task 12** issue triage after release.
-5. **Task 13** — hardware: palette install on the OpenCCU VM
-   (172.16.23.119 from the RedMatic session) and a real CCU3, pairing
-   from an iPhone, upgrade from a paired 3.3.0 (pairings, rooms), both
-   mDNS cases (avahi on OpenCCU, ciao on official firmware). Configure
-   the npm trusted publisher for `redmatic-homekit` before the first tag.
+5. **Task 13** — remaining hardware: a real CCU3 with Homematic devices
+   (the generic mapping and the thermostat fix have only fixture
+   coverage), pairing from an iPhone, upgrade from a paired 3.3.0
+   (pairings, rooms — the maintainer's production RedMatic bridge
+   "RedMatic Bridge-969A" is visible on the LAN and would be the real
+   test, but it is production), the avahi case on an OpenCCU build that
+   actually runs avahi-daemon. Configure the npm trusted publisher for
+   `redmatic-homekit` before the first tag. The OpenCCU box keeps the
+   "homekit smoke" flow: bridge CC:22:3D:5A:0B:02, port 51890, insecure
+   mode on, pin 031-45-154 — `curl -H "Authorization: 031-45-154"
+http://172.16.23.119:51890/accessories`.
 
 ## Gotchas
 

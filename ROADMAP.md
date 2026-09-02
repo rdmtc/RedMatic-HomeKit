@@ -468,6 +468,27 @@ for the second round after the release:
 
 Gate before anything is tagged:
 
+**OpenCCU part done 2026-09-02** (OpenCCU 3.89.8 ova at 172.16.23.119,
+RedMatic 9.0.0-dev.11, Node 24 / Node-RED 5.0.6, `4.0.0-dev.7` tarball):
+install through Node-RED's palette API (`POST /addons/red/nodes` tarball
+upload → npm with RedMatic's npmrc, 32 nested pure-JS packages, no
+compiler needed), all nine node sets register, a bridge with universal +
+switch + pseudobutton nodes publishes on port 51890 via **ciao** (this
+OpenCCU build ships only avahi-autoipd, no avahi-daemon — `auto` picked
+ciao correctly), the announcement `CCU Smoke Bridge._hap._tcp` is seen by
+an mDNS browser on another LAN host, `GET /accessories` and
+`PUT /characteristics` (insecure mode, pin as authorization) work from
+the Mac, a HomeKit write on the universal node's Lightbulb reaches the
+wired switch node and reads back, the pseudobutton fires and resets, HAP
+storage lands in `var/homekit/`, the bridge survives a RedMatic restart
+with the same identity, and the palette upgrade path (dev.6 → dev.7 +
+restart) works. **Found and fixed on the box:** the universal node had
+stopped forwarding HomeKit writes after the hap-nodejs migration (dev.7).
+The test flow (tab "homekit smoke") and the module are left installed
+there.
+
+Still open on hardware:
+
 - Green `ci.yml` (lint, Node 22/24 × Node-RED 4/5, native-module scan).
 - Palette-manager install on the RedMatic 9 test box (OpenCCU x86_64 VM
   used for RedMatic task 8) and on real CCU3 hardware (armv7l musl):
