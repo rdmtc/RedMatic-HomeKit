@@ -7,13 +7,17 @@ module.exports = class HbUniSenWea extends Accessory {
             .get('CurrentTemperature', config.deviceAddress + ':1.TEMPERATURE');
 
         if (this.option('HumiditySensor')) {
-            this.addService('HumiditySensor', config.name)
-                .get('CurrentRelativeHumidity', config.deviceAddress + ':1.HUMIDITY');
+            this.addService('HumiditySensor', config.name).get(
+                'CurrentRelativeHumidity',
+                config.deviceAddress + ':1.HUMIDITY',
+            );
         }
 
         if (this.option('LightSensor')) {
-            this.addService('LightSensor', config.name)
-                .get('CurrentAmbientLightLevel', config.deviceAddress + ':1.LUX');
+            this.addService('LightSensor', config.name).get(
+                'CurrentAmbientLightLevel',
+                config.deviceAddress + ':1.LUX',
+            );
         }
     }
 };

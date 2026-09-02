@@ -11,7 +11,7 @@ module.exports = function (RED) {
 
             const {hap, version} = this.bridgeConfig;
 
-            this.name = config.name || ('Switch ' + this.id);
+            this.name = config.name || 'Switch ' + this.id;
             this.count = parseInt(config.count, 10) || 1;
 
             const acc = this.bridgeConfig.accessory({id: this.id, name: this.name});
@@ -25,8 +25,10 @@ module.exports = function (RED) {
                     .setCharacteristic(hap.Characteristic.SerialNumber, this.id)
                     .setCharacteristic(hap.Characteristic.FirmwareRevision, version);
 
-                acc.addService(hap.Service.ServiceLabel, 'Buttons', '0')
-                    .setCharacteristic(hap.Characteristic.ServiceLabelNamespace, 1);
+                acc.addService(hap.Service.ServiceLabel, 'Buttons', '0').setCharacteristic(
+                    hap.Characteristic.ServiceLabelNamespace,
+                    1,
+                );
 
                 for (let index = 1; index <= this.count; index++) {
                     const subtype = String(index);
@@ -39,7 +41,7 @@ module.exports = function (RED) {
                 acc.isConfigured = true;
             }
 
-            this.on('input', msg => {
+            this.on('input', (msg) => {
                 let [button, type] = String(msg.topic).split('/');
                 button = parseInt(button, 10);
                 if (button < 1 || button > this.count) {
@@ -56,7 +58,14 @@ module.exports = function (RED) {
                     val = 0;
                 }
 
-                this.debug('update ' + config.name + ' ' + subtype + ' ProgrammableSwitchEvent ' + (val === 2 ? 'LONG_PRESS' : 'SINGLE_PRESS'));
+                this.debug(
+                    'update ' +
+                        config.name +
+                        ' ' +
+                        subtype +
+                        ' ProgrammableSwitchEvent ' +
+                        (val === 2 ? 'LONG_PRESS' : 'SINGLE_PRESS'),
+                );
                 acc.getService(subtype).getCharacteristic(hap.Characteristic.ProgrammableSwitchEvent).updateValue(val);
             });
         }

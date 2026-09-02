@@ -2,8 +2,10 @@ const Accessory = require('./lib/accessory');
 
 module.exports = class HmipSlo extends Accessory {
     init(config) {
-        this.addService('LightSensor', config.name)
-            .get('CurrentAmbientLightLevel', config.deviceAddress + ':1.CURRENT_ILLUMINATION');
+        this.addService('LightSensor', config.name).get(
+            'CurrentAmbientLightLevel',
+            config.deviceAddress + ':1.CURRENT_ILLUMINATION',
+        );
 
         this.addService('BatteryService', config.name)
             .get('StatusLowBattery', config.deviceAddress + ':0.LOW_BAT', (value, c) => {

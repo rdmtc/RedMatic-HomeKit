@@ -1,7 +1,8 @@
 const Accessory = require('./lib/accessory');
 
 module.exports = class HmipModHo extends Accessory {
-    init(config) { // , node) {
+    init(config) {
+        // , node) {
         // const {ccu} = node;
 
         /*
@@ -35,28 +36,29 @@ module.exports = class HmipModHo extends Accessory {
         let currentDoorState;
         let targetDoorState;
 
-        garageService.get('CurrentDoorState', config.deviceAddress + ':1.DOOR_STATE', value => {
-            switch (value) {
-                case 0:
-                    currentDoorState = 1;
-                    targetDoorState = 1;
-                    break;
-                case 1:
-                    currentDoorState = 0;
-                    targetDoorState = 0;
-                    break;
-                case 2:
-                    currentDoorState = 4;
-                    break;
-                default:
-                    currentDoorState = 4;
+        garageService
+            .get('CurrentDoorState', config.deviceAddress + ':1.DOOR_STATE', (value) => {
+                switch (value) {
+                    case 0:
+                        currentDoorState = 1;
+                        targetDoorState = 1;
+                        break;
+                    case 1:
+                        currentDoorState = 0;
+                        targetDoorState = 0;
+                        break;
+                    case 2:
+                        currentDoorState = 4;
+                        break;
+                    default:
+                        currentDoorState = 4;
                     // Obstruction
-            }
+                }
 
-            return currentDoorState;
-        })
+                return currentDoorState;
+            })
 
-            .get('TargetDoorState', config.deviceAddress + ':1.DOOR_STATE', value => {
+            .get('TargetDoorState', config.deviceAddress + ':1.DOOR_STATE', (value) => {
                 switch (value) {
                     case 0:
                         currentDoorState = 1;
@@ -77,7 +79,7 @@ module.exports = class HmipModHo extends Accessory {
                 return targetDoorState;
             })
 
-            .set('TargetDoorState', config.deviceAddress + ':1.DOOR_COMMAND', value => {
+            .set('TargetDoorState', config.deviceAddress + ':1.DOOR_COMMAND', (value) => {
                 targetDoorState = value;
                 switch (value) {
                     case 0:

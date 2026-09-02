@@ -1,5 +1,3 @@
-/* eslint-disable no-new */
-
 const Accessory = require('./lib/accessory');
 
 function addInputService(type, name, dp) {
@@ -13,13 +11,13 @@ function addInputService(type, name, dp) {
 
             service.update('PositionState', 2);
 
-            service.get('CurrentPosition', dp, value => {
+            service.get('CurrentPosition', dp, (value) => {
                 actualValue = value ? 100 : 0;
                 service.update('TargetPosition', actualValue);
                 return actualValue;
             });
 
-            service.get('TargetPosition', dp, value => {
+            service.get('TargetPosition', dp, (value) => {
                 actualValue = value ? 100 : 0;
                 service.update('TargetPosition', actualValue);
                 return actualValue;
@@ -37,10 +35,9 @@ function addInputService(type, name, dp) {
             break;
 
         default:
-            this.addService('ContactSensor', name)
-                .get('ContactSensorState', dp, (value, c) => {
-                    return value ? c.CONTACT_NOT_DETECTED : c.CONTACT_DETECTED;
-                });
+            this.addService('ContactSensor', name).get('ContactSensorState', dp, (value, c) => {
+                return value ? c.CONTACT_NOT_DETECTED : c.CONTACT_DETECTED;
+            });
     }
 }
 
@@ -54,9 +51,9 @@ function addOutputService(type, dp, name) {
             service.update('ValveType', type === 'ValveIrrigation' ? 1 : 0);
 
             service
-                .get('Active', dp, val => val ? 1 : 0)
-                .get('InUse', dp, val => val ? 1 : 0)
-                .set('Active', dp, val => {
+                .get('Active', dp, (val) => (val ? 1 : 0))
+                .get('InUse', dp, (val) => (val ? 1 : 0))
+                .set('Active', dp, (val) => {
                     service.update('InUse', val);
                     return Boolean(val);
                 });
@@ -116,7 +113,7 @@ class AccMultiService extends Accessory {
             addInputService.call(this, type, name, dp);
         }
 
-        for (let i = 8; i < (channels.length - 2); i += 4) {
+        for (let i = 8; i < channels.length - 2; i += 4) {
             for (let vi = 0; vi < 3; vi++) {
                 const channelNumber = i + vi;
                 const ch = channels[channelNumber];
@@ -180,7 +177,7 @@ module.exports = class HmipwFio {
                 new AccSingleInputService(chConfig, node);
             }
 
-            for (let i = 8; i < (channels.length - 2); i += 4) {
+            for (let i = 8; i < channels.length - 2; i += 4) {
                 for (let vi = 0; vi < 3; vi++) {
                     const channelNumber = i + vi;
                     const ch = channels[channelNumber];

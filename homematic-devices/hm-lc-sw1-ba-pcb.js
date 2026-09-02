@@ -10,7 +10,7 @@ module.exports = class HmLcSw1BaPcb extends Accessory {
             .get('StatusLowBattery', config.deviceAddress + ':0.LOWBAT', (value, c) => {
                 return value ? c.BATTERY_LEVEL_LOW : c.BATTERY_LEVEL_NORMAL;
             })
-            .get('BatteryLevel', config.deviceAddress + ':0.LOWBAT', value => {
+            .get('BatteryLevel', config.deviceAddress + ':0.LOWBAT', (value) => {
                 return value ? 0 : 100;
             })
             .update('ChargingState', 2);

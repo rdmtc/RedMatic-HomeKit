@@ -11,7 +11,7 @@ module.exports = function (RED) {
 
             const {hap, version} = this.bridgeConfig;
 
-            this.name = config.name || ('Universal ' + this.id);
+            this.name = config.name || 'Universal ' + this.id;
             this.services = config.services || [];
 
             const acc = this.bridgeConfig.accessory({id: this.id, name: this.name});
@@ -23,7 +23,7 @@ module.exports = function (RED) {
                     .setCharacteristic(hap.Characteristic.SerialNumber, this.id)
                     .setCharacteristic(hap.Characteristic.FirmwareRevision, version);
 
-                this.services.forEach(s => {
+                this.services.forEach((s) => {
                     this.debug('addService ' + s.subtype + ' ' + s.service + ' ' + s.name);
                     acc.addService(hap.Service[s.service], s.name, s.subtype);
                 });
@@ -33,19 +33,19 @@ module.exports = function (RED) {
 
             this.listeners = [];
 
-            this.services.forEach(s => {
+            this.services.forEach((s) => {
                 let service = acc.getService(s.subtype);
                 if (!service) {
                     this.debug('addService ' + s.subtype + ' ' + s.service + ' ' + s.name);
                     service = acc.addService(hap.Service[s.service], s.name, s.subtype);
                 }
 
-                service.characteristics.forEach(c => {
+                service.characteristics.forEach((c) => {
                     this.addListener(s.subtype, c);
                 });
             });
 
-            this.on('input', msg => {
+            this.on('input', (msg) => {
                 const [subtype, c] = msg.topic.split('/');
                 const service = acc.getService(subtype);
                 if (service) {
@@ -66,7 +66,7 @@ module.exports = function (RED) {
             });
 
             this.on('close', () => {
-                this.listeners.forEach(l => {
+                this.listeners.forEach((l) => {
                     this.debug('remove change listener ' + l.subtype + ' ' + l.cName);
                     l.characteristic.removeListener('change', l.listener);
                 });
@@ -77,13 +77,13 @@ module.exports = function (RED) {
             const cName = c.displayName.replace(/ /g, '');
             this.debug('create change listener ' + subtype + ' ' + cName);
 
-            const changeListener = obj => {
+            const changeListener = (obj) => {
                 const topic = subtype + '/' + cName;
                 this.debug('hap -> ' + topic + ' ' + obj.newValue);
                 if (obj && obj.context && obj.context.request) {
                     this.send({
                         topic,
-                        payload: obj.newValue
+                        payload: obj.newValue,
                     });
                 }
             };
@@ -95,7 +95,7 @@ module.exports = function (RED) {
 
         hasListener(subtype, characteristicName) {
             let res = false;
-            this.listeners.forEach(l => {
+            this.listeners.forEach((l) => {
                 if (subtype === l.subtype && characteristicName === l.cName) {
                     res = true;
                 }

@@ -56,7 +56,8 @@ module.exports = class Accessory {
             return;
         }
 
-        this.acc.getService(hap.Service.AccessoryInformation)
+        this.acc
+            .getService(hap.Service.AccessoryInformation)
             .setCharacteristic(hap.Characteristic.Manufacturer, 'eQ-3')
             .setCharacteristic(hap.Characteristic.Model, config.description.TYPE)
             .setCharacteristic(hap.Characteristic.SerialNumber, config.description.ADDRESS)
@@ -78,7 +79,9 @@ module.exports = class Accessory {
         });
 
         if (typeof this.init === 'function') {
-            node.debug('init accessory ' + config.description.ADDRESS + ' ' + config.description.TYPE + ' ' + config.name);
+            node.debug(
+                'init accessory ' + config.description.ADDRESS + ' ' + config.description.TYPE + ' ' + config.name,
+            );
             setImmediate(() => {
                 this.init(config, node);
             });
@@ -88,7 +91,8 @@ module.exports = class Accessory {
     ccuSetValue(address, value, callback) {
         const force = this.ccu.values[address] && this.ccu.values[address].stable === false;
         const [iface, channel, dp] = address.split('.');
-        this.ccu.setValueQueued(iface, channel, dp, value, false, force)
+        this.ccu
+            .setValueQueued(iface, channel, dp, value, false, force)
             .then(() => {
                 if (typeof callback === 'function') {
                     callback();
@@ -104,9 +108,20 @@ module.exports = class Accessory {
     addService(type, name, subtypeIdentifier = '') {
         const subtype = subtypeIdentifier + String(this.subtypeCounter++);
         if (this.acc.getService(subtype)) {
-            this.node.debug('service (' + subtype + ') already existing ' + this.config.description.TYPE + ' ' + this.config.name);
+            this.node.debug(
+                'service (' + subtype + ') already existing ' + this.config.description.TYPE + ' ' + this.config.name,
+            );
         } else {
-            this.node.debug('add service ' + type + ' (' + subtype + ') to ' + this.config.description.TYPE + ' ' + this.config.name);
+            this.node.debug(
+                'add service ' +
+                    type +
+                    ' (' +
+                    subtype +
+                    ') to ' +
+                    this.config.description.TYPE +
+                    ' ' +
+                    this.config.name,
+            );
             this.acc.addService(this.hap.Service[type], name, subtype);
         }
 
@@ -117,18 +132,45 @@ module.exports = class Accessory {
     addListener(event, subtype, characteristic, callback) {
         if (this.acc.getService(subtype)) {
             this.acc.getService(subtype).getCharacteristic(this.hap.Characteristic[characteristic]).on(event, callback);
-            this.node.debug('add ' + event + ' listener ' + characteristic + ' (' + subtype + ') to ' + this.config.description.TYPE + ' ' + this.config.name);
+            this.node.debug(
+                'add ' +
+                    event +
+                    ' listener ' +
+                    characteristic +
+                    ' (' +
+                    subtype +
+                    ') to ' +
+                    this.config.description.TYPE +
+                    ' ' +
+                    this.config.name,
+            );
             this.listeners.push({event, subtype, characteristic, callback});
         } else {
-            this.node.error('service (' + subtype + ') does not exist on ' + this.config.description.TYPE + ' ' + this.config.name);
+            this.node.error(
+                'service (' + subtype + ') does not exist on ' + this.config.description.TYPE + ' ' + this.config.name,
+            );
         }
     }
 
     removeListeners() {
         if (this.listeners.length > 0) {
             const {event, subtype, characteristic, callback} = this.listeners.shift();
-            this.node.debug('remove ' + event + ' listener ' + characteristic + ' (' + subtype + ') from ' + this.config.description.TYPE + ' ' + this.config.name);
-            this.acc.getService(subtype).getCharacteristic(this.hap.Characteristic[characteristic]).removeListener(event, callback);
+            this.node.debug(
+                'remove ' +
+                    event +
+                    ' listener ' +
+                    characteristic +
+                    ' (' +
+                    subtype +
+                    ') from ' +
+                    this.config.description.TYPE +
+                    ' ' +
+                    this.config.name,
+            );
+            this.acc
+                .getService(subtype)
+                .getCharacteristic(this.hap.Characteristic[characteristic])
+                .removeListener(event, callback);
             this.removeListeners();
         }
     }
@@ -141,28 +183,40 @@ module.exports = class Accessory {
     }
 
     getError() {
-        return (this.unreach && !['HM-CC-VG-1', 'HmIP-HEATING'].includes(this.config.description.TYPE)) ? new Error(this.hap.HAPServer.Status.SERVICE_COMMUNICATION_FAILURE) : null;
+        return this.unreach && !['HM-CC-VG-1', 'HmIP-HEATING'].includes(this.config.description.TYPE)
+            ? new Error(this.hap.HAPServer.Status.SERVICE_COMMUNICATION_FAILURE)
+            : null;
     }
 
     subscribe(datapointName, callback) {
-        this.subscriptions.push(this.ccu.subscribe({
-            cache: true,
-            change: true,
-            stable: true,
-            datapointName
-        }, msg => {
-            callback(msg.value);
-        }));
+        this.subscriptions.push(
+            this.ccu.subscribe(
+                {
+                    cache: true,
+                    change: true,
+                    stable: true,
+                    datapointName,
+                },
+                (msg) => {
+                    callback(msg.value);
+                },
+            ),
+        );
     }
 
     datapointUnreach(datapointName) {
-        this.subscriptions.push(this.ccu.subscribe({
-            cache: true,
-            change: true,
-            datapointName
-        }, msg => {
-            this.unreach = msg.value;
-        }));
+        this.subscriptions.push(
+            this.ccu.subscribe(
+                {
+                    cache: true,
+                    change: true,
+                    datapointName,
+                },
+                (msg) => {
+                    this.unreach = msg.value;
+                },
+            ),
+        );
     }
 
     datapointsFault(subtype, datapointNameArr, transformArr) {
@@ -172,56 +226,92 @@ module.exports = class Accessory {
 
         const values = {};
         datapointNameArr.forEach((dp, i) => {
-            this.subscriptions.push(this.ccu.subscribe({
-                cache: true,
-                change: true,
-                datapointName: dp
-            }, msg => {
-                values[msg.datapointName] = msg.value;
-                let value = this.hap.Characteristic.StatusFault.NO_FAULT;
-                if (typeof transformArr[i] === 'function') {
-                    value = transformArr[i](value);
-                }
+            this.subscriptions.push(
+                this.ccu.subscribe(
+                    {
+                        cache: true,
+                        change: true,
+                        datapointName: dp,
+                    },
+                    (msg) => {
+                        values[msg.datapointName] = msg.value;
+                        let value = this.hap.Characteristic.StatusFault.NO_FAULT;
+                        if (typeof transformArr[i] === 'function') {
+                            value = transformArr[i](value);
+                        }
 
-                Object.keys(values).forEach(key => {
-                    if (values[key]) {
-                        value = this.hap.Characteristic.StatusFault.GENERAL_FAULT;
-                    }
-                });
-                this.node.debug('update ' + this.config.name + ' (' + subtype + ') StatusFault ' + value);
-                this.acc.getService(subtype).updateCharacteristic(this.hap.Characteristic.StatusFault, value);
-            }));
+                        Object.keys(values).forEach((key) => {
+                            if (values[key]) {
+                                value = this.hap.Characteristic.StatusFault.GENERAL_FAULT;
+                            }
+                        });
+                        this.node.debug('update ' + this.config.name + ' (' + subtype + ') StatusFault ' + value);
+                        this.acc.getService(subtype).updateCharacteristic(this.hap.Characteristic.StatusFault, value);
+                    },
+                ),
+            );
         });
     }
 
     datapointGet(subtype, characteristic, datapointName, transform) {
-        this.addListener('get', subtype, characteristic, callback => {
+        this.addListener('get', subtype, characteristic, (callback) => {
             const valueOrig = this.ccu.values && this.ccu.values[datapointName] && this.ccu.values[datapointName].value;
             let value = valueOrig;
             if (typeof transform === 'function') {
                 value = transform(value, this.hap.Characteristic[characteristic]);
             }
 
-            this.node.debug('get ' + this.config.name + ' (' + subtype + ') ' + characteristic + ' ' + valueOrig + ' -> ' + this.getError() + ' ' + value);
+            this.node.debug(
+                'get ' +
+                    this.config.name +
+                    ' (' +
+                    subtype +
+                    ') ' +
+                    characteristic +
+                    ' ' +
+                    valueOrig +
+                    ' -> ' +
+                    this.getError() +
+                    ' ' +
+                    value,
+            );
             callback(this.getError(), value);
         });
 
         this.node.debug('subscribe ' + datapointName);
-        this.subscriptions.push(this.ccu.subscribe({
-            cache: true,
-            change: true,
-            stable: !datapointName.endsWith('.DIRECTION') && !datapointName.endsWith('.ACTIVITY_STATE'),
-            datapointName
-        }, msg => {
-            const valueOrig = msg.value;
-            let value = valueOrig;
-            if (typeof transform === 'function') {
-                value = transform(value, this.hap.Characteristic[characteristic]);
-            }
+        this.subscriptions.push(
+            this.ccu.subscribe(
+                {
+                    cache: true,
+                    change: true,
+                    stable: !datapointName.endsWith('.DIRECTION') && !datapointName.endsWith('.ACTIVITY_STATE'),
+                    datapointName,
+                },
+                (msg) => {
+                    const valueOrig = msg.value;
+                    let value = valueOrig;
+                    if (typeof transform === 'function') {
+                        value = transform(value, this.hap.Characteristic[characteristic]);
+                    }
 
-            this.node.debug('update ' + this.config.name + ' (' + subtype + ') ' + characteristic + ' ' + valueOrig + ' -> ' + this.getError() + ' ' + value);
-            this.acc.getService(subtype).updateCharacteristic(this.hap.Characteristic[characteristic], value);
-        }));
+                    this.node.debug(
+                        'update ' +
+                            this.config.name +
+                            ' (' +
+                            subtype +
+                            ') ' +
+                            characteristic +
+                            ' ' +
+                            valueOrig +
+                            ' -> ' +
+                            this.getError() +
+                            ' ' +
+                            value,
+                    );
+                    this.acc.getService(subtype).updateCharacteristic(this.hap.Characteristic[characteristic], value);
+                },
+            ),
+        );
     }
 
     datapointSet(subtype, characteristic, datapointName, transform) {
@@ -233,8 +323,22 @@ module.exports = class Accessory {
 
             const force = this.ccu.values[datapointName] && this.ccu.values[datapointName].stable === false;
             const [iface, channel, dp] = datapointName.split('.');
-            this.node.debug('set ' + this.config.name + ' (' + subtype + ') ' + characteristic + ' ' + valueOrig + ' -> ' + datapointName + ' ' + value);
-            this.ccu.setValueQueued(iface, channel, dp, value, false, force)
+            this.node.debug(
+                'set ' +
+                    this.config.name +
+                    ' (' +
+                    subtype +
+                    ') ' +
+                    characteristic +
+                    ' ' +
+                    valueOrig +
+                    ' -> ' +
+                    datapointName +
+                    ' ' +
+                    value,
+            );
+            this.ccu
+                .setValueQueued(iface, channel, dp, value, false, force)
                 .then(() => {
                     callback();
                 })
@@ -246,18 +350,24 @@ module.exports = class Accessory {
 
     updateCharacteristic(subtype, characteristic, value) {
         this.node.debug('update ' + this.config.name + ' (' + subtype + ') ' + characteristic + ' ' + value);
-        this.acc.getService(subtype)
-            .updateCharacteristic(this.hap.Characteristic[characteristic], value);
+        this.acc.getService(subtype).updateCharacteristic(this.hap.Characteristic[characteristic], value);
     }
 
     setProps(subtype, characteristic, props) {
-        this.acc.getService(subtype)
-            .getCharacteristic(this.hap.Characteristic[characteristic])
-            .setProps(props);
+        this.acc.getService(subtype).getCharacteristic(this.hap.Characteristic[characteristic]).setProps(props);
     }
 
     identify(paired, callback) {
-        this.node.log('identify ' + (paired ? '(paired)' : '(unpaired)') + ' ' + this.config.name + ' ' + this.config.description.TYPE + ' ' + this.config.description.ADDRESS);
+        this.node.log(
+            'identify ' +
+                (paired ? '(paired)' : '(unpaired)') +
+                ' ' +
+                this.config.name +
+                ' ' +
+                this.config.description.TYPE +
+                ' ' +
+                this.config.description.ADDRESS,
+        );
         try {
             callback();
         } catch (error) {

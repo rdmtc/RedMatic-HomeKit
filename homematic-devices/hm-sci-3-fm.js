@@ -22,13 +22,13 @@ module.exports = class HmSci3Fm extends Accessory {
 
                     service.update('PositionState', 2);
 
-                    service.get('CurrentPosition', dp, value => {
+                    service.get('CurrentPosition', dp, (value) => {
                         actualValue = value ? 100 : 0;
                         service.update('TargetPosition', actualValue);
                         return actualValue;
                     });
 
-                    service.get('TargetPosition', dp, value => {
+                    service.get('TargetPosition', dp, (value) => {
                         actualValue = value ? 100 : 0;
                         service.update('TargetPosition', actualValue);
                         return actualValue;
@@ -47,7 +47,7 @@ module.exports = class HmSci3Fm extends Accessory {
                         .get('StatusLowBattery', config.deviceAddress + ':0.LOWBAT', (value, c) => {
                             return value ? c.BATTERY_LEVEL_LOW : c.BATTERY_LEVEL_NORMAL;
                         })
-                        .get('BatteryLevel', config.deviceAddress + ':0.LOWBAT', value => {
+                        .get('BatteryLevel', config.deviceAddress + ':0.LOWBAT', (value) => {
                             return value ? 0 : 100;
                         });
 

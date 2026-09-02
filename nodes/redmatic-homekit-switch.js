@@ -11,7 +11,7 @@ module.exports = function (RED) {
 
             const {hap, version} = this.bridgeConfig;
 
-            this.name = config.name || ('Switch ' + this.id);
+            this.name = config.name || 'Switch ' + this.id;
 
             const acc = this.bridgeConfig.accessory({id: this.id, name: this.name});
 
@@ -37,7 +37,7 @@ module.exports = function (RED) {
                 callback();
             };
 
-            const getListener = callback => {
+            const getListener = (callback) => {
                 this.log('get Switch 0 On ' + this.valueOn);
                 callback(null, this.valueOn);
             };
@@ -49,7 +49,7 @@ module.exports = function (RED) {
             acc.getService(subtype).getCharacteristic(hap.Characteristic.On).on('set', setListener);
             acc.getService(subtype).getCharacteristic(hap.Characteristic.On).on('get', getListener);
 
-            this.on('input', msg => {
+            this.on('input', (msg) => {
                 this.valueOn = Boolean(msg.payload);
                 update();
             });

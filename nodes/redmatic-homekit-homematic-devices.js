@@ -6,7 +6,7 @@ module.exports = function (RED) {
     const devPath = path.join(__dirname, '..', 'homematic-devices');
     fs.readdir(devPath, (error, files) => {
         if (!error && files) {
-            files.forEach(file => {
+            files.forEach((file) => {
                 if (file.endsWith('.js')) {
                     homematicValidDevices.push(file.replace('.js', ''));
                 }
@@ -63,7 +63,7 @@ module.exports = function (RED) {
 
             const queue = [];
 
-            Object.keys(this.ccu.channelNames).forEach(address => {
+            Object.keys(this.ccu.channelNames).forEach((address) => {
                 if (this.devices[address] && this.devices[address].disabled) {
                     return;
                 }
@@ -72,20 +72,20 @@ module.exports = function (RED) {
                     const iface = this.ccu.findIface(address);
                     if (iface && this.ccu.enabledIfaces.includes(iface) && this.ccu.metadata.devices[iface]) {
                         const options = {};
-                        Object.keys(this.devices).forEach(addr => {
+                        Object.keys(this.devices).forEach((addr) => {
                             if (addr === address || addr.startsWith(address + ':')) {
                                 options[addr] = this.devices[addr];
                             }
                         });
 
                         queue.push(() => {
-                            return new Promise(resolve => {
+                            return new Promise((resolve) => {
                                 this.createHomematicDevice({
                                     name: this.ccu.channelNames[address],
                                     iface,
                                     deviceAddress: iface + '.' + address,
                                     description: this.ccu.metadata.devices[iface][address],
-                                    options
+                                    options,
                                 });
                                 setTimeout(() => {
                                     resolve();
@@ -96,9 +96,11 @@ module.exports = function (RED) {
                 }
             });
             this.log('publish ' + queue.length + ' devices');
-            queue.reduce((p, task) => p.then(task), Promise.resolve()).then(() => {
-                callback();
-            });
+            queue
+                .reduce((p, task) => p.then(task), Promise.resolve())
+                .then(() => {
+                    callback();
+                });
         }
 
         createHomematicDevice(dev) {
@@ -118,7 +120,7 @@ module.exports = function (RED) {
                     this.homematicDevices[type] = require('../homematic-devices/' + type);
                     this.debug('loaded homematic-devices/' + type);
                 } catch (error) {
-                    this.warn('missing homematic-devices/' + type);
+                    this.warn('missing homematic-devices/' + type + ': ' + error.message);
                     return;
                 }
             }
@@ -139,7 +141,7 @@ module.exports = function (RED) {
         setStatus(data) {
             this.ccuStatus = data;
             let status = 0;
-            Object.keys(data.ifaceStatus).forEach(s => {
+            Object.keys(data.ifaceStatus).forEach((s) => {
                 if (data.ifaceStatus[s]) {
                     status += 1;
                 }

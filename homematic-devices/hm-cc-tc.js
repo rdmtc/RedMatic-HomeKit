@@ -23,11 +23,11 @@ module.exports = class HmCcTc extends Accessory {
             .get('CurrentTemperature', config.deviceAddress + ':1.TEMPERATURE')
 
             .setProps('TargetTemperature', {minValue: 6, maxValue: 30, minStep: 0.5})
-            .get('TargetTemperature', config.deviceAddress + ':2.SETPOINT', value => {
+            .get('TargetTemperature', config.deviceAddress + ':2.SETPOINT', (value) => {
                 valueSetpoint = value;
                 return value;
             })
-            .set('TargetTemperature', config.deviceAddress + ':2.SETPOINT', value => {
+            .set('TargetTemperature', config.deviceAddress + ':2.SETPOINT', (value) => {
                 valueSetpoint = value;
                 return value;
             })
@@ -47,7 +47,7 @@ module.exports = class HmCcTc extends Accessory {
                 }, 1000);
                 return targetState();
             })
-            .set('TargetHeatingCoolingState', config.deviceAddress + ':2.SETPOINT', value => {
+            .set('TargetHeatingCoolingState', config.deviceAddress + ':2.SETPOINT', (value) => {
                 valueSetpoint = value ? 21 : 0;
                 setTimeout(() => {
                     updateHeatingCoolingState();
@@ -65,7 +65,7 @@ module.exports = class HmCcTc extends Accessory {
 
         if (links[0]) {
             valveStateDevice = links[0].split(':')[0];
-            this.subscribe(config.iface + '.' + valveStateDevice + ':1.VALVE_STATE', value => {
+            this.subscribe(config.iface + '.' + valveStateDevice + ':1.VALVE_STATE', (value) => {
                 valveState = value;
                 updateHeatingCoolingState();
             });
@@ -75,7 +75,7 @@ module.exports = class HmCcTc extends Accessory {
             .get('StatusLowBattery', config.deviceAddress + ':0.LOWBAT', (value, c) => {
                 return value ? c.BATTERY_LEVEL_LOW : c.BATTERY_LEVEL_NORMAL;
             })
-            .get('BatteryLevel', config.deviceAddress + ':0.LOWBAT', value => {
+            .get('BatteryLevel', config.deviceAddress + ':0.LOWBAT', (value) => {
                 return value ? 0 : 100;
             })
             .update('ChargingState', 2);

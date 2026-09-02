@@ -1,5 +1,3 @@
-/* eslint-disable no-new */
-
 const Accessory = require('./lib/accessory');
 
 function addService(type, name, dp) {
@@ -13,13 +11,13 @@ function addService(type, name, dp) {
 
             service.update('PositionState', 2);
 
-            service.get('CurrentPosition', dp, value => {
+            service.get('CurrentPosition', dp, (value) => {
                 actualValue = value ? 100 : 0;
                 service.update('TargetPosition', actualValue);
                 return actualValue;
             });
 
-            service.get('TargetPosition', dp, value => {
+            service.get('TargetPosition', dp, (value) => {
                 actualValue = value ? 100 : 0;
                 service.update('TargetPosition', actualValue);
                 return actualValue;
@@ -37,10 +35,9 @@ function addService(type, name, dp) {
             break;
 
         default:
-            this.addService('ContactSensor', name)
-                .get('ContactSensorState', dp, (value, c) => {
-                    return value ? c.CONTACT_NOT_DETECTED : c.CONTACT_DETECTED;
-                });
+            this.addService('ContactSensor', name).get('ContactSensorState', dp, (value, c) => {
+                return value ? c.CONTACT_NOT_DETECTED : c.CONTACT_DETECTED;
+            });
     }
 }
 
@@ -56,7 +53,7 @@ class AccSingleService extends Accessory {
 class AccMultiService extends Accessory {
     init(config, node) {
         const channels = config.description.CHILDREN;
-        for (let i = 1; i < (channels.length - 1); i++) {
+        for (let i = 1; i < channels.length - 1; i++) {
             const ch = config.description.ADDRESS + ':' + i;
             if (!this.option(i)) {
                 continue;
@@ -99,7 +96,7 @@ module.exports = class GenericContactSensor {
         if (this.option('SingleAccessory')) {
             new AccMultiService(config, node);
         } else {
-            for (let i = 1; i < (channels.length - 1); i++) {
+            for (let i = 1; i < channels.length - 1; i++) {
                 const ch = config.description.ADDRESS + ':' + i;
                 if (!this.option(i)) {
                     continue;

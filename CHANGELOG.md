@@ -10,6 +10,20 @@ append commits automatically).
 Breaking release. See [ROADMAP.md](ROADMAP.md) for the plan and the
 decisions (D-n) referenced below.
 
+### Changed
+
+- Supported platforms: Node.js ≥ 22.12 and Node-RED ≥ 4 (`engines` and
+  `node-red.version` are declared now; the palette manager refuses older
+  runtimes instead of failing later).
+- Tooling: xo replaced by ESLint 9 + Prettier (also linting the editor
+  scripts in the node `.html` files), `node --test` unit tests, GitHub
+  Actions CI (lint, Node 22/24 × Node-RED 4/5, native-dependency scan) and a
+  tag-driven release workflow with npm provenance. The published package is
+  reduced to `nodes/`, `homematic-devices/` and this changelog.
+- A guard (`tools/check-native.js`, run in CI) fails the build if any
+  production dependency needs a compiler, an install script or ships a
+  binary — the package must stay installable on a CCU (ROADMAP D-1).
+
 ### Removed
 
 - **Camera node** (`redmatic-homekit-camera`) and the

@@ -39,7 +39,7 @@ module.exports = class HmipEtrv extends Accessory {
             .get('CurrentTemperature', config.deviceAddress + ':1.ACTUAL_TEMPERATURE')
 
             .setProps('TargetTemperature', {minValue: 4.5, maxValue: 30.5, minStep: 0.5})
-            .get('TargetTemperature', config.deviceAddress + ':1.SET_POINT_TEMPERATURE', value => {
+            .get('TargetTemperature', config.deviceAddress + ':1.SET_POINT_TEMPERATURE', (value) => {
                 currentSetpoint = value;
                 if (value !== 4.5) {
                     valueSetpoint = value;
@@ -70,16 +70,28 @@ module.exports = class HmipEtrv extends Accessory {
                 if (value === 0 || value === 1) {
                     const params = {
                         CONTROL_MODE: 1,
-                        SET_POINT_TEMPERATURE: value === 0 ? 4.5 : valueSetpoint
+                        SET_POINT_TEMPERATURE: value === 0 ? 4.5 : valueSetpoint,
                     };
-                    node.debug('set ' + config.name + ' (' + subtypeThermostat + ') TargetHeatingCoolingState ' + value + ' -> ' + config.description.ADDRESS + ':1 ' + JSON.stringify(params));
-                    ccu.methodCall(config.iface, 'putParamset', [config.description.ADDRESS + ':1', 'VALUES', params]).then(() => {
-                        if (valueSetpoint > 4.5) {
-                            serviceThermostat.update('TargetTemperature', valueSetpoint);
-                        }
+                    node.debug(
+                        'set ' +
+                            config.name +
+                            ' (' +
+                            subtypeThermostat +
+                            ') TargetHeatingCoolingState ' +
+                            value +
+                            ' -> ' +
+                            config.description.ADDRESS +
+                            ':1 ' +
+                            JSON.stringify(params),
+                    );
+                    ccu.methodCall(config.iface, 'putParamset', [config.description.ADDRESS + ':1', 'VALUES', params])
+                        .then(() => {
+                            if (valueSetpoint > 4.5) {
+                                serviceThermostat.update('TargetTemperature', valueSetpoint);
+                            }
 
-                        callback();
-                    })
+                            callback();
+                        })
                         .catch(() => {
                             callback(new Error(hap.HAPServer.Status.SERVICE_COMMUNICATION_FAILURE));
                         });
@@ -99,13 +111,13 @@ module.exports = class HmipEtrv extends Accessory {
             serviceThermostat.update('TargetHeatingCoolingState', targetState());
         }
 
-        this.subscribe(config.deviceAddress + ':1.LEVEL', value => {
+        this.subscribe(config.deviceAddress + ':1.LEVEL', (value) => {
             level = value;
             node.debug('update ' + config.name + ' level ' + level);
             updateHeatingCoolingState();
         });
 
-        this.subscribe(config.deviceAddress + ':1.SET_POINT_MODE', value => {
+        this.subscribe(config.deviceAddress + ':1.SET_POINT_MODE', (value) => {
             setpointMode = value;
             node.debug('update ' + config.name + ' setpointMode ' + setpointMode);
             updateHeatingCoolingState();

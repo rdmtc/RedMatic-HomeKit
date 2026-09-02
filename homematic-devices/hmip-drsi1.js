@@ -1,5 +1,3 @@
-/* eslint-disable no-new */
-
 const Accessory = require('./lib/accessory');
 
 function addService(type, dp, name) {
@@ -12,9 +10,9 @@ function addService(type, dp, name) {
             service.update('ValveType', type === 'ValveIrrigation' ? 1 : 0);
 
             service
-                .get('Active', dp, val => val ? 1 : 0)
-                .get('InUse', dp, val => val ? 1 : 0)
-                .set('Active', dp, val => {
+                .get('Active', dp, (val) => (val ? 1 : 0))
+                .get('InUse', dp, (val) => (val ? 1 : 0))
+                .set('Active', dp, (val) => {
                     service.update('InUse', val);
                     return Boolean(val);
                 });

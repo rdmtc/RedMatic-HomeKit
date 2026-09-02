@@ -14,8 +14,10 @@ module.exports = class HmipSmi55 extends Accessory {
             .update('ChargingState', 2);
 
         if (this.option('lightSensorOption')) {
-            this.addService('LightSensor', config.name)
-                .get('CurrentAmbientLightLevel', config.deviceAddress + ':3.ILLUMINATION');
+            this.addService('LightSensor', config.name).get(
+                'CurrentAmbientLightLevel',
+                config.deviceAddress + ':3.ILLUMINATION',
+            );
         }
     }
 };

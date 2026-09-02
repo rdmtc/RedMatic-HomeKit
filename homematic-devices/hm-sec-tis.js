@@ -11,14 +11,14 @@ module.exports = class HmSecTis extends Accessory {
             case 'GarageDoorOpener':
                 service = this.addService(type, config.name, type);
 
-                service.get('CurrentDoorState', config.deviceAddress + ':1.STATE', value => {
+                service.get('CurrentDoorState', config.deviceAddress + ':1.STATE', (value) => {
                     actualValue = value;
                     value = value ? 0 : 1;
                     service.update('TargetDoorState', value);
                     return value;
                 });
 
-                service.get('TargetDoorState', config.deviceAddress + ':1.STATE', value => {
+                service.get('TargetDoorState', config.deviceAddress + ':1.STATE', (value) => {
                     actualValue = value;
                     value = value ? 0 : 1;
                     service.update('TargetDoorState', value);
@@ -42,13 +42,13 @@ module.exports = class HmSecTis extends Accessory {
 
                 service.update('PositionState', 2);
 
-                service.get('CurrentPosition', config.deviceAddress + ':1.STATE', value => {
+                service.get('CurrentPosition', config.deviceAddress + ':1.STATE', (value) => {
                     actualValue = value ? 100 : 0;
                     service.update('TargetPosition', actualValue);
                     return actualValue;
                 });
 
-                service.get('TargetPosition', config.deviceAddress + ':1.STATE', value => {
+                service.get('TargetPosition', config.deviceAddress + ':1.STATE', (value) => {
                     actualValue = value ? 100 : 0;
                     service.update('TargetPosition', actualValue);
                     return actualValue;
@@ -67,7 +67,7 @@ module.exports = class HmSecTis extends Accessory {
                     .get('StatusLowBattery', config.deviceAddress + ':0.LOWBAT', (value, c) => {
                         return value ? c.BATTERY_LEVEL_LOW : c.BATTERY_LEVEL_NORMAL;
                     })
-                    .get('BatteryLevel', config.deviceAddress + ':0.LOWBAT', value => {
+                    .get('BatteryLevel', config.deviceAddress + ':0.LOWBAT', (value) => {
                         return value ? 0 : 100;
                     })
                     .update('ChargingState', 2);

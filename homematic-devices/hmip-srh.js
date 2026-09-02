@@ -25,13 +25,13 @@ module.exports = class HmipSrh extends Accessory {
 
                 service.update('PositionState', 2);
 
-                service.get('CurrentPosition', config.deviceAddress + ':1.STATE', value => {
+                service.get('CurrentPosition', config.deviceAddress + ':1.STATE', (value) => {
                     actualValue = convert(value);
                     service.update('TargetPosition', actualValue);
                     return actualValue;
                 });
 
-                service.get('TargetPosition', config.deviceAddress + ':1.STATE', value => {
+                service.get('TargetPosition', config.deviceAddress + ':1.STATE', (value) => {
                     actualValue = convert(value);
                     service.update('TargetPosition', actualValue);
                     return actualValue;
@@ -46,7 +46,7 @@ module.exports = class HmipSrh extends Accessory {
                     }, 20);
                 });
 
-                service.get('ObstructionDetected', config.deviceAddress + ':0.SABOTAGE', value => {
+                service.get('ObstructionDetected', config.deviceAddress + ':0.SABOTAGE', (value) => {
                     return Boolean(value);
                 });
 
@@ -58,20 +58,20 @@ module.exports = class HmipSrh extends Accessory {
                         return value > 0 ? c.CONTACT_NOT_DETECTED : c.CONTACT_DETECTED;
                     })
 
-                    .get('StatusTampered', config.deviceAddress + ':0.SABOTAGE', value => {
+                    .get('StatusTampered', config.deviceAddress + ':0.SABOTAGE', (value) => {
                         return Boolean(value);
                     })
 
-                    .fault([
-                        config.deviceAddress + ':0.ERROR_CODE'
-                    ]);
+                    .fault([config.deviceAddress + ':0.ERROR_CODE']);
         }
 
         this.addService('BatteryService', config.name)
             .get('StatusLowBattery', config.deviceAddress + ':0.LOW_BAT', (value, c) => {
                 return value ? c.BATTERY_LEVEL_LOW : c.BATTERY_LEVEL_NORMAL;
             })
-            .get('BatteryLevel', config.deviceAddress + ':0.OPERATING_VOLTAGE', value => this.percent(value, null, 1, 1.5))
+            .get('BatteryLevel', config.deviceAddress + ':0.OPERATING_VOLTAGE', (value) =>
+                this.percent(value, null, 1, 1.5),
+            )
             .update('ChargingState', 2);
     }
 };

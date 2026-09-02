@@ -6,7 +6,7 @@ module.exports = class HmLcDim extends Accessory {
 
         this.addService('Lightbulb', config.name)
 
-            .get('On', config.deviceAddress + ':1.LEVEL', value => {
+            .get('On', config.deviceAddress + ':1.LEVEL', (value) => {
                 valueBrightness = value;
                 return value > 0;
             })
@@ -27,12 +27,12 @@ module.exports = class HmLcDim extends Accessory {
                 }
             })
 
-            .get('Brightness', config.deviceAddress + ':1.LEVEL', value => {
+            .get('Brightness', config.deviceAddress + ':1.LEVEL', (value) => {
                 valueBrightness = value * 100;
                 return value * 100;
             })
 
-            .set('Brightness', config.deviceAddress + ':1.LEVEL', value => {
+            .set('Brightness', config.deviceAddress + ':1.LEVEL', (value) => {
                 valueBrightness = value;
                 return value / 100;
             });

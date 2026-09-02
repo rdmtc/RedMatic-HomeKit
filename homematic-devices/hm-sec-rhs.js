@@ -25,13 +25,13 @@ module.exports = class HmSecRhs extends Accessory {
 
                 service.update('PositionState', 2);
 
-                service.get('CurrentPosition', config.deviceAddress + ':1.STATE', value => {
+                service.get('CurrentPosition', config.deviceAddress + ':1.STATE', (value) => {
                     actualValue = convert(value);
                     service.update('TargetPosition', actualValue);
                     return actualValue;
                 });
 
-                service.get('TargetPosition', config.deviceAddress + ':1.STATE', value => {
+                service.get('TargetPosition', config.deviceAddress + ':1.STATE', (value) => {
                     actualValue = convert(value);
                     service.update('TargetPosition', actualValue);
                     return actualValue;
@@ -46,7 +46,7 @@ module.exports = class HmSecRhs extends Accessory {
                     }, 20);
                 });
 
-                service.get('ObstructionDetected', config.deviceAddress + ':1.ERROR', value => {
+                service.get('ObstructionDetected', config.deviceAddress + ':1.ERROR', (value) => {
                     return Boolean(value);
                 });
 
@@ -54,7 +54,7 @@ module.exports = class HmSecRhs extends Accessory {
                     .get('StatusLowBattery', config.deviceAddress + ':0.LOWBAT', (value, c) => {
                         return value ? c.BATTERY_LEVEL_LOW : c.BATTERY_LEVEL_NORMAL;
                     })
-                    .get('BatteryLevel', config.deviceAddress + ':0.LOWBAT', value => {
+                    .get('BatteryLevel', config.deviceAddress + ':0.LOWBAT', (value) => {
                         return value ? 0 : 100;
                     });
 
@@ -70,7 +70,7 @@ module.exports = class HmSecRhs extends Accessory {
                         return value ? c.BATTERY_LEVEL_LOW : c.BATTERY_LEVEL_NORMAL;
                     })
 
-                    .get('StatusTampered', config.deviceAddress + ':1.ERROR', value => {
+                    .get('StatusTampered', config.deviceAddress + ':1.ERROR', (value) => {
                         return Boolean(value);
                     });
         }

@@ -11,7 +11,7 @@ module.exports = function (RED) {
 
             const {hap, version} = this.bridgeConfig;
 
-            this.name = config.name || ('Pseudobutton ' + this.id);
+            this.name = config.name || 'Pseudobutton ' + this.id;
             this.payload = config.payload;
             this.payloadType = config.payloadType;
 
@@ -72,7 +72,7 @@ module.exports = function (RED) {
                 callback();
             };
 
-            const getListener = callback => {
+            const getListener = (callback) => {
                 this.log('get Switch 0 On false');
                 callback(null, false);
             };

@@ -21,7 +21,8 @@ module.exports = class HmUniDmx extends Accessory {
                     ccu.setValue(config.iface, ch, 'PRESS_SHORT', true)
                         .then(() => {
                             callback();
-                        }).catch(() => {
+                        })
+                        .catch(() => {
                             callback(new Error(hap.HAPServer.Status.SERVICE_COMMUNICATION_FAILURE));
                         });
                     setTimeout(() => {

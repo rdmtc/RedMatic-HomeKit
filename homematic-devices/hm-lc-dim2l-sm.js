@@ -19,7 +19,7 @@ module.exports = class HmLcDim2 extends Accessory {
 
             this.addService('Lightbulb', name)
 
-                .get('On', dp, value => {
+                .get('On', dp, (value) => {
                     valueBrightness = value;
                     return value > 0;
                 })
@@ -40,12 +40,12 @@ module.exports = class HmLcDim2 extends Accessory {
                     }
                 })
 
-                .get('Brightness', dp, value => {
+                .get('Brightness', dp, (value) => {
                     valueBrightness = value * 100;
                     return value * 100;
                 })
 
-                .set('Brightness', dp, value => {
+                .set('Brightness', dp, (value) => {
                     valueBrightness = value;
                     return value / 100;
                 });

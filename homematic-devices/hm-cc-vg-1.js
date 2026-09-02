@@ -30,11 +30,20 @@ module.exports = class HmCcVg1 extends Accessory {
             return;
         }
 
-        node.debug(config.deviceAddress + ' ' + group.groupProperties.NAME + ' ' + group.groupType.id + ' has ' + group.groupMembers.length + ' members');
-        group.groupMembers.forEach(member => {
+        node.debug(
+            config.deviceAddress +
+                ' ' +
+                group.groupProperties.NAME +
+                ' ' +
+                group.groupType.id +
+                ' has ' +
+                group.groupMembers.length +
+                ' members',
+        );
+        group.groupMembers.forEach((member) => {
             if (member.memberType.id.startsWith('HM-CC')) {
                 valveDevices.push('BidCos-RF.' + member.id);
-                valueChannel = valueChannel || ('BidCos-RF.' + member.id + ':4');
+                valueChannel = valueChannel || 'BidCos-RF.' + member.id + ':4';
             } else if (member.memberType.id.startsWith('HM-TC')) {
                 valueChannel = 'BidCos-RF.' + member.id + ':2';
                 humidityDp = 'BidCos-RF.' + member.id + ':1.HUMIDITY';
@@ -78,7 +87,7 @@ module.exports = class HmCcVg1 extends Accessory {
 
         function currentState() {
             // 0=off, 1=heat
-            return (level > 0 || controlMode === 3) ? 1 : 0;
+            return level > 0 || controlMode === 3 ? 1 : 0;
         }
 
         const serviceThermostat = this.addService('Thermostat', config.name);
@@ -89,7 +98,7 @@ module.exports = class HmCcVg1 extends Accessory {
             .get('CurrentTemperature', valueChannel + '.ACTUAL_TEMPERATURE')
 
             .setProps('TargetTemperature', {minValue: 4.5, maxValue: 30.5, minStep: 0.5})
-            .get('TargetTemperature', valueChannel + '.SET_TEMPERATURE', value => {
+            .get('TargetTemperature', valueChannel + '.SET_TEMPERATURE', (value) => {
                 currentSetpoint = value;
                 if (value > 4.5) {
                     valueSetpoint = value;
@@ -116,7 +125,7 @@ module.exports = class HmCcVg1 extends Accessory {
                 return targetState();
             })
             .set('TargetHeatingCoolingState', (value, callback) => {
-            // 0=off, 1=heat, 3=auto
+                // 0=off, 1=heat, 3=auto
                 if (value === 0) {
                     ccu.setValue(config.iface, config.description.ADDRESS + ':1', 'MANU_MODE', 4.5)
                         .then(() => {
@@ -151,18 +160,22 @@ module.exports = class HmCcVg1 extends Accessory {
         function updateHeatingCoolingState() {
             const current = currentState();
             node.debug('update ' + config.name + ' (' + subtypeThermostat + ') CurrentHeatingCoolingState ' + current);
-            that.acc.getService(subtypeThermostat).updateCharacteristic(hap.Characteristic.CurrentHeatingCoolingState, current);
+            that.acc
+                .getService(subtypeThermostat)
+                .updateCharacteristic(hap.Characteristic.CurrentHeatingCoolingState, current);
             const target = targetState();
             node.debug('update ' + config.name + ' (' + subtypeThermostat + ') TargetHeatingCoolingState ' + target);
-            that.acc.getService(subtypeThermostat).updateCharacteristic(hap.Characteristic.TargetHeatingCoolingState, target);
+            that.acc
+                .getService(subtypeThermostat)
+                .updateCharacteristic(hap.Characteristic.TargetHeatingCoolingState, target);
         }
 
-        valveDevices.forEach(valveStateDevice => {
+        valveDevices.forEach((valveStateDevice) => {
             const datapointLevel = valveStateDevice + ':4.VALVE_STATE';
-            this.subscribe(datapointLevel, value => {
+            this.subscribe(datapointLevel, (value) => {
                 levels[datapointLevel] = value;
                 let max = 0;
-                Object.keys(levels).forEach(dp => {
+                Object.keys(levels).forEach((dp) => {
                     if (levels[dp] > max) {
                         max = levels[dp];
                     }
@@ -175,32 +188,41 @@ module.exports = class HmCcVg1 extends Accessory {
             });
         });
 
-        this.subscriptions.push(ccu.subscribe({
-            cache: true,
-            change: true,
-            datapointName: valueChannel + '.CONTROL_MODE'
-        }, msg => {
-            controlMode = msg.value;
-            node.debug('update ' + config.name + ' controlMode ' + msg.value);
-            updateHeatingCoolingState();
-        }));
+        this.subscriptions.push(
+            ccu.subscribe(
+                {
+                    cache: true,
+                    change: true,
+                    datapointName: valueChannel + '.CONTROL_MODE',
+                },
+                (msg) => {
+                    controlMode = msg.value;
+                    node.debug('update ' + config.name + ' controlMode ' + msg.value);
+                    updateHeatingCoolingState();
+                },
+            ),
+        );
 
         const batteryService = this.addService('BatteryService', config.name, 'Battery');
-        Object.keys(lowbatDps).forEach(dp => {
-            this.subscribe(dp, value => {
+        Object.keys(lowbatDps).forEach((dp) => {
+            this.subscribe(dp, (value) => {
                 lowbatDps[dp] = value;
                 let lowbat = false;
-                Object.keys(lowbatDps).forEach(ldp => {
+                Object.keys(lowbatDps).forEach((ldp) => {
                     lowbat = lowbat || lowbatDps[ldp];
                 });
-                batteryService.update('StatusLowBattery', lowbat ? hap.Characteristic.StatusLowBattery.BATTERY_LEVEL_LOW : hap.Characteristic.StatusLowBattery.BATTERY_LEVEL_NORMAL);
+                batteryService.update(
+                    'StatusLowBattery',
+                    lowbat
+                        ? hap.Characteristic.StatusLowBattery.BATTERY_LEVEL_LOW
+                        : hap.Characteristic.StatusLowBattery.BATTERY_LEVEL_NORMAL,
+                );
                 batteryService.update('BatteryLevel', lowbat ? 0 : 100);
             });
         });
 
         if (this.option('HumiditySensor') && humidityDp) {
-            this.addService('HumiditySensor', config.name, 'HumiditySensor')
-                .get('CurrentRelativeHumidity', humidityDp);
+            this.addService('HumiditySensor', config.name, 'HumiditySensor').get('CurrentRelativeHumidity', humidityDp);
         }
 
         if (this.option('BoostSwitch')) {
@@ -217,11 +239,11 @@ module.exports = class HmCcVg1 extends Accessory {
                         value = true;
                     }
 
-                    this.ccuSetValue(config.iface + '.' + config.description.ADDRESS + ':1.' + dp, value, res => {
+                    this.ccuSetValue(config.iface + '.' + config.description.ADDRESS + ':1.' + dp, value, (res) => {
                         callback(res);
                     });
                 })
-                .get('On', valueChannel + '.CONTROL_MODE', value => {
+                .get('On', valueChannel + '.CONTROL_MODE', (value) => {
                     return value === 3;
                 });
         }

@@ -14,16 +14,14 @@ module.exports = class HbUniSenAct extends Accessory {
             const name = ccu.channelNames[channels[i]];
             const dp = config.iface + '.' + channels[i] + '.STATE';
 
-            this.addService('Switch', name)
-                .get('On', dp)
-                .set('On', dp);
+            this.addService('Switch', name).get('On', dp).set('On', dp);
         }
 
         this.addService('BatteryService')
             .get('StatusLowBattery', config.deviceAddress + ':0.LOWBAT', (value, c) => {
                 return value ? c.BATTERY_LEVEL_LOW : c.BATTERY_LEVEL_NORMAL;
             })
-            .get('BatteryLevel', config.deviceAddress + ':0.LOWBAT', value => {
+            .get('BatteryLevel', config.deviceAddress + ':0.LOWBAT', (value) => {
                 return value ? 0 : 100;
             })
             .update('ChargingState', 2);

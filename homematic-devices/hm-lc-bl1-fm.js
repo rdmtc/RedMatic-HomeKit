@@ -7,23 +7,27 @@ module.exports = class HmLcBl1 extends Accessory {
         let intermediatePosition;
         let targetPosition;
 
-        ccu.subscribe({
-            datapointName: config.deviceAddress + ':1.LEVEL',
-            cache: true,
-            stable: false
-        }, msg => {
-            intermediatePosition = msg.value * 100;
-        });
+        ccu.subscribe(
+            {
+                datapointName: config.deviceAddress + ':1.LEVEL',
+                cache: true,
+                stable: false,
+            },
+            (msg) => {
+                intermediatePosition = msg.value * 100;
+            },
+        );
 
         const service = this.addService('WindowCovering', config.name);
 
-        service.get('CurrentPosition', config.deviceAddress + ':1.LEVEL', value => {
-            targetPosition = value;
-            intermediatePosition = value * 100;
-            return value * 100;
-        })
+        service
+            .get('CurrentPosition', config.deviceAddress + ':1.LEVEL', (value) => {
+                targetPosition = value;
+                intermediatePosition = value * 100;
+                return value * 100;
+            })
 
-            .get('TargetPosition', config.deviceAddress + ':1.LEVEL', value => {
+            .get('TargetPosition', config.deviceAddress + ':1.LEVEL', (value) => {
                 if (typeof targetPosition === 'undefined') {
                     targetPosition = value;
                 }
@@ -31,7 +35,7 @@ module.exports = class HmLcBl1 extends Accessory {
                 return targetPosition * 100;
             })
 
-            .set('TargetPosition', config.deviceAddress + ':1.LEVEL', value => {
+            .set('TargetPosition', config.deviceAddress + ':1.LEVEL', (value) => {
                 targetPosition = value / 100;
                 if (value === 0 && intermediatePosition === 0) {
                     intermediatePosition = 1;

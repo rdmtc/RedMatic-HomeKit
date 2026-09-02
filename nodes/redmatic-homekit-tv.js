@@ -27,7 +27,7 @@ module.exports = function (RED) {
         constructor(config) {
             RED.nodes.createNode(this, config);
 
-            this.name = config.name || ('TV ' + config.id);
+            this.name = config.name || 'TV ' + config.id;
 
             let acc;
             let tvService;
@@ -56,7 +56,7 @@ module.exports = function (RED) {
 
                 tvService.setCharacteristic(
                     Characteristic.SleepDiscoveryMode,
-                    Characteristic.SleepDiscoveryMode.ALWAYS_DISCOVERABLE
+                    Characteristic.SleepDiscoveryMode.ALWAYS_DISCOVERABLE,
                 );
 
                 tvService.setCharacteristic(Characteristic.ActiveIdentifier, 1);
@@ -76,8 +76,14 @@ module.exports = function (RED) {
                         .setCharacteristic(Characteristic.ConfiguredName, src.name)
                         .setCharacteristic(Characteristic.IsConfigured, Characteristic.IsConfigured.CONFIGURED)
                         .setCharacteristic(Characteristic.InputSourceType, src.type)
-                        .setCharacteristic(Characteristic.CurrentVisibilityState, Characteristic.CurrentVisibilityState.SHOWN)
-                        .setCharacteristic(Characteristic.TargetVisibilityState, Characteristic.TargetVisibilityState.SHOWN);
+                        .setCharacteristic(
+                            Characteristic.CurrentVisibilityState,
+                            Characteristic.CurrentVisibilityState.SHOWN,
+                        )
+                        .setCharacteristic(
+                            Characteristic.TargetVisibilityState,
+                            Characteristic.TargetVisibilityState.SHOWN,
+                        );
 
                     tvService.addLinkedService(inputService);
                 });
@@ -85,37 +91,40 @@ module.exports = function (RED) {
                 // tvService.addLinkedService(speakerService);
 
                 this.log('publishing tv ' + this.name + ' ' + config.username);
-                const testPort = net.createServer()
-                    .once('error', err => {
+                const testPort = net
+                    .createServer()
+                    .once('error', (err) => {
                         this.error(err);
                         this.status({fill: 'red', shape: 'dot', text: err.message});
                     })
                     .once('listening', () => {
-                        testPort.once('close', () => {
-                            acc.publish({
-                                username: config.username,
-                                port: config.port,
-                                pincode: config.pincode,
-                                category: Accessory.Categories.TELEVISION
-                            });
+                        testPort
+                            .once('close', () => {
+                                acc.publish({
+                                    username: config.username,
+                                    port: config.port,
+                                    pincode: config.pincode,
+                                    category: Accessory.Categories.TELEVISION,
+                                });
 
-                            acc._server.on('listening', () => {
-                                this.log('tv ' + this.name + ' listening on port ' + config.port);
-                                this.status({shape: 'ring', fill: 'grey', text: ' '});
-                            });
+                                acc._server.on('listening', () => {
+                                    this.log('tv ' + this.name + ' listening on port ' + config.port);
+                                    this.status({shape: 'ring', fill: 'grey', text: ' '});
+                                });
 
-                            acc._server.on('pair', username => {
-                                this.log('tv ' + this.name + ' paired', username);
-                            });
+                                acc._server.on('pair', (username) => {
+                                    this.log('tv ' + this.name + ' paired', username);
+                                });
 
-                            acc._server.on('unpair', username => {
-                                this.log('tv ' + this.name + ' unpaired', username);
-                            });
+                                acc._server.on('unpair', (username) => {
+                                    this.log('tv ' + this.name + ' unpaired', username);
+                                });
 
-                            acc._server.on('verify', () => {
-                                this.log('tv ' + this.name + ' verify');
-                            });
-                        }).close();
+                                acc._server.on('verify', () => {
+                                    this.log('tv ' + this.name + ' verify');
+                                });
+                            })
+                            .close();
                     })
                     .listen(config.port);
             }
@@ -128,7 +137,11 @@ module.exports = function (RED) {
 
             const setActiveIdentifier = (newValue, callback) => {
                 this.status({shape: 'dot', fill: 'blue', text: config.inputsources[newValue - 1].name});
-                this.send({topic: 'InputSource', payload: config.inputsources[newValue - 1].name, identifier: newValue});
+                this.send({
+                    topic: 'InputSource',
+                    payload: config.inputsources[newValue - 1].name,
+                    identifier: newValue,
+                });
                 callback(null);
             };
 
@@ -204,22 +217,17 @@ module.exports = function (RED) {
 
             this.debug('add event listeners');
 
-            tvService.getCharacteristic(Characteristic.Active)
-                .on('set', setActive);
+            tvService.getCharacteristic(Characteristic.Active).on('set', setActive);
 
-            tvService.getCharacteristic(Characteristic.ActiveIdentifier)
-                .on('set', setActiveIdentifier);
+            tvService.getCharacteristic(Characteristic.ActiveIdentifier).on('set', setActiveIdentifier);
 
-            tvService.getCharacteristic(Characteristic.RemoteKey)
-                .on('set', setRemoteKey);
+            tvService.getCharacteristic(Characteristic.RemoteKey).on('set', setRemoteKey);
 
-            tvService.getCharacteristic(Characteristic.PowerModeSelection)
-                .on('set', setPowerModeSelection);
+            tvService.getCharacteristic(Characteristic.PowerModeSelection).on('set', setPowerModeSelection);
 
-            speakerService.getCharacteristic(Characteristic.VolumeSelector)
-                .on('set', setVolumeSelector);
+            speakerService.getCharacteristic(Characteristic.VolumeSelector).on('set', setVolumeSelector);
 
-            this.on('input', msg => {
+            this.on('input', (msg) => {
                 switch (msg.topic) {
                     case 'InputSource': {
                         let identifier = msg.payload;
@@ -250,19 +258,18 @@ module.exports = function (RED) {
             this.on('close', () => {
                 this.debug('remove event listeners');
 
-                tvService.getCharacteristic(Characteristic.Active)
-                    .removeListener('set', setActive);
+                tvService.getCharacteristic(Characteristic.Active).removeListener('set', setActive);
 
-                tvService.getCharacteristic(Characteristic.ActiveIdentifier)
-                    .removeListener('set', setActiveIdentifier);
+                tvService.getCharacteristic(Characteristic.ActiveIdentifier).removeListener('set', setActiveIdentifier);
 
-                tvService.getCharacteristic(Characteristic.RemoteKey)
-                    .removeListener('set', setRemoteKey);
+                tvService.getCharacteristic(Characteristic.RemoteKey).removeListener('set', setRemoteKey);
 
-                tvService.getCharacteristic(Characteristic.PowerModeSelection)
+                tvService
+                    .getCharacteristic(Characteristic.PowerModeSelection)
                     .removeListener('set', setPowerModeSelection);
 
-                speakerService.getCharacteristic(Characteristic.VolumeSelector)
+                speakerService
+                    .getCharacteristic(Characteristic.VolumeSelector)
                     .removeListener('set', setVolumeSelector);
             });
         }

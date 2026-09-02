@@ -1,5 +1,3 @@
-/* eslint-disable no-new */
-
 const Accessory = require('./lib/accessory');
 
 function addService(type, dp, name) {
@@ -12,9 +10,9 @@ function addService(type, dp, name) {
             service.update('ValveType', type === 'ValveIrrigation' ? 1 : 0);
 
             service
-                .get('Active', dp, val => val ? 1 : 0)
-                .get('InUse', dp, val => val ? 1 : 0)
-                .set('Active', dp, val => {
+                .get('Active', dp, (val) => (val ? 1 : 0))
+                .get('InUse', dp, (val) => (val ? 1 : 0))
+                .set('Active', dp, (val) => {
                     service.update('InUse', val);
                     return Boolean(val);
                 });
@@ -52,7 +50,7 @@ class AccMultiService extends Accessory {
         const {ccu} = node;
         const channels = config.description.CHILDREN;
 
-        for (let i = 6; i < (channels.length - 1); i += 4) {
+        for (let i = 6; i < channels.length - 1; i += 4) {
             for (let vi = 0; vi < 3; vi++) {
                 const channelNumber = i + vi;
                 const ch = channels[channelNumber];
@@ -102,7 +100,7 @@ module.exports = class HmipDrsi4 {
             new AccMultiService(config, node);
         } else {
             const channels = config.description.CHILDREN;
-            for (let i = 6; i < (channels.length - 1); i += 4) {
+            for (let i = 6; i < channels.length - 1; i += 4) {
                 for (let vi = 0; vi < 3; vi++) {
                     const channelNumber = i + vi;
                     const ch = channels[channelNumber];

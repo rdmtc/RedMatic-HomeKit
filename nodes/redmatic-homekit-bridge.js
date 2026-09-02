@@ -61,8 +61,8 @@ module.exports = function (RED) {
 
             this.on('close', (remove, done) => {
                 if (remove && this.bridge.isPublished) {
-                //    this.bridge.unpublish();
-                //    this.log('unpublished bridge ' + this.name + ' ' + this.username + ' on port ' + this.port);
+                    //    this.bridge.unpublish();
+                    //    this.log('unpublished bridge ' + this.name + ' ' + this.username + ' on port ' + this.port);
                 }
 
                 done();
@@ -72,7 +72,16 @@ module.exports = function (RED) {
         publishBridge() {
             this.debug('publishBridge');
             if (this.bridge.isPublished) {
-                this.log('bridge already published (' + this.bridge.bridgedAccessories.length + ' Accessories) ' + this.name + ' ' + this.username + ' on port ' + this.port);
+                this.log(
+                    'bridge already published (' +
+                        this.bridge.bridgedAccessories.length +
+                        ' Accessories) ' +
+                        this.name +
+                        ' ' +
+                        this.username +
+                        ' on port ' +
+                        this.port,
+                );
                 return;
             }
 
@@ -88,28 +97,44 @@ module.exports = function (RED) {
                 callback();
             });
 
-            this.bridge.getService(hap.Service.AccessoryInformation)
+            this.bridge
+                .getService(hap.Service.AccessoryInformation)
                 .setCharacteristic(hap.Characteristic.Manufacturer, 'RedMatic')
                 .setCharacteristic(hap.Characteristic.Model, 'HAP-Nodejs Bridge')
                 .setCharacteristic(hap.Characteristic.SerialNumber, this.username)
                 .setCharacteristic(hap.Characteristic.FirmwareRevision, pkg.version);
 
-            const testPort = net.createServer()
-                .once('error', err => {
+            const testPort = net
+                .createServer()
+                .once('error', (err) => {
                     this.error(err);
                 })
                 .once('listening', () => {
-                    testPort.once('close', () => {
-                        this.bridge.publish({
-                            username: this.username,
-                            port: parseInt(this.port, 10),
-                            pincode: this.pincode,
-                            category: hap.Accessory.Categories.OTHER
-                        }, this.allowInsecureRequest);
-                        this.log('published bridge (' + this.bridge.bridgedAccessories.length + ' Accessories) ' + this.name + ' ' + this.username + ' on port ' + this.port);
+                    testPort
+                        .once('close', () => {
+                            this.bridge.publish(
+                                {
+                                    username: this.username,
+                                    port: parseInt(this.port, 10),
+                                    pincode: this.pincode,
+                                    category: hap.Accessory.Categories.OTHER,
+                                },
+                                this.allowInsecureRequest,
+                            );
+                            this.log(
+                                'published bridge (' +
+                                    this.bridge.bridgedAccessories.length +
+                                    ' Accessories) ' +
+                                    this.name +
+                                    ' ' +
+                                    this.username +
+                                    ' on port ' +
+                                    this.port,
+                            );
 
-                        this.emit('published');
-                    }).close();
+                            this.emit('published');
+                        })
+                        .close();
                 })
                 .listen(this.port);
         }
@@ -131,7 +156,7 @@ module.exports = function (RED) {
             const uuid = hap.uuid.generate(config.id + (config.uuidAddition ? config.uuidAddition : ''));
             let acc;
 
-            this.bridge.bridgedAccessories.forEach(a => {
+            this.bridge.bridgedAccessories.forEach((a) => {
                 if (a.UUID === uuid) {
                     acc = a;
                 }
@@ -140,7 +165,9 @@ module.exports = function (RED) {
             if (acc) {
                 this.debug('already existing accessory ' + config.id + ' ' + config.name);
             } else if (this.bridge.bridgedAccessories.length >= 150) {
-                this.error('maximum of 150 accessories per bridge exceeded, can\'t add ' + config.id + ' ' + config.name);
+                this.error(
+                    "maximum of 150 accessories per bridge exceeded, can't add " + config.id + ' ' + config.name,
+                );
             } else {
                 this.debug('addAccessory ' + config.id + ' ' + config.name);
                 acc = new hap.Accessory(config.name, uuid, hap.Accessory.Categories.OTHER);

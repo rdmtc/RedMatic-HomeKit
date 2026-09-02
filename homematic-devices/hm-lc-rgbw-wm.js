@@ -14,11 +14,11 @@ module.exports = class HmLcRgbw extends Accessory {
         const service = this.addService('Lightbulb', config.name);
 
         service
-            .get('On', config.deviceAddress + ':1.LEVEL', value => {
+            .get('On', config.deviceAddress + ':1.LEVEL', (value) => {
                 valueBrightness = value;
                 return value > 0;
             })
-            .set('On', config.deviceAddress + ':1.LEVEL', value => {
+            .set('On', config.deviceAddress + ':1.LEVEL', (value) => {
                 if (!valueBrightness || !value) {
                     return value ? 1 : 0;
                 }
@@ -26,27 +26,27 @@ module.exports = class HmLcRgbw extends Accessory {
                 return valueBrightness / 100;
             })
 
-            .get('Brightness', config.deviceAddress + ':1.LEVEL', value => {
+            .get('Brightness', config.deviceAddress + ':1.LEVEL', (value) => {
                 valueBrightness = value * 100;
                 return value * 100;
             })
-            .set('Brightness', config.deviceAddress + ':1.LEVEL', value => {
+            .set('Brightness', config.deviceAddress + ':1.LEVEL', (value) => {
                 valueBrightness = value;
                 return value / 100;
             })
 
-            .get('Hue', config.deviceAddress + ':2.COLOR', value => {
+            .get('Hue', config.deviceAddress + ':2.COLOR', (value) => {
                 valueColor = value;
                 valueSaturation = valueColor === 200 ? 0 : 100;
                 service.update('Saturation', valueSaturation);
                 return value * hueFactor;
             })
-            .set('Hue', config.deviceAddress + ':2.COLOR', value => {
-                valueColor = valueSaturation < 10 ? 200 : (value / hueFactor);
+            .set('Hue', config.deviceAddress + ':2.COLOR', (value) => {
+                valueColor = valueSaturation < 10 ? 200 : value / hueFactor;
                 return valueColor;
             })
 
-            .get('Saturation', callback => {
+            .get('Saturation', (callback) => {
                 valueSaturation = valueColor === 200 ? 0 : 100;
                 callback(null, valueSaturation);
             })

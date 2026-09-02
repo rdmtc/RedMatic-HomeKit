@@ -12,16 +12,21 @@ module.exports = class HmipSpdr extends Accessory {
 
         function update() {
             if (p1 !== null && p2 !== null) {
-                service.update('OccupancyDetected', p1 === p2 ? hap.Characteristic.OccupancyDetected.OCCUPANCY_NOT_DETECTED : hap.Characteristic.OccupancyDetected.OCCUPANCY_DETECTED);
+                service.update(
+                    'OccupancyDetected',
+                    p1 === p2
+                        ? hap.Characteristic.OccupancyDetected.OCCUPANCY_NOT_DETECTED
+                        : hap.Characteristic.OccupancyDetected.OCCUPANCY_DETECTED,
+                );
             }
         }
 
-        this.subscribe(config.deviceAddress + ':2.PASSAGE_COUNTER_VALUE', value => {
+        this.subscribe(config.deviceAddress + ':2.PASSAGE_COUNTER_VALUE', (value) => {
             p1 = value;
             update();
         });
 
-        this.subscribe(config.deviceAddress + ':3.PASSAGE_COUNTER_VALUE', value => {
+        this.subscribe(config.deviceAddress + ':3.PASSAGE_COUNTER_VALUE', (value) => {
             p2 = value;
             update();
         });

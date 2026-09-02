@@ -11,11 +11,11 @@ module.exports = class HmLcJa1 extends Accessory {
         const service = this.addService('WindowCovering', config.name);
 
         service
-            .get('CurrentPosition', config.deviceAddress + ':1.LEVEL', value => {
+            .get('CurrentPosition', config.deviceAddress + ':1.LEVEL', (value) => {
                 return value * 100;
             })
 
-            .get('TargetPosition', config.deviceAddress + ':1.LEVEL', value => {
+            .get('TargetPosition', config.deviceAddress + ':1.LEVEL', (value) => {
                 return value * 100;
             })
             .set('TargetPosition', (value, callback) => {
@@ -38,12 +38,12 @@ module.exports = class HmLcJa1 extends Accessory {
                 }
             })
 
-            .get('CurrentVerticalTiltAngle', config.deviceAddress + ':1.LEVEL_SLATS', value => {
-                return (value * 180) - 90;
+            .get('CurrentVerticalTiltAngle', config.deviceAddress + ':1.LEVEL_SLATS', (value) => {
+                return value * 180 - 90;
             })
 
-            .get('TargetVerticalTiltAngle', config.deviceAddress + ':1.LEVEL_SLATS', value => {
-                return (value * 180) - 90;
+            .get('TargetVerticalTiltAngle', config.deviceAddress + ':1.LEVEL_SLATS', (value) => {
+                return value * 180 - 90;
             })
             .set('TargetVerticalTiltAngle', (value, callback) => {
                 levelSlats = (value + 90) / 180;
@@ -70,7 +70,7 @@ module.exports = class HmLcJa1 extends Accessory {
                 dp = config.deviceAddress + ':1.LEVEL_SLATS';
             }
 
-            that.ccuSetValue(dp, value, error => {
+            that.ccuSetValue(dp, value, (error) => {
                 if (error) {
                     service.updateCharacteristic('TargetPosition', error);
                 }

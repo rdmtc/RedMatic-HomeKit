@@ -8,14 +8,14 @@ module.exports = class HmipwDrd extends Accessory {
 
         for (let j = 0; j < 3; j++) {
             for (let c = 0; c < 3; c++) {
-                const i = (j * 4) + (c + 2);
+                const i = j * 4 + (c + 2);
                 if ((c === 0 && this.option(i)) || (c !== 0 && this.option(i, 'enabled'))) {
                     const channel = config.deviceAddress + ':' + i;
                     const name = ccu.channelNames[channel];
 
                     this.addService('Lightbulb', name)
 
-                        .get('On', channel + '.LEVEL', value => {
+                        .get('On', channel + '.LEVEL', (value) => {
                             valueBrightness = value;
                             return value > 0;
                         })
@@ -36,12 +36,12 @@ module.exports = class HmipwDrd extends Accessory {
                             }
                         })
 
-                        .get('Brightness', channel + '.LEVEL', value => {
+                        .get('Brightness', channel + '.LEVEL', (value) => {
                             valueBrightness = value * 100;
                             return value * 100;
                         })
 
-                        .set('Brightness', channel + '.LEVEL', value => {
+                        .set('Brightness', channel + '.LEVEL', (value) => {
                             valueBrightness = value;
                             return value / 100;
                         });

@@ -3,14 +3,14 @@ const Accessory = require('./lib/accessory');
 module.exports = class HmwLcBl1 extends Accessory {
     init(config) {
         this.addService('WindowCovering', config.name)
-            .get('CurrentPosition', config.deviceAddress + ':3.LEVEL', value => {
+            .get('CurrentPosition', config.deviceAddress + ':3.LEVEL', (value) => {
                 return value * 100;
             })
 
-            .get('TargetPosition', config.deviceAddress + ':3.LEVEL', value => {
+            .get('TargetPosition', config.deviceAddress + ':3.LEVEL', (value) => {
                 return value * 100;
             })
-            .set('TargetPosition', config.deviceAddress + ':3.LEVEL', value => {
+            .set('TargetPosition', config.deviceAddress + ':3.LEVEL', (value) => {
                 return value / 100;
             })
 

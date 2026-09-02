@@ -1,5 +1,3 @@
-/* eslint-disable no-new */
-
 const Accessory = require('./accessory');
 
 function addService(type, dp, name) {
@@ -12,9 +10,9 @@ function addService(type, dp, name) {
             service.update('ValveType', type === 'ValveIrrigation' ? 1 : 0);
 
             service
-                .get('Active', dp, val => val ? 1 : 0)
-                .get('InUse', dp, val => val ? 1 : 0)
-                .set('Active', dp, val => {
+                .get('Active', dp, (val) => (val ? 1 : 0))
+                .get('InUse', dp, (val) => (val ? 1 : 0))
+                .set('Active', dp, (val) => {
                     service.update('InUse', val);
                     return Boolean(val);
                 });
@@ -54,7 +52,10 @@ class AccMultiService extends Accessory {
 
         for (let i = 1; i < channels.length; i++) {
             const ch = channels[i];
-            if (!this.option(i) || !(ccu.metadata.devices[config.iface][ch] && ccu.metadata.devices[config.iface][ch].TYPE === 'SWITCH')) {
+            if (
+                !this.option(i) ||
+                !(ccu.metadata.devices[config.iface][ch] && ccu.metadata.devices[config.iface][ch].TYPE === 'SWITCH')
+            ) {
                 continue;
             }
 
@@ -84,7 +85,13 @@ module.exports = class GenericSwitch {
             const channels = config.description.CHILDREN;
             for (let i = 1; i < channels.length; i++) {
                 const ch = channels[i];
-                if (!this.option(ch) || !(ccu.metadata.devices[config.iface][ch] && ccu.metadata.devices[config.iface][ch].TYPE === 'SWITCH')) {
+                if (
+                    !this.option(ch) ||
+                    !(
+                        ccu.metadata.devices[config.iface][ch] &&
+                        ccu.metadata.devices[config.iface][ch].TYPE === 'SWITCH'
+                    )
+                ) {
                     continue;
                 }
 

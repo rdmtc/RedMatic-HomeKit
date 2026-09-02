@@ -14,9 +14,7 @@ module.exports = class HbUniSenAct extends Accessory {
             const name = ccu.channelNames[channels[i]];
             const dp = config.iface + '.' + channels[i] + '.STATE';
 
-            this.addService('Switch', name)
-                .get('On', dp)
-                .set('On', dp);
+            this.addService('Switch', name).get('On', dp).set('On', dp);
         }
 
         for (let i = 9; i <= 16; i++) {
@@ -27,10 +25,9 @@ module.exports = class HbUniSenAct extends Accessory {
             const name = ccu.channelNames[channels[i]];
             const dp = config.iface + '.' + channels[i] + '.STATE';
 
-            this.addService('ContactSensor', name)
-                .get('ContactSensorState', dp, (value, c) => {
-                    return value ? c.CONTACT_NOT_DETECTED : c.CONTACT_DETECTED;
-                });
+            this.addService('ContactSensor', name).get('ContactSensorState', dp, (value, c) => {
+                return value ? c.CONTACT_NOT_DETECTED : c.CONTACT_DETECTED;
+            });
         }
     }
 };

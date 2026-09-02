@@ -13,7 +13,7 @@ module.exports = class HmipFdt extends Accessory {
 
                 this.addService('Lightbulb', name)
 
-                    .get('On', channel + '.LEVEL', value => {
+                    .get('On', channel + '.LEVEL', (value) => {
                         valueBrightness = value;
                         return value > 0;
                     })
@@ -34,12 +34,12 @@ module.exports = class HmipFdt extends Accessory {
                         }
                     })
 
-                    .get('Brightness', channel + '.LEVEL', value => {
+                    .get('Brightness', channel + '.LEVEL', (value) => {
                         valueBrightness = value * 100;
                         return value * 100;
                     })
 
-                    .set('Brightness', channel + '.LEVEL', value => {
+                    .set('Brightness', channel + '.LEVEL', (value) => {
                         valueBrightness = value;
                         return value / 100;
                     });

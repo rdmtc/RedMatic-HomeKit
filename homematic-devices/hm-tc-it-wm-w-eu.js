@@ -46,7 +46,7 @@ module.exports = class HmTcItWmWEu extends Accessory {
 
         function currentState() {
             // 0=off, 1=heat
-            return (level > 0 || controlMode === 3) ? 1 : 0;
+            return level > 0 || controlMode === 3 ? 1 : 0;
         }
 
         const serviceThermostat = this.addService('Thermostat', config.name);
@@ -57,7 +57,7 @@ module.exports = class HmTcItWmWEu extends Accessory {
             .get('CurrentTemperature', config.deviceAddress + ':2.ACTUAL_TEMPERATURE')
 
             .setProps('TargetTemperature', {minValue: 4.5, maxValue: 30.5, minStep: 0.5})
-            .get('TargetTemperature', config.deviceAddress + ':2.SET_TEMPERATURE', value => {
+            .get('TargetTemperature', config.deviceAddress + ':2.SET_TEMPERATURE', (value) => {
                 currentSetpoint = value;
                 if (value > 4.5) {
                     valueSetpoint = value;
@@ -116,19 +116,23 @@ module.exports = class HmTcItWmWEu extends Accessory {
         function updateHeatingCoolingState() {
             const current = currentState();
             node.debug('update ' + config.name + ' (' + subtypeThermostat + ') CurrentHeatingCoolingState ' + current);
-            that.acc.getService(subtypeThermostat).updateCharacteristic(hap.Characteristic.CurrentHeatingCoolingState, current);
+            that.acc
+                .getService(subtypeThermostat)
+                .updateCharacteristic(hap.Characteristic.CurrentHeatingCoolingState, current);
             const target = targetState();
             node.debug('update ' + config.name + ' (' + subtypeThermostat + ') TargetHeatingCoolingState ' + target);
-            that.acc.getService(subtypeThermostat).updateCharacteristic(hap.Characteristic.TargetHeatingCoolingState, target);
+            that.acc
+                .getService(subtypeThermostat)
+                .updateCharacteristic(hap.Characteristic.TargetHeatingCoolingState, target);
         }
 
-        links.forEach(link => {
+        links.forEach((link) => {
             const valveStateDevice = link.split(':')[0];
             const datapointLevel = config.iface + '.' + valveStateDevice + ':4.VALVE_STATE';
-            this.subscribe(datapointLevel, value => {
+            this.subscribe(datapointLevel, (value) => {
                 levels[datapointLevel] = value;
                 let max = 0;
-                Object.keys(levels).forEach(dp => {
+                Object.keys(levels).forEach((dp) => {
                     if (levels[dp] > max) {
                         max = levels[dp];
                     }
@@ -141,15 +145,20 @@ module.exports = class HmTcItWmWEu extends Accessory {
             });
         });
 
-        this.subscriptions.push(ccu.subscribe({
-            cache: true,
-            change: true,
-            datapointName: config.deviceAddress + ':2.CONTROL_MODE'
-        }, msg => {
-            controlMode = msg.value;
-            node.debug('update ' + config.name + ' controlMode ' + msg.value);
-            updateHeatingCoolingState();
-        }));
+        this.subscriptions.push(
+            ccu.subscribe(
+                {
+                    cache: true,
+                    change: true,
+                    datapointName: config.deviceAddress + ':2.CONTROL_MODE',
+                },
+                (msg) => {
+                    controlMode = msg.value;
+                    node.debug('update ' + config.name + ' controlMode ' + msg.value);
+                    updateHeatingCoolingState();
+                },
+            ),
+        );
 
         this.addService('BatteryService', config.name)
             .get('StatusLowBattery', config.deviceAddress + ':0.LOWBAT', (value, c) => {
@@ -158,8 +167,10 @@ module.exports = class HmTcItWmWEu extends Accessory {
             .get('BatteryLevel', config.deviceAddress + ':2.BATTERY_STATE', this.percent);
 
         if (this.option('HumiditySensor')) {
-            this.addService('HumiditySensor', config.name, 'HumiditySensor')
-                .get('CurrentRelativeHumidity', config.deviceAddress + ':2.ACTUAL_HUMIDITY');
+            this.addService('HumiditySensor', config.name, 'HumiditySensor').get(
+                'CurrentRelativeHumidity',
+                config.deviceAddress + ':2.ACTUAL_HUMIDITY',
+            );
         }
 
         if (this.option('BoostSwitch')) {
@@ -176,7 +187,7 @@ module.exports = class HmTcItWmWEu extends Accessory {
                         value = true;
                     }
 
-                    this.ccuSetValue(config.iface + '.' + config.description.ADDRESS + ':2.' + dp, value, res => {
+                    this.ccuSetValue(config.iface + '.' + config.description.ADDRESS + ':2.' + dp, value, (res) => {
                         links.forEach((link, i) => {
                             const linkedDevice = link.split(':')[0];
                             setTimeout(() => {
@@ -186,7 +197,7 @@ module.exports = class HmTcItWmWEu extends Accessory {
                         callback(res);
                     });
                 })
-                .get('On', config.deviceAddress + ':2.CONTROL_MODE', value => {
+                .get('On', config.deviceAddress + ':2.CONTROL_MODE', (value) => {
                     return value === 3;
                 });
         }

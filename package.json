@@ -1,7 +1,7 @@
 {
   "name": "redmatic-homekit",
-  "version": "4.0.0-dev.0",
-  "description": "HAP-Nodejs based Node-RED nodes to create HomeKit Accessories",
+  "version": "4.0.0-dev.1",
+  "description": "HAP-NodeJS based Node-RED nodes to create HomeKit accessories, with automatic mapping of Homematic devices",
   "main": "none",
   "author": "Sebastian Raff <hobbyquaker@gmail.com>",
   "contributors": [
@@ -11,15 +11,35 @@
     "https://github.com/kneip68"
   ],
   "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rdmtc/RedMatic-HomeKit.git"
+  },
+  "bugs": {
+    "url": "https://github.com/rdmtc/RedMatic-HomeKit/issues"
+  },
+  "homepage": "https://github.com/rdmtc/RedMatic-HomeKit",
   "keywords": [
     "node-red",
     "smart home automation",
     "hap",
     "homekit",
     "siri",
-    "homematic"
+    "homematic",
+    "homematic-ip",
+    "ccu",
+    "redmatic"
   ],
+  "files": [
+    "nodes/",
+    "homematic-devices/",
+    "CHANGELOG.md"
+  ],
+  "engines": {
+    "node": "^22.12 || >=24"
+  },
   "node-red": {
+    "version": ">=4.0.0",
     "nodes": {
       "redmatic-homekit-bridge": "nodes/redmatic-homekit-bridge.js",
       "redmatic-homekit-homematic-devices": "nodes/redmatic-homekit-homematic-devices.js",
@@ -32,21 +52,22 @@
       "redmatic-homekit-tv": "nodes/redmatic-homekit-tv.js"
     }
   },
+  "scripts": {
+    "lint": "eslint . && prettier --check .",
+    "format": "prettier --write . && eslint --fix .",
+    "test": "npm run lint && npm run test:unit && npm run check:native",
+    "test:unit": "node --test \"test/**/*.test.js\"",
+    "check:native": "node tools/check-native.js"
+  },
   "dependencies": {
     "hap-nodejs": "0.4.52"
   },
   "devDependencies": {
-    "xo": "0.24.0"
-  },
-  "xo": {
-    "space": 4,
-    "rules": {
-      "unicorn/filename-case": 0,
-      "capitalized-comments": 0
-    }
-  },
-  "scripts": {
-    "test": "xo",
-    "lintfix": "xo --fix"
+    "@eslint/js": "^9.39.5",
+    "eslint": "^9.39.5",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-html": "^8.2.0",
+    "globals": "^16.5.0",
+    "prettier": "^3.9.6"
   }
 }

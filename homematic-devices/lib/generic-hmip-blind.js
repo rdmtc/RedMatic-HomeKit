@@ -1,5 +1,3 @@
-/* eslint-disable no-new */
-
 const Accessory = require('./accessory');
 
 function createService(channel) {
@@ -9,24 +7,27 @@ function createService(channel) {
 
     const channelIndex = channel.channel.split(':')[1];
 
-    this.ccu.subscribe({
-        datapointName: this.config.deviceAddress + ':' + channelIndex + '.LEVEL',
-        cache: true,
-        stable: false
-    }, msg => {
-        intermediatePosition = msg.value * 100;
-    });
+    this.ccu.subscribe(
+        {
+            datapointName: this.config.deviceAddress + ':' + channelIndex + '.LEVEL',
+            cache: true,
+            stable: false,
+        },
+        (msg) => {
+            intermediatePosition = msg.value * 100;
+        },
+    );
 
     const service = this.addService('WindowCovering', channel.name, channelIndex);
 
     service
-        .get('CurrentPosition', this.config.deviceAddress + ':' + channelIndex + '.LEVEL', value => {
+        .get('CurrentPosition', this.config.deviceAddress + ':' + channelIndex + '.LEVEL', (value) => {
             LEVEL = value;
             intermediatePosition = value * 100;
             return LEVEL * 100;
         })
 
-        .get('TargetPosition', this.config.deviceAddress + ':' + channelIndex + '.LEVEL', value => {
+        .get('TargetPosition', this.config.deviceAddress + ':' + channelIndex + '.LEVEL', (value) => {
             if (typeof LEVEL === 'undefined') {
                 LEVEL = value;
             }
@@ -46,7 +47,7 @@ function createService(channel) {
             service.update('CurrentPosition', intermediatePosition);
 
             const params = {
-                LEVEL
+                LEVEL,
             };
 
             if (channel.tilt) {
@@ -63,8 +64,24 @@ function createService(channel) {
                 }
             }
 
-            this.node.debug('set ' + this.config.name + ' (WindowCovering) TargetPosition ' + value + ' -> ' + this.config.description.ADDRESS + ':' + channelIndex + ' ' + JSON.stringify(params));
-            this.ccu.methodCall(this.config.iface, 'putParamset', [this.config.description.ADDRESS + ':' + channelIndex, 'VALUES', params])
+            this.node.debug(
+                'set ' +
+                    this.config.name +
+                    ' (WindowCovering) TargetPosition ' +
+                    value +
+                    ' -> ' +
+                    this.config.description.ADDRESS +
+                    ':' +
+                    channelIndex +
+                    ' ' +
+                    JSON.stringify(params),
+            );
+            this.ccu
+                .methodCall(this.config.iface, 'putParamset', [
+                    this.config.description.ADDRESS + ':' + channelIndex,
+                    'VALUES',
+                    params,
+                ])
                 .then(() => {
                     callback();
                 })
@@ -86,30 +103,52 @@ function createService(channel) {
 
     if (channel.tilt) {
         service
-            .get('CurrentVerticalTiltAngle', this.config.deviceAddress + ':' + channelIndex + '.LEVEL_2', value => {
+            .get('CurrentVerticalTiltAngle', this.config.deviceAddress + ':' + channelIndex + '.LEVEL_2', (value) => {
                 LEVEL_2 = value;
-                value = (value * 180) - 90;
-                this.node.debug('get CurrentVerticalTiltAngle ' + this.config.name + ' LEVEL_2 ' + LEVEL_2 + ' ' + value);
+                value = value * 180 - 90;
+                this.node.debug(
+                    'get CurrentVerticalTiltAngle ' + this.config.name + ' LEVEL_2 ' + LEVEL_2 + ' ' + value,
+                );
                 return value;
             })
 
-            .get('TargetVerticalTiltAngle', this.config.deviceAddress + ':' + channelIndex + '.LEVEL_2', value => {
+            .get('TargetVerticalTiltAngle', this.config.deviceAddress + ':' + channelIndex + '.LEVEL_2', (value) => {
                 LEVEL_2 = value;
-                value = (value * 180) - 90;
-                this.node.debug('get TargetVerticalTiltAngle ' + this.config.name + ' LEVEL_2 ' + LEVEL_2 + ' ' + value);
+                value = value * 180 - 90;
+                this.node.debug(
+                    'get TargetVerticalTiltAngle ' + this.config.name + ' LEVEL_2 ' + LEVEL_2 + ' ' + value,
+                );
                 return value;
             })
 
             .set('TargetVerticalTiltAngle', (value, callback) => {
                 LEVEL_2 = (value + 90) / 180;
-                this.node.debug('set TargetVerticalTiltAngle ' + this.config.name + ' LEVEL_2 ' + LEVEL_2 + ' ' + value);
+                this.node.debug(
+                    'set TargetVerticalTiltAngle ' + this.config.name + ' LEVEL_2 ' + LEVEL_2 + ' ' + value,
+                );
 
                 const params = {
                     LEVEL,
-                    LEVEL_2
+                    LEVEL_2,
                 };
-                this.node.debug('set ' + channel.name + ' (WindowCovering) TargetVerticalTiltAngle ' + value + ' -> ' + this.config.description.ADDRESS + ':' + channelIndex + ' ' + JSON.stringify(params));
-                this.ccu.methodCall(this.config.iface, 'putParamset', [this.config.description.ADDRESS + ':' + channelIndex, 'VALUES', params])
+                this.node.debug(
+                    'set ' +
+                        channel.name +
+                        ' (WindowCovering) TargetVerticalTiltAngle ' +
+                        value +
+                        ' -> ' +
+                        this.config.description.ADDRESS +
+                        ':' +
+                        channelIndex +
+                        ' ' +
+                        JSON.stringify(params),
+                );
+                this.ccu
+                    .methodCall(this.config.iface, 'putParamset', [
+                        this.config.description.ADDRESS + ':' + channelIndex,
+                        'VALUES',
+                        params,
+                    ])
                     .then(() => {
                         callback();
                     })
@@ -128,7 +167,7 @@ class GenericHmipBlindAcc extends Accessory {
     }
 
     init() {
-        this.channels.forEach(channel => {
+        this.channels.forEach((channel) => {
             createService.call(this, channel);
         });
     }
@@ -144,7 +183,7 @@ class GenericHmipBlind {
         let acc = 0;
         let pos = 0;
         const channels = [];
-        this.config.description.CHILDREN.forEach(channel => {
+        this.config.description.CHILDREN.forEach((channel) => {
             const desc = this.ccu.metadata.devices['HmIP-RF'][channel];
             if (desc.TYPE === 'BLIND_VIRTUAL_RECEIVER' || desc.TYPE === 'SHUTTER_VIRTUAL_RECEIVER') {
                 if (!channels[acc]) {
@@ -152,7 +191,8 @@ class GenericHmipBlind {
                 }
 
                 const name = this.ccu.channelNames[channel];
-                const tilt = desc.TYPE === 'BLIND_VIRTUAL_RECEIVER' &&
+                const tilt =
+                    desc.TYPE === 'BLIND_VIRTUAL_RECEIVER' &&
                     (!this.config.options[channel] || this.config.options[channel].type !== 'VerticalTilt Disabled');
                 if (pos === 0) {
                     if (!this.config.options[channel] || !this.config.options[channel].disabled) {
@@ -168,7 +208,7 @@ class GenericHmipBlind {
                 }
             }
         });
-        channels.forEach(accChannels => {
+        channels.forEach((accChannels) => {
             if (accChannels.length > 0) {
                 const conf = Object.assign({}, config, {name: accChannels[0].name});
                 conf.description = Object.assign({}, config.description, {ADDRESS: accChannels[0].channel});

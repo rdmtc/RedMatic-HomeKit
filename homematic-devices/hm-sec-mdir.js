@@ -7,7 +7,7 @@ module.exports = class HmSecMdir extends Accessory {
             .get('StatusLowBattery', config.deviceAddress + ':0.LOWBAT', (value, c) => {
                 return value ? c.BATTERY_LEVEL_LOW : c.BATTERY_LEVEL_NORMAL;
             })
-            .get('StatusTampered', config.deviceAddress + ':1.ERROR', value => {
+            .get('StatusTampered', config.deviceAddress + ':1.ERROR', (value) => {
                 return Boolean(value);
             });
 
@@ -17,7 +17,7 @@ module.exports = class HmSecMdir extends Accessory {
                 .get('StatusLowBattery', config.deviceAddress + ':0.LOWBAT', (value, c) => {
                     return value ? c.BATTERY_LEVEL_LOW : c.BATTERY_LEVEL_NORMAL;
                 })
-                .get('StatusTampered', config.deviceAddress + ':1.ERROR', value => {
+                .get('StatusTampered', config.deviceAddress + ':1.ERROR', (value) => {
                     return Boolean(value);
                 });
         }

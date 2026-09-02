@@ -39,7 +39,7 @@ module.exports = class HmipBwth extends Accessory {
             .get('CurrentTemperature', config.deviceAddress + ':1.ACTUAL_TEMPERATURE')
 
             .setProps('TargetTemperature', {minValue: 4.5, maxValue: 30.5, minStep: 0.5})
-            .get('TargetTemperature', config.deviceAddress + ':1.SET_POINT_TEMPERATURE', value => {
+            .get('TargetTemperature', config.deviceAddress + ':1.SET_POINT_TEMPERATURE', (value) => {
                 currentSetpoint = value;
                 if (value > 4.5) {
                     valueSetpoint = value;
@@ -51,7 +51,7 @@ module.exports = class HmipBwth extends Accessory {
             .set('TargetTemperature', config.deviceAddress + ':1.SET_POINT_TEMPERATURE')
 
             .setProps('CurrentHeatingCoolingState', {validValues: [0, 1], maxValue: 1})
-            .get('CurrentHeatingCoolingState', config.deviceAddress + ':9.STATE', value => {
+            .get('CurrentHeatingCoolingState', config.deviceAddress + ':9.STATE', (value) => {
                 state = value;
                 setTimeout(() => {
                     updateHeatingCoolingState();
@@ -71,35 +71,71 @@ module.exports = class HmipBwth extends Accessory {
                 if (value === 0) {
                     const params = {
                         CONTROL_MODE: 1,
-                        SET_POINT_TEMPERATURE: 4.5
+                        SET_POINT_TEMPERATURE: 4.5,
                     };
-                    node.debug('set ' + config.name + ' (' + subtypeThermostat + ') TargetHeatingCoolingState ' + value + ' -> ' + config.description.ADDRESS + ':1 ' + JSON.stringify(params));
+                    node.debug(
+                        'set ' +
+                            config.name +
+                            ' (' +
+                            subtypeThermostat +
+                            ') TargetHeatingCoolingState ' +
+                            value +
+                            ' -> ' +
+                            config.description.ADDRESS +
+                            ':1 ' +
+                            JSON.stringify(params),
+                    );
 
                     ccu.methodCall(config.iface, 'putParamset', [config.description.ADDRESS + ':1', 'VALUES', params])
                         .then(() => {
                             callback();
-                        }).catch(() => {
+                        })
+                        .catch(() => {
                             callback(new Error(hap.HAPServer.Status.SERVICE_COMMUNICATION_FAILURE));
                         });
                 } else if (value === 1) {
                     const params = {
                         CONTROL_MODE: 1,
-                        SET_POINT_TEMPERATURE: valueSetpoint
+                        SET_POINT_TEMPERATURE: valueSetpoint,
                     };
-                    node.debug('set ' + config.name + ' (' + subtypeThermostat + ') TargetHeatingCoolingState ' + value + ' -> ' + config.description.ADDRESS + ':1 ' + JSON.stringify(params));
+                    node.debug(
+                        'set ' +
+                            config.name +
+                            ' (' +
+                            subtypeThermostat +
+                            ') TargetHeatingCoolingState ' +
+                            value +
+                            ' -> ' +
+                            config.description.ADDRESS +
+                            ':1 ' +
+                            JSON.stringify(params),
+                    );
                     ccu.methodCall(config.iface, 'putParamset', [config.description.ADDRESS + ':1', 'VALUES', params])
                         .then(() => {
                             serviceThermostat.update('TargetTemperature', valueSetpoint);
                             callback();
-                        }).catch(() => {
+                        })
+                        .catch(() => {
                             callback(new Error(hap.HAPServer.Status.SERVICE_COMMUNICATION_FAILURE));
                         });
                 } else {
-                    node.debug('set ' + config.name + ' (' + subtypeThermostat + ') TargetHeatingCoolingState ' + value + ' -> ' + config.description.ADDRESS + ':1.CONTROL_MODE ' + (value === 3 ? 0 : 1));
+                    node.debug(
+                        'set ' +
+                            config.name +
+                            ' (' +
+                            subtypeThermostat +
+                            ') TargetHeatingCoolingState ' +
+                            value +
+                            ' -> ' +
+                            config.description.ADDRESS +
+                            ':1.CONTROL_MODE ' +
+                            (value === 3 ? 0 : 1),
+                    );
                     ccu.setValue(config.iface, config.description.ADDRESS + ':1', 'CONTROL_MODE', value === 3 ? 0 : 1)
                         .then(() => {
                             callback();
-                        }).catch(() => {
+                        })
+                        .catch(() => {
                             callback(new Error(hap.HAPServer.Status.SERVICE_COMMUNICATION_FAILURE));
                         });
                 }
@@ -110,15 +146,17 @@ module.exports = class HmipBwth extends Accessory {
             serviceThermostat.update('TargetHeatingCoolingState', targetState());
         }
 
-        this.subscribe(config.deviceAddress + ':1.SET_POINT_MODE', value => {
+        this.subscribe(config.deviceAddress + ':1.SET_POINT_MODE', (value) => {
             setpointMode = value;
             node.debug('update ' + config.name + ' setpointMode ' + setpointMode);
             updateHeatingCoolingState();
         });
 
         if (this.option('HumiditySensor')) {
-            this.addService('HumiditySensor', config.name)
-                .get('CurrentRelativeHumidity', config.deviceAddress + ':1.HUMIDITY');
+            this.addService('HumiditySensor', config.name).get(
+                'CurrentRelativeHumidity',
+                config.deviceAddress + ':1.HUMIDITY',
+            );
         }
 
         if (this.option('BoostSwitch')) {

@@ -38,7 +38,7 @@ module.exports = class HmCcRtDn extends Accessory {
 
         function currentState() {
             // 0=off, 1=heat
-            return (valveState > 0 || controlMode === 3) ? 1 : 0;
+            return valveState > 0 || controlMode === 3 ? 1 : 0;
         }
 
         const serviceThermostat = this.addService('Thermostat', config.name);
@@ -48,7 +48,7 @@ module.exports = class HmCcRtDn extends Accessory {
             .get('CurrentTemperature', config.deviceAddress + ':4.ACTUAL_TEMPERATURE')
 
             .setProps('TargetTemperature', {minValue: 4.5, maxValue: 30.5, minStep: 0.5})
-            .get('TargetTemperature', config.deviceAddress + ':4.SET_TEMPERATURE', value => {
+            .get('TargetTemperature', config.deviceAddress + ':4.SET_TEMPERATURE', (value) => {
                 currentSetpoint = value;
                 if (value > 4.5) {
                     valueSetpoint = value;
@@ -109,13 +109,13 @@ module.exports = class HmCcRtDn extends Accessory {
             serviceThermostat.update('TargetHeatingCoolingState', targetState());
         }
 
-        this.subscribe(config.deviceAddress + ':4.VALVE_STATE', value => {
+        this.subscribe(config.deviceAddress + ':4.VALVE_STATE', (value) => {
             valveState = value;
             node.debug('update ' + config.name + ' valveState ' + valveState);
             updateHeatingCoolingState();
         });
 
-        this.subscribe(config.deviceAddress + ':4.CONTROL_MODE', value => {
+        this.subscribe(config.deviceAddress + ':4.CONTROL_MODE', (value) => {
             controlMode = value;
             node.debug('update ' + config.name + ' controlMode ' + controlMode);
             updateHeatingCoolingState();
@@ -165,7 +165,7 @@ module.exports = class HmCcRtDn extends Accessory {
                             });
                     }
                 })
-                .get('On', config.deviceAddress + ':4.CONTROL_MODE', value => {
+                .get('On', config.deviceAddress + ':4.CONTROL_MODE', (value) => {
                     return value === 3;
                 });
         }

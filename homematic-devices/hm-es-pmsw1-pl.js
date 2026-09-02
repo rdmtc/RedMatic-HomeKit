@@ -16,9 +16,9 @@ module.exports = class HmEsPmsw1 extends Accessory {
                 service.update('ValveType', type === 'ValveIrrigation' ? 1 : 0);
 
                 service
-                    .get('Active', dp, val => val ? 1 : 0)
-                    .get('InUse', dp, val => val ? 1 : 0)
-                    .set('Active', dp, val => {
+                    .get('Active', dp, (val) => (val ? 1 : 0))
+                    .get('InUse', dp, (val) => (val ? 1 : 0))
+                    .set('Active', dp, (val) => {
                         service.update('InUse', val);
                         return Boolean(val);
                     });
@@ -30,15 +30,13 @@ module.exports = class HmEsPmsw1 extends Accessory {
             case 'Fan':
             // intentional fallthrough
             case 'Switch':
-                this.addService(type, name, type)
-                    .get('On', dp)
-                    .set('On', dp);
+                this.addService(type, name, type).get('On', dp).set('On', dp);
                 break;
             default:
                 this.addService('Outlet', name)
                     .get('On', dp)
                     .set('On', dp)
-                    .get('OutletInUse', config.deviceAddress + ':2.POWER', value => value > 0);
+                    .get('OutletInUse', config.deviceAddress + ':2.POWER', (value) => value > 0);
         }
     }
 };

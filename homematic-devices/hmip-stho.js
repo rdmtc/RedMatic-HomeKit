@@ -14,8 +14,10 @@ module.exports = class HmipStho extends Accessory {
             .update('ChargingState', 2);
 
         if (this.option('HumiditySensor')) {
-            this.addService('HumiditySensor', config.name)
-                .get('CurrentRelativeHumidity', config.deviceAddress + ':1.HUMIDITY');
+            this.addService('HumiditySensor', config.name).get(
+                'CurrentRelativeHumidity',
+                config.deviceAddress + ':1.HUMIDITY',
+            );
         }
     }
 };
