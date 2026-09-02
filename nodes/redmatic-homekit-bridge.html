@@ -109,7 +109,27 @@
 </script>
 
 <script type="text/x-red" data-help-name="redmatic-homekit-bridge">
-
+    <p>Konfigurationsknoten für eine HomeKit-Bridge. Alle Zubehörteile der Nodes, die diese Bridge verwenden,
+    erscheinen in der Home-App hinter dieser Bridge.</p>
+    <h3>Einstellungen</h3>
+    <dl class="message-properties">
+        <dt>Bridge Name</dt><dd>Anzeigename der Bridge in HomeKit.</dd>
+        <dt>Bridge MAC</dt><dd>Eindeutige Kennung der Bridge (wird vorgeschlagen). <b>Nicht ändern</b>, nachdem die
+            Bridge gekoppelt wurde – sonst muss die Bridge in HomeKit neu hinzugefügt werden und Räume, Szenen und
+            Automationen gehen verloren.</dd>
+        <dt>Pin</dt><dd>Kopplungscode im Format <code>123-45-678</code>.</dd>
+        <dt>Port</dt><dd>TCP-Port der Bridge. Jede Bridge braucht einen eigenen Port.</dd>
+        <dt>mDNS</dt><dd><i>auto</i> (Standard) nutzt einen laufenden <code>avahi-daemon</code> (OpenCCU) und
+            sonst den eingebauten Responder <i>ciao</i> (offizielle CCU-Firmware). <i>bonjour-hap</i> und
+            <i>avahi</i> lassen sich erzwingen, falls das Netzwerk Probleme macht.</dd>
+    </dl>
+    <h3>Koppeln</h3>
+    <p>Nach dem Deploy zeigt der Konfigurationsdialog den QR-Code. In der Home-App <i>Gerät hinzufügen</i> wählen
+    und den Code scannen. Die Bridge wird erst veröffentlicht, wenn mindestens ein Zubehörteil vorhanden ist.</p>
+    <h3>Grenzen</h3>
+    <p>Eine Bridge fasst maximal 149 Zubehörteile. Für mehr Geräte einen weiteren Bridge-Knoten mit eigener
+    MAC-Adresse und eigenem Port anlegen. Die HomeKit-Daten (Kopplungen) liegen in
+    <code>&lt;userDir&gt;/homekit</code>.</p>
 </script>
 
 <script type="text/javascript">

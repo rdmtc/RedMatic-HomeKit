@@ -29,6 +29,9 @@ decisions (D-n) referenced below.
   (#279). The editor lists these devices with the same options as the
   hand-written ones (accessory type per channel, SingleAccessory, Battery,
   HumiditySensor/LightSensor, opt-in virtual channels and buttons).
+- German inline help for every node in the editor (bridge, homematic,
+  switch, pseudobutton, programmable switch, universal, tv; garage and
+  irrigation had help before) (#112).
 - Test suite with device fixtures for 383 device types (from the pydevccu
   catalogue), role and service snapshots, and an end-to-end harness (fake
   Node-RED and fake ccu-connection against the real HAP-NodeJS).

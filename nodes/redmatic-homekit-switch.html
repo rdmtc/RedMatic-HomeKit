@@ -41,5 +41,17 @@
 </script>
 
 <script type="text/x-red" data-help-name="redmatic-homekit-switch">
-
+    <p>Ein HomeKit-Schalter, dessen Zustand aus Node-RED kommt und der beim Schalten in der Home-App eine Nachricht
+    sendet.</p>
+    <h3>Eingang</h3>
+    <dl class="message-properties">
+        <dt>payload <span class="property-type">boolean</span></dt>
+        <dd>Setzt den angezeigten Zustand (<code>true</code> = an).</dd>
+    </dl>
+    <h3>Ausgang</h3>
+    <dl class="message-properties">
+        <dt>payload <span class="property-type">boolean</span></dt>
+        <dd>Wird gesendet, wenn der Schalter in HomeKit betätigt wird.</dd>
+    </dl>
+    <p>Der Schalter springt nicht von selbst zurück – dafür gibt es den Pseudobutton.</p>
 </script>

@@ -147,5 +147,28 @@
 </script>
 
 <script type="text/x-red" data-help-name="redmatic-homekit-universal">
-
+    <p>Beliebiges HomeKit-Zubehör aus Node-RED-Nachrichten. Im Node werden die Services (Lightbulb, Thermostat,
+    SecuritySystem, LightSensor, …) zusammengestellt; jeder Service bekommt einen Subtype-Namen.</p>
+    <h3>Eingang</h3>
+    <dl class="message-properties">
+        <dt>topic <span class="property-type">string</span></dt>
+        <dd><code>&lt;subtype&gt;/&lt;Charakteristik&gt;</code>, z.&nbsp;B. <code>0/On</code>,
+            <code>0/Brightness</code>, <code>1/CurrentTemperature</code>.</dd>
+        <dt>payload <span class="property-type">boolean | number | string | object</span></dt>
+        <dd>Der neue Wert der Charakteristik. Ein <b>Objekt</b> setzt stattdessen die Eigenschaften der
+            Charakteristik (<code>setProps</code>), z.&nbsp;B. <code>{&quot;minValue&quot;: 5, &quot;maxValue&quot;: 30}</code>
+            oder <code>{&quot;validValues&quot;: [0, 1]}</code>.</dd>
+    </dl>
+    <h3>Ausgang</h3>
+    <dl class="message-properties">
+        <dt>topic <span class="property-type">string</span></dt>
+        <dd><code>&lt;subtype&gt;/&lt;Charakteristik&gt;</code> der in HomeKit geänderten Charakteristik.</dd>
+        <dt>payload</dt><dd>Der von HomeKit gesetzte Wert.</dd>
+    </dl>
+    <h3>Tipps</h3>
+    <p>Nach dem Deploy sollte jede lesbare Charakteristik einmal mit einem Wert versorgt werden, sonst zeigt die
+    Home-App den Standardwert. Farblampen brauchen <i>Lightbulb</i> mit <code>Hue</code>, <code>Saturation</code>
+    und <code>Brightness</code>; für Werteanzeigen ohne passenden HomeKit-Typ eignet sich z.&nbsp;B.
+    <i>LightSensor</i> (<code>CurrentAmbientLightLevel</code>). Die Namen der Services und Charakteristiken
+    entsprechen denen von HAP-NodeJS.</p>
 </script>

@@ -68,5 +68,15 @@
 </script>
 
 <script type="text/x-red" data-help-name="redmatic-homekit-pseudobutton">
-
+    <p>Ein HomeKit-Schalter, der sich nach dem Einschalten sofort wieder ausschaltet und dabei eine Nachricht
+    sendet – ein Taster für Szenen, Automationen und Siri (&quot;Hey Siri, Rollläden runter&quot;).</p>
+    <h3>Einstellungen</h3>
+    <dl class="message-properties">
+        <dt>Topic</dt><dd><code>msg.topic</code> der gesendeten Nachricht.</dd>
+        <dt>Payload</dt><dd><code>msg.payload</code> der gesendeten Nachricht – String, Zahl, JSON, Zeitstempel oder
+            ein Flow-/Global-Kontextwert wie beim Inject-Node.</dd>
+    </dl>
+    <h3>Ausgang</h3>
+    <p>Eine Nachricht je Betätigung. Der Schalter zeigt in der Home-App kurz &quot;an&quot; und geht nach 250&nbsp;ms
+    wieder aus.</p>
 </script>

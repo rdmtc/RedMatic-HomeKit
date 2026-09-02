@@ -167,5 +167,27 @@
 </script>
 
 <script type="text/x-red" data-help-name="redmatic-homekit-tv">
-
+    <p>Ein eigenständiges Fernseher-Zubehör in HomeKit (nicht hinter der Bridge – HomeKit verlangt für Fernseher
+    ein eigenes Gerät mit eigener MAC-Adresse, PIN und Port). Bietet Ein/Aus, eine Eingangsquellen-Auswahl und
+    die Fernbedienung im Kontrollzentrum von iOS.</p>
+    <h3>Einstellungen</h3>
+    <dl class="message-properties">
+        <dt>Eingangsquellen</dt><dd>Liste der Quellen (Name und Typ), die in der Home-App zur Auswahl stehen.</dd>
+    </dl>
+    <h3>Eingang</h3>
+    <dl class="message-properties">
+        <dt>topic <span class="property-type">string</span></dt>
+        <dd><code>InputSource</code> mit dem Namen oder der Nummer der aktiven Quelle im payload; jedes andere
+            Topic setzt den Ein/Aus-Zustand aus <code>payload</code> (boolean).</dd>
+    </dl>
+    <h3>Ausgang</h3>
+    <dl class="message-properties">
+        <dt>topic <span class="property-type">string</span></dt>
+        <dd><code>Active</code> (payload boolean), <code>InputSource</code> (payload Name,
+            <code>msg.identifier</code> Nummer), <code>RemoteKey</code> (payload z.&nbsp;B. <code>ARROW_UP</code>,
+            <code>SELECT</code>, <code>BACK</code>, <code>PLAY_PAUSE</code>; <code>msg.lgtv</code> mit dem
+            passenden Befehl für node-red-contrib-lgtv), <code>VolumeSelector</code> (<code>VOLUMEUP</code> /
+            <code>VOLUMEDOWN</code>), <code>PowerModeSelection</code>.</dd>
+    </dl>
+    <p>Nach dem Deploy zeigt der Dialog den QR-Code; das Zubehör wird in der Home-App wie eine Bridge hinzugefügt.</p>
 </script>

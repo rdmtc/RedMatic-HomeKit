@@ -219,5 +219,26 @@
 </script>
 
 <script type="text/x-red" data-help-name="redmatic-homekit-homematic-devices">
-
+    <p>Legt für die Geräte einer CCU-Verbindung (node-red-contrib-ccu) automatisch HomeKit-Zubehör an.</p>
+    <h3>Geräteliste</h3>
+    <p>Die Liste zeigt alle Geräte der aktivierten Schnittstellen, die der Node abbilden kann. Pro Gerät lässt sich
+    das Zubehör ein- und ausschalten; darunter erscheinen je nach Gerät die einzelnen Kanäle mit Optionen:</p>
+    <dl class="message-properties">
+        <dt>Typ-Auswahl</dt><dd>Als was ein Kanal in HomeKit erscheint, z.&nbsp;B. Schalter, Steckdose, Lampe,
+            Lüfter, Ventil bei Schaltaktoren oder Kontaktsensor, Tür, Fenster, Garagentor bei Kontakten.</dd>
+        <dt>SingleAccessory</dt><dd>Bei mehrkanaligen Aktoren: alle Kanäle in einem Zubehörteil (Standard) oder
+            ein eigenes Zubehörteil je Kanal.</dd>
+        <dt>Virtuelle Kanäle</dt><dd>Die zweiten und dritten virtuellen Empfängerkanäle von HmIP-Aktoren
+            (z.&nbsp;B. <code>:5</code>, <code>:6</code>) und die Taster an Aktoren sind abwählbar und standardmäßig aus.</dd>
+        <dt>Battery, HumiditySensor, LightSensor, BoostSwitch, …</dt><dd>Zusätzliche Services, die sich pro
+            Gerät abschalten lassen.</dd>
+    </dl>
+    <h3>Geräteunterstützung</h3>
+    <p>Für bekannte Gerätetypen gibt es speziell abgestimmte Module. Alle anderen Geräte werden aus ihrer
+    Gerätebeschreibung (Kanaltypen und Datenpunkte) zugeordnet; das umfasst auch neue, Homebrew- und
+    CUxD-Geräte. Fehlt ein Gerät, bitte ein Issue mit dem Gerätetyp öffnen.</p>
+    <h3>Hinweise</h3>
+    <p>Gerätenamen werden von der CCU übernommen (Kanalnamen für Kanäle). Zubehörteile behalten ihre Identität
+    über Neustarts und Updates, solange die Geräteadresse gleich bleibt. Nach dem Ändern der Auswahl ist ein
+    Deploy nötig; neue Zubehörteile erscheinen in der Home-App im Standardraum.</p>
 </script>

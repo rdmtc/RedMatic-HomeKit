@@ -424,8 +424,9 @@ power/energy on POWERMETER channels — after 4.0.0.
   changed in 4.0.0" block (pairings kept, zigbee and camera removed,
   Node/Node-RED minimums), and the device-support statement ("any device
   whose channels have a known role, plus the overrides list").
-- Inline help for every node via `locales/`, German (`de`) complete and
-  English (`en-US`) as fallback (#112, #100), including the SecuritySystem/colour-light recipes for the universal
+- Inline help for every node: ✅ German inline help written for all nine
+  nodes (dev.5); moving it to `locales/` with an English (`en-US`)
+  fallback is still open (#112, #100), including the SecuritySystem/colour-light recipes for the universal
   node that today live in issue comments (#254, #104).
 - RedMatic wiki `Homekit` page: rewrite for 4.0.0 (external repo
   `rdmtc/RedMatic.wiki`; RedMatic's roadmap task 7 already lists the

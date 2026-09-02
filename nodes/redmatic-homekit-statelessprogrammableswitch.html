@@ -50,5 +50,16 @@
 </script>
 
 <script type="text/x-red" data-help-name="redmatic-homekit-programmableswitch">
-
+    <p>Programmierbare Taster in HomeKit (wie ein HmIP-Wandtaster), ausgelöst durch Nachrichten aus Node-RED.
+    Jedem Taster lassen sich in der Home-App Szenen für kurzen und langen Druck zuweisen.</p>
+    <h3>Einstellungen</h3>
+    <dl class="message-properties">
+        <dt>Anzahl</dt><dd>Anzahl der Taster (1 … n).</dd>
+    </dl>
+    <h3>Eingang</h3>
+    <dl class="message-properties">
+        <dt>topic <span class="property-type">string</span></dt>
+        <dd><code>&lt;Taster&gt;/&lt;Art&gt;</code>, z.&nbsp;B. <code>1/short</code> oder <code>2/long</code>.
+            Alles, was nicht <i>long</i> enthält, gilt als kurzer Druck.</dd>
+    </dl>
 </script>
