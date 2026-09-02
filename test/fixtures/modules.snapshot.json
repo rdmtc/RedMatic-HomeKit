@@ -1,0 +1,1224 @@
+{
+ "errors": {
+  "HM-CC-VG-1": [
+   "BidCos-RF.INT0000001 group configuration not found"
+  ],
+  "HmIP-HEATING": [
+   "HmIP-RF.VCU5778428 group configuration not found"
+  ]
+ },
+ "services": {
+  "HB-LC-Bl1PBU-FM": {
+   "HB-LC-Bl1PBU-FM": [
+    "WindowCovering/0"
+   ]
+  },
+  "HB-LC-Sw1PBU-FM": {
+   "HB-LC-Sw1PBU-FM": [
+    "Switch/0"
+   ]
+  },
+  "HB-LC-Sw2PBU-FM": {
+   "HB-LC-Sw2PBU-FM": [
+    "Switch/0",
+    "Switch/1"
+   ]
+  },
+  "HB-UNI-RGB-LED-CTRL": {
+   "HB-UNI-RGB-LED-CTRL": [
+    "Lightbulb/0"
+   ]
+  },
+  "HB-UNI-Sen-TEMP-DS18B20": {
+   "HB-UNI-Sen-TEMP-DS18B20": [
+    "TemperatureSensor/0",
+    "TemperatureSensor/1",
+    "TemperatureSensor/2",
+    "TemperatureSensor/3",
+    "TemperatureSensor/4",
+    "TemperatureSensor/5",
+    "TemperatureSensor/6",
+    "TemperatureSensor/7"
+   ]
+  },
+  "HM-CC-RT-DN": {
+   "HM-CC-RT-DN": [
+    "Thermostat/0",
+    "Battery/1",
+    "Switch/Boost2"
+   ]
+  },
+  "HM-CC-RT-DN-BoM": {
+   "HM-CC-RT-DN-BoM": [
+    "Thermostat/0",
+    "Battery/1",
+    "Switch/Boost2"
+   ]
+  },
+  "HM-CC-SCD": {
+   "HM-CC-SCD": [
+    "CarbonDioxideSensor/0"
+   ]
+  },
+  "HM-CC-TC": {
+   "HM-CC-TC": [
+    "Thermostat/0",
+    "Battery/1",
+    "HumiditySensor/2"
+   ]
+  },
+  "HM-CC-VG-1": {
+   "HM-CC-VG-1": []
+  },
+  "HM-DW-WM": {
+   "HM-DW-WM": [
+    "Lightbulb/0",
+    "Lightbulb/1"
+   ]
+  },
+  "HM-ES-PMSw1-DR": {
+   "HM-ES-PMSw1-DR": [
+    "Outlet/0"
+   ]
+  },
+  "HM-ES-PMSw1-Pl": {
+   "HM-ES-PMSw1-Pl": [
+    "Outlet/0"
+   ]
+  },
+  "HM-ES-PMSw1-Pl-DN-R1": {
+   "HM-ES-PMSw1-Pl-DN-R1": [
+    "Outlet/0"
+   ]
+  },
+  "HM-ES-PMSw1-SM": {
+   "HM-ES-PMSw1-SM": [
+    "Outlet/0"
+   ]
+  },
+  "HM-LC-AO-SM": {
+   "HM-LC-AO-SM": [
+    "Lightbulb/0"
+   ]
+  },
+  "HM-LC-Bl1-FM": {
+   "HM-LC-Bl1-FM": [
+    "WindowCovering/0"
+   ]
+  },
+  "HM-LC-Bl1-FM-2": {
+   "HM-LC-Bl1-FM-2": [
+    "WindowCovering/0"
+   ]
+  },
+  "HM-LC-Bl1-PB-FM": {
+   "HM-LC-Bl1-PB-FM": [
+    "WindowCovering/0"
+   ]
+  },
+  "HM-LC-Bl1-SM": {
+   "HM-LC-Bl1-SM": [
+    "WindowCovering/0"
+   ]
+  },
+  "HM-LC-Bl1-SM-2": {
+   "HM-LC-Bl1-SM-2": [
+    "WindowCovering/0"
+   ]
+  },
+  "HM-LC-Bl1PBU-FM": {
+   "HM-LC-Bl1PBU-FM": [
+    "WindowCovering/0"
+   ]
+  },
+  "HM-LC-Dim1L-CV": {
+   "HM-LC-Dim1L-CV": [
+    "Lightbulb/0"
+   ]
+  },
+  "HM-LC-Dim1L-CV-2": {
+   "HM-LC-Dim1L-CV-2": [
+    "Lightbulb/0"
+   ]
+  },
+  "HM-LC-Dim1L-Pl": {
+   "HM-LC-Dim1L-Pl": [
+    "Lightbulb/0"
+   ]
+  },
+  "HM-LC-Dim1L-Pl-2": {
+   "HM-LC-Dim1L-Pl-2": [
+    "Lightbulb/0"
+   ]
+  },
+  "HM-LC-Dim1L-Pl-3": {
+   "HM-LC-Dim1L-Pl-3": [
+    "Lightbulb/0"
+   ]
+  },
+  "HM-LC-Dim1PWM-CV": {
+   "HM-LC-Dim1PWM-CV": [
+    "Lightbulb/0"
+   ]
+  },
+  "HM-LC-Dim1PWM-CV-2": {
+   "HM-LC-Dim1PWM-CV-2": [
+    "Lightbulb/0"
+   ]
+  },
+  "HM-LC-Dim1T-CV": {
+   "HM-LC-Dim1T-CV": [
+    "Lightbulb/0"
+   ]
+  },
+  "HM-LC-Dim1T-CV-2": {
+   "HM-LC-Dim1T-CV-2": [
+    "Lightbulb/0"
+   ]
+  },
+  "HM-LC-Dim1T-DR": {
+   "HM-LC-Dim1T-DR": [
+    "Lightbulb/0"
+   ]
+  },
+  "HM-LC-Dim1T-FM": {
+   "HM-LC-Dim1T-FM": [
+    "Lightbulb/0"
+   ]
+  },
+  "HM-LC-Dim1T-FM-2": {
+   "HM-LC-Dim1T-FM-2": [
+    "Lightbulb/0"
+   ]
+  },
+  "HM-LC-Dim1T-FM-LF": {
+   "HM-LC-Dim1T-FM-LF": [
+    "Lightbulb/0"
+   ]
+  },
+  "HM-LC-Dim1T-Pl": {
+   "HM-LC-Dim1T-Pl": [
+    "Lightbulb/0"
+   ]
+  },
+  "HM-LC-Dim1T-Pl-2": {
+   "HM-LC-Dim1T-Pl-2": [
+    "Lightbulb/0"
+   ]
+  },
+  "HM-LC-Dim1T-Pl-3": {
+   "HM-LC-Dim1T-Pl-3": [
+    "Lightbulb/0"
+   ]
+  },
+  "HM-LC-Dim1TPBU-FM": {
+   "HM-LC-Dim1TPBU-FM": [
+    "Lightbulb/0"
+   ]
+  },
+  "HM-LC-Dim1TPBU-FM-2": {
+   "HM-LC-Dim1TPBU-FM-2": [
+    "Lightbulb/0"
+   ]
+  },
+  "HM-LC-Dim2L-SM": {
+   "HM-LC-Dim2L-SM": [
+    "Lightbulb/0",
+    "Lightbulb/1"
+   ]
+  },
+  "HM-LC-Dim2L-SM-2": {
+   "HM-LC-Dim2L-SM-2": [
+    "Lightbulb/0",
+    "Lightbulb/1"
+   ]
+  },
+  "HM-LC-Dim2T-SM": {
+   "HM-LC-Dim2T-SM": [
+    "Lightbulb/0",
+    "Lightbulb/1"
+   ]
+  },
+  "HM-LC-Dim2T-SM-2": {
+   "HM-LC-Dim2T-SM-2": [
+    "Lightbulb/0",
+    "Lightbulb/1"
+   ]
+  },
+  "HM-LC-Ja1PBU-FM": {
+   "HM-LC-Ja1PBU-FM": [
+    "WindowCovering/0"
+   ]
+  },
+  "HM-LC-RGBW-WM": {
+   "HM-LC-RGBW-WM": [
+    "Lightbulb/0"
+   ]
+  },
+  "HM-LC-Sw1-Ba-PCB": {
+   "HM-LC-Sw1-Ba-PCB": [
+    "Switch/0",
+    "Battery/1"
+   ]
+  },
+  "HM-LC-Sw1-DR": {
+   "HM-LC-Sw1-DR": [
+    "Switch/0"
+   ]
+  },
+  "HM-LC-Sw1-FM": {
+   "HM-LC-Sw1-FM": [
+    "Switch/0"
+   ]
+  },
+  "HM-LC-Sw1-FM-2": {
+   "HM-LC-Sw1-FM-2": [
+    "Switch/0"
+   ]
+  },
+  "HM-LC-Sw1-PB-FM": {
+   "HM-LC-Sw1-PB-FM": [
+    "Switch/0"
+   ]
+  },
+  "HM-LC-Sw1-PCB": {
+   "HM-LC-Sw1-PCB": [
+    "Switch/0"
+   ]
+  },
+  "HM-LC-Sw1-Pl": {
+   "HM-LC-Sw1-Pl": [
+    "Switch/0"
+   ]
+  },
+  "HM-LC-Sw1-Pl-2": {
+   "HM-LC-Sw1-Pl-2": [
+    "Switch/0"
+   ]
+  },
+  "HM-LC-Sw1-Pl-3": {
+   "HM-LC-Sw1-Pl-3": [
+    "Switch/0"
+   ]
+  },
+  "HM-LC-Sw1-Pl-CT-R1": {
+   "HM-LC-Sw1-Pl-CT-R1": [
+    "Switch/0"
+   ]
+  },
+  "HM-LC-Sw1-Pl-CT-R2": {
+   "HM-LC-Sw1-Pl-CT-R2": [
+    "Switch/0"
+   ]
+  },
+  "HM-LC-Sw1-Pl-CT-R3": {
+   "HM-LC-Sw1-Pl-CT-R3": [
+    "Switch/0"
+   ]
+  },
+  "HM-LC-Sw1-Pl-CT-R4": {
+   "HM-LC-Sw1-Pl-CT-R4": [
+    "Switch/0"
+   ]
+  },
+  "HM-LC-Sw1-Pl-CT-R5": {
+   "HM-LC-Sw1-Pl-CT-R5": [
+    "Switch/0"
+   ]
+  },
+  "HM-LC-Sw1-Pl-DN-R1": {
+   "HM-LC-Sw1-Pl-DN-R1": [
+    "Switch/0"
+   ]
+  },
+  "HM-LC-Sw1-Pl-DN-R2": {
+   "HM-LC-Sw1-Pl-DN-R2": [
+    "Switch/0"
+   ]
+  },
+  "HM-LC-Sw1-Pl-DN-R3": {
+   "HM-LC-Sw1-Pl-DN-R3": [
+    "Switch/0"
+   ]
+  },
+  "HM-LC-Sw1-Pl-DN-R4": {
+   "HM-LC-Sw1-Pl-DN-R4": [
+    "Switch/0"
+   ]
+  },
+  "HM-LC-Sw1-Pl-DN-R5": {
+   "HM-LC-Sw1-Pl-DN-R5": [
+    "Switch/0"
+   ]
+  },
+  "HM-LC-Sw1-Pl-OM54": {
+   "HM-LC-Sw1-Pl-OM54": [
+    "Switch/0"
+   ]
+  },
+  "HM-LC-Sw1-SM": {
+   "HM-LC-Sw1-SM": [
+    "Switch/0"
+   ]
+  },
+  "HM-LC-Sw1-SM-2": {
+   "HM-LC-Sw1-SM-2": [
+    "Switch/0"
+   ]
+  },
+  "HM-LC-Sw1PBU-FM": {
+   "HM-LC-Sw1PBU-FM": [
+    "Switch/0"
+   ]
+  },
+  "HM-LC-Sw2-DR": {
+   "HM-LC-Sw2-DR": [
+    "Switch/0",
+    "Switch/1"
+   ]
+  },
+  "HM-LC-Sw2-DR-2": {
+   "HM-LC-Sw2-DR-2": [
+    "Switch/0",
+    "Switch/1"
+   ]
+  },
+  "HM-LC-Sw2-FM": {
+   "HM-LC-Sw2-FM": [
+    "Switch/0",
+    "Switch/1"
+   ]
+  },
+  "HM-LC-Sw2-FM-2": {
+   "HM-LC-Sw2-FM-2": [
+    "Switch/0",
+    "Switch/1"
+   ]
+  },
+  "HM-LC-Sw2-PB-FM": {
+   "HM-LC-Sw2-PB-FM": [
+    "Switch/0",
+    "Switch/1"
+   ]
+  },
+  "HM-LC-Sw2PBU-FM": {
+   "HM-LC-Sw2PBU-FM": [
+    "Switch/0",
+    "Switch/1"
+   ]
+  },
+  "HM-LC-Sw4-Ba-PCB": {
+   "HM-LC-Sw4-Ba-PCB": [
+    "Switch/0",
+    "Switch/1",
+    "Switch/2",
+    "Switch/3"
+   ]
+  },
+  "HM-LC-Sw4-DR": {
+   "HM-LC-Sw4-DR": [
+    "Switch/0",
+    "Switch/1",
+    "Switch/2",
+    "Switch/3"
+   ]
+  },
+  "HM-LC-Sw4-DR-2": {
+   "HM-LC-Sw4-DR-2": [
+    "Switch/0",
+    "Switch/1",
+    "Switch/2",
+    "Switch/3"
+   ]
+  },
+  "HM-LC-Sw4-PCB": {
+   "HM-LC-Sw4-PCB": [
+    "Switch/0",
+    "Switch/1",
+    "Switch/2",
+    "Switch/3"
+   ]
+  },
+  "HM-LC-Sw4-PCB-2": {
+   "HM-LC-Sw4-PCB-2": [
+    "Switch/0",
+    "Switch/1",
+    "Switch/2",
+    "Switch/3"
+   ]
+  },
+  "HM-LC-Sw4-SM": {
+   "HM-LC-Sw4-SM": [
+    "Switch/0",
+    "Switch/1",
+    "Switch/2",
+    "Switch/3"
+   ]
+  },
+  "HM-LC-Sw4-SM-2": {
+   "HM-LC-Sw4-SM-2": [
+    "Switch/0",
+    "Switch/1",
+    "Switch/2",
+    "Switch/3"
+   ]
+  },
+  "HM-LC-Sw4-WM": {
+   "HM-LC-Sw4-WM": [
+    "Switch/0",
+    "Switch/1",
+    "Switch/2",
+    "Switch/3"
+   ]
+  },
+  "HM-LC-Sw4-WM-2": {
+   "HM-LC-Sw4-WM-2": [
+    "Switch/0",
+    "Switch/1",
+    "Switch/2",
+    "Switch/3"
+   ]
+  },
+  "HM-MOD-Re-8": {
+   "HM-MOD-Re-8": [
+    "Switch/0",
+    "Switch/1",
+    "Switch/2",
+    "Switch/3",
+    "Switch/4",
+    "Switch/5",
+    "Switch/6",
+    "Switch/7"
+   ]
+  },
+  "HM-SCI-3-FM": {
+   "HM-SCI-3-FM": [
+    "ContactSensor/0",
+    "ContactSensor/1",
+    "ContactSensor/2"
+   ]
+  },
+  "HM-Sec-Key": {
+   "HM-Sec-Key": [
+    "LockMechanism/0",
+    "Battery/1"
+   ]
+  },
+  "HM-Sec-Key-O": {
+   "HM-Sec-Key-O": [
+    "LockMechanism/0",
+    "Battery/1"
+   ]
+  },
+  "HM-Sec-Key-S": {
+   "HM-Sec-Key-S": [
+    "LockMechanism/0",
+    "Battery/1"
+   ]
+  },
+  "HM-Sec-MDIR": {
+   "HM-Sec-MDIR": [
+    "MotionSensor/0",
+    "LightSensor/1"
+   ]
+  },
+  "HM-Sec-MDIR-2": {
+   "HM-Sec-MDIR-2": [
+    "MotionSensor/0",
+    "LightSensor/1"
+   ]
+  },
+  "HM-Sec-MDIR-3": {
+   "HM-Sec-MDIR-3": [
+    "MotionSensor/0",
+    "LightSensor/1"
+   ]
+  },
+  "HM-Sec-RHS": {
+   "HM-Sec-RHS": [
+    "ContactSensor/0"
+   ]
+  },
+  "HM-Sec-RHS-2": {
+   "HM-Sec-RHS-2": [
+    "ContactSensor/0"
+   ]
+  },
+  "HM-Sec-SC": {
+   "HM-Sec-SC": [
+    "ContactSensor/0"
+   ]
+  },
+  "HM-Sec-SC-2": {
+   "HM-Sec-SC-2": [
+    "ContactSensor/0"
+   ]
+  },
+  "HM-Sec-SCo": {
+   "HM-Sec-SCo": [
+    "ContactSensor/0"
+   ]
+  },
+  "HM-Sec-SD": {
+   "HM-Sec-SD": [
+    "SmokeSensor/0"
+   ]
+  },
+  "HM-Sec-SD-2": {
+   "HM-Sec-SD-2": [
+    "SmokeSensor/0"
+   ]
+  },
+  "HM-Sec-Sir-WM": {
+   "HM-Sec-Sir-WM": [
+    "SecuritySystem/0",
+    "Battery/1"
+   ]
+  },
+  "HM-Sec-TiS": {
+   "HM-Sec-TiS": [
+    "ContactSensor/0"
+   ]
+  },
+  "HM-Sec-WDS": {
+   "HM-Sec-WDS": [
+    "LeakSensor/0"
+   ]
+  },
+  "HM-Sec-WDS-2": {
+   "HM-Sec-WDS-2": [
+    "LeakSensor/0"
+   ]
+  },
+  "HM-Sec-Win": {
+   "HM-Sec-Win": [
+    "Window/0",
+    "Battery/1"
+   ]
+  },
+  "HM-Sen-DB-PCB": {
+   "HM-Sen-DB-PCB": [
+    "Doorbell/0"
+   ]
+  },
+  "HM-Sen-LI-O": {
+   "HM-Sen-LI-O": [
+    "LightSensor/0"
+   ]
+  },
+  "HM-Sen-MDIR-O": {
+   "HM-Sen-MDIR-O": [
+    "MotionSensor/0",
+    "LightSensor/1"
+   ]
+  },
+  "HM-Sen-MDIR-O-2": {
+   "HM-Sen-MDIR-O-2": [
+    "MotionSensor/0",
+    "LightSensor/1"
+   ]
+  },
+  "HM-Sen-MDIR-O-3": {
+   "HM-Sen-MDIR-O-3": [
+    "MotionSensor/0",
+    "LightSensor/1"
+   ]
+  },
+  "HM-Sen-MDIR-SM": {
+   "HM-Sen-MDIR-SM": [
+    "MotionSensor/0",
+    "LightSensor/1"
+   ]
+  },
+  "HM-Sen-MDIR-WM55": {
+   "HM-Sen-MDIR-WM55": [
+    "MotionSensor/0",
+    "LightSensor/1"
+   ]
+  },
+  "HM-TC-IT-WM-W-EU": {
+   "HM-TC-IT-WM-W-EU": [
+    "Thermostat/0",
+    "Battery/1",
+    "HumiditySensor/HumiditySensor2",
+    "Switch/Boost3"
+   ]
+  },
+  "HM-WDS10-TH-O": {
+   "HM-WDS10-TH-O": [
+    "TemperatureSensor/0",
+    "HumiditySensor/1"
+   ]
+  },
+  "HM-WDS100-C6-O": {
+   "HM-WDS100-C6-O": [
+    "TemperatureSensor/0",
+    "HumiditySensor/1",
+    "LightSensor/2"
+   ]
+  },
+  "HM-WDS100-C6-O-2": {
+   "HM-WDS100-C6-O-2": [
+    "TemperatureSensor/0",
+    "HumiditySensor/1",
+    "LightSensor/2"
+   ]
+  },
+  "HM-WDS20-TH-O": {
+   "HM-WDS20-TH-O": [
+    "TemperatureSensor/0",
+    "HumiditySensor/1"
+   ]
+  },
+  "HM-WDS30-OT2-SM": {
+   "HM-WDS30-OT2-SM": [
+    "TemperatureSensor/0",
+    "TemperatureSensor/1",
+    "TemperatureSensor/2",
+    "TemperatureSensor/3",
+    "TemperatureSensor/4"
+   ]
+  },
+  "HM-WDS30-OT2-SM-2": {
+   "HM-WDS30-OT2-SM-2": [
+    "TemperatureSensor/0",
+    "TemperatureSensor/1",
+    "TemperatureSensor/2",
+    "TemperatureSensor/3",
+    "TemperatureSensor/4"
+   ]
+  },
+  "HM-WDS30-T-O": {
+   "HM-WDS30-T-O": [
+    "TemperatureSensor/0"
+   ]
+  },
+  "HM-WDS40-TH-I": {
+   "HM-WDS40-TH-I": [
+    "TemperatureSensor/0",
+    "HumiditySensor/1"
+   ]
+  },
+  "HM-WDS40-TH-I-2": {
+   "HM-WDS40-TH-I-2": [
+    "TemperatureSensor/0",
+    "HumiditySensor/1"
+   ]
+  },
+  "HMIP-PS": {
+   "HMIP-PS": [
+    "Outlet/0"
+   ]
+  },
+  "HMIP-PSM": {
+   "HMIP-PSM": [
+    "Outlet/0"
+   ]
+  },
+  "HMIP-SWDO": {
+   "HMIP-SWDO": [
+    "ContactSensor/0",
+    "Battery/1"
+   ]
+  },
+  "HMW-IO-12-Sw7-DR": {
+   "HMW-IO-12-Sw7-DR": [
+    "Switch/0",
+    "Switch/1",
+    "Switch/2",
+    "Switch/3",
+    "Switch/4",
+    "Switch/5",
+    "Switch/6"
+   ]
+  },
+  "HMW-LC-Bl1-DR": {
+   "HMW-LC-Bl1-DR": [
+    "WindowCovering/0"
+   ]
+  },
+  "HMW-LC-Bl1-DR-2": {
+   "HMW-LC-Bl1-DR-2": [
+    "WindowCovering/0"
+   ]
+  },
+  "HMW-LC-Dim1L-DR": {
+   "HMW-LC-Dim1L-DR": [
+    "Lightbulb/0"
+   ]
+  },
+  "HMW-LC-Sw2-DR": {
+   "HMW-LC-Sw2-DR": [
+    "Switch/0",
+    "Switch/1"
+   ]
+  },
+  "HMW-Sen-SC-12-DR": {
+   "HMW-Sen-SC-12-DR": [
+    "ContactSensor/0",
+    "ContactSensor/1",
+    "ContactSensor/2",
+    "ContactSensor/3",
+    "ContactSensor/4",
+    "ContactSensor/5",
+    "ContactSensor/6",
+    "ContactSensor/7",
+    "ContactSensor/8",
+    "ContactSensor/9",
+    "ContactSensor/10",
+    "ContactSensor/11"
+   ]
+  },
+  "HMW-Sen-SC-12-FM": {
+   "HMW-Sen-SC-12-FM": [
+    "ContactSensor/0",
+    "ContactSensor/1",
+    "ContactSensor/2",
+    "ContactSensor/3",
+    "ContactSensor/4",
+    "ContactSensor/5",
+    "ContactSensor/6",
+    "ContactSensor/7",
+    "ContactSensor/8",
+    "ContactSensor/9",
+    "ContactSensor/10",
+    "ContactSensor/11"
+   ]
+  },
+  "HmIP-BDT": {
+   "HmIP-BDT": [
+    "Lightbulb/0"
+   ]
+  },
+  "HmIP-BROLL": {
+   "HmIP-BROLL 4": [
+    "WindowCovering/40"
+   ]
+  },
+  "HmIP-BSL": {
+   "HmIP-BSL": [
+    "Switch/0"
+   ]
+  },
+  "HmIP-BSM": {
+   "HmIP-BSM": [
+    "Lightbulb/0"
+   ]
+  },
+  "HmIP-BWTH": {
+   "HmIP-BWTH": [
+    "Thermostat/0",
+    "HumiditySensor/1",
+    "Switch/Boost2"
+   ]
+  },
+  "HmIP-DBB": {
+   "HmIP-DBB": [
+    "Doorbell/0",
+    "Battery/1"
+   ]
+  },
+  "HmIP-DRBLI4": {
+   "HmIP-DRBLI4 10": [
+    "WindowCovering/100"
+   ],
+   "HmIP-DRBLI4 14": [
+    "WindowCovering/140"
+   ],
+   "HmIP-DRBLI4 18": [
+    "WindowCovering/180"
+   ],
+   "HmIP-DRBLI4 22": [
+    "WindowCovering/220"
+   ]
+  },
+  "HmIP-DRSI1": {
+   "HmIP-DRSI1": [
+    "Switch/0"
+   ]
+  },
+  "HmIP-DRSI4": {
+   "HmIP-DRSI4": [
+    "Switch/0",
+    "Switch/1",
+    "Switch/2",
+    "Switch/3"
+   ]
+  },
+  "HmIP-FBL": {
+   "HmIP-FBL 4": [
+    "WindowCovering/40"
+   ]
+  },
+  "HmIP-FCI1": {
+   "HmIP-FCI1": [
+    "ContactSensor/0",
+    "Battery/1"
+   ]
+  },
+  "HmIP-FDT": {
+   "HmIP-FDT": [
+    "Lightbulb/0"
+   ]
+  },
+  "HmIP-FROLL": {
+   "HmIP-FROLL 4": [
+    "WindowCovering/40"
+   ]
+  },
+  "HmIP-FSI16": {
+   "HmIP-FSI16": [
+    "Switch/0"
+   ]
+  },
+  "HmIP-FSM16": {
+   "HmIP-FSM16": [
+    "Outlet/Outlet0"
+   ]
+  },
+  "HmIP-HEATING": {
+   "HmIP-HEATING": []
+  },
+  "HmIP-MOD-HO": {
+   "HmIP-MOD-HO": [
+    "GarageDoorOpener/0",
+    "Lightbulb/1"
+   ]
+  },
+  "HmIP-MOD-OC8": {
+   "HmIP-MOD-OC8": [
+    "Switch/0",
+    "Switch/1",
+    "Switch/2",
+    "Switch/3",
+    "Switch/4",
+    "Switch/5",
+    "Switch/6",
+    "Switch/7"
+   ]
+  },
+  "HmIP-MOD-TM": {
+   "HmIP-MOD-TM": [
+    "GarageDoorOpener/0",
+    "Lightbulb/1"
+   ]
+  },
+  "HmIP-PCBS": {
+   "HmIP-PCBS": [
+    "Switch/0"
+   ]
+  },
+  "HmIP-PCBS-BAT": {
+   "HmIP-PCBS-BAT": [
+    "Switch/0",
+    "Battery/1"
+   ]
+  },
+  "HmIP-PCBS2": {
+   "HmIP-PCBS2": [
+    "Switch/0",
+    "Switch/1"
+   ]
+  },
+  "HmIP-SAM": {
+   "HmIP-SAM": [
+    "ContactSensor/0",
+    "Battery/1"
+   ]
+  },
+  "HmIP-SCI": {
+   "HmIP-SCI": [
+    "ContactSensor/0",
+    "Battery/1"
+   ]
+  },
+  "HmIP-SLO": {
+   "HmIP-SLO": [
+    "LightSensor/0",
+    "Battery/1"
+   ]
+  },
+  "HmIP-SMI": {
+   "HmIP-SMI": [
+    "MotionSensor/0",
+    "Battery/1",
+    "LightSensor/2"
+   ]
+  },
+  "HmIP-SMI55": {
+   "HmIP-SMI55": [
+    "MotionSensor/0",
+    "Battery/1",
+    "LightSensor/2"
+   ]
+  },
+  "HmIP-SMO": {
+   "HmIP-SMO": [
+    "MotionSensor/0",
+    "Battery/1",
+    "LightSensor/2"
+   ]
+  },
+  "HmIP-SMO-A": {
+   "HmIP-SMO-A": [
+    "MotionSensor/0",
+    "Battery/1",
+    "LightSensor/2"
+   ]
+  },
+  "HmIP-SPDR": {
+   "HmIP-SPDR": [
+    "OccupancySensor/0",
+    "Battery/1"
+   ]
+  },
+  "HmIP-SPI": {
+   "HmIP-SPI": [
+    "OccupancySensor/0",
+    "Battery/1",
+    "LightSensor/2"
+   ]
+  },
+  "HmIP-SRH": {
+   "HmIP-SRH": [
+    "ContactSensor/0",
+    "Battery/1"
+   ]
+  },
+  "HmIP-STE2-PCB": {
+   "HmIP-STE2-PCB": [
+    "TemperatureSensor/0",
+    "TemperatureSensor/1",
+    "TemperatureSensor/2"
+   ]
+  },
+  "HmIP-STH": {
+   "HmIP-STH": [
+    "Thermostat/0",
+    "Switch/Boost1",
+    "Battery/2",
+    "HumiditySensor/3"
+   ]
+  },
+  "HmIP-STHD": {
+   "HmIP-STHD": [
+    "Thermostat/0",
+    "Switch/Boost1",
+    "Battery/2",
+    "HumiditySensor/3"
+   ]
+  },
+  "HmIP-STHO": {
+   "HmIP-STHO": [
+    "TemperatureSensor/0",
+    "Battery/1",
+    "HumiditySensor/2"
+   ]
+  },
+  "HmIP-STHO-A": {
+   "HmIP-STHO-A": [
+    "TemperatureSensor/0",
+    "Battery/1",
+    "HumiditySensor/2"
+   ]
+  },
+  "HmIP-SWD": {
+   "HmIP-SWD": [
+    "LeakSensor/0",
+    "Battery/1"
+   ]
+  },
+  "HmIP-SWDM": {
+   "HmIP-SWDM": [
+    "ContactSensor/0",
+    "Battery/1"
+   ]
+  },
+  "HmIP-SWDM-B2": {
+   "HmIP-SWDM-B2": [
+    "ContactSensor/0",
+    "Battery/1"
+   ]
+  },
+  "HmIP-SWDO-I": {
+   "HmIP-SWDO-I": [
+    "ContactSensor/0",
+    "Battery/1"
+   ]
+  },
+  "HmIP-SWO-B": {
+   "HmIP-SWO-B": [
+    "TemperatureSensor/0",
+    "Battery/1",
+    "HumiditySensor/HumiditySensor2",
+    "LightSensor/LightSensor3"
+   ]
+  },
+  "HmIP-SWO-PL": {
+   "HmIP-SWO-PL": [
+    "TemperatureSensor/0",
+    "Battery/1",
+    "HumiditySensor/HumiditySensor2",
+    "LightSensor/LightSensor3"
+   ]
+  },
+  "HmIP-SWO-PR": {
+   "HmIP-SWO-PR": [
+    "TemperatureSensor/0",
+    "Battery/1",
+    "HumiditySensor/HumiditySensor2",
+    "LightSensor/LightSensor3"
+   ]
+  },
+  "HmIP-SWSD": {
+   "HmIP-SWSD": [
+    "SmokeSensor/0"
+   ]
+  },
+  "HmIP-WHS2": {
+   "HmIP-WHS2": [
+    "Switch/0",
+    "Switch/1"
+   ]
+  },
+  "HmIP-WTH-2": {
+   "HmIP-WTH-2": [
+    "Thermostat/0",
+    "Battery/1",
+    "HumiditySensor/2",
+    "Switch/Boost3"
+   ]
+  },
+  "HmIP-eTRV-2": {
+   "HmIP-eTRV-2": [
+    "Thermostat/0",
+    "Battery/1",
+    "Switch/Boost2"
+   ]
+  },
+  "HmIP-eTRV-B": {
+   "HmIP-eTRV-B": [
+    "Thermostat/0",
+    "Battery/1",
+    "Switch/Boost2"
+   ]
+  },
+  "HmIP-eTRV-B1": {
+   "HmIP-eTRV-B1": [
+    "Thermostat/0",
+    "Battery/1",
+    "Switch/Boost2"
+   ]
+  },
+  "HmIPW-DRBL4": {
+   "HmIPW-DRBL4 2": [
+    "WindowCovering/20"
+   ],
+   "HmIPW-DRBL4 6": [
+    "WindowCovering/60"
+   ],
+   "HmIPW-DRBL4 10": [
+    "WindowCovering/100"
+   ],
+   "HmIPW-DRBL4 14": [
+    "WindowCovering/140"
+   ]
+  },
+  "HmIPW-DRD3": {
+   "HmIPW-DRD3": [
+    "Lightbulb/0",
+    "Lightbulb/1",
+    "Lightbulb/2"
+   ]
+  },
+  "HmIPW-DRI32": {
+   "HmIPW-DRI32": [
+    "ContactSensor/0",
+    "ContactSensor/1",
+    "ContactSensor/2",
+    "ContactSensor/3",
+    "ContactSensor/4",
+    "ContactSensor/5",
+    "ContactSensor/6",
+    "ContactSensor/7",
+    "ContactSensor/8",
+    "ContactSensor/9",
+    "ContactSensor/10",
+    "ContactSensor/11",
+    "ContactSensor/12",
+    "ContactSensor/13",
+    "ContactSensor/14",
+    "ContactSensor/15",
+    "ContactSensor/16",
+    "ContactSensor/17",
+    "ContactSensor/18",
+    "ContactSensor/19",
+    "ContactSensor/20",
+    "ContactSensor/21",
+    "ContactSensor/22",
+    "ContactSensor/23",
+    "ContactSensor/24",
+    "ContactSensor/25",
+    "ContactSensor/26",
+    "ContactSensor/27",
+    "ContactSensor/28",
+    "ContactSensor/29",
+    "ContactSensor/30",
+    "ContactSensor/31"
+   ]
+  },
+  "HmIPW-DRS8": {
+   "HmIPW-DRS8": [
+    "Switch/0",
+    "Switch/1",
+    "Switch/2",
+    "Switch/3",
+    "Switch/4",
+    "Switch/5",
+    "Switch/6",
+    "Switch/7"
+   ]
+  },
+  "HmIPW-FIO6": {
+   "HmIPW-FIO6": [
+    "ContactSensor/0",
+    "ContactSensor/1",
+    "ContactSensor/2",
+    "ContactSensor/3",
+    "ContactSensor/4",
+    "ContactSensor/5",
+    "Switch/6",
+    "Switch/7",
+    "Switch/8",
+    "Switch/9",
+    "Switch/10",
+    "Switch/11"
+   ]
+  },
+  "HmIPW-SMI55": {
+   "HmIPW-SMI55": [
+    "MotionSensor/0",
+    "Battery/1",
+    "LightSensor/2"
+   ]
+  },
+  "HmIPW-WTH": {
+   "HmIPW-WTH": [
+    "Thermostat/0",
+    "Battery/1",
+    "HumiditySensor/2",
+    "Switch/Boost3"
+   ]
+  },
+  "ZEL STG RM FEP 230V": {
+   "ZEL STG RM FEP 230V": [
+    "WindowCovering/0"
+   ]
+  },
+  "ZEL STG RM FFK": {
+   "ZEL STG RM FFK": [
+    "ContactSensor/0"
+   ]
+  }
+ }
+}
