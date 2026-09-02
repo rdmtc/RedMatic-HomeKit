@@ -7,7 +7,7 @@ Written by Claude Fable on behalf of hobbyquaker at the end of the
 
 ## Where things stand
 
-`master` is at **4.0.0-dev.4**, everything pushed, CI green (lint,
+`master` is at **4.0.0-dev.5**, everything pushed, CI green (lint,
 native-dependency scan, Node 22/24 × Node-RED 4/5). **No tags, no npm
 release** — the hardware gate (ROADMAP task 13) is open.
 
@@ -37,6 +37,10 @@ Done today, in commit order:
   (`test/fixtures/*.snapshot.json`, refresh with `UPDATE_SNAPSHOT=1`).
   Bridge mDNS default `auto` (avahi over D-Bus when running — OpenCCU —
   else ciao — official CCU firmware).
+- **dev.5** — golden files for all 190 module types
+  (`test/fixtures/modules.snapshot.json`, task 7 step 3 done), HmIPW-DRD3
+  SingleAccessory option (the #353 idea), tv port fix (#345), German
+  `README.md` + `README.en.md`, tasks 5 and 10 archived.
 
 Numbers: 355 of 383 catalogue types get a role; 167 types that had no
 module in 3.3.0 now map (11 of them by delegating to an existing module).
@@ -59,16 +63,13 @@ device type with its paramset descriptions.
 
 ## Next steps (ROADMAP order)
 
-1. **Task 7, step 3 — golden files for the 3.3.0 types.** Every type with
-   a module should get a snapshot of its services/subtypes/options (same
-   harness, `catalogue.hasModule(type)` branch) so the modules can later
-   be replaced by the generic path one by one without breaking D-4. The
-   generic snapshot only covers types _without_ a module today.
-2. **Task 8** — the open PRs: #368/#367/#359 are obsolete now (WTH-1,
-   eTRV-E, SCTH230 map generically — verify their snapshot entries and
-   close with thanks), #354 DRDI3 likewise, the DRD3 fix in #353 still
-   needs cherry-picking (multi-accessory naming), #345 applied, #351/#350
-   close.
+1. **Task 8** — the open PRs are all either applied or superseded (see
+   ROADMAP task 8); closing them with a comment is part of the task-12
+   triage after release.
+2. **Task 7, step 4 (optional)** — replace individual modules by the
+   generic path where the golden snapshot proves identical output; note
+   that service subtypes differ (modules: running counter, generic:
+   channel index), so most modules stay for D-4.
 3. **Task 9** — node fixes: thermostat setpoint/4.5 °C state machine
    (#245/#335), unreachable-device handling (#312/#194), garage door
    model (#130), universal node colour/props (#104/#221).

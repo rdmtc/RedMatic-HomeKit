@@ -346,12 +346,15 @@ rather than new modules:
   ELV-SH-* boards. Newer 2025/2026 devices (HmIP door lock pro variants,
   cameras, water stop unit) need fresh descriptions from a current OpenCCU.
 
-**Open PRs to take** (all still mergeable): #368 (WTH-1 alias), #367
-(eTRV-E alias), #359 (SCTH230 switch channel), #354 (DRDI3 from DRD3), the
-DRD3 multi-accessory fix inside #353 (cherry-pick that change; the PR
-itself is +1096/−1399 of lint noise), #345 (camera/tv default port fix for
-Node-RED ≥ 1.3). **Close**: #351 (zigbee, D-6), #350 (superseded by task 4,
-with thanks — its checklist is used).
+**Open PRs** (status 2026-09-02 evening): #368 (WTH-1), #367 (eTRV-E),
+#359 (SCTH230) and #354 (DRDI3) are **superseded by the generic mapping**
+in dev.4 (all four types map without a module — see
+`test/fixtures/generic.snapshot.json`); ✅ the DRD3 idea of #353 is
+re-implemented on the module in dev.5 (SingleAccessory option, per-output
+brightness); ✅ #345 (tv default port) applied in dev.5. **Close at
+triage** (task 12): #368/#367/#359/#354/#353 with thanks and a pointer to
+the snapshot entries, #351 (zigbee, D-6), #350 (superseded by task 4 — its
+checklist was used).
 
 ## 9. Node fixes and features from the backlog
 
@@ -413,9 +416,10 @@ power/energy on POWERMETER channels — after 4.0.0.
 
 ## 11. Documentation
 
-- **README German first** (decided 2026-09-02: the CCU has no significant
-  user base outside DACH): `README.md` in German, `README.en.md` as a
-  shorter English version, same split as RedMatic. Content: the RedMatic 9
+- ✅ **README German first** (decided 2026-09-02: the CCU has no significant
+  user base outside DACH): `README.md` in German, `README.en.md` as the
+  English version, same split as RedMatic (written 2026-09-02, dev.5;
+  refine with the wiki rewrite). Content: the RedMatic 9
   install path (palette manager, search `redmatic-homekit`), a "what
   changed in 4.0.0" block (pairings kept, zigbee and camera removed,
   Node/Node-RED minimums), and the device-support statement ("any device
