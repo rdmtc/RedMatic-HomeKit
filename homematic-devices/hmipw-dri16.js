@@ -53,7 +53,6 @@ function addContact(type, name, dp) {
 }
 
 function addKey(name, channel, index) {
-    const {hap} = this;
     if (!this.keyLabel) {
         this.addService('ServiceLabel', 'Buttons', 'label').update('ServiceLabelNamespace', 1);
         this.keyLabel = true;
@@ -62,20 +61,8 @@ function addKey(name, channel, index) {
     const service = this.addService('StatelessProgrammableSwitch', name, 'Button');
     service.update('ServiceLabelIndex', index);
     service.setProps('ProgrammableSwitchEvent', {validValues: [0, 2]});
-    const press = (datapoint, event) => {
-        this.subscriptions.push(
-            this.ccu.subscribe(
-                {cache: false, change: false, datapointName: this.config.iface + '.' + channel + '.' + datapoint},
-                () => {
-                    service.update('ProgrammableSwitchEvent', event);
-                },
-            ),
-        );
-        this.reportValueUsage(channel, datapoint);
-    };
-
-    press('PRESS_SHORT', hap.Characteristic.ProgrammableSwitchEvent.SINGLE_PRESS);
-    press('PRESS_LONG', hap.Characteristic.ProgrammableSwitchEvent.LONG_PRESS);
+    // the DRI16 sends PRESS_LONG_RELEASE although its description does not list it
+    this.keyEvents(service, channel, {});
 }
 
 /** ContactSensor/Door/Window or StatelessProgrammableSwitch for one input, by its mode */

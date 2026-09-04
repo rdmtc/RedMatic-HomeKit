@@ -192,6 +192,62 @@ module.exports = class Accessory {
     }
 
     /**
+     * Wire a key channel to a StatelessProgrammableSwitch service.
+     *
+     * A short press is one PRESS_SHORT. A held key is a *stream*: PRESS_LONG
+     * repeats every few hundred ms for as long as the key is down (HmIP and
+     * BidCos alike), framed by PRESS_LONG_START/PRESS_LONG_RELEASE where the
+     * device has them. HomeKit wants exactly one LONG_PRESS per hold, so only
+     * the first PRESS_LONG of a stream is forwarded; the stream ends with
+     * PRESS_LONG_RELEASE or after `longPressGap` ms without a repeat (found
+     * with a toggle switch on a key-mode HmIPW-DRI16 input: one flip produced
+     * eight long presses in the Home app).
+     *
+     * @param {object} service  the Service wrapper returned by addService()
+     * @param {string} channelAddress
+     * @param {{short?: string, long?: string, release?: string}} datapoints  names on the channel
+     */
+    keyEvents(service, channelAddress, {short = 'PRESS_SHORT', long = 'PRESS_LONG', release = 'PRESS_LONG_RELEASE'}) {
+        const {hap} = this;
+        const iface = this.config.iface || String(this.config.deviceAddress).split('.')[0];
+        const gap = this.node.longPressGap || 1500;
+        let lastLong = 0;
+
+        const on = (datapoint, callback) => {
+            this.subscriptions.push(
+                this.ccu.subscribe(
+                    {cache: false, change: false, datapointName: iface + '.' + channelAddress + '.' + datapoint},
+                    callback,
+                ),
+            );
+        };
+
+        if (short) {
+            on(short, () =>
+                service.update('ProgrammableSwitchEvent', hap.Characteristic.ProgrammableSwitchEvent.SINGLE_PRESS),
+            );
+            this.reportValueUsage(channelAddress, short);
+        }
+
+        if (long) {
+            on(long, () => {
+                const now = Date.now();
+                if (now - lastLong > gap) {
+                    service.update('ProgrammableSwitchEvent', hap.Characteristic.ProgrammableSwitchEvent.LONG_PRESS);
+                }
+
+                lastLong = now;
+            });
+            this.reportValueUsage(channelAddress, long);
+            if (release) {
+                on(release, () => {
+                    lastLong = 0;
+                });
+            }
+        }
+    }
+
+    /**
      * HmIP key channels only send their presses to the CCU once something has
      * declared the datapoint "in use" (a program, a link, or this call); until
      * then PRESS_SHORT/PRESS_LONG never reach an XML-RPC client. Found with an

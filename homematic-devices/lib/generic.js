@@ -335,26 +335,11 @@ class GenericAccessory extends Accessory {
                     service.update('ServiceLabelIndex', keyIndex);
                     const validValues = d.long ? [0, 2] : [0];
                     service.setProps('ProgrammableSwitchEvent', {validValues});
-                    const press = (datapoint, event) => {
-                        this.subscriptions.push(
-                            this.ccu.subscribe(
-                                {cache: false, change: false, datapointName: this.dp(c.address, datapoint)},
-                                () => {
-                                    service.update('ProgrammableSwitchEvent', event);
-                                },
-                            ),
-                        );
-                        this.reportValueUsage(c.address, datapoint);
-                    };
-
-                    if (d.short) {
-                        press(d.short, hap.Characteristic.ProgrammableSwitchEvent.SINGLE_PRESS);
-                    }
-
-                    if (d.long) {
-                        press(d.long, hap.Characteristic.ProgrammableSwitchEvent.LONG_PRESS);
-                    }
-
+                    this.keyEvents(service, c.address, {
+                        short: d.short || null,
+                        long: d.long || null,
+                        release: c.values.PRESS_LONG_RELEASE ? 'PRESS_LONG_RELEASE' : null,
+                    });
                     break;
                 }
 

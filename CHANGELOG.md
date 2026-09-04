@@ -70,6 +70,13 @@ decisions (D-n) referenced below.
   Door or Window as before, inactive → nothing. For a DRI16 whose inputs
   were never switched to a contact mode this replaces the dead contact
   sensors by buttons in the Home app.
+- Buttons: a held key produces exactly one long press in HomeKit. The CCU
+  repeats `PRESS_LONG` every few hundred milliseconds for as long as a key
+  is down, and every repeat used to become another long-press event (a
+  toggle switch on a key-mode DRI16 input produced eight of them per
+  flip). Only the first `PRESS_LONG` of a hold is forwarded; the hold
+  ends with `PRESS_LONG_RELEASE` or after 1.5 s without a repeat. Applies
+  to every generic key channel and the DRI16/DRI32 inputs.
 - The CCU's own virtual remote (HmIP-RCV-50, HM-RCV-50) is opt-in: it
   mapped to a 50-button accessory on every bridge, which is noise for most
   homes. Tick it in the device list to publish it (useful to trigger
