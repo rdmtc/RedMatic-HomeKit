@@ -510,16 +510,30 @@ accessory (see below). HomeKit → CCU: On/Brightness writes land on
 `:3.LEVEL` and the transmitter follows. CCU → HomeKit: **bug found and
 fixed (dev.8)** — a level set through another virtual receiver never
 reached HomeKit (task 9 item above, `lib/state-source.js`); after the fix
-HomeKit follows the transmitter. Two more observations: (1) when the
-ccu-connection node is created in the same deploy as the homematic node,
-the homematic node publishes before the ccu node has fetched its device
-list ("publish 0 devices") and only a restart/redeploy fixes it — the
-node should re-run `publishDevices` once metadata arrives; (2) the
-virtual `HmIP-RCV-50` (and BidCos `HM-RCV-50`) of the CCU is exposed as
-50 programmable switches by the generic key rule — useful for triggering
+HomeKit follows the transmitter. Two more findings: (1) **fixed (dev.9)**
+— when the ccu-connection node is created in the same deploy as the
+homematic node, or on a box without cached metadata, the homematic node
+published before the ccu node had fetched its device list ("publish 0
+devices") and only a restart fixed it; the node now waits for the device
+list of every RPC interface (`publishWhenReady`, test
+`test/publish-ready.test.js`), reproduced on both boxes; (2) the virtual
+`HmIP-RCV-50` (and BidCos `HM-RCV-50`) of the CCU is exposed as 50
+programmable switches by the generic key rule — useful for triggering
 HomeKit automations from CCU programs, but noisy by default; decide
 whether it should be opt-in. Verified again: this OpenCCU build has no
 avahi-daemon (`/usr/sbin/avahi-autoipd` only), ciao is used.
+
+**Charly (real CCU3 firmware 3.89.8 on armv7l, RedMatic 9.0.0-alpha.0),
+2026-09-04**: install of the dev.8 tarball through the palette API
+(`POST /addons/red/nodes`, multipart tarball) succeeds on armv7l musl, no
+`.node`/`binding.gyp` anywhere in `var/node_modules`, all node sets
+register, the bridge publishes via ciao (no avahi-daemon on the CCU3
+firmware either). HmIPW-DRI16 → 16 ContactSensors, HmIPW-DRS8 → 8
+Switches (HmIPW-DRAP has no controllable channel, correctly absent).
+DRS8 both ways verified: HomeKit writes land on `:2.STATE`, a CCU-side
+write on the second receiver `:3` reaches HomeKit through the transmitter
+`:1` (dev.8 fix), and a HomeKit "off" while `:3` is still on snaps back
+to "on" — the real output state.
 
 Still open on hardware:
 

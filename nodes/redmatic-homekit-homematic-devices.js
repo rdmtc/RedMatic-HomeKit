@@ -165,17 +165,65 @@ module.exports = function (RED) {
                 this.status({fill: 'green', shape: 'dot', text: 'connected'});
                 if (!this.ccuConnected) {
                     this.ccuConnected = true;
-                    this.publishDevices(() => {
-                        this.log('publish done');
-                        this.bridgeConfig.waitForHomematic = false;
-                    });
+                    this.publishWhenReady();
                 }
             } else {
                 this.status({fill: 'yellow', shape: 'dot', text: 'partly connected'});
             }
         }
 
+        /**
+         * ccu-connection reports its interfaces as connected before `listDevices`
+         * has answered and before the channel names arrived from ReGa. On a first
+         * deploy (no cached metadata yet) publishing right away found 0 devices
+         * and needed a restart. Wait until every RPC interface has a device list
+         * and names exist, then publish; give up after the limit and publish
+         * whatever is there.
+         */
+        publishWhenReady(attempt = 0) {
+            const devices = (this.ccu.metadata && this.ccu.metadata.devices) || {};
+            const missing = this.ccu.enabledIfaces.filter((iface) => iface !== 'ReGaHSS' && !devices[iface]);
+            const noNames = !this.ccu.channelNames || Object.keys(this.ccu.channelNames).length === 0;
+            if ((missing.length > 0 || noNames) && attempt < this.readyAttempts) {
+                if (attempt === 0) {
+                    this.log(
+                        'waiting for the ccu device list' + (missing.length > 0 ? ' of ' + missing.join(', ') : ''),
+                    );
+                }
+
+                this.status({fill: 'yellow', shape: 'ring', text: 'waiting for devices'});
+                this.readyTimer = setTimeout(() => this.publishWhenReady(attempt + 1), this.readyInterval);
+                return;
+            }
+
+            if (attempt > 0) {
+                this.status({fill: 'green', shape: 'dot', text: 'connected'});
+            }
+
+            this.publishDevices(() => {
+                this.log('publish done');
+                this.bridgeConfig.waitForHomematic = false;
+            });
+        }
+
+        get readyInterval() {
+            return this._readyInterval || 2000;
+        }
+
+        set readyInterval(ms) {
+            this._readyInterval = ms;
+        }
+
+        get readyAttempts() {
+            return this._readyAttempts || 30;
+        }
+
+        set readyAttempts(n) {
+            this._readyAttempts = n;
+        }
+
         _destructor(done) {
+            clearTimeout(this.readyTimer);
             this.ccu.deregister(this);
             this.ccu.unsubscribe(this.idSubscription);
             done();

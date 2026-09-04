@@ -51,6 +51,14 @@ decisions (D-n) referenced below.
   mapping (`homematic-devices/lib/state-source.js`), writes still go to
   the receiver (#319, #369, #252, #294). Found on an HmIP-PDT in the
   OpenCCU hardware test and verified there.
+- First deploy: the homematic node no longer publishes "0 devices" when it
+  is deployed together with a new ccu-connection node or on a box without
+  cached CCU metadata. The ccu-connection reports its interfaces as
+  connected before it has fetched the device list, and the node used to
+  publish at that moment, so nothing appeared in HomeKit until Node-RED
+  was restarted. It now waits for the device list of every interface
+  (status "waiting for devices", up to a minute) before publishing.
+  Reproduced on both lab boxes.
 - Universal node: writes from HomeKit are forwarded to the node output
   again. The migration to hap-nodejs 2.x had silently broken this (the
   change event no longer carries the old request context; the node now
