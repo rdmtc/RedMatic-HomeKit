@@ -5,7 +5,46 @@ Notable changes to redmatic-homekit. Format follows
 user-visible change and the reason, not the commit list (the release notes
 append commits automatically).
 
-## Unreleased (4.0.0)
+## 4.0.0 — 2026-09-04
+
+**Release-Notes (Deutsch).** RedMatic-HomeKit läuft wieder auf aktuellen
+Systemen: RedMatic 9 / Node-RED 4 und 5 / Node.js ≥ 22.12, installiert
+über den Node-RED-Palettenmanager (Suche nach `redmatic-homekit`) ohne
+Binärabhängigkeiten. Bestehende Kopplungen bleiben erhalten – nach dem
+Update von 3.3.0 muss nichts neu gekoppelt werden, Räume, Namen, Szenen
+und Automationen bleiben (auf einer CCU3 mit gekoppeltem 3.3.0 geprüft).
+Neu ist die generische Geräteerkennung: jedes Homematic-Gerät, dessen
+Kanäle eine bekannte Rolle haben, erscheint in der Geräteliste, auch ohne
+eigenes Modul – damit sind unter anderem HmIP-DLD, HmIP-DLS, HmIP-DRDI3,
+HmIP-eTRV-E/-C-2/-B-2, HmIP-WTH-1, HmIPW-STHD, HmIP-SRD, HmIP-SCTH230,
+HmIP-WRC6/WRC2 und die meisten anderen Taster und Fernbedienungen dabei.
+Behoben wurden lang bekannte Probleme: der Status von HmIP-Aktoren wird
+jetzt auch dann aktualisiert, wenn sie per Programm, Direktverknüpfung
+oder Gerätetaste geschaltet wurden; Thermostate springen beim Einstellen
+nicht mehr auf 21 °C und melden 4,5 °C als „Aus“; ein nicht erreichbares
+Gerät reißt nicht mehr alle anderen mit; HmIP-Taster melden ihre
+Tastendrücke auch ohne CCU-Programm; Eingänge von HmIPW-DRI16/DRI32,
+HmIP-FCI und Co. richten sich nach ihrer Betriebsart (Taster/Schalter →
+programmierbarer Schalter, Kontakt → Kontaktsensor). Entfallen sind der
+Kamera-Node (braucht ffmpeg, das RedMatic 9 nicht mehr mitbringt) und der
+Zigbee-Node (Upstream seit 2022 tot, native Abhängigkeiten); Alternativen
+stehen in der README. Wer 4.0.0 einsetzt und ein Gerät vermisst oder
+falsch abgebildet sieht: Issue mit Gerätetyp öffnen, die generische
+Erkennung lässt sich meist ohne Code erweitern.
+
+**Release notes (English summary).** 4.0.0 makes redmatic-homekit
+installable again on RedMatic 9 / Node-RED 4–5 / Node ≥ 22.12 through the
+palette manager, with no native dependencies. Pairings survive the
+upgrade from 3.3.0: no re-pairing, rooms, names, scenes and automations
+are kept (verified on a CCU3 with a paired 3.3.0). Device support is now
+generic: every device whose channels have a known role is listed, module
+or not (HmIP-DLD/DLS, DRDI3, eTRV-E/C-2/B-2, WTH-1, HmIPW-STHD, SRD,
+SCTH230, wall buttons and remotes, …). Fixed: state updates for HmIP
+actuators switched by programs, links or their own key; thermostat
+setpoint jumps and the 4.5 °C = off convention; one unreachable device no
+longer marks all others unresponsive; HmIP buttons report presses without
+a CCU program; multi-mode inputs follow their operating mode. Removed:
+the camera node (needs ffmpeg) and the zigbee node (dead native upstream).
 
 Breaking release. See [ROADMAP.md](ROADMAP.md) for the plan and the
 decisions (D-n) referenced below.

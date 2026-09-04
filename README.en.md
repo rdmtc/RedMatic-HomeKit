@@ -9,9 +9,9 @@
 
 _[Deutsche Version](README.md) — the German README is the primary one._
 
-> **Version 4.0.0 is under development** (`4.0.0-dev.x`, not released
-> yet). See the [changelog](CHANGELOG.md) for what changes compared to
-> 3.3.0 and the [roadmap](ROADMAP.md) for the plan.
+> **Version 4.0.0** (September 2026) is the first release for RedMatic 9.
+> See the [changelog](CHANGELOG.md) for what changed compared to 3.3.0;
+> existing pairings survive the upgrade.
 
 ## Features
 

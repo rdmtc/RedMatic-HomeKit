@@ -9,9 +9,9 @@
 
 _[English version](README.en.md)_
 
-> **Version 4.0.0 ist in Entwicklung** (`4.0.0-dev.x`, noch nicht
-> veröffentlicht). Was sich gegenüber 3.3.0 ändert, steht im
-> [Changelog](CHANGELOG.md), der Plan in der [Roadmap](ROADMAP.md).
+> **Version 4.0.0** (September 2026) ist die erste Version für RedMatic 9.
+> Was sich gegenüber 3.3.0 ändert, steht im [Changelog](CHANGELOG.md);
+> bestehende Kopplungen bleiben beim Update erhalten.
 
 ## Was es kann
 
