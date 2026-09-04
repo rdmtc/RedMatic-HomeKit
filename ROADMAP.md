@@ -582,14 +582,29 @@ WebUI needs a redeploy/restart of the homematic node.
 
 Still open on hardware:
 
-- Green `ci.yml` (lint, Node 22/24 × Node-RED 4/5, native-module scan).
-- Palette-manager install on the RedMatic 9 test box (OpenCCU x86_64 VM
-  used for RedMatic task 8) and on real CCU3 hardware (armv7l musl):
-  install succeeds shallow and lockfile-free, nodes register, bridge
-  publishes, iPhone pairs, accessories appear with names/rooms.
-- **Upgrade path** from 3.3.0 on a paired system: pairing kept, rooms/
-  automations kept, every previously supported device present with the
-  same services (D-4 golden files, then a real Home app check).
+- ✅ Green `ci.yml` (lint, Node 22/24 × Node-RED 4/5, native-module scan).
+- ✅ Palette-manager install on the RedMatic 9 test box (OpenCCU x86_64 VM)
+  and on real CCU3 hardware (armv7l musl): install succeeds shallow and
+  lockfile-free, nodes register, bridge publishes, iPhone pairs,
+  accessories appear with names/rooms (both boxes, 2026-09-04).
+- ✅ **Upgrade path** from 3.3.0 on a paired system (Charly, 2026-09-04):
+  `redmatic-homekit@3.3.0` installed from npm through the palette API
+  (hap-nodejs 0.4.52 still runs on Node 24 / Node-RED 5), a fresh bridge
+  paired from the iPhone, devices named and put into rooms, an automation
+  created; then dev.14 installed on top through the palette API and
+  Node-RED restarted. Result: long-term keys, paired controller and setup
+  id unchanged; the universal node, all eight DRS8 switches and the DRI16
+  input in contact mode kept aid, iid and characteristic iids (14 of 14
+  comparable services); `configVersion` bumped 3 → 4 as it must when
+  services change. Differences: the 15 key-mode DRI16 inputs became
+  buttons (by design, they were dead contacts), the bridge category is
+  BRIDGE instead of OTHER, hap-nodejs 2.x adds its protocol-information
+  service and a `pairedClientsPermission` map, and the bridge name got a
+  four-hex suffix — fixed in dev.15 (`addIdentifyingMaterial: false`).
+  The remaining part of this item is the maintainer's own production
+  upgrade with a real 3.3.0 history; the lab result says it will keep the
+  pairing. Scripts: `~/hk-lab/41-charly-v330.sh`, `43-charly-upgrade.sh`,
+  `44-compare.sh` (local, not in the repo).
 - Device verification with the maintainer's CCU (64 types) and reporter
   feedback for the most-wanted types of task 8 (DLD, DRDI3, BROLL-2,
   eTRV-E/C-2/B-2, SWDM-2, TRV-3).

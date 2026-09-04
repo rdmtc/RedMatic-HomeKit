@@ -6,8 +6,8 @@ Written by Claude Fable on behalf of hobbyquaker. Read `ROADMAP.md` first
 
 ## Where things stand
 
-`master` is at **4.0.0-dev.11** (+ one follow-up commit), everything
-pushed, `npm test` green (lint, 45 unit tests, native-dependency scan).
+`master` is at **4.0.0-dev.15**, everything pushed, `npm test` green
+(lint, 52 unit tests, native-dependency scan).
 **No tag, no npm release yet.** The npm trusted publisher (OIDC) for
 `rdmtc/RedMatic-HomeKit` → `.github/workflows/release.yml` is configured:
 a tag `v4.0.0-dev.N` publishes to the `next` dist-tag, `v4.0.0` to
@@ -110,13 +110,17 @@ Hardware results are recorded in ROADMAP task 13 ("Round 2" and
 
 ## Next steps (ROADMAP order)
 
-1. **Task 13, remaining hardware** (done 2026-09-04: WRC2 both buttons,
-   Charly paired, DRS8 from the Home app, DRI16 inputs in all three modes
-   — see ROADMAP task 13): the **upgrade from a paired 3.3.0** (D-4) — needs a
-   3.3.0 HAP storage directory on a lab box, e.g. a copy of a real
-   `<userDir>/homekit` from a 3.x install, then dev.N on top and a Home
-   app check that rooms/automations survive; BidCos actuator for the
-   `WORKING`/`stable` part of the status-update item.
+1. **Task 13, hardware gate** — done 2026-09-04 on both lab boxes,
+   including the **upgrade from a paired 3.3.0** (3.3.0 from npm on the
+   Charly, paired, rooms + automation, dev.14 on top: keys, pairing and
+   the ids of every unchanged service survived — see ROADMAP task 13).
+   Left: device verification against the maintainer's own CCU (64 types)
+   before/while upgrading production, reporter feedback for the task 8
+   types, a BidCos actuator for the `WORKING`/`stable` part of the
+   status-update item. The Charly currently runs the "homekit upgrade"
+   tab (bridge `CC:22:3D:5A:0B:33`, port 51891) on dev.15; the old
+   "homekit smoke" tab was removed from its flow (its storage files are
+   still in `var/homekit`).
 2. **Task 9 leftovers**: garage door model (#130), universal node colour
    preset and characteristic props in the editor (#104, #221).
 3. **Task 11**: move the German inline help to `locales/` with an
