@@ -573,9 +573,12 @@ closing flip. **Second finding (fixed dev.13)**: a held key is a stream
 of `PRESS_LONG` repeats (~3/s, 19 for two flips) that became one HomeKit
 long press each; `Accessory.keyEvents()` forwards only the first of a
 stream (end: `PRESS_LONG_RELEASE` or 1.5 s gap), shared by the generic
-key mapping and the DRI16 module. Note: the input mode is read at publish
-time and cached, so a mode change in the WebUI needs a redeploy/restart
-of the homematic node.
+key mapping and the DRI16 module. All three modes verified on input 1
+with the attached switch (2026-09-04): "Taster" → one long press per
+closing flip, "Schalter" → one short press per flip (dev.14), "Kontakt" →
+`STATE` events, ContactSensor opens/closes with the switch. Note: the
+input mode is read at publish time and cached, so a mode change in the
+WebUI needs a redeploy/restart of the homematic node.
 
 Still open on hardware:
 

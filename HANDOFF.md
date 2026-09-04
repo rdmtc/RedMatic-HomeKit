@@ -47,7 +47,20 @@ History (details in CHANGELOG.md and the roadmap):
   button 2 was silent). The CCU's virtual remote `HmIP-RCV-50`/`HM-RCV-50`
   is opt-in (`generic.isOptIn`, editor row stored as `{enabled: true}`).
   iPhone pairing done on the OpenCCU bridge: pairing, dimming from the
-  Home app, the PDT's own key, WRC2 button 1 all verified.
+  Home app, the PDT's own key, both WRC2 buttons verified (button 2 after
+  the device fetched its new config — a short press of its system button
+  forces that).
+- **dev.12–dev.14**: HmIP multi-mode inputs (HmIPW-DRI16/DRI32/FIO6,
+  HmIP-FCI1/FCI6/DSD-PCB, MIO16, DRDI3 keys) are mapped by their
+  `CHANNEL_OPERATION_MODE`, which the node reads from the MASTER paramset
+  when publishing (`channelModes`, cached): "Taster" → programmable switch
+  (single + long), "Schalter" → programmable switch (one short press per
+  flip), "Kontakt" (BINARY_BEHAVIOR) → ContactSensor/Door/Window, inactive
+  → nothing. Factory default is "Taster", so 3.3.0's always-contact
+  mapping never worked on a default DRI16. A held key is one HomeKit long
+  press (`Accessory.keyEvents()` collapses the `PRESS_LONG` repeat stream).
+  All verified on the Charly with the attached button and switch in all
+  three modes; real `HmIPW-DRI16` fixture from the Charly.
 
 ## Working here
 
@@ -97,10 +110,9 @@ Hardware results are recorded in ROADMAP task 13 ("Round 2" and
 
 ## Next steps (ROADMAP order)
 
-1. **Task 13, remaining hardware** (WRC2 both buttons verified after
-   dev.11): pair the Charly bridge from the iPhone
-   (DRS8 switching from the Home app, DRI16 contacts with the attached
-   button/switch); the **upgrade from a paired 3.3.0** (D-4) — needs a
+1. **Task 13, remaining hardware** (done 2026-09-04: WRC2 both buttons,
+   Charly paired, DRS8 from the Home app, DRI16 inputs in all three modes
+   — see ROADMAP task 13): the **upgrade from a paired 3.3.0** (D-4) — needs a
    3.3.0 HAP storage directory on a lab box, e.g. a copy of a real
    `<userDir>/homekit` from a 3.x install, then dev.N on top and a Home
    app check that rooms/automations survive; BidCos actuator for the
