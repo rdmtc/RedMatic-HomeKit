@@ -6,13 +6,14 @@ Written by Claude Fable on behalf of hobbyquaker. Read `ROADMAP.md` first
 
 ## Where things stand
 
-`master` is at **4.0.0-dev.15**, everything pushed, `npm test` green
-(lint, 52 unit tests, native-dependency scan).
-**No tag, no npm release yet.** The npm trusted publisher (OIDC) for
-`rdmtc/RedMatic-HomeKit` → `.github/workflows/release.yml` is configured:
-a tag `v4.0.0-dev.N` publishes to the `next` dist-tag, `v4.0.0` to
-`latest`, each with a GitHub release from `CHANGELOG.md`. Only tag when
-the maintainer says so.
+**4.0.0 is released** (2026-09-04): tag `v4.0.0`, published to npm as
+`latest` with provenance by `.github/workflows/release.yml`, GitHub
+release with the CHANGELOG section. `master` is at 4.0.0, `npm test`
+green (lint, 52 unit tests, native-dependency scan). Next versions:
+`4.1.0-dev.N` on master, tag `v4.1.0-dev.N` for a prerelease on the
+`next` dist-tag, `v4.1.0` for the release. Only tag when the maintainer
+says so. The second issue-triage round is done (ROADMAP task 12): 25
+issues remain open, seven of them `awaiting-feedback` on 4.0.0.
 
 History (details in CHANGELOG.md and the roadmap):
 
@@ -121,16 +122,21 @@ Hardware results are recorded in ROADMAP task 13 ("Round 2" and
    tab (bridge `CC:22:3D:5A:0B:33`, port 51891) on dev.15; the old
    "homekit smoke" tab was removed from its flow (its storage files are
    still in `var/homekit`).
-2. **Task 9 leftovers**: garage door model (#130), universal node colour
-   preset and characteristic props in the editor (#104, #221).
+2. **Task 9 leftovers (4.1)**: garage door model (#130, #184, #210,
+   #301), universal node colour preset and characteristic props in the
+   editor (#104, #221, #222), BSM virtual channels (#329), BSL LEDs
+   (#156), DW-WM colour temperature (#147), dimmer range (#263).
 3. **Task 11**: move the German inline help to `locales/` with an
-   English fallback; wiki page `Homekit` in rdmtc/RedMatic.wiki.
-4. **Task 12, round 2 after the release**: 118 open issues.
+   English fallback (#112); SecuritySystem recipe (#254); wiki page
+   `Homekit` in rdmtc/RedMatic.wiki; a note in the RedMatic README/wiki
+   that HomeKit is back for RedMatic 9.
+4. **Task 12**: round 2 done; watch the seven `awaiting-feedback` issues
+   and new reports against 4.0.0 (fixtures from reporters via
+   `tools/fixture-from-ccu.js` input files).
 5. **Task 7, optional step 4**: replace modules by the generic path where
    `modules.snapshot.json` proves identical output.
-6. **Release**: when the maintainer gives the go — final version,
-   CHANGELOG release notes (German, English summary),
-   `git tag v4.0.0 && git push --tags`.
+6. **Next release**: `4.1.0-dev.N` on master, tag when the maintainer
+   gives the go; CHANGELOG section per version.
 
 ## Gotchas
 

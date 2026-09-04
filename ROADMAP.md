@@ -461,22 +461,28 @@ power/energy on POWERMETER channels — after 4.0.0.
 the maintainer): all 7 PRs closed (#345 applied, #353 idea re-implemented,
 the rest superseded by the generic mapping or obsolete), 24 issues closed —
 zigbee (6), camera (11), install/package manager (4), and the resolved
-#248/#209 (hap migration) and #224 (bridge label). 118 issues remain open
-for the second round after the release:
+#248/#209 (hap migration) and #224 (bridge label). 118 issues remained
+open for the second round after the release.
 
-- **Device requests** (~40): link to task 7/8; close each once its type is
-  verified against a fixture or live, otherwise ask the reporter for a
-  description dump (ccu's `paramsets-fetch.js` output).
-- **Zigbee** (7) and **camera** (11): close with the D-6/D-7 statement.
-- **Install / package manager** (#370, #173, #149, #338): obsolete with
-  RedMatic 9 — close with a pointer to the 9.0.0 release notes.
-- **Bugs kept** (thermostat, unreach, garage, universal, status updates):
-  stay open, mapped to task 9 items; ask for re-tests on 4.0.0-dev.
-- **Support questions / example requests** (~30: #331, #303, #308, #336,
-  #264, #223, #247, #234, #274, #185, #165, #155, #137, #135, #140, #122,
-  #95, #315…): close with the relevant help text once task 11 lands.
-- **Meta** (#209/#248 hap 0.5 migration, #112 docs, #102 naming, #208
-  virtual channels): close when their task archives.
+**Second round done 2026-09-04, right after the 4.0.0 release** (117
+open issues, every one commented in German with the release link and the
+"Written by Claude Fable on behalf of hobbyquaker" footer; plan and
+executor in the maintainer's local `~/hk-lab/triage-plan.js` /
+`54-triage.js`): 73 closed as completed (device types now covered by a
+module or the generic mapping, checked against fixtures — each with the
+services it maps to; the bugs fixed in 4.0.0: status updates, thermostat
+setpoints, unreach, first deploy, naming, virtual channels, battery
+option; stale 2.x/3.x behaviour reports closed with an invitation to
+reopen), 19 closed as answered/not planned (support questions, CUxD
+questions answered by the generic mapping, energy values → #114,
+fill-level sensor without a HomeKit service, BROLL-2 duplicates → #380),
+25 kept open: enhancements for 4.1 (#45, #104, #114, #130, #137, #147,
+#156, #184, #210, #221, #222, #263, #288, #301, #327, #329), docs (#112,
+#254), and device types without any description that reporters are
+asked to test on 4.0.0 (`awaiting-feedback`: #163 RGBW-WM colour, #355
+SMI55-2, #358 PSM-2, #372 SWDM-2, #375 TRV-3, #380 BROLL-2, #382 PS-2).
+Next round: when feedback on 4.0.0 arrives; the `awaiting-feedback`
+issues close after 4–6 weeks without an answer.
 
 ## 13. Verify and release 4.0.0
 
@@ -616,11 +622,11 @@ Still open on hardware:
   `release.yml` configured on npmjs.com (maintainer, 2026-09-02).
   `release.yml` publishes prerelease versions (`-dev.x`, `-beta.x`) under
   the `next` dist-tag, releases under `latest`.
-- Release notes (German, English summary) state the breaking changes:
-  scoped hap-nodejs + Node ≥ 22, zigbee node removed, camera node removed
-  (D-7), Node-RED 4/5 only, changed device list mechanism.
-- Then task 12's mass triage, and a note in the RedMatic wiki/README that
-  HomeKit is back for RedMatic 9.
+- ✅ Release notes (German, English summary) in CHANGELOG.md; **4.0.0
+  released 2026-09-04** (tag `v4.0.0`, npm `latest` with provenance,
+  GitHub release).
+- ✅ Task 12's second triage round (same day). Still to do: a note in the
+  RedMatic wiki/README that HomeKit is back for RedMatic 9 (task 11).
 
 ## A. Device gap analysis
 
