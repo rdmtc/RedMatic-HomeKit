@@ -514,9 +514,11 @@ HomeKit follows the transmitter. Two more findings: (1) **fixed (dev.9)**
 — when the ccu-connection node is created in the same deploy as the
 homematic node, or on a box without cached metadata, the homematic node
 published before the ccu node had fetched its device list ("publish 0
-devices") and only a restart fixed it; the node now waits for the device
-list of every RPC interface (`publishWhenReady`, test
-`test/publish-ready.test.js`), reproduced on both boxes; (2) the virtual
+devices") and only a restart fixed it; the node now waits until device
+list and channel names have arrived and settled (`publishWhenReady`,
+test `test/publish-ready.test.js`; an interface without devices, e.g.
+VirtualDevices without groups, never pushes a list, so "every interface
+has a list" is not a usable criterion), reproduced on both boxes; (2) the virtual
 `HmIP-RCV-50` (and BidCos `HM-RCV-50`) of the CCU is exposed as 50
 programmable switches by the generic key rule — useful for triggering
 HomeKit automations from CCU programs, but noisy by default; decide

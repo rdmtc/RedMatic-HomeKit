@@ -173,49 +173,60 @@ module.exports = function (RED) {
         }
 
         /**
-         * ccu-connection reports its interfaces as connected before `listDevices`
-         * has answered and before the channel names arrived from ReGa. On a first
-         * deploy (no cached metadata yet) publishing right away found 0 devices
-         * and needed a restart. Wait until every RPC interface has a device list
-         * and names exist, then publish; give up after the limit and publish
-         * whatever is there.
+         * ccu-connection marks an interface as connected at the CCU's first
+         * callback (`system.listMethods`); the device list follows a moment
+         * later through `listDevices`/`newDevices`, and an interface without
+         * devices (VirtualDevices without groups) pushes nothing at all. On a
+         * first deploy (no cached metadata yet) publishing right away found 0
+         * devices and needed a restart. Wait until devices and channel names
+         * exist and have not changed for a few polls, then publish; give up
+         * after the limit and publish whatever is there.
          */
-        publishWhenReady(attempt = 0) {
+        publishWhenReady(attempt = 0, seen = null, stableFor = 0) {
             const devices = (this.ccu.metadata && this.ccu.metadata.devices) || {};
-            const missing = this.ccu.enabledIfaces.filter((iface) => iface !== 'ReGaHSS' && !devices[iface]);
-            const noNames = !this.ccu.channelNames || Object.keys(this.ccu.channelNames).length === 0;
-            if ((missing.length > 0 || noNames) && attempt < this.readyAttempts) {
+            const count = this.ccu.enabledIfaces.reduce((n, iface) => n + Object.keys(devices[iface] || {}).length, 0);
+            const names = Object.keys(this.ccu.channelNames || {}).length;
+            const key = count + '/' + names;
+            stableFor = count > 0 && names > 0 && key === seen ? stableFor + 1 : 0;
+            if (stableFor < this.readyStable && attempt < this.readyAttempts) {
                 if (attempt === 0) {
-                    this.log(
-                        'waiting for the ccu device list' + (missing.length > 0 ? ' of ' + missing.join(', ') : ''),
-                    );
+                    this.log('waiting for the ccu device list (' + key + ' devices/names)');
+                    this.status({fill: 'yellow', shape: 'ring', text: 'waiting for devices'});
                 }
 
-                this.status({fill: 'yellow', shape: 'ring', text: 'waiting for devices'});
-                this.readyTimer = setTimeout(() => this.publishWhenReady(attempt + 1), this.readyInterval);
+                this.readyTimer = setTimeout(
+                    () => this.publishWhenReady(attempt + 1, key, stableFor),
+                    this.readyInterval,
+                );
                 return;
             }
 
-            if (attempt > 0) {
-                this.status({fill: 'green', shape: 'dot', text: 'connected'});
-            }
-
+            this.status({fill: 'green', shape: 'dot', text: 'connected'});
             this.publishDevices(() => {
                 this.log('publish done');
                 this.bridgeConfig.waitForHomematic = false;
             });
         }
 
+        /** poll interval, number of unchanged polls required, and the give-up limit (tests shorten them) */
         get readyInterval() {
-            return this._readyInterval || 2000;
+            return this._readyInterval || 1000;
         }
 
         set readyInterval(ms) {
             this._readyInterval = ms;
         }
 
+        get readyStable() {
+            return this._readyStable || 3;
+        }
+
+        set readyStable(n) {
+            this._readyStable = n;
+        }
+
         get readyAttempts() {
-            return this._readyAttempts || 30;
+            return this._readyAttempts || 60;
         }
 
         set readyAttempts(n) {

@@ -26,9 +26,10 @@ test('homematic-devices node defers publishing until the ccu has fetched its dev
     assert.equal(h.bridgeConfig.waitForHomematic, true, 'bridge keeps waiting');
 
     ccu.metadata.devices[iface] = devices;
-    await wait(60);
+    await wait(250); // 3 unchanged polls + publishDevices' 50 ms per device
     assert.equal(h.bridgeConfig.bridge.bridgedAccessories.length, 1, 'published once the list arrived');
     assert.equal(h.bridgeConfig.waitForHomematic, false);
+    clearTimeout(h.node.readyTimer);
     h.cleanup();
 });
 
@@ -39,9 +40,10 @@ test('homematic-devices node publishes immediately when the device list is alrea
     h.node.readyInterval = 10;
 
     h.node.setStatus({ifaceStatus: {[iface]: true}});
-    await wait(60);
+    await wait(250);
     assert.equal(h.bridgeConfig.bridge.bridgedAccessories.length, 1);
     assert.equal(h.bridgeConfig.waitForHomematic, false);
+    clearTimeout(h.node.readyTimer);
     h.cleanup();
 });
 
@@ -54,8 +56,9 @@ test('homematic-devices node gives up waiting after the limit and publishes what
     h.node.readyAttempts = 3;
 
     h.node.setStatus({ifaceStatus: {[iface]: true}});
-    await wait(60);
+    await wait(100);
     assert.equal(h.bridgeConfig.waitForHomematic, false, 'bridge released after the limit');
     assert.equal(h.bridgeConfig.bridge.bridgedAccessories.length, 0);
+    clearTimeout(h.node.readyTimer);
     h.cleanup();
 });

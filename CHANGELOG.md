@@ -56,9 +56,10 @@ decisions (D-n) referenced below.
   cached CCU metadata. The ccu-connection reports its interfaces as
   connected before it has fetched the device list, and the node used to
   publish at that moment, so nothing appeared in HomeKit until Node-RED
-  was restarted. It now waits for the device list of every interface
-  (status "waiting for devices", up to a minute) before publishing.
-  Reproduced on both lab boxes.
+  was restarted. It now waits until the device list and the channel names
+  have arrived and stopped changing (status "waiting for devices", a few
+  seconds, at most a minute) before publishing. Reproduced on both lab
+  boxes.
 - Universal node: writes from HomeKit are forwarded to the node output
   again. The migration to hap-nodejs 2.x had silently broken this (the
   change event no longer carries the old request context; the node now
