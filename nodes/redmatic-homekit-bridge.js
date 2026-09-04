@@ -138,6 +138,10 @@ module.exports = function (RED) {
                                                 pincode: this.pincode,
                                                 category: hap.Categories.BRIDGE,
                                                 advertiser,
+                                                // hap-nodejs 2.x would append 4 hex digits to the name
+                                                // ("RedMatic Bridge 25F0"); 3.3.0 did not — keep the name
+                                                // the user configured (seen in the upgrade test, D-4)
+                                                addIdentifyingMaterial: false,
                                             },
                                             this.allowInsecureRequest,
                                         )

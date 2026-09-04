@@ -81,6 +81,10 @@ decisions (D-n) referenced below.
   flip). Only the first `PRESS_LONG` of a hold is forwarded; the hold
   ends with `PRESS_LONG_RELEASE` or after 1.5 s without a repeat. Applies
   to every generic key channel and the DRI16/DRI32 inputs.
+- Bridge name: the bridge keeps exactly the name configured in the bridge
+  node. hap-nodejs 2.x appends four hex digits by default ("RedMatic
+  Bridge 25F0"); 3.3.0 did not, and the upgrade test showed the changed
+  name as the only difference on the bridge accessory.
 - The CCU's own virtual remote (HmIP-RCV-50, HM-RCV-50) is opt-in: it
   mapped to a 50-button accessory on every bridge, which is noise for most
   homes. Tick it in the device list to publish it (useful to trigger
