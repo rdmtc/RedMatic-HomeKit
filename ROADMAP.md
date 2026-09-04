@@ -565,7 +565,15 @@ publishing (`channelModes`, cached) and maps key mode → programmable
 switch with usage report, switch/binary mode → contact, inactive →
 nothing; `roles.channelRole` takes the mode, so the generic path (FCI6,
 DSD-PCB, MIO16, DRDI3 keys) gets it too. Fixture `HmIPW-DRI16` from the
-Charly, tests in `test/dri16.test.js`.
+Charly, tests in `test/dri16.test.js`. Verified: button on input 5 gives
+a single and a long press, the switch on input 1 one long press per
+closing flip. **Second finding (fixed dev.13)**: a held key is a stream
+of `PRESS_LONG` repeats (~3/s, 19 for two flips) that became one HomeKit
+long press each; `Accessory.keyEvents()` forwards only the first of a
+stream (end: `PRESS_LONG_RELEASE` or 1.5 s gap), shared by the generic
+key mapping and the DRI16 module. Note: the input mode is read at publish
+time and cached, so a mode change in the WebUI needs a redeploy/restart
+of the homematic node.
 
 Still open on hardware:
 
