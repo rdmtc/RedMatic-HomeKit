@@ -52,3 +52,26 @@ test('HmIP key channels are reported as in use so the CCU forwards their presses
     assert.ok(reported.includes(`${ccu.address}:6 PRESS_LONG 1`), 'PRESS_LONG of key 6 reported');
     h.cleanup();
 });
+
+test('a usage report the CCU rejects ("Transmission is pending") is retried', async () => {
+    const ccu = fixtures.ccuFor('HmIP-WRC2');
+    let failures = 2;
+    const calls = [];
+    ccu.methodCall = (iface, method, params) => {
+        calls.push(params.join(' '));
+        if (failures > 0) {
+            failures--;
+            return Promise.reject(new Error('XML-RPC fault: Transmission is pending.'));
+        }
+
+        return Promise.resolve(true);
+    };
+
+    const h = createHarness(ccu);
+    h.node.reportValueUsageRetry = 10;
+    await h.create();
+    await new Promise((resolve) => setTimeout(resolve, 80));
+    const key1 = calls.filter((c) => c === `${ccu.address}:1 PRESS_SHORT 1`).length;
+    assert.ok(key1 >= 2, 'the rejected report was retried (' + key1 + ' calls)');
+    h.cleanup();
+});

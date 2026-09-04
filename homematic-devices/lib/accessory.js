@@ -197,19 +197,42 @@ module.exports = class Accessory {
      * then PRESS_SHORT/PRESS_LONG never reach an XML-RPC client. Found with an
      * HmIP-WRC2 whose second button stayed silent. BidCos reports presses
      * regardless, so only HmIP interfaces are told.
+     *
+     * Battery devices take the change on their next wake-up; while one is
+     * queued the CCU answers further reports with "Transmission is pending",
+     * so a failed report is retried (the next key press flushes the queue).
      */
-    reportValueUsage(channelAddress, datapoint) {
+    reportValueUsage(channelAddress, datapoint, attempt = 0) {
         const iface = this.config.iface || String(this.config.deviceAddress).split('.')[0];
         if (!/^HmIP/i.test(iface) || typeof this.ccu.methodCall !== 'function') {
             return;
         }
 
+        const retryAfter = this.node.reportValueUsageRetry || 30000;
         this.ccu
             .methodCall(iface, 'reportValueUsage', [channelAddress, datapoint, 1])
             .then(() => this.node.debug('reportValueUsage ' + channelAddress + ' ' + datapoint))
-            .catch((error) =>
-                this.node.debug('reportValueUsage ' + channelAddress + ' ' + datapoint + ' failed: ' + error.message),
-            );
+            .catch((error) => {
+                this.node.debug(
+                    'reportValueUsage ' +
+                        channelAddress +
+                        ' ' +
+                        datapoint +
+                        ' failed: ' +
+                        error.message +
+                        ' (attempt ' +
+                        (attempt + 1) +
+                        ')',
+                );
+                if (attempt < 20) {
+                    const timer = setTimeout(
+                        () => this.reportValueUsage(channelAddress, datapoint, attempt + 1),
+                        retryAfter,
+                    );
+                    timer.unref();
+                    this.node.on('close', () => clearTimeout(timer));
+                }
+            });
     }
 
     subscribe(datapointName, callback) {
