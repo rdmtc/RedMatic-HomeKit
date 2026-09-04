@@ -1,4 +1,5 @@
 const Accessory = require('./accessory');
+const {stateDatapoint} = require('./state-source');
 
 function createService(channel) {
     let intermediatePosition; // 0-100
@@ -9,7 +10,7 @@ function createService(channel) {
 
     this.ccu.subscribe(
         {
-            datapointName: this.config.deviceAddress + ':' + channelIndex + '.LEVEL',
+            datapointName: stateDatapoint(this.ccu, this.config.deviceAddress + ':' + channelIndex + '.LEVEL'),
             cache: true,
             stable: false,
         },

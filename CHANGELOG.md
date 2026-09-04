@@ -38,6 +38,19 @@ decisions (D-n) referenced below.
 
 ### Fixed
 
+- HmIP actuators (switches, dimmers, blinds, shutters, HmIPW DIN-rail
+  actuators): HomeKit now shows the state the device actually has, not the
+  last value HomeKit itself wrote. Every HmIP actuator has a transmitter
+  channel that reports the real output and three virtual receiver channels
+  that are control inputs; HomeKit, direct links, CCU programs and the
+  device's own button each use their own receiver, and a receiver only
+  reflects its own last command. Accessories used to read their state from
+  the receiver HomeKit writes to, so a lamp dimmed by a program, a wall
+  button or the local key kept its old value in the Home app. State reads
+  now come from the transmitter for every module and for the generic
+  mapping (`homematic-devices/lib/state-source.js`), writes still go to
+  the receiver (#319, #369, #252, #294). Found on an HmIP-PDT in the
+  OpenCCU hardware test and verified there.
 - Universal node: writes from HomeKit are forwarded to the node output
   again. The migration to hap-nodejs 2.x had silently broken this (the
   change event no longer carries the old request context; the node now

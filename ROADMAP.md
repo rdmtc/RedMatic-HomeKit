@@ -377,10 +377,21 @@ group: bugs first.
   rewired, tests in `test/thermostat.test.js`. Needs the hardware
   confirmation of task 13 (#159 "current temperature not shown" is a
   separate symptom to re-test).
-- Status updates missing/delayed after local or direct-link switching
-  (#319, #369, #252, #294): verify against ccu 4.0.0 (the `stable`
-  filter in `subscribe` and `WORKING` handling), likely a ccu-side event
-  question; document findings either way.
+- ✅ Status updates missing/delayed after local or direct-link switching
+  (#319, #369, #252, #294): root cause found on hardware 2026-09-04
+  (HmIP-PDT on the OpenCCU box) — not a ccu-side event question. Every
+  HmIP actuator reports its real output on the `<X>_TRANSMITTER` channel;
+  the `<X>_VIRTUAL_RECEIVER` channels are control inputs and only reflect
+  their own last command. All modules and the generic layer read state
+  from the receiver HomeKit writes to (`:3.LEVEL` on the PDT), so a level
+  set through another receiver (program, direct link, the device's own
+  key) never reached HomeKit. dev.8: `lib/state-source.js` redirects state
+  reads to the transmitter in the accessory base class (writes stay on the
+  receiver), covering every module and the generic mapping; tests in
+  `test/state-source.test.js`; verified on the PDT. Non-HmIP devices are
+  untouched. Remaining part of this item: the BidCos `WORKING`/`stable`
+  handling for delayed updates — re-test once a BidCos actuator is on a
+  lab box.
 - ✅ One unreachable device makes _all_ accessories "No Response" (#312,
   #194): resolved by the hap-nodejs 2.x migration — batched reads get a
   status per characteristic, so the `SERVICE_COMMUNICATION_FAILURE` of an
@@ -489,6 +500,26 @@ restart) works. **Found and fixed on the box:** the universal node had
 stopped forwarding HomeKit writes after the hap-nodejs migration (dev.7).
 The test flow (tab "homekit smoke") and the module are left installed
 there.
+
+**Round 2, 2026-09-04** (same box, now RedMatic 9.0.0-alpha.1 with an
+HmIP-WRC2 and an HmIP-PDT paired; a `ccu-connection` config node plus a
+homematic-devices node added to the smoke bridge): the PDT maps to a
+Lightbulb (On/Brightness), the WRC2 to two StatelessProgrammableSwitches
+with a Battery service, the CCU's own `HmIP-RCV-50` to a 50-button
+accessory (see below). HomeKit → CCU: On/Brightness writes land on
+`:3.LEVEL` and the transmitter follows. CCU → HomeKit: **bug found and
+fixed (dev.8)** — a level set through another virtual receiver never
+reached HomeKit (task 9 item above, `lib/state-source.js`); after the fix
+HomeKit follows the transmitter. Two more observations: (1) when the
+ccu-connection node is created in the same deploy as the homematic node,
+the homematic node publishes before the ccu node has fetched its device
+list ("publish 0 devices") and only a restart/redeploy fixes it — the
+node should re-run `publishDevices` once metadata arrives; (2) the
+virtual `HmIP-RCV-50` (and BidCos `HM-RCV-50`) of the CCU is exposed as
+50 programmable switches by the generic key rule — useful for triggering
+HomeKit automations from CCU programs, but noisy by default; decide
+whether it should be opt-in. Verified again: this OpenCCU build has no
+avahi-daemon (`/usr/sbin/avahi-autoipd` only), ciao is used.
 
 Still open on hardware:
 

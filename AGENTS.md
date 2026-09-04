@@ -35,14 +35,18 @@ from per-model files to a generic channel mapping (D-5).
   without a module from its paramset descriptions (channel roles);
   `lib/catalogue.js` + `options.json` describe per type what the editor
   offers; `lib/thermostat.js` is the shared setpoint/mode logic of the
-  thermostat modules. The editor html renders whatever the catalogue
-  endpoint returns — no per-type knowledge lives in the html anymore.
+  thermostat modules; `lib/state-source.js` redirects state reads of HmIP
+  virtual receivers to the transmitter channel (used by the accessory base
+  class, so it applies to every module and the generic mapping). The
+  editor html renders whatever the catalogue endpoint returns — no
+  per-type knowledge lives in the html anymore.
 - `test/` — `node --test` unit tests (`*.test.js`); fixtures under
   `test/fixtures/`.
 - `tools/` — maintainer scripts, not published (`check-native.js` is the
   D-1 gate run by CI, `smoke-local.sh` installs the packed module into a
   fresh Node-RED and exercises the bridge, `fixtures-from-pydevccu.js`
-  regenerates `test/fixtures/devices/`).
+  regenerates `test/fixtures/devices/`, `fixture-from-ccu.js` adds a
+  fixture for a device type from a real CCU's ccu-connection cache files).
 - `.github/workflows/` — `ci.yml` (lint, native scan, Node 22/24 ×
   Node-RED 4/5) and `release.yml` (tag `v*` → npm publish with OIDC
   provenance + GitHub release from `CHANGELOG.md`).

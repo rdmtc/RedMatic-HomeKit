@@ -920,6 +920,11 @@
     "Switch/1"
    ]
   },
+  "HmIP-PDT": {
+   "HmIP-PDT": [
+    "Lightbulb/0"
+   ]
+  },
   "HmIP-SAM": {
    "HmIP-SAM": [
     "ContactSensor/0",

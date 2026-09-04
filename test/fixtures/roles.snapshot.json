@@ -1606,6 +1606,13 @@
   "9:switch*",
   "10:switch*"
  ],
+ "HmIP-PDT": [
+  "1:key",
+  "2:state_only",
+  "3:dimmer",
+  "4:dimmer*",
+  "5:dimmer*"
+ ],
  "HmIP-PMFS": [],
  "HmIP-PSMCO": [
   "1:key",

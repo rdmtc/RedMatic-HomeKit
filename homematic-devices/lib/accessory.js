@@ -1,3 +1,5 @@
+const {stateDatapoint} = require('./state-source');
+
 class Service {
     constructor(acc, subtype) {
         this.acc = acc;
@@ -196,7 +198,8 @@ module.exports = class Accessory {
                     cache: true,
                     change: true,
                     stable: true,
-                    datapointName,
+                    // HmIP: state comes from the transmitter, not the virtual receiver
+                    datapointName: stateDatapoint(this.ccu, datapointName),
                 },
                 (msg) => {
                     callback(msg.value);
@@ -255,6 +258,9 @@ module.exports = class Accessory {
     }
 
     datapointGet(subtype, characteristic, datapointName, transform) {
+        // HmIP actuators: read the state from the transmitter channel, which reports
+        // the real output whatever set it; the virtual receiver only knows its own writes
+        datapointName = stateDatapoint(this.ccu, datapointName);
         this.addListener('get', subtype, characteristic, (callback) => {
             const valueOrig = this.ccu.values && this.ccu.values[datapointName] && this.ccu.values[datapointName].value;
             let value = valueOrig;
