@@ -333,11 +333,12 @@ class GenericAccessory extends Accessory {
                     keyIndex++;
                     const service = this.addService('StatelessProgrammableSwitch', name, sub);
                     service.update('ServiceLabelIndex', keyIndex);
-                    const validValues = d.long ? [0, 2] : [0];
-                    service.setProps('ProgrammableSwitchEvent', {validValues});
+                    // an input in "Schalter" mode sends one short press per flip, never a long one
+                    const long = c.mode === 'SWITCH_BEHAVIOR' ? null : d.long || null;
+                    service.setProps('ProgrammableSwitchEvent', {validValues: long ? [0, 2] : [0]});
                     this.keyEvents(service, c.address, {
                         short: d.short || null,
-                        long: d.long || null,
+                        long,
                         release: c.values.PRESS_LONG_RELEASE ? 'PRESS_LONG_RELEASE' : null,
                     });
                     break;

@@ -213,12 +213,14 @@ function channelRole(channel, values, mode) {
     }
 
     // HmIP multi-mode inputs (HmIPW-DRI16/DRI32/FIO6, HmIP-FCI1/FCI6/DSD-PCB, …):
-    // the channel's operating mode decides what it sends. KEY_BEHAVIOR (the
-    // factory default) only sends PRESS_SHORT/PRESS_LONG and never STATE — a
-    // contact sensor mapped on such a channel stays closed forever (found on
-    // an HmIPW-DRI16). INACTIVE sends nothing.
+    // the channel's operating mode decides what it sends (verified on an
+    // HmIPW-DRI16): KEY_BEHAVIOR ("Taster", factory default) sends
+    // PRESS_SHORT/PRESS_LONG, SWITCH_BEHAVIOR ("Schalter") one PRESS_SHORT per
+    // flip, both never a STATE — a contact sensor mapped on such a channel
+    // stays closed forever. Only BINARY_BEHAVIOR ("Binärsensor") reports
+    // STATE. INACTIVE sends nothing.
     if (/_INPUT_TRANSMITTER$/.test(type) && mode) {
-        if (mode === 'KEY_BEHAVIOR') {
+        if (mode === 'KEY_BEHAVIOR' || mode === 'SWITCH_BEHAVIOR') {
             return values && !values.PRESS_SHORT ? null : 'key';
         }
 
@@ -296,11 +298,13 @@ function deviceRoles(device, getChannel, getValues, getMode = () => undefined) {
         }
 
         const values = getValues(channel);
-        const role = channelRole(channel, values, getMode(address));
+        const mode = getMode(address);
+        const role = channelRole(channel, values, mode);
         const entry = {
             address,
             index: channel.INDEX,
             type: channel.TYPE,
+            mode,
             role,
             datapoints: role ? roleDatapoints(role, values) : {},
             actuator: ACTUATOR_ROLES.has(role),

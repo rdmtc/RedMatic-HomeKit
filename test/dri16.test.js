@@ -37,7 +37,7 @@ test('channelRole: multi-mode input follows its operating mode', () => {
     assert.equal(channel.TYPE, 'MULTI_MODE_INPUT_TRANSMITTER');
     assert.equal(roles.channelRole(channel, values), 'contact', 'no mode known: contact (3.3.0 behaviour)');
     assert.equal(roles.channelRole(channel, values, 'KEY_BEHAVIOR'), 'key');
-    assert.equal(roles.channelRole(channel, values, 'SWITCH_BEHAVIOR'), 'contact');
+    assert.equal(roles.channelRole(channel, values, 'SWITCH_BEHAVIOR'), 'key', '"Schalter": one short press per flip');
     assert.equal(roles.channelRole(channel, values, 'BINARY_BEHAVIOR'), 'contact');
     assert.equal(roles.channelRole(channel, values, 'INACTIVE'), null);
 });
@@ -45,8 +45,9 @@ test('channelRole: multi-mode input follows its operating mode', () => {
 test('HmIPW-DRI16 module: key-mode inputs become programmable switches, others stay contacts', async () => {
     const ccu = fixtures.ccuFor('HmIPW-DRI16');
     const a = ccu.address;
-    // input 1 and 5 in key mode (the lab wiring), input 2 as switch, input 3 inactive, the rest unknown
-    withModes(ccu, {[a + ':1']: 1, [a + ':5']: 1, [a + ':2']: 2, [a + ':3']: 0});
+    // input 1 and 5 in key mode (the lab wiring), input 2 in "Schalter" mode (short press per flip),
+    // input 3 inactive, input 4 binary sensor, the rest unknown
+    withModes(ccu, {[a + ':1']: 1, [a + ':5']: 1, [a + ':2']: 2, [a + ':3']: 0, [a + ':4']: 3});
     const h = createHarness(ccu);
     await publish(h);
     await tick();
@@ -54,15 +55,22 @@ test('HmIPW-DRI16 module: key-mode inputs become programmable switches, others s
 
     const services = h.services()['HmIPW-DRI16'];
     assert.ok(services, 'one accessory (SingleAccessory default)');
-    assert.equal(services.filter((s) => s.startsWith('StatelessProgrammableSwitch')).length, 2, 'two buttons');
+    assert.equal(services.filter((s) => s.startsWith('StatelessProgrammableSwitch')).length, 3, 'three buttons');
     assert.ok(services.includes('ServiceLabel/label0'), 'service label for the buttons');
-    // 16 inputs - 2 keys - 1 inactive = 13 contacts
-    assert.equal(services.filter((s) => s.startsWith('ContactSensor')).length, 13);
+    // 16 inputs - 3 keys - 1 inactive = 12 contacts
+    assert.equal(services.filter((s) => s.startsWith('ContactSensor')).length, 12);
 
     const reported = ccu.setCalls.filter((c) => c.method === 'reportValueUsage').map((c) => c.params.join(' '));
     assert.ok(reported.includes(`${a}:1 PRESS_SHORT 1`));
     assert.ok(reported.includes(`${a}:5 PRESS_LONG 1`));
-    assert.ok(!reported.includes(`${a}:2 PRESS_SHORT 1`), 'no usage report for a switch-mode input');
+    assert.ok(reported.includes(`${a}:2 PRESS_SHORT 1`), 'usage report for the switch-mode input');
+    assert.ok(!reported.includes(`${a}:2 PRESS_LONG 1`), 'no long press on a switch-mode input');
+    assert.ok(!reported.includes(`${a}:4 PRESS_SHORT 1`), 'no usage report for a binary-sensor input');
+    const acc0 = h.bridgeConfig.bridge.bridgedAccessories[0];
+    const button2 = acc0.services.find(
+        (s) => s.UUID === h.hap.Service.StatelessProgrammableSwitch.UUID && s.displayName === 'HmIPW-DRI16 2',
+    );
+    assert.deepEqual(button2.getCharacteristic(h.hap.Characteristic.ProgrammableSwitchEvent).props.validValues, [0]);
 
     const sub = ccu.subscriptions.find((s) => s.filter.datapointName === `HmIP-RF.${a}:5.PRESS_SHORT`);
     assert.ok(sub && sub.filter.change === false, 'press events subscribed without change filter');

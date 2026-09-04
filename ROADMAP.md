@@ -561,9 +561,11 @@ sends only `PRESS_SHORT`/`PRESS_LONG` and never `STATE`, so the 3.3.0
 contact-sensor mapping could not work on a default-configured DRI16 (and
 the presses were not declared "in use"). The node now reads the mode of
 every `*_INPUT_TRANSMITTER` channel from its MASTER paramset when
-publishing (`channelModes`, cached) and maps key mode → programmable
-switch with usage report, switch/binary mode → contact, inactive →
-nothing; `roles.channelRole` takes the mode, so the generic path (FCI6,
+publishing (`channelModes`, cached) and maps KEY_BEHAVIOR ("Taster") →
+programmable switch with usage report, SWITCH_BEHAVIOR ("Schalter",
+verified: one `PRESS_SHORT` per flip, no STATE) → programmable switch
+with single presses only, BINARY_BEHAVIOR ("Binärsensor") → contact,
+inactive → nothing; `roles.channelRole` takes the mode, so the generic path (FCI6,
 DSD-PCB, MIO16, DRDI3 keys) gets it too. Fixture `HmIPW-DRI16` from the
 Charly, tests in `test/dri16.test.js`. Verified: button on input 5 gives
 a single and a long press, the switch on input 1 one long press per

@@ -65,9 +65,13 @@ decisions (D-n) referenced below.
   an input only sends key presses and never a STATE, so the contact sensor
   3.3.0 created for it stayed "closed" forever (found on an HmIPW-DRI16).
   The node now reads `CHANNEL_OPERATION_MODE` from the channel's MASTER
-  paramset when publishing: key mode → StatelessProgrammableSwitch (with
-  the usage report above), switch/binary-sensor mode → ContactSensor,
-  Door or Window as before, inactive → nothing. For a DRI16 whose inputs
+  paramset when publishing: key mode ("Taster") → StatelessProgrammableSwitch
+  with single and long press, switch mode ("Schalter", one short press per
+  flip, no STATE either) → StatelessProgrammableSwitch with single press,
+  binary-sensor mode ("Binärsensor") → ContactSensor, Door or Window as
+  before, inactive → nothing; key channels get the usage report above. A
+  mode changed in the WebUI is picked up at the next deploy or restart.
+  For a DRI16 whose inputs
   were never switched to a contact mode this replaces the dead contact
   sensors by buttons in the Home app.
 - Buttons: a held key produces exactly one long press in HomeKit. The CCU

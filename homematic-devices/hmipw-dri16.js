@@ -2,11 +2,13 @@
    MULTI_MODE_INPUT_TRANSMITTER per input. What an input sends depends on its
    CHANNEL_OPERATION_MODE (MASTER paramset), which the node reads and hands
    over as `config.channelModes`:
-   - KEY_BEHAVIOR (factory default): PRESS_SHORT/PRESS_LONG only, never
+   - KEY_BEHAVIOR ("Taster", factory default): PRESS_SHORT/PRESS_LONG, never
      STATE → StatelessProgrammableSwitch (found on hardware: as a contact
      sensor such an input stayed "closed" forever),
-   - SWITCH_BEHAVIOR / BINARY_BEHAVIOR: STATE → ContactSensor, or Door /
-     Window by the channel's `type` option (as in 3.3.0),
+   - SWITCH_BEHAVIOR ("Schalter"): one PRESS_SHORT per flip, never STATE →
+     StatelessProgrammableSwitch with single presses only,
+   - BINARY_BEHAVIOR ("Binärsensor"): STATE → ContactSensor, or Door / Window
+     by the channel's `type` option (as in 3.3.0),
    - INACTIVE: nothing. */
 
 const Accessory = require('./lib/accessory');
@@ -52,7 +54,7 @@ function addContact(type, name, dp) {
     }
 }
 
-function addKey(name, channel, index) {
+function addKey(name, channel, index, mode) {
     if (!this.keyLabel) {
         this.addService('ServiceLabel', 'Buttons', 'label').update('ServiceLabelNamespace', 1);
         this.keyLabel = true;
@@ -60,9 +62,10 @@ function addKey(name, channel, index) {
 
     const service = this.addService('StatelessProgrammableSwitch', name, 'Button');
     service.update('ServiceLabelIndex', index);
-    service.setProps('ProgrammableSwitchEvent', {validValues: [0, 2]});
+    const long = mode === 'SWITCH_BEHAVIOR' ? null : 'PRESS_LONG';
+    service.setProps('ProgrammableSwitchEvent', {validValues: long ? [0, 2] : [0]});
     // the DRI16 sends PRESS_LONG_RELEASE although its description does not list it
-    this.keyEvents(service, channel, {});
+    this.keyEvents(service, channel, {long});
 }
 
 /** ContactSensor/Door/Window or StatelessProgrammableSwitch for one input, by its mode */
@@ -72,8 +75,8 @@ function addInput(channel, index, name, type) {
         return;
     }
 
-    if (mode === 'KEY_BEHAVIOR') {
-        addKey.call(this, name, channel, index);
+    if (mode === 'KEY_BEHAVIOR' || mode === 'SWITCH_BEHAVIOR') {
+        addKey.call(this, name, channel, index, mode);
         return;
     }
 
