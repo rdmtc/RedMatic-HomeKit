@@ -1,4 +1,4 @@
-# Handoff — redmatic-homekit 4.0.0 (2026-09-02, end of day)
+# Handoff — redmatic-homekit 4.0.0 (2026-09-04)
 
 State of the 4.0.0 modernization so work can continue on another machine.
 Written by Claude Fable on behalf of hobbyquaker. Read `ROADMAP.md` first
@@ -6,139 +6,144 @@ Written by Claude Fable on behalf of hobbyquaker. Read `ROADMAP.md` first
 
 ## Where things stand
 
-`master` is at **4.0.0-dev.7**, everything pushed, CI green (lint,
-native-dependency scan, `node --test` on Node 22/24 × Node-RED 4/5).
+`master` is at **4.0.0-dev.11** (+ one follow-up commit), everything
+pushed, `npm test` green (lint, 45 unit tests, native-dependency scan).
 **No tag, no npm release yet.** The npm trusted publisher (OIDC) for
-`rdmtc/RedMatic-HomeKit` → `.github/workflows/release.yml` is configured
-on npmjs.com (maintainer, 2026-09-02): a tag `v4.0.0-dev.8` would publish
-to the `next` dist-tag, a tag `v4.0.0` to `latest`, each with a GitHub
-release generated from `CHANGELOG.md`. Only tag when the maintainer says
-so.
+`rdmtc/RedMatic-HomeKit` → `.github/workflows/release.yml` is configured:
+a tag `v4.0.0-dev.N` publishes to the `next` dist-tag, `v4.0.0` to
+`latest`, each with a GitHub release from `CHANGELOG.md`. Only tag when
+the maintainer says so.
 
-Done today, in order (details in CHANGELOG.md and the roadmap):
+History (details in CHANGELOG.md and the roadmap):
 
-- **dev.0** camera and zigbee nodes removed (D-6/D-7).
-- **dev.1** ESLint 9 + Prettier, `node --test`, ci.yml + release.yml,
-  `tools/check-native.js` (D-1 gate), AGENTS.md/CLAUDE.md, package metadata.
-- **dev.2** `hap-nodejs 0.4.52` → `@homebridge/hap-nodejs ^2.2.3`;
-  storage path `<userDir>/homekit` and all UUIDs unchanged (D-4).
-- **dev.3** editor device list served by the runtime
-  (`homematic-devices/options.json` + `lib/catalogue.js`).
-- **dev.4** generic channel mapping (`lib/roles.js`, `lib/generic.js`),
-  383 device fixtures, snapshots; bridge mDNS default `auto`.
-- **dev.5** golden files for all 190 module types, HmIPW-DRD3
-  SingleAccessory option, tv port fix, German README + README.en.md,
-  German inline help for all nodes, tasks 5 and 10 archived.
-- **dev.6** shared thermostat setpoint/mode logic (`lib/thermostat.js`,
-  #245/#225/#335); GitHub triage round 1 (7 PRs, 24 issues closed).
-- **dev.7** universal node forwards HomeKit writes again (found on the
-  OpenCCU box). OpenCCU hardware test passed (see below).
+- **dev.0–dev.7 (2026-09-02)**: camera/zigbee removed, tooling + CI +
+  release pipeline, hap-nodejs 2.x migration (storage path and UUIDs
+  unchanged, D-4), runtime-driven editor catalogue, generic channel
+  mapping with 383 fixtures + snapshots, golden files for all 190 module
+  types, shared thermostat logic, first triage round, universal-node write
+  fix found on the OpenCCU box.
+- **dev.8 (2026-09-04, hardware round 2)**: HmIP actuators read their
+  state from the `<X>_TRANSMITTER` channel instead of the virtual receiver
+  HomeKit writes to (`homematic-devices/lib/state-source.js`, applied in
+  the accessory base class, so every module and the generic mapping get
+  it). Found on an HmIP-PDT: a level set by a program through another
+  receiver never reached HomeKit — the root cause of the "status not
+  updated after local/direct-link switching" issues. Verified on the PDT
+  (OpenCCU) and an HmIPW-DRS8 (real CCU3 firmware). New maintainer tool
+  `tools/fixture-from-ccu.js` (fixture from a ccu-connection's cache
+  files); real `HmIP-PDT` fixture added.
+- **dev.9/dev.10**: the homematic node waits until the ccu-connection's
+  device list and channel names have arrived and settled before
+  publishing (`publishWhenReady`). Before, a first deploy (new
+  ccu-connection in the same deploy, or no cached metadata) published
+  "0 devices" until a restart. Note: an interface without devices
+  (VirtualDevices without groups) never pushes a list, so "every interface
+  has a list" was not a usable criterion. Verified with a cache-less
+  start on the Charly.
+- **dev.11**: HmIP key channels are declared "in use" via
+  `reportValueUsage` (generic key mapping; retried while the CCU answers
+  "Transmission is pending" for sleeping battery devices) — without it the
+  CCU never forwards `PRESS_SHORT` of a button no program uses (WRC2
+  button 2 was silent). The CCU's virtual remote `HmIP-RCV-50`/`HM-RCV-50`
+  is opt-in (`generic.isOptIn`, editor row stored as `{enabled: true}`).
+  iPhone pairing done on the OpenCCU bridge: pairing, dimming from the
+  Home app, the PDT's own key, WRC2 button 1 all verified.
 
 ## Working here
 
 ```
 git clone git@github.com:rdmtc/RedMatic-HomeKit.git && cd RedMatic-HomeKit
 npm ci
-npm test               # lint + 31 unit tests + native scan (must be green before every commit)
+npm test               # lint + unit tests + native scan (must be green before every commit)
 npm run format         # prettier + eslint --fix
-tools/smoke-local.sh   # packs, installs shallowly into a fresh Node-RED 5, publishes a bridge,
-                       # browses mDNS (macOS dns-sd), reads/writes HAP in insecure mode
+tools/smoke-local.sh   # packs, installs shallowly into a fresh Node-RED 5, publishes a bridge (macOS)
 UPDATE_SNAPSHOT=1 node --test test/roles.test.js test/generic.test.js test/modules.test.js
                        # after an intentional mapping change (review the diff first)
+node tools/fixture-from-ccu.js <ccu_<host>.json> <paramsets.json> <TYPE|ADDRESS>...
+                       # fixture from a real CCU (files from a RedMatic box: /usr/local/addons/redmatic/var/)
 ```
 
 Versioning: `npm version 4.0.0-dev.N --no-git-tag-version` for every
 significant change, commit message `4.0.0-dev.N: …`, push. Commits end
 with the `Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>` line.
-`npm test | grep …` hides the exit code — check `$?` (bit me once).
 
 Test helpers: `test/helpers/harness.js` (fake Node-RED + bridge + device
-node + FakeCcu), `test/helpers/fixtures.js` (`fixtures.ccuFor('HmIP-XYZ')`
-loads a device type with its VALUES paramset descriptions). Fixtures come
-from the MIT-licensed pydevccu catalogue; to regenerate them:
-`git clone --depth 1 https://github.com/danielperna84/pydevccu` somewhere
-and run `node tools/fixtures-from-pydevccu.js <clone>/pydevccu`.
-
-Reference material that is **not** in the repo (all re-obtainable):
-pydevccu (above); the CCU3 firmware image 3.89.8 with the extracted HmIP
-device catalogue (`hmip-devicedescription/`, 364 device XMLs) lives in the
-node-red-contrib-ccu session scratchpad on the Mac and is described in
-`../node-red-contrib-ccu/docs/paramsets.md`; the JP-HB-Devices addon XMLs
-are on GitHub (jp112sdl/JP-HB-Devices-addon, `src/addon/firmware/rftypes`).
+node + FakeCcu), `test/helpers/fixtures.js` (`fixtures.ccuFor('HmIP-XYZ')`).
+Fixtures come from the MIT-licensed pydevccu catalogue
+(`tools/fixtures-from-pydevccu.js`) plus real-CCU fixtures
+(`tools/fixture-from-ccu.js`, `source: "ccu/..."` in the file).
 
 ## Test hosts
 
-- **OpenCCU test box** `172.16.23.119` (OpenCCU 3.89.8 ova, RedMatic
-  9.0.0-dev.11, Node 24, Node-RED 5.0.6). WebUI `Admin` / `12345678`,
-  ssh `root` / `12345678` (the maintainer's key is installed). Reachable
-  from the Mac over WireGuard; **mDNS from the box does not reach the
-  Mac** — browse it from a LAN host instead. No Homematic devices are
-  paired on it, so the homematic node has nothing to map there.
-  - Node-RED admin API on the box: `http://127.0.0.1:1880/addons/red`
-    (rega auth): token via
-    `POST …/auth/token {"client_id":"node-red-editor","grant_type":"password","scope":"*","username":"Admin","password":"12345678"}`,
-    install/upgrade a tarball with `POST …/nodes -F tarball=@file.tgz`
-    (bearer token), then `/usr/local/etc/config/rc.d/redmatic restart`.
-  - Installed there now: `redmatic-homekit@4.0.0-dev.7` in
-    `/usr/local/addons/redmatic/var/node_modules`, plus a flow tab
-    "homekit smoke": bridge `CC:22:3D:5A:0B:02`, port 51890, pin
-    `031-45-154`, **insecure mode on**, universal Lightbulb → switch,
-    pseudobutton. From the Mac:
-    `curl -H "Authorization: 031-45-154" http://172.16.23.119:51890/accessories`
-    and `PUT …/characteristics` with `{"characteristics":[{"aid":2,"iid":10,"value":true}]}`
-    (aid 2 lamp, 3 switch, 4 button; iid 10 = On).
-  - Logs: `grep -a homekit /var/log/messages`.
-  - Verified 2026-09-02: no avahi-daemon on this build (only
-    avahi-autoipd + libs); `auto` correctly picks ciao.
-- **LAN helper** `mqtt-ifaces` (ssh alias, 172.16.23.226, Debian, node
-  24): `/tmp/mdns/browse.js` (multicast-dns) lists `_hap._tcp` services;
-  recreate with `npm install multicast-dns` if /tmp was cleaned. The
-  maintainer's **production** RedMatic 3.x bridge shows up there as
-  "RedMatic Bridge-969A" — that is the real candidate for the "upgrade
-  from a paired 3.3.0" test, but it is production: ask first.
+Lab systems, credentials and per-box recipes (Node-RED admin API, tarball
+install, JSON-API, logs) live in a **private note outside the repo**
+(`~/repos/redmatic-lab.md` on the maintainer's machine) — never put
+addresses/credentials into this repo, the wiki or issues. In short: an
+OpenCCU 3.89.8 x86_64 VM with an HmIP-WRC2 and an HmIP-PDT, a "Charly"
+on the original CCU3 firmware 3.89.8 (armv7l) with HmIPW-DRAP/DRI16/DRS8,
+and an OpenCCU on a Pi 4 (aarch64) without radio; all on RedMatic 9
+alpha (Node 24, Node-RED 5.0.6, ccu 4.0.0). Both HomeKit boxes carry a
+flow tab "homekit smoke" (bridge with insecure mode on, pin `031-45-154`,
+port 51890, a `ccu-connection` "CCU lokal" on 127.0.0.1, a
+homematic-devices node, universal/switch/pseudobutton nodes) and the
+current dev build installed in `var/node_modules`. Node-RED log level on
+the OpenCCU box is set to `debug` (etc/settings.json) for the tests.
+Neither firmware runs an avahi-daemon; the bridge uses ciao via `auto`.
+The maintainer's helper scripts for these boxes are in `~/hk-lab/`
+(lib.sh with token/flows/deploy helpers, numbered scripts) — local only.
+
+Hardware results are recorded in ROADMAP task 13 ("Round 2" and
+"Charly" paragraphs) and task 9.
 
 ## Next steps (ROADMAP order)
 
-1. **Task 13, remaining hardware**: a real CCU3 with Homematic devices
-   (the generic mapping, the thermostat fix and the unreach behaviour have
-   only fixture coverage), pairing from an iPhone, the upgrade from a
-   paired 3.3.0 (pairings, rooms, automations must survive — D-4), an
-   OpenCCU build that runs avahi-daemon if one exists.
-2. **Task 9 leftovers**: garage door model (#130 — single-impulse doors
-   that auto-close, reversal edge case; hardware-bound), universal node
-   colour preset and characteristic props in the editor (#104, #221).
+1. **Task 13, remaining hardware**: the WRC2 second-button check after
+   dev.11 (press both buttons, expect `ProgrammableSwitchEvent` for `:1`
+   and `:2` in the debug log); pair the Charly bridge from the iPhone
+   (DRS8 switching from the Home app, DRI16 contacts with the attached
+   button/switch); the **upgrade from a paired 3.3.0** (D-4) — needs a
+   3.3.0 HAP storage directory on a lab box, e.g. a copy of a real
+   `<userDir>/homekit` from a 3.x install, then dev.N on top and a Home
+   app check that rooms/automations survive; BidCos actuator for the
+   `WORKING`/`stable` part of the status-update item.
+2. **Task 9 leftovers**: garage door model (#130), universal node colour
+   preset and characteristic props in the editor (#104, #221).
 3. **Task 11**: move the German inline help to `locales/` with an
    English fallback; wiki page `Homekit` in rdmtc/RedMatic.wiki.
-4. **Task 12, round 2 after the release**: 118 open issues remain —
-   device requests (close with a pointer to the snapshot entry once the
-   type is verified), behaviour bugs, support questions.
-5. **Task 7, optional step 4**: replace individual modules by the generic
-   path where `modules.snapshot.json` proves identical output; service
-   subtypes differ (modules: running counter, generic: channel index), so
-   most modules stay.
-6. **Release**: when the maintainer gives the go — bump to the final
-   version, update CHANGELOG (German release notes with an English
-   summary), `git tag v4.0.0 && git push --tags`; release.yml does the
-   rest. A `v4.0.0-dev.N` tag publishes a testable prerelease to `next`
-   (`npm install redmatic-homekit@next`).
+4. **Task 12, round 2 after the release**: 118 open issues.
+5. **Task 7, optional step 4**: replace modules by the generic path where
+   `modules.snapshot.json` proves identical output.
+6. **Release**: when the maintainer gives the go — final version,
+   CHANGELOG release notes (German, English summary),
+   `git tag v4.0.0 && git push --tags`.
 
 ## Gotchas
 
+- HmIP `<X>_VIRTUAL_RECEIVER` channels are write targets; state is read
+  from the preceding `<X>_TRANSMITTER` (`lib/state-source.js`). A HomeKit
+  "off" while another receiver still holds "on" snaps back to "on" — that
+  is the real output.
+- HmIP key channels stay silent until `reportValueUsage` (or a CCU
+  program/link) declares them used; battery devices apply it on their next
+  wake-up ("Transmission is pending" until then).
 - `Accessory.addService()` in `lib/accessory.js` appends a running counter
   to the subtype; the generic layer overrides it with channel-index
   subtypes. Existing modules must keep the counter scheme (D-4).
-- `SingleAccessory` defaults to **on** for multi-channel devices (as in
-  3.3.0: an option is "enabled unless disabled"); virtual channels and
-  buttons on actuators are opt-in (`enabled: true`).
+- `SingleAccessory` defaults to **on** for multi-channel devices; virtual
+  channels, buttons on actuators and opt-in devices use `{enabled: true}`.
 - BidCos devices report `LOWBAT` on mains actuators too; the generic
   battery service is added on BidCos only when the device has no actuator
   role, on HmIP whenever `LOW_BAT` exists.
 - hap-nodejs 2.x change events carry `reason` (`write`/`update`/…), not
   the old request context — that is how nodes distinguish HomeKit writes
-  from their own updates.
+  from their own updates. The published bridge name gets a 4-hex suffix
+  from hap-nodejs ("CCU Smoke Bridge E86F"); identity is the username.
 - Insecure HAP access (`allowInsecureRequest`) needs the pin as
   `Authorization` header for writes; reads work without.
 - `HAPStorage.setCustomStoragePath` is process-wide and can only be set
   once; `nodes/lib/hap.js` guards it. Tests share one storage path.
+- Node-RED rejects a config node whose `name` equals a config node id
+  ("Circular config node dependency") — seen with a ccu-connection named
+  `localhost` with id `localhost`.
 - Fixture file names are looked up case-insensitively (pydevccu spells
   some types in upper case; Linux CI is case-sensitive).
