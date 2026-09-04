@@ -193,12 +193,16 @@ const ACTUATOR_ROLES = new Set([
     'thermostat_hm',
 ]);
 
+/** VALUE_LIST of CHANNEL_OPERATION_MODE on HmIP multi-mode inputs, for when no description is cached */
+const INPUT_MODES = ['INACTIVE', 'KEY_BEHAVIOR', 'SWITCH_BEHAVIOR', 'BINARY_BEHAVIOR'];
+
 /**
  * @param {object} channel  channel description (TYPE, INDEX, ADDRESS)
  * @param {object} [values]  VALUES paramset description of the channel ({ID: {CONTROL, TYPE, …}})
+ * @param {string} [mode]  CHANNEL_OPERATION_MODE of a multi-mode input (KEY_BEHAVIOR, SWITCH_BEHAVIOR, …)
  * @returns {string|null} role or null when the channel has nothing for HomeKit
  */
-function channelRole(channel, values) {
+function channelRole(channel, values, mode) {
     const type = channel.TYPE;
     if (!type || IGNORED_TYPES.has(type)) {
         return null;
@@ -206,6 +210,21 @@ function channelRole(channel, values) {
 
     if (ROLE_BY_TYPE_FIRST[type]) {
         return ROLE_BY_TYPE_FIRST[type];
+    }
+
+    // HmIP multi-mode inputs (HmIPW-DRI16/DRI32/FIO6, HmIP-FCI1/FCI6/DSD-PCB, …):
+    // the channel's operating mode decides what it sends. KEY_BEHAVIOR (the
+    // factory default) only sends PRESS_SHORT/PRESS_LONG and never STATE — a
+    // contact sensor mapped on such a channel stays closed forever (found on
+    // an HmIPW-DRI16). INACTIVE sends nothing.
+    if (/_INPUT_TRANSMITTER$/.test(type) && mode) {
+        if (mode === 'KEY_BEHAVIOR') {
+            return values && !values.PRESS_SHORT ? null : 'key';
+        }
+
+        if (mode === 'INACTIVE') {
+            return null;
+        }
     }
 
     if (values) {
@@ -264,9 +283,10 @@ function roleDatapoints(role, values) {
  * @param {object} device  device description with CHILDREN
  * @param {(address: string) => object} getChannel  channel description by address
  * @param {(channel: object) => object|undefined} getValues  VALUES description of a channel
+ * @param {(address: string) => string|undefined} [getMode]  CHANNEL_OPERATION_MODE of a multi-mode input
  * @returns {Array<{address, index, type, role, datapoints, actuator, virtual}>}
  */
-function deviceRoles(device, getChannel, getValues) {
+function deviceRoles(device, getChannel, getValues, getMode = () => undefined) {
     const result = [];
     let lastTransmitter = null;
     for (const address of device.CHILDREN || []) {
@@ -276,7 +296,7 @@ function deviceRoles(device, getChannel, getValues) {
         }
 
         const values = getValues(channel);
-        const role = channelRole(channel, values);
+        const role = channelRole(channel, values, getMode(address));
         const entry = {
             address,
             index: channel.INDEX,
@@ -305,6 +325,7 @@ function deviceRoles(device, getChannel, getValues) {
 }
 
 module.exports = {
+    INPUT_MODES,
     ROLE_BY_CONTROL,
     ROLE_BY_TYPE_FIRST,
     ROLE_BY_TYPE,

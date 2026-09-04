@@ -1136,6 +1136,26 @@
     "Lightbulb/2"
    ]
   },
+  "HmIPW-DRI16": {
+   "HmIPW-DRI16": [
+    "ContactSensor/0",
+    "ContactSensor/1",
+    "ContactSensor/2",
+    "ContactSensor/3",
+    "ContactSensor/4",
+    "ContactSensor/5",
+    "ContactSensor/6",
+    "ContactSensor/7",
+    "ContactSensor/8",
+    "ContactSensor/9",
+    "ContactSensor/10",
+    "ContactSensor/11",
+    "ContactSensor/12",
+    "ContactSensor/13",
+    "ContactSensor/14",
+    "ContactSensor/15"
+   ]
+  },
   "HmIPW-DRI32": {
    "HmIPW-DRI32": [
     "ContactSensor/0",

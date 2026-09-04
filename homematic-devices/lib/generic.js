@@ -72,11 +72,12 @@ function miredToKelvin(mired) {
  * @param {string} iface
  * @param {object} [options]  the per-address config of the homematic-devices node
  */
-function plan(device, ccu, iface, options = {}) {
+function plan(device, ccu, iface, options = {}, channelModes = {}) {
     const devices = ccu.metadata.devices[iface] || {};
     const getChannel = (address) => devices[address];
     const getValues = (channel) => ccu.getParamsetDescription(iface, channel, 'VALUES');
-    const channels = roles.deviceRoles(device, getChannel, getValues).map((c) => ({
+    const getMode = (address) => channelModes[address];
+    const channels = roles.deviceRoles(device, getChannel, getValues, getMode).map((c) => ({
         ...c,
         name: ccu.channelNames[c.address] || c.address,
         values: getValues(getChannel(c.address)) || {},
@@ -732,7 +733,7 @@ class GenericAccessory extends Accessory {
 class GenericDevice {
     constructor(config, node) {
         const {ccu} = node;
-        const p = plan(config.description, ccu, config.iface, config.options);
+        const p = plan(config.description, ccu, config.iface, config.options, config.channelModes);
         this.plan = p;
 
         if (p.delegate) {

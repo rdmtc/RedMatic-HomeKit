@@ -1926,6 +1926,24 @@
   "11:dimmer*",
   "12:dimmer*"
  ],
+ "HmIPW-DRI16": [
+  "1:contact",
+  "2:contact",
+  "3:contact",
+  "4:contact",
+  "5:contact",
+  "6:contact",
+  "7:contact",
+  "8:contact",
+  "9:contact",
+  "10:contact",
+  "11:contact",
+  "12:contact",
+  "13:contact",
+  "14:contact",
+  "15:contact",
+  "16:contact"
+ ],
  "HmIPW-DRI32": [
   "1:contact",
   "2:contact",

@@ -552,7 +552,20 @@ Switches (HmIPW-DRAP has no controllable channel, correctly absent).
 DRS8 both ways verified: HomeKit writes land on `:2.STATE`, a CCU-side
 write on the second receiver `:3` reaches HomeKit through the transmitter
 `:1` (dev.8 fix), and a HomeKit "off" while `:3` is still on snaps back
-to "on" — the real output state.
+to "on" — the real output state. iPhone paired to the Charly bridge
+(2026-09-04): DRS8 outputs 1 and 3 switched from the Home app, relays
+follow. **DRI16 bug found (fixed dev.12)**: the switch on input 1 and the
+button on input 5 never changed anything — all 16 inputs are in
+`CHANNEL_OPERATION_MODE = KEY_BEHAVIOR` (the factory default), which
+sends only `PRESS_SHORT`/`PRESS_LONG` and never `STATE`, so the 3.3.0
+contact-sensor mapping could not work on a default-configured DRI16 (and
+the presses were not declared "in use"). The node now reads the mode of
+every `*_INPUT_TRANSMITTER` channel from its MASTER paramset when
+publishing (`channelModes`, cached) and maps key mode → programmable
+switch with usage report, switch/binary mode → contact, inactive →
+nothing; `roles.channelRole` takes the mode, so the generic path (FCI6,
+DSD-PCB, MIO16, DRDI3 keys) gets it too. Fixture `HmIPW-DRI16` from the
+Charly, tests in `test/dri16.test.js`.
 
 Still open on hardware:
 

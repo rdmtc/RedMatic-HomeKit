@@ -1,6 +1,17 @@
+/* HmIPW-DRI16 / DRI32 (and the other users of this module): one
+   MULTI_MODE_INPUT_TRANSMITTER per input. What an input sends depends on its
+   CHANNEL_OPERATION_MODE (MASTER paramset), which the node reads and hands
+   over as `config.channelModes`:
+   - KEY_BEHAVIOR (factory default): PRESS_SHORT/PRESS_LONG only, never
+     STATE → StatelessProgrammableSwitch (found on hardware: as a contact
+     sensor such an input stayed "closed" forever),
+   - SWITCH_BEHAVIOR / BINARY_BEHAVIOR: STATE → ContactSensor, or Door /
+     Window by the channel's `type` option (as in 3.3.0),
+   - INACTIVE: nothing. */
+
 const Accessory = require('./lib/accessory');
 
-function addService(type, name, dp) {
+function addContact(type, name, dp) {
     let service;
     let actualValue;
 
@@ -41,12 +52,51 @@ function addService(type, name, dp) {
     }
 }
 
+function addKey(name, channel, index) {
+    const {hap} = this;
+    if (!this.keyLabel) {
+        this.addService('ServiceLabel', 'Buttons', 'label').update('ServiceLabelNamespace', 1);
+        this.keyLabel = true;
+    }
+
+    const service = this.addService('StatelessProgrammableSwitch', name, 'Button');
+    service.update('ServiceLabelIndex', index);
+    service.setProps('ProgrammableSwitchEvent', {validValues: [0, 2]});
+    const press = (datapoint, event) => {
+        this.subscriptions.push(
+            this.ccu.subscribe(
+                {cache: false, change: false, datapointName: this.config.iface + '.' + channel + '.' + datapoint},
+                () => {
+                    service.update('ProgrammableSwitchEvent', event);
+                },
+            ),
+        );
+        this.reportValueUsage(channel, datapoint);
+    };
+
+    press('PRESS_SHORT', hap.Characteristic.ProgrammableSwitchEvent.SINGLE_PRESS);
+    press('PRESS_LONG', hap.Characteristic.ProgrammableSwitchEvent.LONG_PRESS);
+}
+
+/** ContactSensor/Door/Window or StatelessProgrammableSwitch for one input, by its mode */
+function addInput(channel, index, name, type) {
+    const mode = (this.config.channelModes || {})[channel];
+    if (mode === 'INACTIVE') {
+        return;
+    }
+
+    if (mode === 'KEY_BEHAVIOR') {
+        addKey.call(this, name, channel, index);
+        return;
+    }
+
+    addContact.call(this, type, name, this.config.iface + '.' + channel + '.STATE');
+}
+
 class AccSingleService extends Accessory {
     init(config) {
-        const dp = config.iface + '.' + config.accChannel + '.STATE';
-        const {name} = config;
-        const type = this.option('', 'type');
-        addService.call(this, type, name, dp);
+        const index = Number(config.accChannel.split(':')[1]);
+        addInput.call(this, config.accChannel, index, config.name, this.option('', 'type'));
     }
 }
 
@@ -59,11 +109,7 @@ class AccMultiService extends Accessory {
                 continue;
             }
 
-            const dp = config.deviceAddress + ':' + i + '.STATE';
-            const name = node.ccu.channelNames[ch];
-            const type = this.option(i, 'type');
-
-            addService.call(this, type, name, dp);
+            addInput.call(this, ch, i, node.ccu.channelNames[ch], this.option(i, 'type'));
         }
     }
 }

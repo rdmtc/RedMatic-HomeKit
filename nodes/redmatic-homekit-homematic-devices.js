@@ -1,4 +1,5 @@
 const catalogue = require('../homematic-devices/lib/catalogue');
+const roles = require('../homematic-devices/lib/roles');
 const {GenericDevice} = require('../homematic-devices/lib/generic');
 
 module.exports = function (RED) {
@@ -86,20 +87,25 @@ module.exports = function (RED) {
                             }
                         });
 
-                        queue.push(() => {
-                            return new Promise((resolve) => {
-                                this.createHomematicDevice({
-                                    name: this.ccu.channelNames[address],
-                                    iface,
-                                    deviceAddress: iface + '.' + address,
-                                    description: this.ccu.metadata.devices[iface][address],
-                                    options,
-                                });
-                                setTimeout(() => {
-                                    resolve();
-                                }, 50);
-                            });
-                        });
+                        const description = this.ccu.metadata.devices[iface][address];
+                        queue.push(() =>
+                            this.channelModes(iface, description).then(
+                                (channelModes) =>
+                                    new Promise((resolve) => {
+                                        this.createHomematicDevice({
+                                            name: this.ccu.channelNames[address],
+                                            iface,
+                                            deviceAddress: iface + '.' + address,
+                                            description,
+                                            options,
+                                            channelModes,
+                                        });
+                                        setTimeout(() => {
+                                            resolve();
+                                        }, 50);
+                                    }),
+                            ),
+                        );
                     }
                 }
             });
@@ -109,6 +115,67 @@ module.exports = function (RED) {
                 .then(() => {
                     callback();
                 });
+        }
+
+        /**
+         * CHANNEL_OPERATION_MODE of every HmIP multi-mode input channel of a
+         * device (HmIPW-DRI16/DRI32/FIO6, HmIP-FCI1/FCI6/DSD-PCB, …), read from
+         * the channel's MASTER paramset: KEY_BEHAVIOR (factory default) sends
+         * key presses only, SWITCH_/BINARY_BEHAVIOR a contact STATE. Resolves to
+         * {} for devices without such channels or when the CCU does not answer;
+         * answers are cached for the lifetime of the node.
+         * @returns {Promise<Object<string, string>>} address → mode name
+         */
+        channelModes(iface, device) {
+            const devices = (this.ccu.metadata && this.ccu.metadata.devices[iface]) || {};
+            const inputs = (device.CHILDREN || [])
+                .map((address) => devices[address])
+                .filter((channel) => channel && /_INPUT_TRANSMITTER$/.test(channel.TYPE));
+            if (inputs.length === 0 || typeof this.ccu.methodCall !== 'function') {
+                return Promise.resolve({});
+            }
+
+            this.modeCache = this.modeCache || {};
+            const modes = {};
+            const lookups = inputs.map((channel) => {
+                if (this.modeCache[channel.ADDRESS]) {
+                    modes[channel.ADDRESS] = this.modeCache[channel.ADDRESS];
+                    return Promise.resolve();
+                }
+
+                const timeout = new Promise((resolve) => setTimeout(resolve, 3000, null));
+                return Promise.race([this.ccu.methodCall(iface, 'getParamset', [channel.ADDRESS, 'MASTER']), timeout])
+                    .then((master) => {
+                        const raw = master && master.CHANNEL_OPERATION_MODE;
+                        if (raw === undefined || raw === null) {
+                            return;
+                        }
+
+                        const description = this.ccu.getParamsetDescription(
+                            iface,
+                            channel,
+                            'MASTER',
+                            'CHANNEL_OPERATION_MODE',
+                        );
+                        const list = (description && description.VALUE_LIST) || roles.INPUT_MODES;
+                        const mode = typeof raw === 'number' ? list[raw] : String(raw);
+                        if (mode) {
+                            modes[channel.ADDRESS] = mode;
+                            this.modeCache[channel.ADDRESS] = mode;
+                        }
+                    })
+                    .catch((error) => {
+                        this.debug('getParamset MASTER ' + channel.ADDRESS + ' failed: ' + error.message);
+                    });
+            });
+
+            return Promise.all(lookups).then(() => {
+                if (Object.keys(modes).length > 0) {
+                    this.debug('input modes ' + device.ADDRESS + ' ' + JSON.stringify(modes));
+                }
+
+                return modes;
+            });
         }
 
         createHomematicDevice(dev) {

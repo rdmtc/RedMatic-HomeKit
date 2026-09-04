@@ -59,6 +59,17 @@ decisions (D-n) referenced below.
   declares `PRESS_SHORT`/`PRESS_LONG` of every key channel it maps
   (`reportValueUsage`). Found with the second button of an HmIP-WRC2 in the
   OpenCCU hardware test.
+- HmIP multi-mode inputs (HmIPW-DRI16/DRI32/FIO6, HmIP-FCI1/FCI6,
+  HmIP-DSD-PCB, HmIP-MIO16-PCB, keys of HmIP-DRDI3/DRSI/DRBLI): an input
+  is mapped by its operating mode. In the factory-default key mode such
+  an input only sends key presses and never a STATE, so the contact sensor
+  3.3.0 created for it stayed "closed" forever (found on an HmIPW-DRI16).
+  The node now reads `CHANNEL_OPERATION_MODE` from the channel's MASTER
+  paramset when publishing: key mode → StatelessProgrammableSwitch (with
+  the usage report above), switch/binary-sensor mode → ContactSensor,
+  Door or Window as before, inactive → nothing. For a DRI16 whose inputs
+  were never switched to a contact mode this replaces the dead contact
+  sensors by buttons in the Home app.
 - The CCU's own virtual remote (HmIP-RCV-50, HM-RCV-50) is opt-in: it
   mapped to a 50-button accessory on every bridge, which is noise for most
   homes. Tick it in the device list to publish it (useful to trigger
