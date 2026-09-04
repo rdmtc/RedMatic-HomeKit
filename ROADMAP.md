@@ -533,7 +533,14 @@ not**: the CCU never delivered `PRESS_SHORT` for `:2`. HmIP key channels
 only report presses once the datapoint is declared "in use"
 (`reportValueUsage`; the WebUI had done that for `:1` the day before).
 Fixed in dev.11: the generic key mapping reports usage for every
-`PRESS_SHORT`/`PRESS_LONG` it subscribes (HmIP interfaces only).
+`PRESS_SHORT`/`PRESS_LONG` it subscribes (HmIP interfaces only; a report
+the CCU rejects with "Transmission is pending" is retried). The HmIP
+server accepts the reports at once but the device gets the new channel
+configuration only on its next configuration wake-up (`CONFIG_PENDING`
+stays 1 until then — key presses alone do not fetch it, a short press of
+the device's system button does). Verified: after the config transfer
+both WRC2 buttons deliver `ProgrammableSwitchEvent` single presses.
+Direct links of the WRC2 to the PDT keep working alongside.
 
 **Charly (real CCU3 firmware 3.89.8 on armv7l, RedMatic 9.0.0-alpha.0),
 2026-09-04**: install of the dev.8 tarball through the palette API

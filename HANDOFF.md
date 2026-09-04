@@ -97,9 +97,8 @@ Hardware results are recorded in ROADMAP task 13 ("Round 2" and
 
 ## Next steps (ROADMAP order)
 
-1. **Task 13, remaining hardware**: the WRC2 second-button check after
-   dev.11 (press both buttons, expect `ProgrammableSwitchEvent` for `:1`
-   and `:2` in the debug log); pair the Charly bridge from the iPhone
+1. **Task 13, remaining hardware** (WRC2 both buttons verified after
+   dev.11): pair the Charly bridge from the iPhone
    (DRS8 switching from the Home app, DRI16 contacts with the attached
    button/switch); the **upgrade from a paired 3.3.0** (D-4) — needs a
    3.3.0 HAP storage directory on a lab box, e.g. a copy of a real
@@ -125,7 +124,10 @@ Hardware results are recorded in ROADMAP task 13 ("Round 2" and
   is the real output.
 - HmIP key channels stay silent until `reportValueUsage` (or a CCU
   program/link) declares them used; battery devices apply it on their next
-  wake-up ("Transmission is pending" until then).
+  configuration wake-up ("Transmission is pending" / `CONFIG_PENDING`
+  until then — a short press of the device's system button forces it;
+  ordinary key presses do not). Verified on the WRC2: both buttons fire
+  after the transfer.
 - `Accessory.addService()` in `lib/accessory.js` appends a running counter
   to the subtype; the generic layer overrides it with channel-index
   subtypes. Existing modules must keep the counter scheme (D-4).
