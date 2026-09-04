@@ -601,6 +601,10 @@ Still open on hardware:
   BRIDGE instead of OTHER, hap-nodejs 2.x adds its protocol-information
   service and a `pairedClientsPermission` map, and the bridge name got a
   four-hex suffix — fixed in dev.15 (`addIdentifyingMaterial: false`).
+  Home app check after the upgrade: names and rooms kept, the scene still
+  works; the DRI16 tile shows the contact icon of its first service and
+  the "needs a home hub" notice that HomeKit attaches to every accessory
+  with programmable switches when the home has no hub — both expected.
   The remaining part of this item is the maintainer's own production
   upgrade with a real 3.3.0 history; the lab result says it will keep the
   pairing. Scripts: `~/hk-lab/41-charly-v330.sh`, `43-charly-upgrade.sh`,
