@@ -51,6 +51,18 @@ decisions (D-n) referenced below.
   mapping (`homematic-devices/lib/state-source.js`), writes still go to
   the receiver (#319, #369, #252, #294). Found on an HmIP-PDT in the
   OpenCCU hardware test and verified there.
+- HmIP wall buttons and remotes (HmIP-WRC2/WRC6/BRC2/KRC4/RC8, keys on
+  actuators): every key channel now reports its presses. HmIP devices only
+  send a key press to the CCU once the datapoint has been declared "in
+  use" by a program, a direct link or an XML-RPC client; a button that no
+  CCU program used stayed silent in HomeKit. The generic mapping now
+  declares `PRESS_SHORT`/`PRESS_LONG` of every key channel it maps
+  (`reportValueUsage`). Found with the second button of an HmIP-WRC2 in the
+  OpenCCU hardware test.
+- The CCU's own virtual remote (HmIP-RCV-50, HM-RCV-50) is opt-in: it
+  mapped to a 50-button accessory on every bridge, which is noise for most
+  homes. Tick it in the device list to publish it (useful to trigger
+  HomeKit automations from CCU programs by "pressing" a virtual key).
 - First deploy: the homematic node no longer publishes "0 devices" when it
   is deployed together with a new ccu-connection node or on a box without
   cached CCU metadata. The ccu-connection reports its interfaces as

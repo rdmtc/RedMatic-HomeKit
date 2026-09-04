@@ -155,6 +155,8 @@ function describeDevices(ccu) {
                 name: p.name,
                 supported: true,
                 generic: true,
+                // opt-in devices are stored as {enabled: true} and skipped otherwise
+                optIn: generic.isOptIn(device),
                 options: rows.options,
                 channels: rows.channels,
             });
@@ -164,4 +166,4 @@ function describeDevices(ccu) {
     return devices.sort((a, b) => a.name.localeCompare(b.name));
 }
 
-module.exports = {moduleName, supportedTypes, hasModule, describeDevice, describeDevices};
+module.exports = {moduleName, supportedTypes, hasModule, describeDevice, describeDevices, isOptIn: generic.isOptIn};

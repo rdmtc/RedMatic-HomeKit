@@ -521,9 +521,19 @@ VirtualDevices without groups, never pushes a list, so "every interface
 has a list" is not a usable criterion), reproduced on both boxes; (2) the virtual
 `HmIP-RCV-50` (and BidCos `HM-RCV-50`) of the CCU is exposed as 50
 programmable switches by the generic key rule — useful for triggering
-HomeKit automations from CCU programs, but noisy by default; decide
-whether it should be opt-in. Verified again: this OpenCCU build has no
-avahi-daemon (`/usr/sbin/avahi-autoipd` only), ciao is used.
+HomeKit automations from CCU programs, but noisy by default; **decided
+2026-09-04: opt-in** (dev.11, `generic.isOptIn`, editor shows it as an
+opt-in row, stored as `{enabled: true}`). Verified again: this OpenCCU
+build has no avahi-daemon (`/usr/sbin/avahi-autoipd` only), ciao is used.
+**iPhone pairing** (Home app on the same VLAN, 2026-09-04): the bridge
+pairs with its pin, the PDT dims from the Home app (writes on `:3`, state
+back from `:2`), the PDT's own key toggles the lamp and HomeKit follows,
+the WRC2's first button fires a single press — **its second button did
+not**: the CCU never delivered `PRESS_SHORT` for `:2`. HmIP key channels
+only report presses once the datapoint is declared "in use"
+(`reportValueUsage`; the WebUI had done that for `:1` the day before).
+Fixed in dev.11: the generic key mapping reports usage for every
+`PRESS_SHORT`/`PRESS_LONG` it subscribes (HmIP interfaces only).
 
 **Charly (real CCU3 firmware 3.89.8 on armv7l, RedMatic 9.0.0-alpha.0),
 2026-09-04**: install of the dev.8 tarball through the palette API

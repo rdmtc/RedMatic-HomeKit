@@ -55,8 +55,10 @@
                 if (!that.devices[addr]) {
                     that.devices[addr] = {};
                 }
-                const checked = !that.devices[addr].disabled;
-                $('#devices').append('<tr><td class="enabled"><input class="device-enabled option-hide" data-addr="' + addr + '" type="checkbox"' + (checked ? ' checked' : '') + '></td><td class="text">' + escape(dev.name) + '</td><td class="text small">' + escape(addr) + '</td><td class="text small">' + escape(dev.type) + '</td></tr>');
+                // opt-in devices (the CCU's virtual remote) are stored as enabled: true, like virtual channels
+                const checked = dev.optIn ? Boolean(that.devices[addr].enabled) : !that.devices[addr].disabled;
+                const cls = dev.optIn ? 'device-enabled option-hide vchannel-enabled' : 'device-enabled option-hide';
+                $('#devices').append('<tr><td class="enabled"><input class="' + cls + '" data-addr="' + addr + '" type="checkbox"' + (checked ? ' checked' : '') + '></td><td class="text">' + escape(dev.name) + (dev.optIn ? ' <span class="small">(opt-in)</span>' : '') + '</td><td class="text small">' + escape(addr) + '</td><td class="text small">' + escape(dev.type) + '</td></tr>');
 
                 dev.options.forEach(option => {
                     const ch = addr + ':' + option;

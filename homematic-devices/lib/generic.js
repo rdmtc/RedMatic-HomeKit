@@ -19,6 +19,18 @@ const {Service} = require('./accessory');
 const roles = require('./roles');
 
 const SWITCH_TYPES = ['Switch', 'Outlet', 'Lightbulb', 'Fan', 'Valve', 'ValveIrrigation'];
+
+/**
+ * Devices that map fine but are noise for most homes and are therefore
+ * opt-in (`{enabled: true}` under the device address): the CCU's own virtual
+ * remote (50 programmable switches). Enabling it lets CCU programs trigger
+ * HomeKit automations by "pressing" a virtual key.
+ */
+const OPT_IN_TYPES = /^(HmIP|HM)-RCV-50$/i;
+
+function isOptIn(device) {
+    return Boolean(device && OPT_IN_TYPES.test(String(device.TYPE)));
+}
 const CONTACT_TYPES = ['ContactSensor', 'Door', 'Window', 'GarageDoorOpener'];
 const BLIND_TYPES = ['VerticalTilt Enabled', 'VerticalTilt Disabled'];
 
@@ -331,6 +343,7 @@ class GenericAccessory extends Accessory {
                                 },
                             ),
                         );
+                        this.reportValueUsage(c.address, datapoint);
                     };
 
                     if (d.short) {
@@ -775,4 +788,13 @@ class GenericDevice {
     }
 }
 
-module.exports = {GenericDevice, GenericAccessory, plan, editorRows, SWITCH_TYPES, CONTACT_TYPES, BLIND_TYPES};
+module.exports = {
+    GenericDevice,
+    GenericAccessory,
+    plan,
+    editorRows,
+    isOptIn,
+    SWITCH_TYPES,
+    CONTACT_TYPES,
+    BLIND_TYPES,
+};

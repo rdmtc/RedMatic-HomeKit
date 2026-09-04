@@ -191,6 +191,27 @@ module.exports = class Accessory {
             : null;
     }
 
+    /**
+     * HmIP key channels only send their presses to the CCU once something has
+     * declared the datapoint "in use" (a program, a link, or this call); until
+     * then PRESS_SHORT/PRESS_LONG never reach an XML-RPC client. Found with an
+     * HmIP-WRC2 whose second button stayed silent. BidCos reports presses
+     * regardless, so only HmIP interfaces are told.
+     */
+    reportValueUsage(channelAddress, datapoint) {
+        const iface = this.config.iface || String(this.config.deviceAddress).split('.')[0];
+        if (!/^HmIP/i.test(iface) || typeof this.ccu.methodCall !== 'function') {
+            return;
+        }
+
+        this.ccu
+            .methodCall(iface, 'reportValueUsage', [channelAddress, datapoint, 1])
+            .then(() => this.node.debug('reportValueUsage ' + channelAddress + ' ' + datapoint))
+            .catch((error) =>
+                this.node.debug('reportValueUsage ' + channelAddress + ' ' + datapoint + ' failed: ' + error.message),
+            );
+    }
+
     subscribe(datapointName, callback) {
         this.subscriptions.push(
             this.ccu.subscribe(

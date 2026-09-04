@@ -17,7 +17,7 @@ _[English version](README.en.md)_
 
 - **Homematic-Geräte automatisch in HomeKit** – über einen
   [node-red-contrib-ccu](https://github.com/rdmtc/node-red-contrib-ccu)-
-  Verbindungsknoten werden Schalter, Dimmer, Farblichter, Rollläden und
+  ccu-connection Node werden Schalter, Dimmer, Farblichter, Rollläden und
   Jalousien, Thermostate, Tür-/Fensterkontakte, Griffkontakte,
   Bewegungs- und Präsenzmelder, Rauch-, Wasser- und Regenmelder,
   Temperatur-/Feuchte-/Helligkeitssensoren, CO₂-Sensoren, Taster und

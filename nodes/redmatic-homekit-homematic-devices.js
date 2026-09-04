@@ -71,6 +71,14 @@ module.exports = function (RED) {
                 if (!address.match(/:\d+$/)) {
                     const iface = this.ccu.findIface(address);
                     if (iface && this.ccu.enabledIfaces.includes(iface) && this.ccu.metadata.devices[iface]) {
+                        // the CCU's virtual remote and the like are opt-in (see generic.isOptIn)
+                        if (
+                            catalogue.isOptIn(this.ccu.metadata.devices[iface][address]) &&
+                            !(this.devices[address] && this.devices[address].enabled)
+                        ) {
+                            return;
+                        }
+
                         const options = {};
                         Object.keys(this.devices).forEach((addr) => {
                             if (addr === address || addr.startsWith(address + ':')) {
