@@ -518,8 +518,9 @@ removed). Both are real 4.0.0 bugs — the editor regression and the
 battery-only accessory of energy-only devices — and both are fixed in
 **4.0.1, released the same day** (task 9). Answered with the cause, the
 interim workaround (uncheck + deploy for #385; delete and re-create the
-homematic node in one deploy for #384), labelled `bug`, closed as
-completed with the release link.
+homematic node in one deploy for #384), labelled `bug` +
+`awaiting-feedback`. **Decided 2026-09-05: bug reports stay open until
+the reporter confirms the fix** — a release alone does not close them.
 
 ## 13. Verify and release 4.0.0
 

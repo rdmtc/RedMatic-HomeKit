@@ -24,8 +24,9 @@ energy-only devices (HM-ES-TX-WM, HmIP-ESI) were published with nothing
 but a Battery service, "Not Supported" in the Home app and impossible to
 remove there (now unsupported until #114; no generic accessory is ever
 battery-only, `test/energy-only.test.js`; two entries left the generic
-snapshot). Released as 4.0.1 (tag `v4.0.1`, npm `latest`), both issues
-closed as completed. Next versions: `4.1.0-dev.N` as before.
+snapshot). Goes out as 4.0.1 (tag `v4.0.1`, npm `latest`); both issues
+stay open with `bug` + `awaiting-feedback` until the reporter confirms
+(maintainer's rule, 2026-09-05). Next versions: `4.1.0-dev.N` as before.
 
 History (details in CHANGELOG.md and the roadmap):
 
@@ -144,7 +145,8 @@ Hardware results are recorded in ROADMAP task 13 ("Round 2" and
    that HomeKit is back for RedMatic 9.
 4. **Task 12**: round 2 done; watch the seven `awaiting-feedback` issues
    and new reports against 4.0.0 (fixtures from reporters via
-   `tools/fixture-from-ccu.js` input files). #384/#385 closed with 4.0.1.
+   `tools/fixture-from-ccu.js` input files). #384/#385 (fixed in 4.0.1)
+   stay open as `awaiting-feedback` until the reporter confirms.
 5. **Task 7, optional step 4**: replace modules by the generic path where
    `modules.snapshot.json` proves identical output.
 6. **Next release**: `4.1.0-dev.N` on master, tag when the maintainer
