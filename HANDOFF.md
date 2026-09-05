@@ -24,9 +24,11 @@ energy-only devices (HM-ES-TX-WM, HmIP-ESI) were published with nothing
 but a Battery service, "Not Supported" in the Home app and impossible to
 remove there (now unsupported until #114; no generic accessory is ever
 battery-only, `test/energy-only.test.js`; two entries left the generic
-snapshot). Goes out as 4.0.1 (tag `v4.0.1`, npm `latest`); both issues
-stay open with `bug` + `awaiting-feedback` until the reporter confirms
-(maintainer's rule, 2026-09-05). Next versions: `4.1.0-dev.N` as before.
+snapshot). **Released as 4.0.1 the same day** (tag `v4.0.1`, npm
+`latest` with provenance, GitHub release); both issues stay open with
+`bug` + `awaiting-feedback` until the reporter confirms (maintainer's
+rule, 2026-09-05; stale `awaiting-feedback` issues may be closed after 3
+months). Next versions: `4.1.0-dev.N` as before.
 
 History (details in CHANGELOG.md and the roadmap):
 
