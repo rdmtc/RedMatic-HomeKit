@@ -15,6 +15,18 @@ green (lint, 52 unit tests, native-dependency scan). Next versions:
 says so. The second issue-triage round is done (ROADMAP task 12): 25
 issues remain open, seven of them `awaiting-feedback` on 4.0.0.
 
+**2026-09-05, first bug reports against 4.0.0 → 4.0.1 released the same
+day** (both from one reporter, both real): #384 — a
+device or channel unchecked once in the editor could never be re-enabled
+(the dev.3 "keep unlisted settings" merge carried the old `disabled`
+flag over; `oneditsave` rewritten, `test/editor-save.test.js`); #385 —
+energy-only devices (HM-ES-TX-WM, HmIP-ESI) were published with nothing
+but a Battery service, "Not Supported" in the Home app and impossible to
+remove there (now unsupported until #114; no generic accessory is ever
+battery-only, `test/energy-only.test.js`; two entries left the generic
+snapshot). Released as 4.0.1 (tag `v4.0.1`, npm `latest`), both issues
+closed as completed. Next versions: `4.1.0-dev.N` as before.
+
 History (details in CHANGELOG.md and the roadmap):
 
 - **dev.0–dev.7 (2026-09-02)**: camera/zigbee removed, tooling + CI +
@@ -132,7 +144,7 @@ Hardware results are recorded in ROADMAP task 13 ("Round 2" and
    that HomeKit is back for RedMatic 9.
 4. **Task 12**: round 2 done; watch the seven `awaiting-feedback` issues
    and new reports against 4.0.0 (fixtures from reporters via
-   `tools/fixture-from-ccu.js` input files).
+   `tools/fixture-from-ccu.js` input files). #384/#385 closed with 4.0.1.
 5. **Task 7, optional step 4**: replace modules by the generic path where
    `modules.snapshot.json` proves identical output.
 6. **Next release**: `4.1.0-dev.N` on master, tag when the maintainer

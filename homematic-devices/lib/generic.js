@@ -21,6 +21,17 @@ const roles = require('./roles');
 const SWITCH_TYPES = ['Switch', 'Outlet', 'Lightbulb', 'Fan', 'Valve', 'ValveIrrigation'];
 
 /**
+ * Roles another service consumes (`energy` → OutletInUse of the switch on the
+ * same device) and that get no service of their own. A device whose usable
+ * channels are all of this kind — the HM-ES-TX-WM meter sensor, the HmIP-ESI —
+ * would be published with nothing but a Battery service, which the Home app
+ * shows as "Not Supported" and cannot remove (#385). Such devices are neither
+ * offered nor published until Eve-style energy characteristics exist (#114).
+ */
+const SERVICELESS_ROLES = new Set(['energy']);
+const hasService = (c) => !SERVICELESS_ROLES.has(c.role);
+
+/**
  * Devices that map fine but are noise for most homes and are therefore
  * opt-in (`{enabled: true}` under the device address): the CCU's own virtual
  * remote (50 programmable switches). Enabling it lets CCU programs trigger
@@ -111,7 +122,7 @@ function plan(device, ccu, iface, options = {}, channelModes = {}) {
             (iface !== 'BidCos-RF' || actuators.length === 0) &&
             !opt(options, device.ADDRESS + ':Battery').disabled,
         deviceOptions,
-        supported: usable.length > 0,
+        supported: usable.some(hasService),
         delegate: null,
     };
 
@@ -754,22 +765,22 @@ class GenericDevice {
                 });
             }
 
-            if (others.length > 0 || p.batteryEnabled) {
+            if (others.some(hasService)) {
                 accessories.push({description: config.description, name: config.name, channels: others});
             }
         }
 
+        // never publish an accessory that would carry nothing but the Battery
+        // service ("Not Supported" in the Home app, #385): the battery lives on
+        // the device accessory, or on the first channel accessory when the
+        // device has no accessory of its own
+        const published = accessories.filter((acc) => acc.channels.some(hasService));
+        const batteryHost =
+            published.find((acc) => acc.description.ADDRESS === config.description.ADDRESS) || published[0];
         this.accessories = [];
-        for (const acc of accessories) {
-            if (acc.channels.length === 0 && !p.batteryEnabled) {
-                continue;
-            }
-
+        for (const acc of published) {
             const accConfig = {...config, name: acc.name, description: acc.description};
-            const extras = {
-                power,
-                battery: p.batteryEnabled && acc.description.ADDRESS === config.description.ADDRESS,
-            };
+            const extras = {power, battery: p.batteryEnabled && acc === batteryHost};
             this.accessories.push(new GenericAccessory(accConfig, node, p, acc.channels, extras));
         }
     }

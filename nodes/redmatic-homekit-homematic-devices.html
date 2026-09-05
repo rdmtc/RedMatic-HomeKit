@@ -119,43 +119,37 @@
         },
         oneditsave() {
             const devices = {};
-            $('.channel-option').each(function () {
-                const addr = $(this).data('addr');
-                const option = $(this).data('option');
+            const listed = new Set();
+            const entry = addr => {
                 if (!devices[addr]) {
                     devices[addr] = {};
                 }
-                devices[addr][option] = $(this).val();
+                return devices[addr];
+            };
+            $('.channel-option').each(function () {
+                entry($(this).data('addr'))[$(this).data('option')] = $(this).val();
             });
-            $('.device-enabled:not(.vchannel-enabled)').each(function () {
+            // Devices, channels and pseudo-options are stored as {disabled: true} when
+            // unchecked (absent = enabled); opt-in rows (virtual receivers, buttons on
+            // actuators, the CCU's virtual remote) the other way round as {enabled: true}.
+            // Only the flag of the current state is written, so a row that was unchecked
+            // before and is checked now loses its old flag — 4.0.0 carried it over and a
+            // device could never be re-enabled (#384).
+            $('.device-enabled').each(function () {
                 const addr = $(this).data('addr');
-                const enabled = $(this).is(':checked');
-                if (enabled && devices[addr]) {
-                    devices[addr].disabled = false;
-                } else if (!enabled) {
-                    if (!devices[addr]) {
-                        devices[addr] = {};
-                    }
-                    devices[addr].disabled = true;
-                }
-            });
-            $('.device-enabled.vchannel-enabled').each(function () {
-                const addr = $(this).data('addr');
-                const enabled = $(this).is(':checked');
-                if (!enabled && devices[addr]) {
-                    devices[addr].enabled = false;
-                } else if (enabled) {
-                    if (!devices[addr]) {
-                        devices[addr] = {};
-                    }
-                    devices[addr].enabled = true;
+                const checked = $(this).is(':checked');
+                const optIn = $(this).hasClass('vchannel-enabled');
+                listed.add(addr);
+                if (optIn ? checked : !checked) {
+                    entry(addr)[optIn ? 'enabled' : 'disabled'] = true;
                 }
             });
             // keep settings of devices that were not listed this time (e.g. CCU
             // temporarily without that interface) instead of dropping them
             Object.keys(this.devices || {}).forEach(addr => {
-                if (!devices[addr]) {
-                    devices[addr] = this.devices[addr];
+                const previous = this.devices[addr];
+                if (!listed.has(addr) && !devices[addr] && previous && Object.keys(previous).length > 0) {
+                    devices[addr] = previous;
                 }
             });
             this.devices = devices;

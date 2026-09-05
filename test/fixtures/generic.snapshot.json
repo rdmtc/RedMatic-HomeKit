@@ -190,11 +190,6 @@
    "Switch/1"
   ]
  },
- "HM-ES-TX-WM": {
-  "HM-ES-TX-WM": [
-   "Battery/battery"
-  ]
- },
  "HM-LC-BlX": {
   "HM-LC-BlX": [
    "WindowCovering/1"
@@ -1034,11 +1029,6 @@
  "HmIP-DSD-PCB": {
   "HmIP-DSD-PCB": [
    "ContactSensor/1",
-   "Battery/battery"
-  ]
- },
- "HmIP-ESI": {
-  "HmIP-ESI": [
    "Battery/battery"
   ]
  },

@@ -398,6 +398,31 @@ group: bugs first.
   unreachable device stays with its own accessory (the desired signal).
   Re-check on hardware in task 13; `StatusFault` instead of an error
   remains an option if the Home app behaves worse than expected.
+- ✅ **Device editor could not re-enable a device** (#384, regression of
+  the 4.0.0 editor, reported the day after the release): a row unchecked
+  once stored `{disabled: true}`, and the "keep settings of unlisted
+  devices" merge added in dev.3 carried that flag over when the row was
+  checked again — unchecking worked, re-checking never did (3.3.0 rebuilt
+  the object from scratch, so it had no such problem). Fixed in 4.0.1
+  (2026-09-05): the save writes only the flag of the current
+  state (`disabled: true` / opt-in `enabled: true`) and merges only
+  addresses that were not rendered this time; empty entries are dropped.
+  `test/editor-save.test.js` runs the editor script from the html with a
+  jQuery stand-in.
+- ✅ **Battery-only accessories** (#385, same reporter): the `energy` role
+  has no HomeKit service of its own (it only feeds `OutletInUse` of a
+  switch on the same device), so energy-only devices — HM-ES-TX-WM meter
+  sensor, HmIP-ESI — were published with nothing but a Battery service.
+  The Home app shows such an accessory as "Not Supported" and cannot
+  remove it (bridged accessories only vanish when the bridge stops
+  offering them). Fixed in 4.0.1 (2026-09-05): a device
+  without any service-producing channel is unsupported (not listed in the
+  editor, not published) until Eve energy characteristics exist (#114),
+  and the generic layer never publishes an accessory with only a Battery
+  service (a split multi-actuator battery device gets the battery on its
+  first channel accessory instead of an empty device accessory).
+  `test/energy-only.test.js` checks every fixture type with and without
+  SingleAccessory.
 - Uncaught exceptions in device code (#286, #270, #179, #295) → task 6
   fixture instantiation + try/catch at the mapping boundary.
 - Remember last dimmer level on "on" (#195): `LEVEL 1.005` / `OLD_LEVEL`
@@ -433,7 +458,9 @@ back, #336 button bridge): verify after migration; document the intended
 auto-reset semantics.
 
 **Eve characteristics** (#114, 11 comments): custom characteristics for
-power/energy on POWERMETER channels — after 4.0.0.
+power/energy on POWERMETER channels — after 4.0.0. Until then devices that
+carry nothing but energy channels (HM-ES-TX-WM, HmIP-ESI) are not
+published at all (#385, see above).
 
 ## 11. Documentation
 
@@ -483,6 +510,16 @@ asked to test on 4.0.0 (`awaiting-feedback`: #163 RGBW-WM colour, #355
 SMI55-2, #358 PSM-2, #372 SWDM-2, #375 TRV-3, #380 BROLL-2, #382 PS-2).
 Next round: when feedback on 4.0.0 arrives; the `awaiting-feedback`
 issues close after 4–6 weeks without an answer.
+
+**First 4.0.0 reports, 2026-09-05** (one reporter, Node-RED 5.0.6 / Node
+22): #384 (a device unchecked in the editor cannot be re-enabled) and #385
+(HM-ES-TX-WM appears as "Not Supported" in the Home app and cannot be
+removed). Both are real 4.0.0 bugs — the editor regression and the
+battery-only accessory of energy-only devices — and both are fixed in
+**4.0.1, released the same day** (task 9). Answered with the cause, the
+interim workaround (uncheck + deploy for #385; delete and re-create the
+homematic node in one deploy for #384), labelled `bug`, closed as
+completed with the release link.
 
 ## 13. Verify and release 4.0.0
 

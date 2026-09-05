@@ -5,6 +5,26 @@ Notable changes to redmatic-homekit. Format follows
 user-visible change and the reason, not the commit list (the release notes
 append commits automatically).
 
+## 4.0.1 — 2026-09-05
+
+### Fixed
+
+- **A device unchecked in the homematic node could not be re-enabled**
+  (#384, regression from 3.3.0): the editor stored `disabled: true` when a
+  device or channel was unchecked, but never removed the flag when it was
+  checked again — the 4.0.0 logic that keeps the settings of devices not
+  listed in the editor carried the old flag over. Re-enabling now sticks;
+  the stored config keeps the 3.3.0 format (only disabled rows and opt-in
+  rows are written, empty entries are dropped).
+- **Energy-only devices appeared as "Not Supported" in the Home app**
+  (#385): HM-ES-TX-WM and HmIP-ESI carry only energy channels, and HomeKit
+  has no service for energy or power (Eve characteristics are tracked in
+  #114). 4.0.0 published them with nothing but a Battery service, which
+  the Home app shows as "Not Supported" and cannot remove. Such devices are
+  no longer listed or published, and no generic accessory is ever published
+  with only a Battery service. After the update the accessory disappears
+  from the Home app by itself.
+
 ## 4.0.0 — 2026-09-04
 
 **Release-Notes (Deutsch).** RedMatic-HomeKit läuft wieder auf aktuellen
