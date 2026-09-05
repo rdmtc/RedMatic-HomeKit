@@ -508,8 +508,10 @@ fill-level sensor without a HomeKit service, BROLL-2 duplicates → #380),
 #254), and device types without any description that reporters are
 asked to test on 4.0.0 (`awaiting-feedback`: #163 RGBW-WM colour, #355
 SMI55-2, #358 PSM-2, #372 SWDM-2, #375 TRV-3, #380 BROLL-2, #382 PS-2).
-Next round: when feedback on 4.0.0 arrives; the `awaiting-feedback`
-issues close after 4–6 weeks without an answer.
+Next round: when feedback on 4.0.0 arrives. **Rule (maintainer,
+2026-09-05): an `awaiting-feedback` issue may be closed after 3 months
+without any reaction from the reporter** (comment with an invitation to
+reopen); fixed bugs stay open until the reporter confirms.
 
 **First 4.0.0 reports, 2026-09-05** (one reporter, Node-RED 5.0.6 / Node
 22): #384 (a device unchecked in the editor cannot be re-enabled) and #385
