@@ -66,8 +66,8 @@ longer marks all others unresponsive; HmIP buttons report presses without
 a CCU program; multi-mode inputs follow their operating mode. Removed:
 the camera node (needs ffmpeg) and the zigbee node (dead native upstream).
 
-Breaking release. See [ROADMAP.md](ROADMAP.md) for the plan and the
-decisions (D-n) referenced below.
+Breaking release. The plan and the decisions (D-n) referenced below are in
+the roadmap, kept outside this repository.
 
 ### Added
 
