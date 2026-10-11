@@ -5,7 +5,7 @@ Notable changes to redmatic-homekit. Format follows
 user-visible change and the reason, not the commit list (the release notes
 append commits automatically).
 
-## Unreleased
+## 4.0.2 — 2026-10-11
 
 ### Fixed
 
