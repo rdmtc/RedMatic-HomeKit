@@ -68,6 +68,41 @@ function enumIndex(description, name, fallback) {
     return fallback;
 }
 
+/** CurrentTemperature range when the device's paramset says nothing better (3.3.0 and 4.0.x: always this) */
+const TEMPERATURE_RANGE = {minValue: -50, maxValue: 120};
+/** sane outer bounds: below absolute zero or beyond 1000 °C is a placeholder (HB devices: ±3276.8), not a range */
+const TEMPERATURE_LIMITS = {minValue: -270, maxValue: 1000};
+
+function paramNumber(value) {
+    if (typeof value === 'number') {
+        return value;
+    }
+
+    return typeof value === 'string' && value.trim() !== '' ? Number(value) : Number.NaN;
+}
+
+/**
+ * CurrentTemperature props for a temperature datapoint: the default range,
+ * widened to the MIN/MAX of the datapoint's paramset description where the
+ * device can report more (a fireplace or flue sensor at 165 °C, #387), within
+ * TEMPERATURE_LIMITS. Never narrowed: a value outside even this range is
+ * clamped by the accessory base class instead of tripping hap-nodejs.
+ *
+ * @param {object} [description]  paramset description of the datapoint (MIN, MAX)
+ * @returns {{minValue: number, maxValue: number}}
+ */
+function temperatureRange(description) {
+    const range = {...TEMPERATURE_RANGE};
+    const min = paramNumber(description && description.MIN);
+    const max = paramNumber(description && description.MAX);
+    if (Number.isFinite(min) && Number.isFinite(max) && min < max) {
+        range.minValue = Math.max(TEMPERATURE_LIMITS.minValue, Math.min(range.minValue, min));
+        range.maxValue = Math.min(TEMPERATURE_LIMITS.maxValue, Math.max(range.maxValue, max));
+    }
+
+    return range;
+}
+
 function kelvinToMired(kelvin) {
     return Math.max(140, Math.min(500, Math.round(1000000 / Math.max(1, kelvin))));
 }
@@ -319,7 +354,7 @@ class GenericAccessory extends Accessory {
                 case 'weather':
                     if (d.temperature) {
                         this.addService('TemperatureSensor', name, sub)
-                            .setProps('CurrentTemperature', {minValue: -50, maxValue: 120})
+                            .setProps('CurrentTemperature', temperatureRange(c.values[d.temperature]))
                             .get('CurrentTemperature', this.dp(c.address, d.temperature));
                     }
 
@@ -647,7 +682,7 @@ class GenericAccessory extends Accessory {
         let lastSetpoint = 21;
 
         const service = this.addService('Thermostat', c.name, sub)
-            .setProps('CurrentTemperature', {minValue: -50, maxValue: 120})
+            .setProps('CurrentTemperature', temperatureRange(d.temperature && c.values[d.temperature]))
             .setProps('TargetTemperature', {minValue: 4.5, maxValue: 30.5, minStep: 0.5})
             .get('TemperatureDisplayUnits', setpointDp, () => 0);
 
@@ -792,6 +827,7 @@ module.exports = {
     plan,
     editorRows,
     isOptIn,
+    temperatureRange,
     SWITCH_TYPES,
     CONTACT_TYPES,
     BLIND_TYPES,

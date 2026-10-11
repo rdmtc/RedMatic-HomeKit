@@ -1,5 +1,73 @@
 const {stateDatapoint} = require('./state-source');
 
+/** value range of HAP's integer formats (hap-nodejs request-util numericLower/UpperBound) */
+const FORMAT_BOUNDS = {
+    int: [-2147483648, 2147483647],
+    uint8: [0, 255],
+    uint16: [0, 65535],
+    uint32: [0, 4294967295],
+    uint64: [0, Number.MAX_SAFE_INTEGER],
+};
+
+/**
+ * Clamp a numeric value into the range a characteristic accepts, the same
+ * range hap-nodejs 2.x validates against (props.minValue/maxValue, the
+ * format's own bounds, maxValue snapped down onto the minStep grid).
+ * hap-nodejs clamps as well, but logs "characteristic was supplied illegal
+ * value" for every out-of-range value first (#387: a light sensor at 0 lx
+ * below the 0.0001 minimum, a fireplace sensor at 165 °C above 120 °C).
+ * Anything that is not a finite number is returned unchanged.
+ *
+ * @param {object} characteristic  hap-nodejs Characteristic instance
+ * @param {*} value
+ * @returns {*} the clamped value
+ */
+function clampToProps(characteristic, value) {
+    if (typeof value !== 'number' || !Number.isFinite(value) || !characteristic || !characteristic.props) {
+        return value;
+    }
+
+    const {format, minValue, maxValue, minStep} = characteristic.props;
+    if (format !== 'float' && !FORMAT_BOUNDS[format]) {
+        return value;
+    }
+
+    const [lower, upper] = FORMAT_BOUNDS[format] || [];
+    const min = maxDefined(minValue, lower);
+    let max = minDefined(maxValue, upper);
+    const step = format === 'float' ? minStep : Math.max(minStep || 0, 1);
+    if (max !== undefined && step > 0) {
+        const base = typeof minValue === 'number' ? minValue : 0;
+        max = step * Math.floor((max - base) / step) + base;
+    }
+
+    if (min !== undefined && value < min) {
+        return min;
+    }
+
+    if (max !== undefined && value > max) {
+        return max;
+    }
+
+    return value;
+}
+
+function maxDefined(a, b) {
+    if (typeof a !== 'number') {
+        return b;
+    }
+
+    return typeof b === 'number' ? Math.max(a, b) : a;
+}
+
+function minDefined(a, b) {
+    if (typeof a !== 'number') {
+        return b;
+    }
+
+    return typeof b === 'number' ? Math.min(a, b) : a;
+}
+
 class Service {
     constructor(acc, subtype) {
         this.acc = acc;
@@ -134,6 +202,13 @@ module.exports = class Accessory {
 
     addListener(event, subtype, characteristic, callback) {
         if (this.acc.getService(subtype)) {
+            if (event === 'get') {
+                // every value a get handler answers goes through the range clamp (#387)
+                const getter = callback;
+                callback = (done, ...rest) =>
+                    getter((error, value) => done(error, this.clamp(subtype, characteristic, value)), ...rest);
+            }
+
             this.acc.getService(subtype).getCharacteristic(this.hap.Characteristic[characteristic]).on(event, callback);
             this.node.debug(
                 'add ' +
@@ -415,7 +490,12 @@ module.exports = class Accessory {
                             ' ' +
                             value,
                     );
-                    this.acc.getService(subtype).updateCharacteristic(this.hap.Characteristic[characteristic], value);
+                    this.acc
+                        .getService(subtype)
+                        .updateCharacteristic(
+                            this.hap.Characteristic[characteristic],
+                            this.clamp(subtype, characteristic, value),
+                        );
                 },
             ),
         );
@@ -457,7 +537,29 @@ module.exports = class Accessory {
 
     updateCharacteristic(subtype, characteristic, value) {
         this.node.debug('update ' + this.config.name + ' (' + subtype + ') ' + characteristic + ' ' + value);
-        this.acc.getService(subtype).updateCharacteristic(this.hap.Characteristic[characteristic], value);
+        this.acc
+            .getService(subtype)
+            .updateCharacteristic(this.hap.Characteristic[characteristic], this.clamp(subtype, characteristic, value));
+    }
+
+    /**
+     * The value clamped into the characteristic's range (see clampToProps),
+     * with a debug line when it had to be changed.
+     */
+    clamp(subtype, characteristic, value) {
+        const service = this.acc.getService(subtype);
+        if (!service || typeof value !== 'number') {
+            return value;
+        }
+
+        const clamped = clampToProps(service.getCharacteristic(this.hap.Characteristic[characteristic]), value);
+        if (clamped !== value) {
+            this.node.debug(
+                'clamp ' + this.config.name + ' (' + subtype + ') ' + characteristic + ' ' + value + ' -> ' + clamped,
+            );
+        }
+
+        return clamped;
     }
 
     setProps(subtype, characteristic, props) {
@@ -517,3 +619,4 @@ module.exports = class Accessory {
 };
 
 module.exports.Service = Service;
+module.exports.clampToProps = clampToProps;

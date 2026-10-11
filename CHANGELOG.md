@@ -5,6 +5,24 @@ Notable changes to redmatic-homekit. Format follows
 user-visible change and the reason, not the commit list (the release notes
 append commits automatically).
 
+## Unreleased
+
+### Fixed
+
+- **Syslog filled with "characteristic was supplied illegal value"
+  warnings** (#387, reported by @jp112sdl, since 4.0.0): hap-nodejs 2.x
+  checks every value against the characteristic's range and logs each one
+  outside it — every night for a light sensor at 0 lx (HomeKit's minimum is
+  0.0001 lx), and on every update of a temperature above 120 °C. The
+  Homematic accessories now clamp numeric values to the characteristic's
+  range before handing them to HomeKit, for every device module and the
+  generic mapping alike; nothing is logged any more (a clamp shows up in
+  the debug log only). Temperature sensors and thermostats of the generic
+  mapping also take the range their paramset reports where it reaches
+  beyond -50…120 °C (up to -270…1000 °C), so e.g. a fireplace sensor at
+  165 °C is shown as 165 °C instead of 120 °C. Pairings and accessories are
+  unchanged.
+
 ## 4.0.1 — 2026-09-05
 
 ### Fixed
