@@ -5,6 +5,20 @@ Notable changes to redmatic-homekit. Format follows
 user-visible change and the reason, not the commit list (the release notes
 append commits automatically).
 
+## Unreleased
+
+### Changed
+
+- **Light sensors above 100000 lx** (#387, @jp112sdl): HomeKit's light
+  level ends at 100000 lx by default, so since 4.0.2 a brighter reading was
+  shown as 100000 lx. Light sensors now take the range their paramset
+  reports (HmIP light and motion sensors up to 163830 lx, HM-Sen-LI-O and
+  HB-UNI-Sen-WEA up to 200000 lx; at most 500000 lx), for every device
+  module and the generic mapping alike. A device whose paramset
+  description is not cached yet keeps 100000 lx until the next deploy.
+  Pairings and accessories are unchanged; the Home app re-reads the
+  accessory's ranges by itself.
+
 ## 4.0.2 — 2026-10-11
 
 ### Fixed

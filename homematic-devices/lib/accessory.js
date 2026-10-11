@@ -1,4 +1,14 @@
 const {stateDatapoint} = require('./state-source');
+const {lightLevelRange} = require('./ranges');
+
+/**
+ * Characteristics whose range is widened to the datapoint's paramset
+ * description wherever a module binds them to a datapoint (#387: light
+ * sensors that report more than HAP's 100000 lx).
+ */
+const PARAMSET_RANGES = {
+    CurrentAmbientLightLevel: lightLevelRange,
+};
 
 /** value range of HAP's integer formats (hap-nodejs request-util numericLower/UpperBound) */
 const FORMAT_BOUNDS = {
@@ -436,6 +446,7 @@ module.exports = class Accessory {
         // HmIP actuators: read the state from the transmitter channel, which reports
         // the real output whatever set it; the virtual receiver only knows its own writes
         datapointName = stateDatapoint(this.ccu, datapointName);
+        this.applyParamsetRange(subtype, characteristic, datapointName);
         this.addListener('get', subtype, characteristic, (callback) => {
             const valueOrig = this.ccu.values && this.ccu.values[datapointName] && this.ccu.values[datapointName].value;
             let value = valueOrig;
@@ -560,6 +571,63 @@ module.exports = class Accessory {
         }
 
         return clamped;
+    }
+
+    /**
+     * The VALUES paramset description of a datapoint `IFACE.ADDRESS:CH.NAME`
+     * from the ccu-connection's cache, or undefined when it is not cached
+     * (ccu-connection then fetches it for the next deploy).
+     */
+    datapointDescription(datapointName) {
+        const match = /^([^.]+)\.([^.]+:\d+)\.(.+)$/.exec(datapointName || '');
+        const devices = match && this.ccu.metadata && this.ccu.metadata.devices && this.ccu.metadata.devices[match[1]];
+        const channel = devices && devices[match[2]];
+        if (!channel || typeof this.ccu.getParamsetDescription !== 'function') {
+            return undefined;
+        }
+
+        const description = this.ccu.getParamsetDescription(match[1], channel, 'VALUES', match[3]);
+        return description && typeof description === 'object' ? description : undefined;
+    }
+
+    /**
+     * Widen the characteristic's range to the one its datapoint's paramset
+     * description allows (PARAMSET_RANGES), never narrow it. Only props
+     * change: identities stay, controllers re-read the accessory database.
+     */
+    applyParamsetRange(subtype, characteristic, datapointName) {
+        const rangeOf = PARAMSET_RANGES[characteristic];
+        const service = rangeOf && this.acc.getService(subtype);
+        if (!service) {
+            return;
+        }
+
+        const description = this.datapointDescription(datapointName);
+        if (!description) {
+            return;
+        }
+
+        const c = service.getCharacteristic(this.hap.Characteristic[characteristic]);
+        const range = rangeOf(description);
+        const minValue = typeof c.props.minValue === 'number' ? Math.min(c.props.minValue, range.minValue) : undefined;
+        const maxValue = typeof c.props.maxValue === 'number' ? Math.max(c.props.maxValue, range.maxValue) : undefined;
+        if (minValue !== c.props.minValue || maxValue !== c.props.maxValue) {
+            this.node.debug(
+                'range ' +
+                    this.config.name +
+                    ' (' +
+                    subtype +
+                    ') ' +
+                    characteristic +
+                    ' ' +
+                    minValue +
+                    '…' +
+                    maxValue +
+                    ' from ' +
+                    datapointName,
+            );
+            c.setProps({minValue, maxValue});
+        }
     }
 
     setProps(subtype, characteristic, props) {
