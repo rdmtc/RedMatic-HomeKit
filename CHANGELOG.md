@@ -5,6 +5,27 @@ Notable changes to redmatic-homekit. Format follows
 user-visible change and the reason, not the commit list (the release notes
 append commits automatically).
 
+## 4.1.0 — 2026-10-17
+
+### Added
+
+- **HomeKit name per device and channel** (#388, @jp112sdl): the
+  homematic node's device list has a text field next to every device's
+  and channel's CCU name for a different name in HomeKit; empty keeps the
+  CCU name, shown as placeholder. The name in the CCU is not changed, and
+  accessories keep their identity (it follows the address): rooms, scenes
+  and automations stay, nothing needs re-pairing. An accessory already in
+  the Home app keeps the name the Home app stored when it was added, so
+  the HomeKit name mainly applies to newly added accessories and
+  channels. Since hap-nodejs 1.0 a name that does not start and end with
+  a letter or digit (e.g. `Wandtaster Treppenlicht 1.OG (unten)`) is
+  logged as "has an invalid 'Name' characteristic" on every deploy; such
+  names get an orange border in the editor, and a HomeKit name like
+  `Wandtaster Treppenlicht 1.OG unten` removes the warning. A HomeKit
+  name also names a channel's service for the HmIP-PS, -PSM, -FSM, -BDT,
+  -FDT, -PDT and HM-ES-PMSW1-PL modules, which publish those services
+  without a name otherwise.
+
 ## 4.0.3 — 2026-10-11
 
 ### Changed

@@ -76,6 +76,18 @@ Gerätetyp öffnen – am besten mit einem Auszug der Gerätebeschreibung
 (`getParamsetDescription`), dann lässt sich die Rolle ohne das Gerät
 nachrüsten.
 
+## HomeKit-Namen
+
+Accessories und Services heißen wie Gerät und Kanal in der CCU. Seit 4.1.0
+lässt sich im homematic-Node neben jedem Geräte- und Kanalnamen ein
+eigener Name für HomeKit eintragen; leer bleibt der CCU-Name. Der Name in
+der CCU bleibt unverändert, die Identität des Zubehörs auch (sie hängt an
+der Adresse). Zubehör, das schon in der Home-App ist, behält dort seinen
+gespeicherten Namen; der HomeKit-Name gilt vor allem für neu hinzugefügte.
+Ein Name, der mit einem Buchstaben oder einer Ziffer beginnt und endet
+(`… 1.OG unten` statt `… 1.OG (unten)`), beseitigt die HAP-NodeJS-Warnung
+„has an invalid 'Name' characteristic“ im Log.
+
 ## mDNS (Bonjour)
 
 HomeKit findet die Bridge per mDNS. Standardmäßig (_auto_) benutzt die

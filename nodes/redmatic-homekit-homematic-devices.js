@@ -1,6 +1,7 @@
 const catalogue = require('../homematic-devices/lib/catalogue');
 const roles = require('../homematic-devices/lib/roles');
 const {GenericDevice} = require('../homematic-devices/lib/generic');
+const names = require('../homematic-devices/lib/names');
 
 module.exports = function (RED) {
     RED.httpAdmin.get('/redmatic-homekit/homematic-devices', RED.auth.needsPermission('redmatic.read'), (req, res) => {
@@ -40,6 +41,20 @@ module.exports = function (RED) {
 
             this.bridgeConfig.waitForHomematic = true;
             this.ccu.register(this);
+        }
+
+        /**
+         * The ccu-connection as the device modules and the generic mapping see
+         * it: its channelNames answer the HomeKit name set in the editor first
+         * (`devices[address].name`, #388); everything else is the node itself.
+         */
+        get ccu() {
+            return this._ccuView;
+        }
+
+        set ccu(ccu) {
+            this._ccu = ccu;
+            this._ccuView = ccu ? names.withNameOverrides(ccu, () => this.devices) : ccu;
         }
 
         publishDevices(callback) {

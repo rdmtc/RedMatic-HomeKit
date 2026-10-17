@@ -65,6 +65,18 @@ If a device is missing from the homematic node's list, open an issue with
 the device type, ideally with its `getParamsetDescription` output — the
 role can then be added without the hardware.
 
+## HomeKit names
+
+Accessories and services are named like the device and channel in the
+CCU. Since 4.1.0 the homematic node takes a HomeKit name next to every
+device and channel name; empty keeps the CCU name. The CCU name is not
+changed, and neither is the accessory's identity (it follows the
+address). Accessories already in the Home app keep the name it stored
+there; the HomeKit name mainly applies to newly added ones. A name that
+starts and ends with a letter or digit (`… 1.OG unten` instead of
+`… 1.OG (unten)`) removes HAP-NodeJS' "has an invalid 'Name'
+characteristic" warning from the log.
+
 ## mDNS (Bonjour)
 
 HomeKit discovers the bridge via mDNS. By default (_auto_) the bridge uses

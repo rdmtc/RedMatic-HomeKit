@@ -65,6 +65,7 @@ const optInDevice = (addr, checked) => ({
 const channel = (addr, checked) => ({classes: ['device-enabled', 'channel-enabled'], addr, checked});
 const vchannel = (addr, checked) => ({classes: ['device-enabled', 'vchannel-enabled'], addr, checked});
 const option = (addr, name, value) => ({classes: ['channel-option'], addr, option: name, value});
+const homekitName = (addr, value) => ({classes: ['homekit-name'], addr, value});
 
 const disabled = (devices, addr) => Boolean(devices[addr] && devices[addr].disabled);
 const enabled = (devices, addr) => Boolean(devices[addr] && devices[addr].enabled);
@@ -119,4 +120,38 @@ test('settings of devices not listed this time are kept, empty entries are dropp
     const previous = {XYZ0000001: {disabled: true}, 'XYZ0000001:1': {type: 'Outlet'}, 'XYZ0000001:2': {}};
     const devices = save(previous, [device('ABC0000001', true)]);
     assert.deepEqual(devices, {XYZ0000001: {disabled: true}, 'XYZ0000001:1': {type: 'Outlet'}});
+});
+
+test('a HomeKit name is saved trimmed next to the other settings, an emptied one is removed (#388)', () => {
+    let devices = save({}, [
+        device('ABC0000001', true),
+        homekitName('ABC0000001', '  Wandtaster Treppenlicht 1.OG unten '),
+        channel('ABC0000001:3', true),
+        option('ABC0000001:3', 'type', 'Outlet'),
+        homekitName('ABC0000001:3', 'Steckdose'),
+        channel('ABC0000001:4', false),
+        homekitName('ABC0000001:4', '   '),
+    ]);
+    assert.deepEqual(devices, {
+        ABC0000001: {name: 'Wandtaster Treppenlicht 1.OG unten'},
+        'ABC0000001:3': {type: 'Outlet', name: 'Steckdose'},
+        'ABC0000001:4': {disabled: true},
+    });
+
+    devices = save(devices, [
+        device('ABC0000001', true),
+        homekitName('ABC0000001', ''),
+        channel('ABC0000001:3', true),
+        option('ABC0000001:3', 'type', 'Outlet'),
+        homekitName('ABC0000001:3', 'Steckdose'),
+    ]);
+    assert.deepEqual(devices, {
+        'ABC0000001:3': {type: 'Outlet', name: 'Steckdose'},
+        'ABC0000001:4': {disabled: true}, // not listed this time: kept
+    });
+});
+
+test('the HomeKit name of a device not listed this time is kept', () => {
+    const devices = save({XYZ0000001: {name: 'Flur'}}, [device('ABC0000001', true)]);
+    assert.deepEqual(devices, {XYZ0000001: {name: 'Flur'}});
 });

@@ -44,10 +44,29 @@
                 return html;
             }
 
-            function channelRow(addr, ch, name, extra, html) {
+            // hap-nodejs' name check: first and last character a letter or digit
+            const homekitName = /^[\p{L}\p{N}][\p{L}\p{N}\p{Zs}\u2019'&!._:;()/,-]*[\p{L}\p{N}]$/u;
+
+            // HomeKit name of a device or channel (#388): empty = the CCU name, shown as placeholder
+            function nameInput(addr, ccuName) {
+                const stored = that.devices[addr] && typeof that.devices[addr].name === 'string' ? that.devices[addr].name : '';
+                return '<input class="homekit-name" type="text" data-addr="' + escape(addr) + '" data-ccu-name="' +
+                    escape(ccuName) + '" placeholder="' + escape(ccuName) + '" value="' + escape(stored) + '">';
+            }
+
+            function checkName() {
+                const value = $(this).val().trim() || String($(this).data('ccu-name'));
+                const valid = homekitName.test(value);
+                $(this).toggleClass('homekit-name-warning', !valid).attr('title', valid ? '' :
+                    'HomeKit: der Name sollte mit einem Buchstaben oder einer Ziffer beginnen und enden / ' +
+                    'the name should start and end with a letter or digit');
+            }
+
+            function channelRow(addr, ch, name, extra, html, named) {
                 return '<tr class="device-options" data-addr="' + addr + '"><td></td><td class="text small">' +
                     '<input class="device-enabled ' + extra + '" data-addr="' + ch + '" type="checkbox">' +
-                    escape(name) + '</td><td class="text small">' + escape(ch) + '</td><td class="text small">' + html + '</td></tr>';
+                    escape(name) + '</td><td class="name-cell">' + (named ? nameInput(ch, name) : '') + '</td>' +
+                    '<td class="text small">' + escape(ch) + '</td><td class="text small">' + html + '</td></tr>';
             }
 
             function addDevice(dev) {
@@ -58,14 +77,14 @@
                 // opt-in devices (the CCU's virtual remote) are stored as enabled: true, like virtual channels
                 const checked = dev.optIn ? Boolean(that.devices[addr].enabled) : !that.devices[addr].disabled;
                 const cls = dev.optIn ? 'device-enabled option-hide vchannel-enabled' : 'device-enabled option-hide';
-                $('#devices').append('<tr><td class="enabled"><input class="' + cls + '" data-addr="' + addr + '" type="checkbox"' + (checked ? ' checked' : '') + '></td><td class="text">' + escape(dev.name) + (dev.optIn ? ' <span class="small">(opt-in)</span>' : '') + '</td><td class="text small">' + escape(addr) + '</td><td class="text small">' + escape(dev.type) + '</td></tr>');
+                $('#devices').append('<tr><td class="enabled"><input class="' + cls + '" data-addr="' + addr + '" type="checkbox"' + (checked ? ' checked' : '') + '></td><td class="text">' + escape(dev.name) + (dev.optIn ? ' <span class="small">(opt-in)</span>' : '') + '</td><td class="name-cell">' + nameInput(addr, dev.name) + '</td><td class="text small">' + escape(addr) + '</td><td class="text small">' + escape(dev.type) + '</td></tr>');
 
                 dev.options.forEach(option => {
                     const ch = addr + ':' + option;
                     if (!that.devices[ch]) {
                         that.devices[ch] = {};
                     }
-                    const $row = $(channelRow(addr, ch, option, 'channel-enabled', ''));
+                    const $row = $(channelRow(addr, ch, option, 'channel-enabled', '', false));
                     $row.find('input').prop('checked', !that.devices[ch].disabled);
                     $('#devices').append($row);
                 });
@@ -78,11 +97,11 @@
                     const html = dropdownHtml(ch, channel.dropdowns);
                     if (channel.virtual) {
                         // HmIP virtual receiver channels are opt-in (stored as enabled: true)
-                        const $row = $(channelRow(addr, ch, channel.name, 'vchannel-enabled', html));
+                        const $row = $(channelRow(addr, ch, channel.name, 'vchannel-enabled', html, true));
                         $row.find('input').prop('checked', Boolean(that.devices[ch].enabled));
                         $('#devices').append($row);
                     } else {
-                        const $row = $(channelRow(addr, ch, channel.name, 'channel-enabled', html));
+                        const $row = $(channelRow(addr, ch, channel.name, 'channel-enabled', html, true));
                         $row.find('input').prop('checked', !that.devices[ch].disabled).prop('disabled', Boolean(channel.fixed));
                         $('#devices').append($row);
                     }
@@ -94,6 +113,7 @@
                 $('.config').hide();
                 $.getJSON('redmatic-homekit/homematic-devices?config=' + this.ccuConfig, devices => {
                     devices.forEach(addDevice);
+                    $('.homekit-name').on('input', checkName).each(checkName);
 
                     $('.option-hide').each(function () {
                         $(this).change(function () {
@@ -128,6 +148,13 @@
             };
             $('.channel-option').each(function () {
                 entry($(this).data('addr'))[$(this).data('option')] = $(this).val();
+            });
+            // HomeKit name (#388): stored only when set; empty means the CCU name
+            $('.homekit-name').each(function () {
+                const name = String($(this).val() || '').trim();
+                if (name) {
+                    entry($(this).data('addr')).name = name;
+                }
             });
             // Devices, channels and pseudo-options are stored as {disabled: true} when
             // unchecked (absent = enabled); opt-in rows (virtual receivers, buttons on
@@ -176,6 +203,14 @@
             overflow: hidden;
             text-overflow: ellipsis;
         }
+        #devices td.text {
+            max-width: 170px;
+        }
+        #devices td.name-cell {
+            width: 130px;
+            min-width: 130px;
+            padding: 1px 4px;
+        }
         #devices td.small {
             max-width: 90px;
             font-size: 10px;
@@ -190,6 +225,18 @@
             width: 11px !important;
             margin-top: -1px !important;
             margin-right: 2px !important;
+        }
+
+        input.homekit-name {
+            width: 100%;
+            height: 18px;
+            padding: 0 3px;
+            font-size: 10px;
+            margin: 0;
+        }
+
+        input.homekit-name.homekit-name-warning {
+            border-color: #e8a33d;
         }
 
         select.small {
@@ -229,12 +276,32 @@
         <dt>Battery, HumiditySensor, LightSensor, BoostSwitch, …</dt><dd>Zusätzliche Services, die sich pro
             Gerät abschalten lassen.</dd>
     </dl>
+    <h3>HomeKit-Name</h3>
+    <p>Das Textfeld neben dem CCU-Namen eines Geräts oder Kanals legt einen anderen Namen für HomeKit fest; leer
+    bleibt der Name aus der CCU (als Platzhalter angezeigt). Der Name in der CCU wird nicht verändert, und das
+    Zubehörteil behält seine Identität (sie hängt an der Geräteadresse): Raum, Szenen und Automationen bleiben,
+    nichts muss neu gekoppelt werden.</p>
+    <p>Ein Zubehörteil, das schon in der Home-App ist, behält dort den Namen, den die Home-App beim Hinzufügen
+    gespeichert hat; der HomeKit-Name wirkt vor allem für neu hinzugefügte Zubehörteile und Kanäle. Umbenennen
+    lässt es sich in der Home-App selbst.</p>
+    <p>HomeKit möchte Namen, die mit einem Buchstaben oder einer Ziffer beginnen und enden. Sonst schreibt
+    HAP-NodeJS beim Deploy die Warnung <i>„has an invalid 'Name' characteristic“</i> ins Log, und das Feld ist
+    orange umrandet. Ein HomeKit-Name wie <code>Wandtaster Treppenlicht 1.OG unten</code> statt
+    <code>… 1.OG (unten)</code> beseitigt die Warnung.</p>
+    <p><i>English:</i> the text field next to a device's or channel's CCU name sets a different name for HomeKit;
+    empty keeps the CCU name (shown as placeholder). The CCU name is not changed, and the accessory keeps its
+    identity (it follows the device address), so rooms, scenes and automations stay and nothing needs re-pairing.
+    An accessory already added to the Home app keeps the name the Home app stored when it was added; the HomeKit
+    name mainly applies to newly added accessories and channels (rename existing ones in the Home app). HomeKit
+    wants names that start and end with a letter or digit; otherwise HAP-NodeJS logs <i>"has an invalid 'Name'
+    characteristic"</i> on deploy and the field gets an orange border. A HomeKit name that starts and ends with a
+    letter or digit removes that warning.</p>
     <h3>Geräteunterstützung</h3>
     <p>Für bekannte Gerätetypen gibt es speziell abgestimmte Module. Alle anderen Geräte werden aus ihrer
     Gerätebeschreibung (Kanaltypen und Datenpunkte) zugeordnet; das umfasst auch neue, Homebrew- und
     CUxD-Geräte. Fehlt ein Gerät, bitte ein Issue mit dem Gerätetyp öffnen.</p>
     <h3>Hinweise</h3>
-    <p>Gerätenamen werden von der CCU übernommen (Kanalnamen für Kanäle). Zubehörteile behalten ihre Identität
+    <p>Gerätenamen werden von der CCU übernommen (Kanalnamen für Kanäle), sofern kein HomeKit-Name gesetzt ist. Zubehörteile behalten ihre Identität
     über Neustarts und Updates, solange die Geräteadresse gleich bleibt. Nach dem Ändern der Auswahl ist ein
     Deploy nötig; neue Zubehörteile erscheinen in der Home-App im Standardraum.</p>
 </script>
