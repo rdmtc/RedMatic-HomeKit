@@ -119,12 +119,11 @@ longer marks all others unresponsive; HmIP buttons report presses without
 a CCU program; multi-mode inputs follow their operating mode. Removed:
 the camera node (needs ffmpeg) and the zigbee node (dead native upstream).
 
-Breaking release. The plan and the decisions (D-n) referenced below are in
-the roadmap, kept outside this repository.
+Breaking release.
 
 ### Added
 
-- **Generic device mapping** (ROADMAP task 7, D-5): Homematic devices
+- **Generic device mapping**: Homematic devices
   without a per-type module are now mapped from their channel roles, which
   the runtime derives from the paramset descriptions the CCU reports
   (CONTROL hints, channel types, datapoint names). Switches, dimmers,
@@ -243,8 +242,7 @@ the roadmap, kept outside this repository.
   responder on hosts without one (official CCU firmware), so both
   firmwares work without configuration; `ciao`, `bonjour-hap` and `avahi`
   can still be forced.
-- **HAP library: `hap-nodejs` 0.4.52 (2019) → `@homebridge/hap-nodejs` 2.x**
-  (D-2). Pairings, accessory identities and service numbering are kept
+- **HAP library: `hap-nodejs` 0.4.52 (2019) → `@homebridge/hap-nodejs` 2.x**. Pairings, accessory identities and service numbering are kept
   (storage stays in `<userDir>/homekit`, UUIDs are still derived from the
   bridge MAC and the CCU addresses), so controllers do not need to re-pair
   and rooms/automations survive. Internally: `HAPStorage` instead of
@@ -278,18 +276,18 @@ the roadmap, kept outside this repository.
   reduced to `nodes/`, `homematic-devices/` and this changelog.
 - A guard (`tools/check-native.js`, run in CI) fails the build if any
   production dependency needs a compiler, an install script or ships a
-  binary — the package must stay installable on a CCU (ROADMAP D-1).
+  binary — the package must stay installable on a CCU.
 
 ### Removed
 
 - **Camera node** (`redmatic-homekit-camera`) and the
-  `homebridge-camera-ffmpeg` dependency (D-7). It needed an `ffmpeg` binary
+  `homebridge-camera-ffmpeg` dependency. It needed an `ffmpeg` binary
   that RedMatic 9 no longer ships and a rewrite against the hap-nodejs 2.x
   `CameraController` API. Use Homebridge with homebridge-camera-ffmpeg or
   Scrypted for cameras. Existing flows keep importing; the node shows up as
   an unknown type and must be deleted.
 - **Zigbee node** (`redmatic-homekit-zigbee-devices`) and the
-  `zigbee-devices/` adapters (D-6). Its upstream node-red-contrib-zigbee has
+  `zigbee-devices/` adapters. Its upstream node-red-contrib-zigbee has
   been unmaintained since 2022 and depends on native serialport code that
   cannot be installed on a CCU. zigbee2mqtt plus the universal node is the
   supported way to bring Zigbee devices into HomeKit.
