@@ -5,6 +5,19 @@ Notable changes to redmatic-homekit. Format follows
 user-visible change and the reason, not the commit list (the release notes
 append commits automatically).
 
+## 4.1.2 — 2026-10-24
+
+### Fixed
+
+- **The HomeKit name field in the device list uses the available width**
+  (#388, @jp112sdl): the column was fixed at 130 px and the field stayed
+  91 px wide however wide the edit dialog was pulled; now the column takes
+  whatever the dialog leaves next to the CCU name, address and type columns,
+  so widening the dialog widens the field, and a long CCU name is cut with
+  an ellipsis instead of widening the row. The field also has the height of
+  the dropdowns next to it instead of a full-size form field (Node-RED's own
+  input rule had overridden the list's), so the list is denser.
+
 ## 4.1.1 — 2026-10-24
 
 ### Fixed
