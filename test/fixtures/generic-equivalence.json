@@ -4764,30 +4764,19 @@
   "type": "HmIP-DRBLI4",
   "module": "hmip-drbli4",
   "target": "lib/generic-hmip-blind",
-  "verdict": "not replaceable",
+  "verdict": "replaceable, editor additions",
   "delegate": "lib/generic-hmip-blind",
   "classes": [
-   "editor",
    "editor-added"
   ],
-  "scenarios": 55,
+  "scenarios": 37,
   "first": {
    "scenario": "default",
-   "class": "editor",
-   "path": ".editor.rows.VCU8601435:2.dropdowns.type.length",
-   "module": "2",
-   "generic": "4"
+   "class": "editor-added",
+   "path": ".editor.options.SingleAccessory",
+   "generic": "true"
   },
-  "firstResidual": {
-   "scenario": "default",
-   "class": "editor",
-   "path": ".editor.rows.VCU8601435:2.dropdowns.type.length",
-   "module": "2",
-   "generic": "4"
-  },
-  "residual": [
-   "editor"
-  ]
+  "residual": []
  },
  "HmIP-DRSI1": {
   "type": "HmIP-DRSI1",
