@@ -721,6 +721,21 @@
     "Battery/1"
    ]
   },
+  "HMIP-WTH": {
+   "HMIP-WTH": [
+    "Thermostat/0",
+    "Battery/1",
+    "HumiditySensor/2",
+    "Switch/Boost3"
+   ]
+  },
+  "HMIP-eTRV": {
+   "HMIP-eTRV": [
+    "Thermostat/0",
+    "Battery/1",
+    "Switch/Boost2"
+   ]
+  },
   "HMW-IO-12-Sw7-DR": {
    "HMW-IO-12-Sw7-DR": [
     "Switch/0",

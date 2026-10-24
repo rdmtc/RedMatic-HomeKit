@@ -1,0 +1,6714 @@
+{
+ "HB-LC-Bl1PBU-FM": {
+  "type": "HB-LC-Bl1PBU-FM",
+  "module": "hb-lc-bl1pbu-fm",
+  "target": "hm-lc-bl1pbu-fm",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "subtype",
+   "service-name",
+   "subscriptions",
+   "writes",
+   "editor-added"
+  ],
+  "scenarios": 1,
+  "first": {
+   "scenario": "default",
+   "class": "subtype",
+   "path": ".structure[0].services[0].subtype",
+   "module": "\"0\"",
+   "generic": "\"1\""
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "subscriptions",
+   "path": ".subscriptions.length",
+   "module": "5",
+   "generic": "4"
+  },
+  "residual": [
+   "subscriptions",
+   "writes"
+  ]
+ },
+ "HB-LC-Sw1PBU-FM": {
+  "type": "HB-LC-Sw1PBU-FM",
+  "module": "hb-lc-sw1pbu-fm",
+  "target": "lib/generic-switch",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "identity",
+   "subtype",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor"
+  ],
+  "scenarios": 23,
+  "first": {
+   "scenario": "default",
+   "class": "subtype",
+   "path": ".structure[0].services[0].subtype",
+   "module": "\"0\"",
+   "generic": "\"1\""
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "editor",
+   "path": ".editor.options.SingleAccessory",
+   "module": "true"
+  },
+  "residual": [
+   "identity",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor"
+  ]
+ },
+ "HB-LC-Sw2PBU-FM": {
+  "type": "HB-LC-Sw2PBU-FM",
+  "module": "hb-lc-sw2pbu-fm",
+  "target": "lib/generic-switch",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "subtype",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor"
+  ],
+  "scenarios": 30,
+  "first": {
+   "scenario": "default",
+   "class": "subtype",
+   "path": ".structure[0].services[0].subtype",
+   "module": "\"0\"",
+   "generic": "\"1\""
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "editor",
+   "path": ".editor.rows.VCU1795819:3.dropdowns",
+   "module": "{\"type\":[\"Switch\",\"Outlet\",\"Lightbulb\",\"Fan\",\"Valve\",\"ValveIrrigation\"]}",
+   "generic": "null"
+  },
+  "residual": [
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor"
+  ]
+ },
+ "HB-UNI-RGB-LED-CTRL": {
+  "type": "HB-UNI-RGB-LED-CTRL",
+  "module": "hb-uni-rgb-led-ctrl",
+  "target": "hm-lc-rgbw-wm",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "subtype",
+   "service-name",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "writes",
+   "editor-added"
+  ],
+  "scenarios": 1,
+  "first": {
+   "scenario": "default",
+   "class": "subtype",
+   "path": ".structure[0].services[0].subtype",
+   "module": "\"0\"",
+   "generic": "\"1\""
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "characteristics",
+   "path": ".structure[0].services[0].characteristics.Hue",
+   "module": "{\"props\":{\"format\":\"float\",\"perms\":[\"ev\",\"pr\",\"pw\"],\"unit\":\"arcdegrees\",\"minValue\":0,\"maxValue\":360,\"minStep\":1},\"get\":1,\"set\":1}"
+  },
+  "residual": [
+   "characteristics",
+   "subscriptions",
+   "values",
+   "writes"
+  ]
+ },
+ "HB-UNI-Sen-TEMP-DS18B20": {
+  "type": "HB-UNI-Sen-TEMP-DS18B20",
+  "module": "hb-uni-sen-temp-ds18b20",
+  "target": "hb-uni-sen-temp-ds18b20",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "services",
+   "subtype",
+   "service-name",
+   "characteristics",
+   "values",
+   "editor-added"
+  ],
+  "scenarios": 1,
+  "first": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "8",
+   "generic": "9"
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "8",
+   "generic": "9"
+  },
+  "residual": [
+   "services",
+   "characteristics",
+   "values"
+  ]
+ },
+ "HM-CC-RT-DN": {
+  "type": "HM-CC-RT-DN",
+  "module": "hm-cc-rt-dn",
+  "target": "hm-cc-rt-dn",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "services",
+   "subtype",
+   "service-name",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor",
+   "editor-added"
+  ],
+  "scenarios": 2,
+  "first": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "3",
+   "generic": "1"
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "3",
+   "generic": "1"
+  },
+  "residual": [
+   "services",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor"
+  ]
+ },
+ "HM-CC-RT-DN-BoM": {
+  "type": "HM-CC-RT-DN-BoM",
+  "module": "hm-cc-rt-dn-bom",
+  "target": "hm-cc-rt-dn",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "services",
+   "subtype",
+   "service-name",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor",
+   "editor-added"
+  ],
+  "scenarios": 2,
+  "first": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "3",
+   "generic": "1"
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "3",
+   "generic": "1"
+  },
+  "residual": [
+   "services",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor"
+  ]
+ },
+ "HM-CC-SCD": {
+  "type": "HM-CC-SCD",
+  "module": "hm-cc-scd",
+  "target": "hm-cc-scd",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "unsupported"
+  ],
+  "scenarios": 0,
+  "reason": "generic mapping finds nothing to publish"
+ },
+ "HM-CC-TC": {
+  "type": "HM-CC-TC",
+  "module": "hm-cc-tc",
+  "target": "hm-cc-tc",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "services",
+   "subtype",
+   "service-name",
+   "characteristics",
+   "props",
+   "subscriptions",
+   "values",
+   "editor-added"
+  ],
+  "scenarios": 2,
+  "first": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services[0].type",
+   "module": "\"Battery\"",
+   "generic": "\"HumiditySensor\""
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services[0].type",
+   "module": "\"Battery\"",
+   "generic": "\"HumiditySensor\""
+  },
+  "residual": [
+   "services",
+   "characteristics",
+   "props",
+   "subscriptions",
+   "values"
+  ]
+ },
+ "HM-CC-VG-1": {
+  "type": "HM-CC-VG-1",
+  "module": "hm-cc-vg-1",
+  "target": "hm-cc-vg-1",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "error",
+   "services",
+   "subscriptions",
+   "values",
+   "writes",
+   "editor",
+   "editor-added"
+  ],
+  "scenarios": 3,
+  "first": {
+   "scenario": "default",
+   "class": "error",
+   "path": ".error",
+   "module": "\"BidCos-RF.INT0000001 group configuration not found\"",
+   "generic": "null"
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "error",
+   "path": ".error",
+   "module": "\"BidCos-RF.INT0000001 group configuration not found\"",
+   "generic": "null"
+  },
+  "residual": [
+   "error",
+   "services",
+   "subscriptions",
+   "values",
+   "writes",
+   "editor"
+  ]
+ },
+ "HM-DW-WM": {
+  "type": "HM-DW-WM",
+  "module": "hm-dw-wm",
+  "target": "hm-lc-dim2l-sm",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "services",
+   "subtype",
+   "subscriptions",
+   "values",
+   "writes",
+   "editor-added"
+  ],
+  "scenarios": 1,
+  "first": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "2",
+   "generic": "6"
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "2",
+   "generic": "6"
+  },
+  "residual": [
+   "services",
+   "subscriptions",
+   "values",
+   "writes"
+  ]
+ },
+ "HM-ES-PMSw1-DR": {
+  "type": "HM-ES-PMSw1-DR",
+  "module": "hm-es-pmsw1-dr",
+  "target": "hm-es-pmsw1-pl",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "services",
+   "subtype",
+   "service-name",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "writes",
+   "editor-fixed",
+   "editor-added"
+  ],
+  "scenarios": 7,
+  "first": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services[0].type",
+   "module": "\"Outlet\"",
+   "generic": "\"Switch\""
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services[0].type",
+   "module": "\"Outlet\"",
+   "generic": "\"Switch\""
+  },
+  "residual": [
+   "services",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "writes"
+  ]
+ },
+ "HM-ES-PMSw1-Pl": {
+  "type": "HM-ES-PMSw1-Pl",
+  "module": "hm-es-pmsw1-pl",
+  "target": "hm-es-pmsw1-pl",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "services",
+   "subtype",
+   "service-name",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "writes",
+   "editor-fixed",
+   "editor-added"
+  ],
+  "scenarios": 7,
+  "first": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services[0].type",
+   "module": "\"Outlet\"",
+   "generic": "\"Switch\""
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services[0].type",
+   "module": "\"Outlet\"",
+   "generic": "\"Switch\""
+  },
+  "residual": [
+   "services",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "writes"
+  ]
+ },
+ "HM-ES-PMSw1-Pl-DN-R1": {
+  "type": "HM-ES-PMSw1-Pl-DN-R1",
+  "module": "hm-es-pmsw1-pl-dn-r1",
+  "target": "hm-es-pmsw1-pl",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "services",
+   "subtype",
+   "service-name",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "writes",
+   "editor-fixed",
+   "editor-added"
+  ],
+  "scenarios": 7,
+  "first": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services[0].type",
+   "module": "\"Outlet\"",
+   "generic": "\"Switch\""
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services[0].type",
+   "module": "\"Outlet\"",
+   "generic": "\"Switch\""
+  },
+  "residual": [
+   "services",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "writes"
+  ]
+ },
+ "HM-ES-PMSw1-SM": {
+  "type": "HM-ES-PMSw1-SM",
+  "module": "hm-es-pmsw1-sm",
+  "target": "hm-es-pmsw1-pl",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "services",
+   "subtype",
+   "service-name",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "writes",
+   "editor-added"
+  ],
+  "scenarios": 1,
+  "first": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services[0].type",
+   "module": "\"Outlet\"",
+   "generic": "\"Switch\""
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services[0].type",
+   "module": "\"Outlet\"",
+   "generic": "\"Switch\""
+  },
+  "residual": [
+   "services",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "writes"
+  ]
+ },
+ "HM-LC-AO-SM": {
+  "type": "HM-LC-AO-SM",
+  "module": "hm-lc-ao-sm",
+  "target": "hm-lc-dim1l-cv",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "services",
+   "subtype",
+   "service-name",
+   "subscriptions",
+   "values",
+   "writes",
+   "editor-added"
+  ],
+  "scenarios": 1,
+  "first": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "1",
+   "generic": "3"
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "1",
+   "generic": "3"
+  },
+  "residual": [
+   "services",
+   "subscriptions",
+   "values",
+   "writes"
+  ]
+ },
+ "HM-LC-Bl1-FM": {
+  "type": "HM-LC-Bl1-FM",
+  "module": "hm-lc-bl1-fm",
+  "target": "hm-lc-bl1-fm",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "subtype",
+   "service-name",
+   "subscriptions",
+   "writes",
+   "editor-added"
+  ],
+  "scenarios": 1,
+  "first": {
+   "scenario": "default",
+   "class": "subtype",
+   "path": ".structure[0].services[0].subtype",
+   "module": "\"0\"",
+   "generic": "\"1\""
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "subscriptions",
+   "path": ".subscriptions.length",
+   "module": "5",
+   "generic": "4"
+  },
+  "residual": [
+   "subscriptions",
+   "writes"
+  ]
+ },
+ "HM-LC-Bl1-FM-2": {
+  "type": "HM-LC-Bl1-FM-2",
+  "module": "hm-lc-bl1-fm-2",
+  "target": "hm-lc-bl1-fm",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "subtype",
+   "service-name",
+   "subscriptions",
+   "writes",
+   "editor-added"
+  ],
+  "scenarios": 1,
+  "first": {
+   "scenario": "default",
+   "class": "subtype",
+   "path": ".structure[0].services[0].subtype",
+   "module": "\"0\"",
+   "generic": "\"1\""
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "subscriptions",
+   "path": ".subscriptions.length",
+   "module": "5",
+   "generic": "4"
+  },
+  "residual": [
+   "subscriptions",
+   "writes"
+  ]
+ },
+ "HM-LC-Bl1-PB-FM": {
+  "type": "HM-LC-Bl1-PB-FM",
+  "module": "hm-lc-bl1-pb-fm",
+  "target": "hm-lc-bl1-fm",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "subtype",
+   "service-name",
+   "subscriptions",
+   "writes",
+   "editor-added"
+  ],
+  "scenarios": 1,
+  "first": {
+   "scenario": "default",
+   "class": "subtype",
+   "path": ".structure[0].services[0].subtype",
+   "module": "\"0\"",
+   "generic": "\"1\""
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "subscriptions",
+   "path": ".subscriptions.length",
+   "module": "5",
+   "generic": "4"
+  },
+  "residual": [
+   "subscriptions",
+   "writes"
+  ]
+ },
+ "HM-LC-Bl1-SM": {
+  "type": "HM-LC-Bl1-SM",
+  "module": "hm-lc-bl1-sm",
+  "target": "hm-lc-bl1-fm",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "subtype",
+   "service-name",
+   "subscriptions",
+   "writes",
+   "editor-added"
+  ],
+  "scenarios": 1,
+  "first": {
+   "scenario": "default",
+   "class": "subtype",
+   "path": ".structure[0].services[0].subtype",
+   "module": "\"0\"",
+   "generic": "\"1\""
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "subscriptions",
+   "path": ".subscriptions.length",
+   "module": "5",
+   "generic": "4"
+  },
+  "residual": [
+   "subscriptions",
+   "writes"
+  ]
+ },
+ "HM-LC-Bl1-SM-2": {
+  "type": "HM-LC-Bl1-SM-2",
+  "module": "hm-lc-bl1-sm-2",
+  "target": "hm-lc-bl1-fm",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "subtype",
+   "service-name",
+   "subscriptions",
+   "writes",
+   "editor-added"
+  ],
+  "scenarios": 1,
+  "first": {
+   "scenario": "default",
+   "class": "subtype",
+   "path": ".structure[0].services[0].subtype",
+   "module": "\"0\"",
+   "generic": "\"1\""
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "subscriptions",
+   "path": ".subscriptions.length",
+   "module": "5",
+   "generic": "4"
+  },
+  "residual": [
+   "subscriptions",
+   "writes"
+  ]
+ },
+ "HM-LC-Bl1PBU-FM": {
+  "type": "HM-LC-Bl1PBU-FM",
+  "module": "hm-lc-bl1pbu-fm",
+  "target": "hm-lc-bl1-fm",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "subtype",
+   "service-name",
+   "subscriptions",
+   "writes",
+   "editor-added"
+  ],
+  "scenarios": 1,
+  "first": {
+   "scenario": "default",
+   "class": "subtype",
+   "path": ".structure[0].services[0].subtype",
+   "module": "\"0\"",
+   "generic": "\"1\""
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "subscriptions",
+   "path": ".subscriptions.length",
+   "module": "5",
+   "generic": "4"
+  },
+  "residual": [
+   "subscriptions",
+   "writes"
+  ]
+ },
+ "HM-LC-Dim1L-CV": {
+  "type": "HM-LC-Dim1L-CV",
+  "module": "hm-lc-dim1l-cv",
+  "target": "hm-lc-dim1l-cv",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "subtype",
+   "service-name",
+   "writes",
+   "editor-added"
+  ],
+  "scenarios": 1,
+  "first": {
+   "scenario": "default",
+   "class": "subtype",
+   "path": ".structure[0].services[0].subtype",
+   "module": "\"0\"",
+   "generic": "\"1\""
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "writes",
+   "path": ".writes[5].calls.length",
+   "module": "1",
+   "generic": "0"
+  },
+  "residual": [
+   "writes"
+  ]
+ },
+ "HM-LC-Dim1L-CV-2": {
+  "type": "HM-LC-Dim1L-CV-2",
+  "module": "hm-lc-dim1l-cv-2",
+  "target": "hm-lc-dim1l-cv",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "services",
+   "subtype",
+   "service-name",
+   "subscriptions",
+   "values",
+   "writes",
+   "editor-added"
+  ],
+  "scenarios": 1,
+  "first": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "1",
+   "generic": "3"
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "1",
+   "generic": "3"
+  },
+  "residual": [
+   "services",
+   "subscriptions",
+   "values",
+   "writes"
+  ]
+ },
+ "HM-LC-Dim1L-Pl": {
+  "type": "HM-LC-Dim1L-Pl",
+  "module": "hm-lc-dim1l-pl",
+  "target": "hm-lc-dim1l-cv",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "subtype",
+   "service-name",
+   "writes",
+   "editor-added"
+  ],
+  "scenarios": 1,
+  "first": {
+   "scenario": "default",
+   "class": "subtype",
+   "path": ".structure[0].services[0].subtype",
+   "module": "\"0\"",
+   "generic": "\"1\""
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "writes",
+   "path": ".writes[5].calls.length",
+   "module": "1",
+   "generic": "0"
+  },
+  "residual": [
+   "writes"
+  ]
+ },
+ "HM-LC-Dim1L-Pl-2": {
+  "type": "HM-LC-Dim1L-Pl-2",
+  "module": "hm-lc-dim1l-pl-2",
+  "target": "hm-lc-dim1l-cv",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "subtype",
+   "service-name",
+   "writes",
+   "editor-added"
+  ],
+  "scenarios": 1,
+  "first": {
+   "scenario": "default",
+   "class": "subtype",
+   "path": ".structure[0].services[0].subtype",
+   "module": "\"0\"",
+   "generic": "\"1\""
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "writes",
+   "path": ".writes[5].calls.length",
+   "module": "1",
+   "generic": "0"
+  },
+  "residual": [
+   "writes"
+  ]
+ },
+ "HM-LC-Dim1L-Pl-3": {
+  "type": "HM-LC-Dim1L-Pl-3",
+  "module": "hm-lc-dim1l-pl-3",
+  "target": "hm-lc-dim1l-cv",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "services",
+   "subtype",
+   "service-name",
+   "subscriptions",
+   "values",
+   "writes",
+   "editor-added"
+  ],
+  "scenarios": 1,
+  "first": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "1",
+   "generic": "3"
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "1",
+   "generic": "3"
+  },
+  "residual": [
+   "services",
+   "subscriptions",
+   "values",
+   "writes"
+  ]
+ },
+ "HM-LC-Dim1PWM-CV": {
+  "type": "HM-LC-Dim1PWM-CV",
+  "module": "hm-lc-dim1pwm-cv",
+  "target": "hm-lc-dim1l-cv",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "services",
+   "subtype",
+   "service-name",
+   "subscriptions",
+   "values",
+   "writes",
+   "editor-added"
+  ],
+  "scenarios": 1,
+  "first": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "1",
+   "generic": "3"
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "1",
+   "generic": "3"
+  },
+  "residual": [
+   "services",
+   "subscriptions",
+   "values",
+   "writes"
+  ]
+ },
+ "HM-LC-Dim1PWM-CV-2": {
+  "type": "HM-LC-Dim1PWM-CV-2",
+  "module": "hm-lc-dim1pwm-cv-2",
+  "target": "hm-lc-dim1l-cv",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "services",
+   "subtype",
+   "service-name",
+   "subscriptions",
+   "values",
+   "writes",
+   "editor-added"
+  ],
+  "scenarios": 1,
+  "first": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "1",
+   "generic": "3"
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "1",
+   "generic": "3"
+  },
+  "residual": [
+   "services",
+   "subscriptions",
+   "values",
+   "writes"
+  ]
+ },
+ "HM-LC-Dim1T-CV": {
+  "type": "HM-LC-Dim1T-CV",
+  "module": "hm-lc-dim1t-cv",
+  "target": "hm-lc-dim1l-cv",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "subtype",
+   "service-name",
+   "writes",
+   "editor-added"
+  ],
+  "scenarios": 1,
+  "first": {
+   "scenario": "default",
+   "class": "subtype",
+   "path": ".structure[0].services[0].subtype",
+   "module": "\"0\"",
+   "generic": "\"1\""
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "writes",
+   "path": ".writes[5].calls.length",
+   "module": "1",
+   "generic": "0"
+  },
+  "residual": [
+   "writes"
+  ]
+ },
+ "HM-LC-Dim1T-CV-2": {
+  "type": "HM-LC-Dim1T-CV-2",
+  "module": "hm-lc-dim1t-cv-2",
+  "target": "hm-lc-dim1l-cv",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "services",
+   "subtype",
+   "service-name",
+   "subscriptions",
+   "values",
+   "writes",
+   "editor-added"
+  ],
+  "scenarios": 1,
+  "first": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "1",
+   "generic": "3"
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "1",
+   "generic": "3"
+  },
+  "residual": [
+   "services",
+   "subscriptions",
+   "values",
+   "writes"
+  ]
+ },
+ "HM-LC-Dim1T-DR": {
+  "type": "HM-LC-Dim1T-DR",
+  "module": "hm-lc-dim1t-dr",
+  "target": "hm-lc-dim1l-cv",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "services",
+   "subtype",
+   "service-name",
+   "subscriptions",
+   "values",
+   "writes",
+   "editor-added"
+  ],
+  "scenarios": 1,
+  "first": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "1",
+   "generic": "3"
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "1",
+   "generic": "3"
+  },
+  "residual": [
+   "services",
+   "subscriptions",
+   "values",
+   "writes"
+  ]
+ },
+ "HM-LC-Dim1T-FM": {
+  "type": "HM-LC-Dim1T-FM",
+  "module": "hm-lc-dim1t-fm",
+  "target": "hm-lc-dim1l-cv",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "subtype",
+   "service-name",
+   "writes",
+   "editor-added"
+  ],
+  "scenarios": 1,
+  "first": {
+   "scenario": "default",
+   "class": "subtype",
+   "path": ".structure[0].services[0].subtype",
+   "module": "\"0\"",
+   "generic": "\"1\""
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "writes",
+   "path": ".writes[5].calls.length",
+   "module": "1",
+   "generic": "0"
+  },
+  "residual": [
+   "writes"
+  ]
+ },
+ "HM-LC-Dim1T-FM-2": {
+  "type": "HM-LC-Dim1T-FM-2",
+  "module": "hm-lc-dim1t-fm-2",
+  "target": "hm-lc-dim1l-cv",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "services",
+   "subtype",
+   "service-name",
+   "subscriptions",
+   "values",
+   "writes",
+   "editor-added"
+  ],
+  "scenarios": 1,
+  "first": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "1",
+   "generic": "3"
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "1",
+   "generic": "3"
+  },
+  "residual": [
+   "services",
+   "subscriptions",
+   "values",
+   "writes"
+  ]
+ },
+ "HM-LC-Dim1T-FM-LF": {
+  "type": "HM-LC-Dim1T-FM-LF",
+  "module": "hm-lc-dim1t-fm-lf",
+  "target": "hm-lc-dim1l-cv",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "subtype",
+   "service-name",
+   "writes",
+   "editor-added"
+  ],
+  "scenarios": 1,
+  "first": {
+   "scenario": "default",
+   "class": "subtype",
+   "path": ".structure[0].services[0].subtype",
+   "module": "\"0\"",
+   "generic": "\"1\""
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "writes",
+   "path": ".writes[5].calls.length",
+   "module": "1",
+   "generic": "0"
+  },
+  "residual": [
+   "writes"
+  ]
+ },
+ "HM-LC-Dim1T-Pl": {
+  "type": "HM-LC-Dim1T-Pl",
+  "module": "hm-lc-dim1t-pl",
+  "target": "hm-lc-dim1l-cv",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "subtype",
+   "service-name",
+   "writes",
+   "editor-added"
+  ],
+  "scenarios": 1,
+  "first": {
+   "scenario": "default",
+   "class": "subtype",
+   "path": ".structure[0].services[0].subtype",
+   "module": "\"0\"",
+   "generic": "\"1\""
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "writes",
+   "path": ".writes[5].calls.length",
+   "module": "1",
+   "generic": "0"
+  },
+  "residual": [
+   "writes"
+  ]
+ },
+ "HM-LC-Dim1T-Pl-2": {
+  "type": "HM-LC-Dim1T-Pl-2",
+  "module": "hm-lc-dim1t-pl-2",
+  "target": "hm-lc-dim1l-cv",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "subtype",
+   "service-name",
+   "writes",
+   "editor-added"
+  ],
+  "scenarios": 1,
+  "first": {
+   "scenario": "default",
+   "class": "subtype",
+   "path": ".structure[0].services[0].subtype",
+   "module": "\"0\"",
+   "generic": "\"1\""
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "writes",
+   "path": ".writes[5].calls.length",
+   "module": "1",
+   "generic": "0"
+  },
+  "residual": [
+   "writes"
+  ]
+ },
+ "HM-LC-Dim1T-Pl-3": {
+  "type": "HM-LC-Dim1T-Pl-3",
+  "module": "hm-lc-dim1t-pl-3",
+  "target": "hm-lc-dim1l-cv",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "services",
+   "subtype",
+   "service-name",
+   "subscriptions",
+   "values",
+   "writes",
+   "editor-added"
+  ],
+  "scenarios": 1,
+  "first": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "1",
+   "generic": "3"
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "1",
+   "generic": "3"
+  },
+  "residual": [
+   "services",
+   "subscriptions",
+   "values",
+   "writes"
+  ]
+ },
+ "HM-LC-Dim1TPBU-FM": {
+  "type": "HM-LC-Dim1TPBU-FM",
+  "module": "hm-lc-dim1tpbu-fm",
+  "target": "hm-lc-dim1l-cv",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "services",
+   "subtype",
+   "service-name",
+   "subscriptions",
+   "values",
+   "writes",
+   "editor-added"
+  ],
+  "scenarios": 1,
+  "first": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "1",
+   "generic": "3"
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "1",
+   "generic": "3"
+  },
+  "residual": [
+   "services",
+   "subscriptions",
+   "values",
+   "writes"
+  ]
+ },
+ "HM-LC-Dim1TPBU-FM-2": {
+  "type": "HM-LC-Dim1TPBU-FM-2",
+  "module": "hm-lc-dim1tpbu-fm-2",
+  "target": "hm-lc-dim1l-cv",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "services",
+   "subtype",
+   "service-name",
+   "subscriptions",
+   "values",
+   "writes",
+   "editor-added"
+  ],
+  "scenarios": 1,
+  "first": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "1",
+   "generic": "3"
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "1",
+   "generic": "3"
+  },
+  "residual": [
+   "services",
+   "subscriptions",
+   "values",
+   "writes"
+  ]
+ },
+ "HM-LC-Dim2L-SM": {
+  "type": "HM-LC-Dim2L-SM",
+  "module": "hm-lc-dim2l-sm",
+  "target": "hm-lc-dim2l-sm",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "subtype",
+   "writes",
+   "editor-added"
+  ],
+  "scenarios": 1,
+  "first": {
+   "scenario": "default",
+   "class": "subtype",
+   "path": ".structure[0].services[0].subtype",
+   "module": "\"0\"",
+   "generic": "\"1\""
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "writes",
+   "path": ".writes[10].calls.length",
+   "module": "1",
+   "generic": "0"
+  },
+  "residual": [
+   "writes"
+  ]
+ },
+ "HM-LC-Dim2L-SM-2": {
+  "type": "HM-LC-Dim2L-SM-2",
+  "module": "hm-lc-dim2l-sm-2",
+  "target": "hm-lc-dim2l-sm",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "services",
+   "subtype",
+   "subscriptions",
+   "values",
+   "writes",
+   "editor-added"
+  ],
+  "scenarios": 1,
+  "first": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "2",
+   "generic": "6"
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "2",
+   "generic": "6"
+  },
+  "residual": [
+   "services",
+   "subscriptions",
+   "values",
+   "writes"
+  ]
+ },
+ "HM-LC-Dim2T-SM": {
+  "type": "HM-LC-Dim2T-SM",
+  "module": "hm-lc-dim2t-sm",
+  "target": "hm-lc-dim2l-sm",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "subtype",
+   "writes",
+   "editor-added"
+  ],
+  "scenarios": 1,
+  "first": {
+   "scenario": "default",
+   "class": "subtype",
+   "path": ".structure[0].services[0].subtype",
+   "module": "\"0\"",
+   "generic": "\"1\""
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "writes",
+   "path": ".writes[10].calls.length",
+   "module": "1",
+   "generic": "0"
+  },
+  "residual": [
+   "writes"
+  ]
+ },
+ "HM-LC-Dim2T-SM-2": {
+  "type": "HM-LC-Dim2T-SM-2",
+  "module": "hm-lc-dim2t-sm-2",
+  "target": "hm-lc-dim2l-sm",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "services",
+   "subtype",
+   "subscriptions",
+   "values",
+   "writes",
+   "editor-added"
+  ],
+  "scenarios": 1,
+  "first": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "2",
+   "generic": "6"
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "2",
+   "generic": "6"
+  },
+  "residual": [
+   "services",
+   "subscriptions",
+   "values",
+   "writes"
+  ]
+ },
+ "HM-LC-Ja1PBU-FM": {
+  "type": "HM-LC-Ja1PBU-FM",
+  "module": "hm-lc-ja1pbu-fm",
+  "target": "hm-lc-ja1pbu-fm",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "subtype",
+   "service-name",
+   "editor-added"
+  ],
+  "scenarios": 1,
+  "first": {
+   "scenario": "default",
+   "class": "subtype",
+   "path": ".structure[0].services[0].subtype",
+   "module": "\"0\"",
+   "generic": "\"1\""
+  },
+  "residual": []
+ },
+ "HM-LC-RGBW-WM": {
+  "type": "HM-LC-RGBW-WM",
+  "module": "hm-lc-rgbw-wm",
+  "target": "hm-lc-rgbw-wm",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "subtype",
+   "service-name",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "writes",
+   "editor-added"
+  ],
+  "scenarios": 1,
+  "first": {
+   "scenario": "default",
+   "class": "subtype",
+   "path": ".structure[0].services[0].subtype",
+   "module": "\"0\"",
+   "generic": "\"1\""
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "characteristics",
+   "path": ".structure[0].services[0].characteristics.Hue",
+   "module": "{\"props\":{\"format\":\"float\",\"perms\":[\"ev\",\"pr\",\"pw\"],\"unit\":\"arcdegrees\",\"minValue\":0,\"maxValue\":360,\"minStep\":1},\"get\":1,\"set\":1}"
+  },
+  "residual": [
+   "characteristics",
+   "subscriptions",
+   "values",
+   "writes"
+  ]
+ },
+ "HM-LC-Sw1-Ba-PCB": {
+  "type": "HM-LC-Sw1-Ba-PCB",
+  "module": "hm-lc-sw1-ba-pcb",
+  "target": "hm-lc-sw1-ba-pcb",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "services",
+   "service-name",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "writes",
+   "editor",
+   "editor-fixed"
+  ],
+  "scenarios": 8,
+  "first": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "2",
+   "generic": "1"
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "2",
+   "generic": "1"
+  },
+  "residual": [
+   "services",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "writes",
+   "editor"
+  ]
+ },
+ "HM-LC-Sw1-DR": {
+  "type": "HM-LC-Sw1-DR",
+  "module": "hm-lc-sw1-dr",
+  "target": "lib/generic-switch",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "identity",
+   "subtype",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor",
+   "editor-fixed"
+  ],
+  "scenarios": 8,
+  "first": {
+   "scenario": "default",
+   "class": "subtype",
+   "path": ".structure[0].services[0].subtype",
+   "module": "\"0\"",
+   "generic": "\"1\""
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "editor",
+   "path": ".editor.options.SingleAccessory",
+   "module": "true"
+  },
+  "residual": [
+   "identity",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor"
+  ]
+ },
+ "HM-LC-Sw1-FM": {
+  "type": "HM-LC-Sw1-FM",
+  "module": "hm-lc-sw1-fm",
+  "target": "lib/generic-switch",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "identity",
+   "subtype",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor",
+   "editor-fixed"
+  ],
+  "scenarios": 8,
+  "first": {
+   "scenario": "default",
+   "class": "subtype",
+   "path": ".structure[0].services[0].subtype",
+   "module": "\"0\"",
+   "generic": "\"1\""
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "editor",
+   "path": ".editor.options.SingleAccessory",
+   "module": "true"
+  },
+  "residual": [
+   "identity",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor"
+  ]
+ },
+ "HM-LC-Sw1-FM-2": {
+  "type": "HM-LC-Sw1-FM-2",
+  "module": "hm-lc-sw1-fm-2",
+  "target": "lib/generic-switch",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "identity",
+   "subtype",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor",
+   "editor-fixed"
+  ],
+  "scenarios": 8,
+  "first": {
+   "scenario": "default",
+   "class": "subtype",
+   "path": ".structure[0].services[0].subtype",
+   "module": "\"0\"",
+   "generic": "\"1\""
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "editor",
+   "path": ".editor.options.SingleAccessory",
+   "module": "true"
+  },
+  "residual": [
+   "identity",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor"
+  ]
+ },
+ "HM-LC-Sw1-PB-FM": {
+  "type": "HM-LC-Sw1-PB-FM",
+  "module": "hm-lc-sw1-pb-fm",
+  "target": "lib/generic-switch",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "identity",
+   "subtype",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor",
+   "editor-fixed"
+  ],
+  "scenarios": 8,
+  "first": {
+   "scenario": "default",
+   "class": "subtype",
+   "path": ".structure[0].services[0].subtype",
+   "module": "\"0\"",
+   "generic": "\"1\""
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "editor",
+   "path": ".editor.options.SingleAccessory",
+   "module": "true"
+  },
+  "residual": [
+   "identity",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor"
+  ]
+ },
+ "HM-LC-Sw1-PCB": {
+  "type": "HM-LC-Sw1-PCB",
+  "module": "hm-lc-sw1-pcb",
+  "target": "lib/generic-switch",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "identity",
+   "subtype",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor",
+   "editor-fixed"
+  ],
+  "scenarios": 8,
+  "first": {
+   "scenario": "default",
+   "class": "subtype",
+   "path": ".structure[0].services[0].subtype",
+   "module": "\"0\"",
+   "generic": "\"1\""
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "editor",
+   "path": ".editor.options.SingleAccessory",
+   "module": "true"
+  },
+  "residual": [
+   "identity",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor"
+  ]
+ },
+ "HM-LC-Sw1-Pl": {
+  "type": "HM-LC-Sw1-Pl",
+  "module": "hm-lc-sw1-pl",
+  "target": "lib/generic-switch",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "identity",
+   "subtype",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor",
+   "editor-fixed"
+  ],
+  "scenarios": 8,
+  "first": {
+   "scenario": "default",
+   "class": "subtype",
+   "path": ".structure[0].services[0].subtype",
+   "module": "\"0\"",
+   "generic": "\"1\""
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "editor",
+   "path": ".editor.options.SingleAccessory",
+   "module": "true"
+  },
+  "residual": [
+   "identity",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor"
+  ]
+ },
+ "HM-LC-Sw1-Pl-2": {
+  "type": "HM-LC-Sw1-Pl-2",
+  "module": "hm-lc-sw1-pl-2",
+  "target": "lib/generic-switch",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "identity",
+   "subtype",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor",
+   "editor-fixed"
+  ],
+  "scenarios": 8,
+  "first": {
+   "scenario": "default",
+   "class": "subtype",
+   "path": ".structure[0].services[0].subtype",
+   "module": "\"0\"",
+   "generic": "\"1\""
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "editor",
+   "path": ".editor.options.SingleAccessory",
+   "module": "true"
+  },
+  "residual": [
+   "identity",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor"
+  ]
+ },
+ "HM-LC-Sw1-Pl-3": {
+  "type": "HM-LC-Sw1-Pl-3",
+  "module": "hm-lc-sw1-pl-3",
+  "target": "lib/generic-switch",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "identity",
+   "subtype",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor",
+   "editor-fixed"
+  ],
+  "scenarios": 8,
+  "first": {
+   "scenario": "default",
+   "class": "subtype",
+   "path": ".structure[0].services[0].subtype",
+   "module": "\"0\"",
+   "generic": "\"1\""
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "editor",
+   "path": ".editor.options.SingleAccessory",
+   "module": "true"
+  },
+  "residual": [
+   "identity",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor"
+  ]
+ },
+ "HM-LC-Sw1-Pl-CT-R1": {
+  "type": "HM-LC-Sw1-Pl-CT-R1",
+  "module": "hm-lc-sw1-pl-ct-r1",
+  "target": "lib/generic-switch",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "identity",
+   "subtype",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor",
+   "editor-fixed"
+  ],
+  "scenarios": 8,
+  "first": {
+   "scenario": "default",
+   "class": "subtype",
+   "path": ".structure[0].services[0].subtype",
+   "module": "\"0\"",
+   "generic": "\"1\""
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "editor",
+   "path": ".editor.options.SingleAccessory",
+   "module": "true"
+  },
+  "residual": [
+   "identity",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor"
+  ]
+ },
+ "HM-LC-Sw1-Pl-CT-R2": {
+  "type": "HM-LC-Sw1-Pl-CT-R2",
+  "module": "hm-lc-sw1-pl-ct-r2",
+  "target": "lib/generic-switch",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "identity",
+   "subtype",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor",
+   "editor-fixed"
+  ],
+  "scenarios": 8,
+  "first": {
+   "scenario": "default",
+   "class": "subtype",
+   "path": ".structure[0].services[0].subtype",
+   "module": "\"0\"",
+   "generic": "\"1\""
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "editor",
+   "path": ".editor.options.SingleAccessory",
+   "module": "true"
+  },
+  "residual": [
+   "identity",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor"
+  ]
+ },
+ "HM-LC-Sw1-Pl-CT-R3": {
+  "type": "HM-LC-Sw1-Pl-CT-R3",
+  "module": "hm-lc-sw1-pl-ct-r3",
+  "target": "lib/generic-switch",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "identity",
+   "subtype",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor",
+   "editor-fixed"
+  ],
+  "scenarios": 8,
+  "first": {
+   "scenario": "default",
+   "class": "subtype",
+   "path": ".structure[0].services[0].subtype",
+   "module": "\"0\"",
+   "generic": "\"1\""
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "editor",
+   "path": ".editor.options.SingleAccessory",
+   "module": "true"
+  },
+  "residual": [
+   "identity",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor"
+  ]
+ },
+ "HM-LC-Sw1-Pl-CT-R4": {
+  "type": "HM-LC-Sw1-Pl-CT-R4",
+  "module": "hm-lc-sw1-pl-ct-r4",
+  "target": "lib/generic-switch",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "identity",
+   "subtype",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor",
+   "editor-fixed"
+  ],
+  "scenarios": 8,
+  "first": {
+   "scenario": "default",
+   "class": "subtype",
+   "path": ".structure[0].services[0].subtype",
+   "module": "\"0\"",
+   "generic": "\"1\""
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "editor",
+   "path": ".editor.options.SingleAccessory",
+   "module": "true"
+  },
+  "residual": [
+   "identity",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor"
+  ]
+ },
+ "HM-LC-Sw1-Pl-CT-R5": {
+  "type": "HM-LC-Sw1-Pl-CT-R5",
+  "module": "hm-lc-sw1-pl-ct-r5",
+  "target": "lib/generic-switch",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "identity",
+   "subtype",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor",
+   "editor-fixed"
+  ],
+  "scenarios": 8,
+  "first": {
+   "scenario": "default",
+   "class": "subtype",
+   "path": ".structure[0].services[0].subtype",
+   "module": "\"0\"",
+   "generic": "\"1\""
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "editor",
+   "path": ".editor.options.SingleAccessory",
+   "module": "true"
+  },
+  "residual": [
+   "identity",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor"
+  ]
+ },
+ "HM-LC-Sw1-Pl-DN-R1": {
+  "type": "HM-LC-Sw1-Pl-DN-R1",
+  "module": "hm-lc-sw1-pl-dn-r1",
+  "target": "lib/generic-switch",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "identity",
+   "subtype",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor",
+   "editor-fixed"
+  ],
+  "scenarios": 8,
+  "first": {
+   "scenario": "default",
+   "class": "subtype",
+   "path": ".structure[0].services[0].subtype",
+   "module": "\"0\"",
+   "generic": "\"1\""
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "editor",
+   "path": ".editor.options.SingleAccessory",
+   "module": "true"
+  },
+  "residual": [
+   "identity",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor"
+  ]
+ },
+ "HM-LC-Sw1-Pl-DN-R2": {
+  "type": "HM-LC-Sw1-Pl-DN-R2",
+  "module": "hm-lc-sw1-pl-dn-r2",
+  "target": "lib/generic-switch",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "identity",
+   "subtype",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor",
+   "editor-fixed"
+  ],
+  "scenarios": 8,
+  "first": {
+   "scenario": "default",
+   "class": "subtype",
+   "path": ".structure[0].services[0].subtype",
+   "module": "\"0\"",
+   "generic": "\"1\""
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "editor",
+   "path": ".editor.options.SingleAccessory",
+   "module": "true"
+  },
+  "residual": [
+   "identity",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor"
+  ]
+ },
+ "HM-LC-Sw1-Pl-DN-R3": {
+  "type": "HM-LC-Sw1-Pl-DN-R3",
+  "module": "hm-lc-sw1-pl-dn-r3",
+  "target": "lib/generic-switch",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "identity",
+   "subtype",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor",
+   "editor-fixed"
+  ],
+  "scenarios": 8,
+  "first": {
+   "scenario": "default",
+   "class": "subtype",
+   "path": ".structure[0].services[0].subtype",
+   "module": "\"0\"",
+   "generic": "\"1\""
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "editor",
+   "path": ".editor.options.SingleAccessory",
+   "module": "true"
+  },
+  "residual": [
+   "identity",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor"
+  ]
+ },
+ "HM-LC-Sw1-Pl-DN-R4": {
+  "type": "HM-LC-Sw1-Pl-DN-R4",
+  "module": "hm-lc-sw1-pl-dn-r4",
+  "target": "lib/generic-switch",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "identity",
+   "subtype",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor",
+   "editor-fixed"
+  ],
+  "scenarios": 8,
+  "first": {
+   "scenario": "default",
+   "class": "subtype",
+   "path": ".structure[0].services[0].subtype",
+   "module": "\"0\"",
+   "generic": "\"1\""
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "editor",
+   "path": ".editor.options.SingleAccessory",
+   "module": "true"
+  },
+  "residual": [
+   "identity",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor"
+  ]
+ },
+ "HM-LC-Sw1-Pl-DN-R5": {
+  "type": "HM-LC-Sw1-Pl-DN-R5",
+  "module": "hm-lc-sw1-pl-dn-r5",
+  "target": "lib/generic-switch",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "identity",
+   "subtype",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor",
+   "editor-fixed"
+  ],
+  "scenarios": 8,
+  "first": {
+   "scenario": "default",
+   "class": "subtype",
+   "path": ".structure[0].services[0].subtype",
+   "module": "\"0\"",
+   "generic": "\"1\""
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "editor",
+   "path": ".editor.options.SingleAccessory",
+   "module": "true"
+  },
+  "residual": [
+   "identity",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor"
+  ]
+ },
+ "HM-LC-Sw1-Pl-OM54": {
+  "type": "HM-LC-Sw1-Pl-OM54",
+  "module": "hm-lc-sw1-pl-om54",
+  "target": "lib/generic-switch",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "identity",
+   "subtype",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor",
+   "editor-fixed"
+  ],
+  "scenarios": 8,
+  "first": {
+   "scenario": "default",
+   "class": "subtype",
+   "path": ".structure[0].services[0].subtype",
+   "module": "\"0\"",
+   "generic": "\"1\""
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "editor",
+   "path": ".editor.options.SingleAccessory",
+   "module": "true"
+  },
+  "residual": [
+   "identity",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor"
+  ]
+ },
+ "HM-LC-Sw1-SM": {
+  "type": "HM-LC-Sw1-SM",
+  "module": "hm-lc-sw1-sm",
+  "target": "lib/generic-switch",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "identity",
+   "subtype",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor",
+   "editor-fixed"
+  ],
+  "scenarios": 8,
+  "first": {
+   "scenario": "default",
+   "class": "subtype",
+   "path": ".structure[0].services[0].subtype",
+   "module": "\"0\"",
+   "generic": "\"1\""
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "editor",
+   "path": ".editor.options.SingleAccessory",
+   "module": "true"
+  },
+  "residual": [
+   "identity",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor"
+  ]
+ },
+ "HM-LC-Sw1-SM-2": {
+  "type": "HM-LC-Sw1-SM-2",
+  "module": "hm-lc-sw1-sm-2",
+  "target": "lib/generic-switch",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "identity",
+   "subtype",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor",
+   "editor-fixed"
+  ],
+  "scenarios": 8,
+  "first": {
+   "scenario": "default",
+   "class": "subtype",
+   "path": ".structure[0].services[0].subtype",
+   "module": "\"0\"",
+   "generic": "\"1\""
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "editor",
+   "path": ".editor.options.SingleAccessory",
+   "module": "true"
+  },
+  "residual": [
+   "identity",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor"
+  ]
+ },
+ "HM-LC-Sw1PBU-FM": {
+  "type": "HM-LC-Sw1PBU-FM",
+  "module": "hm-lc-sw1pbu-fm",
+  "target": "lib/generic-switch",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "identity",
+   "subtype",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor",
+   "editor-fixed"
+  ],
+  "scenarios": 8,
+  "first": {
+   "scenario": "default",
+   "class": "subtype",
+   "path": ".structure[0].services[0].subtype",
+   "module": "\"0\"",
+   "generic": "\"1\""
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "editor",
+   "path": ".editor.options.SingleAccessory",
+   "module": "true"
+  },
+  "residual": [
+   "identity",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor"
+  ]
+ },
+ "HM-LC-Sw2-DR": {
+  "type": "HM-LC-Sw2-DR",
+  "module": "hm-lc-sw2-dr",
+  "target": "lib/generic-switch",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "subtype",
+   "characteristics",
+   "subscriptions",
+   "values"
+  ],
+  "scenarios": 16,
+  "first": {
+   "scenario": "default",
+   "class": "subtype",
+   "path": ".structure[0].services[0].subtype",
+   "module": "\"0\"",
+   "generic": "\"1\""
+  },
+  "firstResidual": {
+   "scenario": "VCU0000334:1 type=Outlet",
+   "class": "characteristics",
+   "path": ".structure[0].services[0].characteristics.OutletInUse",
+   "generic": "{\"props\":{\"format\":\"bool\",\"perms\":[\"ev\",\"pr\"]},\"get\":1,\"set\":0}"
+  },
+  "residual": [
+   "characteristics",
+   "subscriptions",
+   "values"
+  ]
+ },
+ "HM-LC-Sw2-DR-2": {
+  "type": "HM-LC-Sw2-DR-2",
+  "module": "hm-lc-sw2-dr-2",
+  "target": "lib/generic-switch",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "subtype",
+   "characteristics",
+   "subscriptions",
+   "values"
+  ],
+  "scenarios": 16,
+  "first": {
+   "scenario": "default",
+   "class": "subtype",
+   "path": ".structure[0].services[0].subtype",
+   "module": "\"0\"",
+   "generic": "\"1\""
+  },
+  "firstResidual": {
+   "scenario": "VCU0000298:1 type=Outlet",
+   "class": "characteristics",
+   "path": ".structure[0].services[0].characteristics.OutletInUse",
+   "generic": "{\"props\":{\"format\":\"bool\",\"perms\":[\"ev\",\"pr\"]},\"get\":1,\"set\":0}"
+  },
+  "residual": [
+   "characteristics",
+   "subscriptions",
+   "values"
+  ]
+ },
+ "HM-LC-Sw2-FM": {
+  "type": "HM-LC-Sw2-FM",
+  "module": "hm-lc-sw2-fm",
+  "target": "lib/generic-switch",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "subtype",
+   "characteristics",
+   "subscriptions",
+   "values"
+  ],
+  "scenarios": 16,
+  "first": {
+   "scenario": "default",
+   "class": "subtype",
+   "path": ".structure[0].services[0].subtype",
+   "module": "\"0\"",
+   "generic": "\"1\""
+  },
+  "firstResidual": {
+   "scenario": "VCU0000330:1 type=Outlet",
+   "class": "characteristics",
+   "path": ".structure[0].services[0].characteristics.OutletInUse",
+   "generic": "{\"props\":{\"format\":\"bool\",\"perms\":[\"ev\",\"pr\"]},\"get\":1,\"set\":0}"
+  },
+  "residual": [
+   "characteristics",
+   "subscriptions",
+   "values"
+  ]
+ },
+ "HM-LC-Sw2-FM-2": {
+  "type": "HM-LC-Sw2-FM-2",
+  "module": "hm-lc-sw2-fm-2",
+  "target": "lib/generic-switch",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "subtype",
+   "characteristics",
+   "subscriptions",
+   "values"
+  ],
+  "scenarios": 16,
+  "first": {
+   "scenario": "default",
+   "class": "subtype",
+   "path": ".structure[0].services[0].subtype",
+   "module": "\"0\"",
+   "generic": "\"1\""
+  },
+  "firstResidual": {
+   "scenario": "VCU0000296:1 type=Outlet",
+   "class": "characteristics",
+   "path": ".structure[0].services[0].characteristics.OutletInUse",
+   "generic": "{\"props\":{\"format\":\"bool\",\"perms\":[\"ev\",\"pr\"]},\"get\":1,\"set\":0}"
+  },
+  "residual": [
+   "characteristics",
+   "subscriptions",
+   "values"
+  ]
+ },
+ "HM-LC-Sw2-PB-FM": {
+  "type": "HM-LC-Sw2-PB-FM",
+  "module": "hm-lc-sw2-pb-fm",
+  "target": "lib/generic-switch",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "subtype",
+   "characteristics",
+   "subscriptions",
+   "values"
+  ],
+  "scenarios": 16,
+  "first": {
+   "scenario": "default",
+   "class": "subtype",
+   "path": ".structure[0].services[0].subtype",
+   "module": "\"0\"",
+   "generic": "\"1\""
+  },
+  "firstResidual": {
+   "scenario": "VCU0000332:1 type=Outlet",
+   "class": "characteristics",
+   "path": ".structure[0].services[0].characteristics.OutletInUse",
+   "generic": "{\"props\":{\"format\":\"bool\",\"perms\":[\"ev\",\"pr\"]},\"get\":1,\"set\":0}"
+  },
+  "residual": [
+   "characteristics",
+   "subscriptions",
+   "values"
+  ]
+ },
+ "HM-LC-Sw2PBU-FM": {
+  "type": "HM-LC-Sw2PBU-FM",
+  "module": "hm-lc-sw2pbu-fm",
+  "target": "lib/generic-switch",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "subtype",
+   "characteristics",
+   "subscriptions",
+   "values"
+  ],
+  "scenarios": 16,
+  "first": {
+   "scenario": "default",
+   "class": "subtype",
+   "path": ".structure[0].services[0].subtype",
+   "module": "\"0\"",
+   "generic": "\"1\""
+  },
+  "firstResidual": {
+   "scenario": "VCU0000287:1 type=Outlet",
+   "class": "characteristics",
+   "path": ".structure[0].services[0].characteristics.OutletInUse",
+   "generic": "{\"props\":{\"format\":\"bool\",\"perms\":[\"ev\",\"pr\"]},\"get\":1,\"set\":0}"
+  },
+  "residual": [
+   "characteristics",
+   "subscriptions",
+   "values"
+  ]
+ },
+ "HM-LC-Sw4-Ba-PCB": {
+  "type": "HM-LC-Sw4-Ba-PCB",
+  "module": "hm-lc-sw4-ba-pcb",
+  "target": "lib/generic-switch",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "subtype",
+   "characteristics",
+   "subscriptions",
+   "values"
+  ],
+  "scenarios": 30,
+  "first": {
+   "scenario": "default",
+   "class": "subtype",
+   "path": ".structure[0].services[0].subtype",
+   "module": "\"0\"",
+   "generic": "\"1\""
+  },
+  "firstResidual": {
+   "scenario": "VCU0000288:1 type=Outlet",
+   "class": "characteristics",
+   "path": ".structure[0].services[0].characteristics.OutletInUse",
+   "generic": "{\"props\":{\"format\":\"bool\",\"perms\":[\"ev\",\"pr\"]},\"get\":1,\"set\":0}"
+  },
+  "residual": [
+   "characteristics",
+   "subscriptions",
+   "values"
+  ]
+ },
+ "HM-LC-Sw4-DR": {
+  "type": "HM-LC-Sw4-DR",
+  "module": "hm-lc-sw4-dr",
+  "target": "lib/generic-switch",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "subtype",
+   "characteristics",
+   "subscriptions",
+   "values"
+  ],
+  "scenarios": 30,
+  "first": {
+   "scenario": "default",
+   "class": "subtype",
+   "path": ".structure[0].services[0].subtype",
+   "module": "\"0\"",
+   "generic": "\"1\""
+  },
+  "firstResidual": {
+   "scenario": "VCU0000333:1 type=Outlet",
+   "class": "characteristics",
+   "path": ".structure[0].services[0].characteristics.OutletInUse",
+   "generic": "{\"props\":{\"format\":\"bool\",\"perms\":[\"ev\",\"pr\"]},\"get\":1,\"set\":0}"
+  },
+  "residual": [
+   "characteristics",
+   "subscriptions",
+   "values"
+  ]
+ },
+ "HM-LC-Sw4-DR-2": {
+  "type": "HM-LC-Sw4-DR-2",
+  "module": "hm-lc-sw4-dr-2",
+  "target": "lib/generic-switch",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "subtype",
+   "characteristics",
+   "subscriptions",
+   "values"
+  ],
+  "scenarios": 30,
+  "first": {
+   "scenario": "default",
+   "class": "subtype",
+   "path": ".structure[0].services[0].subtype",
+   "module": "\"0\"",
+   "generic": "\"1\""
+  },
+  "firstResidual": {
+   "scenario": "VCU0000297:1 type=Outlet",
+   "class": "characteristics",
+   "path": ".structure[0].services[0].characteristics.OutletInUse",
+   "generic": "{\"props\":{\"format\":\"bool\",\"perms\":[\"ev\",\"pr\"]},\"get\":1,\"set\":0}"
+  },
+  "residual": [
+   "characteristics",
+   "subscriptions",
+   "values"
+  ]
+ },
+ "HM-LC-Sw4-PCB": {
+  "type": "HM-LC-Sw4-PCB",
+  "module": "hm-lc-sw4-pcb",
+  "target": "lib/generic-switch",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "subtype",
+   "characteristics",
+   "subscriptions",
+   "values"
+  ],
+  "scenarios": 30,
+  "first": {
+   "scenario": "default",
+   "class": "subtype",
+   "path": ".structure[0].services[0].subtype",
+   "module": "\"0\"",
+   "generic": "\"1\""
+  },
+  "firstResidual": {
+   "scenario": "VCU0000326:1 type=Outlet",
+   "class": "characteristics",
+   "path": ".structure[0].services[0].characteristics.OutletInUse",
+   "generic": "{\"props\":{\"format\":\"bool\",\"perms\":[\"ev\",\"pr\"]},\"get\":1,\"set\":0}"
+  },
+  "residual": [
+   "characteristics",
+   "subscriptions",
+   "values"
+  ]
+ },
+ "HM-LC-Sw4-PCB-2": {
+  "type": "HM-LC-Sw4-PCB-2",
+  "module": "hm-lc-sw4-pcb-2",
+  "target": "lib/generic-switch",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "subtype",
+   "characteristics",
+   "subscriptions",
+   "values"
+  ],
+  "scenarios": 30,
+  "first": {
+   "scenario": "default",
+   "class": "subtype",
+   "path": ".structure[0].services[0].subtype",
+   "module": "\"0\"",
+   "generic": "\"1\""
+  },
+  "firstResidual": {
+   "scenario": "VCU0000293:1 type=Outlet",
+   "class": "characteristics",
+   "path": ".structure[0].services[0].characteristics.OutletInUse",
+   "generic": "{\"props\":{\"format\":\"bool\",\"perms\":[\"ev\",\"pr\"]},\"get\":1,\"set\":0}"
+  },
+  "residual": [
+   "characteristics",
+   "subscriptions",
+   "values"
+  ]
+ },
+ "HM-LC-Sw4-SM": {
+  "type": "HM-LC-Sw4-SM",
+  "module": "hm-lc-sw4-sm",
+  "target": "lib/generic-switch",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "subtype",
+   "characteristics",
+   "subscriptions",
+   "values"
+  ],
+  "scenarios": 30,
+  "first": {
+   "scenario": "default",
+   "class": "subtype",
+   "path": ".structure[0].services[0].subtype",
+   "module": "\"0\"",
+   "generic": "\"1\""
+  },
+  "firstResidual": {
+   "scenario": "VCU0000325:1 type=Outlet",
+   "class": "characteristics",
+   "path": ".structure[0].services[0].characteristics.OutletInUse",
+   "generic": "{\"props\":{\"format\":\"bool\",\"perms\":[\"ev\",\"pr\"]},\"get\":1,\"set\":0}"
+  },
+  "residual": [
+   "characteristics",
+   "subscriptions",
+   "values"
+  ]
+ },
+ "HM-LC-Sw4-SM-2": {
+  "type": "HM-LC-Sw4-SM-2",
+  "module": "hm-lc-sw4-sm-2",
+  "target": "lib/generic-switch",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "subtype",
+   "characteristics",
+   "subscriptions",
+   "values"
+  ],
+  "scenarios": 30,
+  "first": {
+   "scenario": "default",
+   "class": "subtype",
+   "path": ".structure[0].services[0].subtype",
+   "module": "\"0\"",
+   "generic": "\"1\""
+  },
+  "firstResidual": {
+   "scenario": "VCU0000292:1 type=Outlet",
+   "class": "characteristics",
+   "path": ".structure[0].services[0].characteristics.OutletInUse",
+   "generic": "{\"props\":{\"format\":\"bool\",\"perms\":[\"ev\",\"pr\"]},\"get\":1,\"set\":0}"
+  },
+  "residual": [
+   "characteristics",
+   "subscriptions",
+   "values"
+  ]
+ },
+ "HM-LC-Sw4-WM": {
+  "type": "HM-LC-Sw4-WM",
+  "module": "hm-lc-sw4-wm",
+  "target": "lib/generic-switch",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "subtype",
+   "characteristics",
+   "subscriptions",
+   "values"
+  ],
+  "scenarios": 30,
+  "first": {
+   "scenario": "default",
+   "class": "subtype",
+   "path": ".structure[0].services[0].subtype",
+   "module": "\"0\"",
+   "generic": "\"1\""
+  },
+  "firstResidual": {
+   "scenario": "VCU0000327:1 type=Outlet",
+   "class": "characteristics",
+   "path": ".structure[0].services[0].characteristics.OutletInUse",
+   "generic": "{\"props\":{\"format\":\"bool\",\"perms\":[\"ev\",\"pr\"]},\"get\":1,\"set\":0}"
+  },
+  "residual": [
+   "characteristics",
+   "subscriptions",
+   "values"
+  ]
+ },
+ "HM-LC-Sw4-WM-2": {
+  "type": "HM-LC-Sw4-WM-2",
+  "module": "hm-lc-sw4-wm-2",
+  "target": "lib/generic-switch",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "subtype",
+   "characteristics",
+   "subscriptions",
+   "values"
+  ],
+  "scenarios": 30,
+  "first": {
+   "scenario": "default",
+   "class": "subtype",
+   "path": ".structure[0].services[0].subtype",
+   "module": "\"0\"",
+   "generic": "\"1\""
+  },
+  "firstResidual": {
+   "scenario": "VCU0000294:1 type=Outlet",
+   "class": "characteristics",
+   "path": ".structure[0].services[0].characteristics.OutletInUse",
+   "generic": "{\"props\":{\"format\":\"bool\",\"perms\":[\"ev\",\"pr\"]},\"get\":1,\"set\":0}"
+  },
+  "residual": [
+   "characteristics",
+   "subscriptions",
+   "values"
+  ]
+ },
+ "HM-MOD-Re-8": {
+  "type": "HM-MOD-Re-8",
+  "module": "hm-mod-re-8",
+  "target": "lib/generic-switch",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "subtype",
+   "characteristics",
+   "subscriptions",
+   "values"
+  ],
+  "scenarios": 58,
+  "first": {
+   "scenario": "default",
+   "class": "subtype",
+   "path": ".structure[0].services[0].subtype",
+   "module": "\"0\"",
+   "generic": "\"1\""
+  },
+  "firstResidual": {
+   "scenario": "VCU0000311:1 type=Outlet",
+   "class": "characteristics",
+   "path": ".structure[0].services[0].characteristics.OutletInUse",
+   "generic": "{\"props\":{\"format\":\"bool\",\"perms\":[\"ev\",\"pr\"]},\"get\":1,\"set\":0}"
+  },
+  "residual": [
+   "characteristics",
+   "subscriptions",
+   "values"
+  ]
+ },
+ "HM-SCI-3-FM": {
+  "type": "HM-SCI-3-FM",
+  "module": "hm-sci-3-fm",
+  "target": "hm-sci-3-fm",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "services",
+   "subtype",
+   "service-name",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor",
+   "editor-added"
+  ],
+  "scenarios": 13,
+  "first": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "3",
+   "generic": "4"
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "3",
+   "generic": "4"
+  },
+  "residual": [
+   "services",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor"
+  ]
+ },
+ "HM-Sec-Key": {
+  "type": "HM-Sec-Key",
+  "module": "hm-sec-key",
+  "target": "hm-sec-key",
+  "verdict": "replaceable",
+  "delegate": "hm-sec-key",
+  "classes": [],
+  "scenarios": 2,
+  "residual": []
+ },
+ "HM-Sec-Key-O": {
+  "type": "HM-Sec-Key-O",
+  "module": "hm-sec-key-o",
+  "target": "hm-sec-key",
+  "verdict": "replaceable",
+  "delegate": "hm-sec-key",
+  "classes": [],
+  "scenarios": 2,
+  "residual": []
+ },
+ "HM-Sec-Key-S": {
+  "type": "HM-Sec-Key-S",
+  "module": "hm-sec-key-s",
+  "target": "hm-sec-key",
+  "verdict": "replaceable",
+  "delegate": "hm-sec-key",
+  "classes": [],
+  "scenarios": 2,
+  "residual": []
+ },
+ "HM-Sec-MDIR": {
+  "type": "HM-Sec-MDIR",
+  "module": "hm-sec-mdir",
+  "target": "hm-sec-mdir",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "services",
+   "subtype",
+   "service-name",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor-added"
+  ],
+  "scenarios": 2,
+  "first": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "2",
+   "generic": "3"
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "2",
+   "generic": "3"
+  },
+  "residual": [
+   "services",
+   "characteristics",
+   "subscriptions",
+   "values"
+  ]
+ },
+ "HM-Sec-MDIR-2": {
+  "type": "HM-Sec-MDIR-2",
+  "module": "hm-sec-mdir-2",
+  "target": "hm-sec-mdir",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "services",
+   "subtype",
+   "service-name",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor-added"
+  ],
+  "scenarios": 2,
+  "first": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "2",
+   "generic": "3"
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "2",
+   "generic": "3"
+  },
+  "residual": [
+   "services",
+   "characteristics",
+   "subscriptions",
+   "values"
+  ]
+ },
+ "HM-Sec-MDIR-3": {
+  "type": "HM-Sec-MDIR-3",
+  "module": "hm-sec-mdir-3",
+  "target": "hm-sec-mdir",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "services",
+   "subtype",
+   "service-name",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor-added"
+  ],
+  "scenarios": 2,
+  "first": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "2",
+   "generic": "3"
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "2",
+   "generic": "3"
+  },
+  "residual": [
+   "services",
+   "characteristics",
+   "subscriptions",
+   "values"
+  ]
+ },
+ "HM-Sec-RHS": {
+  "type": "HM-Sec-RHS",
+  "module": "hm-sec-rhs",
+  "target": "hm-sec-rhs",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "services",
+   "subtype",
+   "service-name",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor",
+   "editor-fixed",
+   "editor-added"
+  ],
+  "scenarios": 4,
+  "first": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "1",
+   "generic": "4"
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "1",
+   "generic": "4"
+  },
+  "residual": [
+   "services",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor"
+  ]
+ },
+ "HM-Sec-RHS-2": {
+  "type": "HM-Sec-RHS-2",
+  "module": "hm-sec-rhs-2",
+  "target": "hm-sec-rhs",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "services",
+   "subtype",
+   "service-name",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor",
+   "editor-fixed",
+   "editor-added"
+  ],
+  "scenarios": 4,
+  "first": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "1",
+   "generic": "4"
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "1",
+   "generic": "4"
+  },
+  "residual": [
+   "services",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor"
+  ]
+ },
+ "HM-Sec-SC": {
+  "type": "HM-Sec-SC",
+  "module": "hm-sec-sc",
+  "target": "hm-sec-sc",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "services",
+   "subtype",
+   "service-name",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor-fixed",
+   "editor-added"
+  ],
+  "scenarios": 5,
+  "first": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "1",
+   "generic": "2"
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "1",
+   "generic": "2"
+  },
+  "residual": [
+   "services",
+   "characteristics",
+   "subscriptions",
+   "values"
+  ]
+ },
+ "HM-Sec-SC-2": {
+  "type": "HM-Sec-SC-2",
+  "module": "hm-sec-sc-2",
+  "target": "hm-sec-sc",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "services",
+   "subtype",
+   "service-name",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor-fixed",
+   "editor-added"
+  ],
+  "scenarios": 5,
+  "first": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "1",
+   "generic": "2"
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "1",
+   "generic": "2"
+  },
+  "residual": [
+   "services",
+   "characteristics",
+   "subscriptions",
+   "values"
+  ]
+ },
+ "HM-Sec-SCo": {
+  "type": "HM-Sec-SCo",
+  "module": "hm-sec-sco",
+  "target": "hm-sec-sc",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "services",
+   "subtype",
+   "service-name",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor-fixed",
+   "editor-added"
+  ],
+  "scenarios": 5,
+  "first": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "1",
+   "generic": "2"
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "1",
+   "generic": "2"
+  },
+  "residual": [
+   "services",
+   "characteristics",
+   "subscriptions",
+   "values"
+  ]
+ },
+ "HM-Sec-SD": {
+  "type": "HM-Sec-SD",
+  "module": "hm-sec-sd",
+  "target": "hm-sec-sd",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "services",
+   "subtype",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor-added"
+  ],
+  "scenarios": 1,
+  "first": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "1",
+   "generic": "2"
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "1",
+   "generic": "2"
+  },
+  "residual": [
+   "services",
+   "characteristics",
+   "subscriptions",
+   "values"
+  ]
+ },
+ "HM-Sec-SD-2": {
+  "type": "HM-Sec-SD-2",
+  "module": "hm-sec-sd-2",
+  "target": "hm-sec-sd",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "services",
+   "subtype",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor-added"
+  ],
+  "scenarios": 1,
+  "first": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "1",
+   "generic": "2"
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "1",
+   "generic": "2"
+  },
+  "residual": [
+   "services",
+   "characteristics",
+   "subscriptions",
+   "values"
+  ]
+ },
+ "HM-Sec-Sir-WM": {
+  "type": "HM-Sec-Sir-WM",
+  "module": "hm-sec-sir-wm",
+  "target": "hm-sec-sir-wm",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "services",
+   "subtype",
+   "service-name",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor-added"
+  ],
+  "scenarios": 1,
+  "first": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "2",
+   "generic": "3"
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "2",
+   "generic": "3"
+  },
+  "residual": [
+   "services",
+   "characteristics",
+   "subscriptions",
+   "values"
+  ]
+ },
+ "HM-Sec-TiS": {
+  "type": "HM-Sec-TiS",
+  "module": "hm-sec-tis",
+  "target": "hm-sec-tis",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "services",
+   "subtype",
+   "service-name",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor-fixed",
+   "editor-added"
+  ],
+  "scenarios": 5,
+  "first": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "1",
+   "generic": "2"
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "1",
+   "generic": "2"
+  },
+  "residual": [
+   "services",
+   "characteristics",
+   "subscriptions",
+   "values"
+  ]
+ },
+ "HM-Sec-WDS": {
+  "type": "HM-Sec-WDS",
+  "module": "hm-sec-wds",
+  "target": "hm-sec-wds",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "services",
+   "subtype",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor-added"
+  ],
+  "scenarios": 1,
+  "first": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "1",
+   "generic": "2"
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "1",
+   "generic": "2"
+  },
+  "residual": [
+   "services",
+   "characteristics",
+   "subscriptions",
+   "values"
+  ]
+ },
+ "HM-Sec-WDS-2": {
+  "type": "HM-Sec-WDS-2",
+  "module": "hm-sec-wds-2",
+  "target": "hm-sec-wds",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "services",
+   "subtype",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor-added"
+  ],
+  "scenarios": 1,
+  "first": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "1",
+   "generic": "2"
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "1",
+   "generic": "2"
+  },
+  "residual": [
+   "services",
+   "characteristics",
+   "subscriptions",
+   "values"
+  ]
+ },
+ "HM-Sec-Win": {
+  "type": "HM-Sec-Win",
+  "module": "hm-sec-win",
+  "target": "hm-sec-win",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "services",
+   "service-name",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor",
+   "editor-added"
+  ],
+  "scenarios": 2,
+  "first": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "2",
+   "generic": "1"
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "2",
+   "generic": "1"
+  },
+  "residual": [
+   "services",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor"
+  ]
+ },
+ "HM-Sen-DB-PCB": {
+  "type": "HM-Sen-DB-PCB",
+  "module": "hm-sen-db-pcb",
+  "target": "hm-sen-db-pcb",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "services",
+   "subtype",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor-added"
+  ],
+  "scenarios": 1,
+  "first": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "1",
+   "generic": "3"
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "1",
+   "generic": "3"
+  },
+  "residual": [
+   "services",
+   "characteristics",
+   "subscriptions",
+   "values"
+  ]
+ },
+ "HM-Sen-LI-O": {
+  "type": "HM-Sen-LI-O",
+  "module": "hm-sen-li-o",
+  "target": "hm-sen-li-o",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "services",
+   "subtype",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor-added"
+  ],
+  "scenarios": 1,
+  "first": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "1",
+   "generic": "2"
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "1",
+   "generic": "2"
+  },
+  "residual": [
+   "services",
+   "characteristics",
+   "subscriptions",
+   "values"
+  ]
+ },
+ "HM-Sen-MDIR-O": {
+  "type": "HM-Sen-MDIR-O",
+  "module": "hm-sen-mdir-o",
+  "target": "hm-sen-mdir-sm",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "services",
+   "subtype",
+   "service-name",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor-added"
+  ],
+  "scenarios": 2,
+  "first": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "2",
+   "generic": "3"
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "2",
+   "generic": "3"
+  },
+  "residual": [
+   "services",
+   "characteristics",
+   "subscriptions",
+   "values"
+  ]
+ },
+ "HM-Sen-MDIR-O-2": {
+  "type": "HM-Sen-MDIR-O-2",
+  "module": "hm-sen-mdir-o-2",
+  "target": "hm-sen-mdir-sm",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "services",
+   "subtype",
+   "service-name",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor-added"
+  ],
+  "scenarios": 2,
+  "first": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "2",
+   "generic": "3"
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "2",
+   "generic": "3"
+  },
+  "residual": [
+   "services",
+   "characteristics",
+   "subscriptions",
+   "values"
+  ]
+ },
+ "HM-Sen-MDIR-O-3": {
+  "type": "HM-Sen-MDIR-O-3",
+  "module": "hm-sen-mdir-o-3",
+  "target": "hm-sen-mdir-sm",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "services",
+   "subtype",
+   "service-name",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor-added"
+  ],
+  "scenarios": 2,
+  "first": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "2",
+   "generic": "3"
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "2",
+   "generic": "3"
+  },
+  "residual": [
+   "services",
+   "characteristics",
+   "subscriptions",
+   "values"
+  ]
+ },
+ "HM-Sen-MDIR-SM": {
+  "type": "HM-Sen-MDIR-SM",
+  "module": "hm-sen-mdir-sm",
+  "target": "hm-sec-mdir",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "services",
+   "subtype",
+   "service-name",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor-added"
+  ],
+  "scenarios": 2,
+  "first": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "2",
+   "generic": "3"
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "2",
+   "generic": "3"
+  },
+  "residual": [
+   "services",
+   "characteristics",
+   "subscriptions",
+   "values"
+  ]
+ },
+ "HM-Sen-MDIR-WM55": {
+  "type": "HM-Sen-MDIR-WM55",
+  "module": "hm-sen-mdir-wm55",
+  "target": "hm-sen-mdir-wm55",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "services",
+   "subtype",
+   "service-name",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor-added"
+  ],
+  "scenarios": 2,
+  "first": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "2",
+   "generic": "6"
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "2",
+   "generic": "6"
+  },
+  "residual": [
+   "services",
+   "characteristics",
+   "subscriptions",
+   "values"
+  ]
+ },
+ "HM-TC-IT-WM-W-EU": {
+  "type": "HM-TC-IT-WM-W-EU",
+  "module": "hm-tc-it-wm-w-eu",
+  "target": "hm-tc-it-wm-w-eu",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "services",
+   "subtype",
+   "service-name",
+   "characteristics",
+   "props",
+   "subscriptions",
+   "values",
+   "editor",
+   "editor-added"
+  ],
+  "scenarios": 3,
+  "first": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "4",
+   "generic": "3"
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "4",
+   "generic": "3"
+  },
+  "residual": [
+   "services",
+   "characteristics",
+   "props",
+   "subscriptions",
+   "values",
+   "editor"
+  ]
+ },
+ "HM-WDS10-TH-O": {
+  "type": "HM-WDS10-TH-O",
+  "module": "hm-wds10-th-o",
+  "target": "hm-wds10-th-o",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "services",
+   "subtype",
+   "service-name",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor-added"
+  ],
+  "scenarios": 2,
+  "first": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "2",
+   "generic": "3"
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "2",
+   "generic": "3"
+  },
+  "residual": [
+   "services",
+   "characteristics",
+   "subscriptions",
+   "values"
+  ]
+ },
+ "HM-WDS100-C6-O": {
+  "type": "HM-WDS100-C6-O",
+  "module": "hm-wds100-c6-o",
+  "target": "hm-wds100-c6-o",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "services",
+   "subtype",
+   "service-name",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor-added"
+  ],
+  "scenarios": 3,
+  "first": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "3",
+   "generic": "4"
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "3",
+   "generic": "4"
+  },
+  "residual": [
+   "services",
+   "characteristics",
+   "subscriptions",
+   "values"
+  ]
+ },
+ "HM-WDS100-C6-O-2": {
+  "type": "HM-WDS100-C6-O-2",
+  "module": "hm-wds100-c6-o-2",
+  "target": "hm-wds100-c6-o",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "services",
+   "subtype",
+   "service-name",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor-added"
+  ],
+  "scenarios": 3,
+  "first": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "3",
+   "generic": "4"
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "3",
+   "generic": "4"
+  },
+  "residual": [
+   "services",
+   "characteristics",
+   "subscriptions",
+   "values"
+  ]
+ },
+ "HM-WDS20-TH-O": {
+  "type": "HM-WDS20-TH-O",
+  "module": "hm-wds20-th-o",
+  "target": "hm-wds10-th-o",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "services",
+   "subtype",
+   "service-name",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor-added"
+  ],
+  "scenarios": 2,
+  "first": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "2",
+   "generic": "3"
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "2",
+   "generic": "3"
+  },
+  "residual": [
+   "services",
+   "characteristics",
+   "subscriptions",
+   "values"
+  ]
+ },
+ "HM-WDS30-OT2-SM": {
+  "type": "HM-WDS30-OT2-SM",
+  "module": "hm-wds30-ot2-sm",
+  "target": "hm-wds30-ot2-sm",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "services",
+   "subtype",
+   "service-name",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor-added"
+  ],
+  "scenarios": 6,
+  "first": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "5",
+   "generic": "6"
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "5",
+   "generic": "6"
+  },
+  "residual": [
+   "services",
+   "characteristics",
+   "subscriptions",
+   "values"
+  ]
+ },
+ "HM-WDS30-OT2-SM-2": {
+  "type": "HM-WDS30-OT2-SM-2",
+  "module": "hm-wds30-ot2-sm-2",
+  "target": "hm-wds30-ot2-sm",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "services",
+   "subtype",
+   "service-name",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor-added"
+  ],
+  "scenarios": 6,
+  "first": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "5",
+   "generic": "6"
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "5",
+   "generic": "6"
+  },
+  "residual": [
+   "services",
+   "characteristics",
+   "subscriptions",
+   "values"
+  ]
+ },
+ "HM-WDS30-T-O": {
+  "type": "HM-WDS30-T-O",
+  "module": "hm-wds30-t-o",
+  "target": "hm-wds30-t-o",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "services",
+   "subtype",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor-added"
+  ],
+  "scenarios": 1,
+  "first": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "1",
+   "generic": "2"
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "1",
+   "generic": "2"
+  },
+  "residual": [
+   "services",
+   "characteristics",
+   "subscriptions",
+   "values"
+  ]
+ },
+ "HM-WDS40-TH-I": {
+  "type": "HM-WDS40-TH-I",
+  "module": "hm-wds40-th-i",
+  "target": "hm-wds10-th-o",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "services",
+   "subtype",
+   "service-name",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor-added"
+  ],
+  "scenarios": 2,
+  "first": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "2",
+   "generic": "3"
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "2",
+   "generic": "3"
+  },
+  "residual": [
+   "services",
+   "characteristics",
+   "subscriptions",
+   "values"
+  ]
+ },
+ "HM-WDS40-TH-I-2": {
+  "type": "HM-WDS40-TH-I-2",
+  "module": "hm-wds40-th-i-2",
+  "target": "hm-wds10-th-o",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "services",
+   "subtype",
+   "service-name",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor-added"
+  ],
+  "scenarios": 2,
+  "first": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "2",
+   "generic": "3"
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "2",
+   "generic": "3"
+  },
+  "residual": [
+   "services",
+   "characteristics",
+   "subscriptions",
+   "values"
+  ]
+ },
+ "HMIP-PS": {
+  "type": "HMIP-PS",
+  "module": "hmip-ps",
+  "target": "hmip-ps",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "services",
+   "subtype",
+   "service-name",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "writes",
+   "editor",
+   "editor-fixed",
+   "editor-added"
+  ],
+  "scenarios": 7,
+  "first": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services[0].type",
+   "module": "\"Outlet\"",
+   "generic": "\"Switch\""
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services[0].type",
+   "module": "\"Outlet\"",
+   "generic": "\"Switch\""
+  },
+  "residual": [
+   "services",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "writes",
+   "editor"
+  ]
+ },
+ "HMIP-PSM": {
+  "type": "HMIP-PSM",
+  "module": "hmip-psm",
+  "target": "hmip-psm",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "services",
+   "subtype",
+   "service-name",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "writes",
+   "editor",
+   "editor-fixed",
+   "editor-added"
+  ],
+  "scenarios": 7,
+  "first": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services[0].type",
+   "module": "\"Outlet\"",
+   "generic": "\"Switch\""
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services[0].type",
+   "module": "\"Outlet\"",
+   "generic": "\"Switch\""
+  },
+  "residual": [
+   "services",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "writes",
+   "editor"
+  ]
+ },
+ "HMIP-SWDO": {
+  "type": "HMIP-SWDO",
+  "module": "hmip-swdo",
+  "target": "hmip-swdo",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "subtype",
+   "service-name",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor-fixed",
+   "editor-added"
+  ],
+  "scenarios": 5,
+  "first": {
+   "scenario": "default",
+   "class": "subtype",
+   "path": ".structure[0].services[0].subtype",
+   "module": "\"1\"",
+   "generic": "\"battery\""
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "subscriptions",
+   "path": ".subscriptions.length",
+   "module": "7",
+   "generic": "6"
+  },
+  "residual": [
+   "characteristics",
+   "subscriptions",
+   "values"
+  ]
+ },
+ "HMIP-WTH": {
+  "type": "HMIP-WTH",
+  "module": "hmip-wth",
+  "target": "hmip-wth",
+  "verdict": "replaceable",
+  "delegate": "hmip-wth",
+  "classes": [],
+  "scenarios": 3,
+  "residual": []
+ },
+ "HMIP-eTRV": {
+  "type": "HMIP-eTRV",
+  "module": "hmip-etrv",
+  "target": "hmip-etrv",
+  "verdict": "replaceable",
+  "delegate": "hmip-etrv",
+  "classes": [],
+  "scenarios": 2,
+  "residual": []
+ },
+ "HMW-IO-12-Sw7-DR": {
+  "type": "HMW-IO-12-Sw7-DR",
+  "module": "hmw-io-12-sw7-dr",
+  "target": "lib/generic-switch",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "subtype",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor-added"
+  ],
+  "scenarios": 51,
+  "first": {
+   "scenario": "default",
+   "class": "subtype",
+   "path": ".structure[0].services[0].subtype",
+   "module": "\"0\"",
+   "generic": "\"13\""
+  },
+  "firstResidual": {
+   "scenario": "VCU0000004:13 type=Outlet",
+   "class": "characteristics",
+   "path": ".structure[0].services[0].characteristics.OutletInUse",
+   "generic": "{\"props\":{\"format\":\"bool\",\"perms\":[\"ev\",\"pr\"]},\"get\":1,\"set\":0}"
+  },
+  "residual": [
+   "characteristics",
+   "subscriptions",
+   "values"
+  ]
+ },
+ "HMW-LC-Bl1-DR": {
+  "type": "HMW-LC-Bl1-DR",
+  "module": "hmw-lc-bl1-dr",
+  "target": "hmw-lc-bl1-dr",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "subtype",
+   "service-name",
+   "editor-added"
+  ],
+  "scenarios": 1,
+  "first": {
+   "scenario": "default",
+   "class": "subtype",
+   "path": ".structure[0].services[0].subtype",
+   "module": "\"0\"",
+   "generic": "\"3\""
+  },
+  "residual": []
+ },
+ "HMW-LC-Bl1-DR-2": {
+  "type": "HMW-LC-Bl1-DR-2",
+  "module": "hmw-lc-bl1-dr-2",
+  "target": "hmw-lc-bl1-dr",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "subtype",
+   "service-name",
+   "editor-added"
+  ],
+  "scenarios": 1,
+  "first": {
+   "scenario": "default",
+   "class": "subtype",
+   "path": ".structure[0].services[0].subtype",
+   "module": "\"0\"",
+   "generic": "\"3\""
+  },
+  "residual": []
+ },
+ "HMW-LC-Dim1L-DR": {
+  "type": "HMW-LC-Dim1L-DR",
+  "module": "hmw-lc-dim1l-dr",
+  "target": "hmw-lc-dim1l-dr",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "subtype",
+   "service-name",
+   "writes",
+   "editor-added"
+  ],
+  "scenarios": 1,
+  "first": {
+   "scenario": "default",
+   "class": "subtype",
+   "path": ".structure[0].services[0].subtype",
+   "module": "\"0\"",
+   "generic": "\"3\""
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "writes",
+   "path": ".writes[5].calls.length",
+   "module": "1",
+   "generic": "0"
+  },
+  "residual": [
+   "writes"
+  ]
+ },
+ "HMW-LC-Sw2-DR": {
+  "type": "HMW-LC-Sw2-DR",
+  "module": "hmw-lc-sw2-dr",
+  "target": "lib/generic-switch",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "subtype",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor-added"
+  ],
+  "scenarios": 16,
+  "first": {
+   "scenario": "default",
+   "class": "subtype",
+   "path": ".structure[0].services[0].subtype",
+   "module": "\"0\"",
+   "generic": "\"3\""
+  },
+  "firstResidual": {
+   "scenario": "VCU0000014:3 type=Outlet",
+   "class": "characteristics",
+   "path": ".structure[0].services[0].characteristics.OutletInUse",
+   "generic": "{\"props\":{\"format\":\"bool\",\"perms\":[\"ev\",\"pr\"]},\"get\":1,\"set\":0}"
+  },
+  "residual": [
+   "characteristics",
+   "subscriptions",
+   "values"
+  ]
+ },
+ "HMW-Sen-SC-12-DR": {
+  "type": "HMW-Sen-SC-12-DR",
+  "module": "hmw-sen-sc-12-dr",
+  "target": "hmw-sen-sc-12-dr",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "subtype",
+   "subscriptions",
+   "values",
+   "editor"
+  ],
+  "scenarios": 50,
+  "first": {
+   "scenario": "default",
+   "class": "subtype",
+   "path": ".structure[0].services[0].subtype",
+   "module": "\"0\"",
+   "generic": "\"1\""
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "subscriptions",
+   "path": ".subscriptions[12].datapointName",
+   "module": "\"BidCos-Wired.VCU0000015:1.SENSOR\"",
+   "generic": "\"BidCos-Wired.VCU0000015:1.undefined\""
+  },
+  "residual": [
+   "subscriptions",
+   "values",
+   "editor"
+  ]
+ },
+ "HMW-Sen-SC-12-FM": {
+  "type": "HMW-Sen-SC-12-FM",
+  "module": "hmw-sen-sc-12-fm",
+  "target": "hmw-sen-sc-12-dr",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "subtype",
+   "subscriptions",
+   "values",
+   "editor"
+  ],
+  "scenarios": 50,
+  "first": {
+   "scenario": "default",
+   "class": "subtype",
+   "path": ".structure[0].services[0].subtype",
+   "module": "\"0\"",
+   "generic": "\"1\""
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "subscriptions",
+   "path": ".subscriptions[12].datapointName",
+   "module": "\"BidCos-Wired.VCU0000016:1.SENSOR\"",
+   "generic": "\"BidCos-Wired.VCU0000016:1.undefined\""
+  },
+  "residual": [
+   "subscriptions",
+   "values",
+   "editor"
+  ]
+ },
+ "HmIP-BDT": {
+  "type": "HmIP-BDT",
+  "module": "hmip-bdt",
+  "target": "hmip-bdt",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "identity",
+   "services",
+   "subtype",
+   "service-name",
+   "characteristics",
+   "values",
+   "writes",
+   "editor-added"
+  ],
+  "scenarios": 4,
+  "first": {
+   "scenario": "default",
+   "class": "subtype",
+   "path": ".structure[0].services[0].subtype",
+   "module": "\"0\"",
+   "generic": "\"4\""
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "characteristics",
+   "path": ".structure[0].services[0].characteristics.Name",
+   "generic": "{\"props\":{\"format\":\"string\",\"perms\":[\"pr\"],\"maxLen\":64},\"get\":0,\"set\":0}"
+  },
+  "residual": [
+   "identity",
+   "services",
+   "characteristics",
+   "values",
+   "writes"
+  ]
+ },
+ "HmIP-BROLL": {
+  "type": "HmIP-BROLL",
+  "module": "hmip-broll",
+  "target": "lib/generic-hmip-blind",
+  "verdict": "replaceable, editor additions",
+  "delegate": "lib/generic-hmip-blind",
+  "classes": [
+   "editor-added"
+  ],
+  "scenarios": 4,
+  "first": {
+   "scenario": "default",
+   "class": "editor-added",
+   "path": ".editor.rows.VCU8537918:1",
+   "generic": "{\"dropdowns\":null,\"virtual\":true,\"fixed\":false}"
+  },
+  "residual": []
+ },
+ "HmIP-BSL": {
+  "type": "HmIP-BSL",
+  "module": "hmip-bsl",
+  "target": "hmip-bsl",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "services",
+   "subtype",
+   "service-name",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "writes",
+   "editor-added"
+  ],
+  "scenarios": 1,
+  "first": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "1",
+   "generic": "3"
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "1",
+   "generic": "3"
+  },
+  "residual": [
+   "services",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "writes"
+  ]
+ },
+ "HmIP-BSM": {
+  "type": "HmIP-BSM",
+  "module": "hmip-bsm",
+  "target": "hmip-bsm",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "services",
+   "subtype",
+   "service-name",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "writes",
+   "editor-fixed",
+   "editor-added"
+  ],
+  "scenarios": 7,
+  "first": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services[0].type",
+   "module": "\"Lightbulb\"",
+   "generic": "\"Switch\""
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services[0].type",
+   "module": "\"Lightbulb\"",
+   "generic": "\"Switch\""
+  },
+  "residual": [
+   "services",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "writes"
+  ]
+ },
+ "HmIP-BWTH": {
+  "type": "HmIP-BWTH",
+  "module": "hmip-bwth",
+  "target": "hmip-bwth",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "services",
+   "subtype",
+   "service-name",
+   "characteristics",
+   "props",
+   "subscriptions",
+   "values",
+   "editor",
+   "editor-added"
+  ],
+  "scenarios": 3,
+  "first": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "3",
+   "generic": "2"
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "3",
+   "generic": "2"
+  },
+  "residual": [
+   "services",
+   "characteristics",
+   "props",
+   "subscriptions",
+   "values",
+   "editor"
+  ]
+ },
+ "HmIP-DBB": {
+  "type": "HmIP-DBB",
+  "module": "hmip-dbb",
+  "target": "hmip-dbb",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "services",
+   "subtype",
+   "service-name",
+   "characteristics",
+   "subscriptions",
+   "init",
+   "values",
+   "editor-added"
+  ],
+  "scenarios": 1,
+  "first": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "2",
+   "generic": "3"
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "2",
+   "generic": "3"
+  },
+  "residual": [
+   "services",
+   "characteristics",
+   "subscriptions",
+   "init",
+   "values"
+  ]
+ },
+ "HmIP-DRBLI4": {
+  "type": "HmIP-DRBLI4",
+  "module": "hmip-drbli4",
+  "target": "lib/generic-hmip-blind",
+  "verdict": "not replaceable",
+  "delegate": "lib/generic-hmip-blind",
+  "classes": [
+   "editor",
+   "editor-added"
+  ],
+  "scenarios": 55,
+  "first": {
+   "scenario": "default",
+   "class": "editor",
+   "path": ".editor.rows.VCU8601435:2.dropdowns.type.length",
+   "module": "2",
+   "generic": "4"
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "editor",
+   "path": ".editor.rows.VCU8601435:2.dropdowns.type.length",
+   "module": "2",
+   "generic": "4"
+  },
+  "residual": [
+   "editor"
+  ]
+ },
+ "HmIP-DRSI1": {
+  "type": "HmIP-DRSI1",
+  "module": "hmip-drsi1",
+  "target": "hmip-drsi1",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "identity",
+   "services",
+   "subtype",
+   "service-name",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "writes",
+   "editor-added"
+  ],
+  "scenarios": 22,
+  "first": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "1",
+   "generic": "2"
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "1",
+   "generic": "2"
+  },
+  "residual": [
+   "identity",
+   "services",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "writes"
+  ]
+ },
+ "HmIP-DRSI4": {
+  "type": "HmIP-DRSI4",
+  "module": "hmip-drsi4",
+  "target": "hmip-drsi4",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "identity",
+   "services",
+   "subtype",
+   "service-name",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor-added"
+  ],
+  "scenarios": 86,
+  "first": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "4",
+   "generic": "8"
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "4",
+   "generic": "8"
+  },
+  "residual": [
+   "identity",
+   "services",
+   "characteristics",
+   "subscriptions",
+   "values"
+  ]
+ },
+ "HmIP-FBL": {
+  "type": "HmIP-FBL",
+  "module": "hmip-fbl",
+  "target": "lib/generic-hmip-blind",
+  "verdict": "replaceable, editor additions",
+  "delegate": "lib/generic-hmip-blind",
+  "classes": [
+   "editor-added"
+  ],
+  "scenarios": 10,
+  "first": {
+   "scenario": "default",
+   "class": "editor-added",
+   "path": ".editor.rows.VCU1223813:1",
+   "generic": "{\"dropdowns\":null,\"virtual\":true,\"fixed\":false}"
+  },
+  "residual": []
+ },
+ "HmIP-FCI1": {
+  "type": "HmIP-FCI1",
+  "module": "hmip-fci1",
+  "target": "hmip-fci1",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "services",
+   "subtype",
+   "service-name",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "writes",
+   "editor",
+   "editor-fixed",
+   "editor-added"
+  ],
+  "scenarios": 4,
+  "first": {
+   "scenario": "default",
+   "class": "subtype",
+   "path": ".structure[0].services[0].subtype",
+   "module": "\"1\"",
+   "generic": "\"battery\""
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "editor",
+   "path": ".editor.rows.VCU6153495:1.dropdowns.type.length",
+   "module": "3",
+   "generic": "4"
+  },
+  "residual": [
+   "services",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "writes",
+   "editor"
+  ]
+ },
+ "HmIP-FDT": {
+  "type": "HmIP-FDT",
+  "module": "hmip-fdt",
+  "target": "hmip-fdt",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "identity",
+   "services",
+   "subtype",
+   "service-name",
+   "characteristics",
+   "values",
+   "writes"
+  ],
+  "scenarios": 4,
+  "first": {
+   "scenario": "default",
+   "class": "subtype",
+   "path": ".structure[0].services[0].subtype",
+   "module": "\"0\"",
+   "generic": "\"2\""
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "characteristics",
+   "path": ".structure[0].services[0].characteristics.Name",
+   "generic": "{\"props\":{\"format\":\"string\",\"perms\":[\"pr\"],\"maxLen\":64},\"get\":0,\"set\":0}"
+  },
+  "residual": [
+   "identity",
+   "services",
+   "characteristics",
+   "values",
+   "writes"
+  ]
+ },
+ "HmIP-FROLL": {
+  "type": "HmIP-FROLL",
+  "module": "hmip-froll",
+  "target": "lib/generic-hmip-blind",
+  "verdict": "replaceable, editor additions",
+  "delegate": "lib/generic-hmip-blind",
+  "classes": [
+   "editor-added"
+  ],
+  "scenarios": 4,
+  "first": {
+   "scenario": "default",
+   "class": "editor-added",
+   "path": ".editor.rows.VCU4613288:1",
+   "generic": "{\"dropdowns\":null,\"virtual\":true,\"fixed\":false}"
+  },
+  "residual": []
+ },
+ "HmIP-FSI16": {
+  "type": "HmIP-FSI16",
+  "module": "hmip-fsi16",
+  "target": "hmip-drsi1",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "identity",
+   "services",
+   "subtype",
+   "service-name",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "writes",
+   "editor-added"
+  ],
+  "scenarios": 22,
+  "first": {
+   "scenario": "default",
+   "class": "subtype",
+   "path": ".structure[0].services[0].subtype",
+   "module": "\"0\"",
+   "generic": "\"3\""
+  },
+  "firstResidual": {
+   "scenario": "VCU2333555:3 disabled",
+   "class": "identity",
+   "path": ".structure.length",
+   "module": "1",
+   "generic": "0"
+  },
+  "residual": [
+   "identity",
+   "services",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "writes"
+  ]
+ },
+ "HmIP-FSM16": {
+  "type": "HmIP-FSM16",
+  "module": "hmip-fsm16",
+  "target": "hmip-fsm",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "services",
+   "subtype",
+   "service-name",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "writes",
+   "editor-fixed",
+   "editor-added"
+  ],
+  "scenarios": 7,
+  "first": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services[0].type",
+   "module": "\"Outlet\"",
+   "generic": "\"Switch\""
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services[0].type",
+   "module": "\"Outlet\"",
+   "generic": "\"Switch\""
+  },
+  "residual": [
+   "services",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "writes"
+  ]
+ },
+ "HmIP-HEATING": {
+  "type": "HmIP-HEATING",
+  "module": "hmip-heating",
+  "target": "hmip-heating",
+  "verdict": "not replaceable",
+  "delegate": "hmip-wth",
+  "classes": [
+   "error",
+   "services",
+   "subscriptions",
+   "values",
+   "writes"
+  ],
+  "scenarios": 3,
+  "first": {
+   "scenario": "default",
+   "class": "error",
+   "path": ".error",
+   "module": "\"HmIP-RF.VCU5778428 group configuration not found\"",
+   "generic": "null"
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "error",
+   "path": ".error",
+   "module": "\"HmIP-RF.VCU5778428 group configuration not found\"",
+   "generic": "null"
+  },
+  "residual": [
+   "error",
+   "services",
+   "subscriptions",
+   "values",
+   "writes"
+  ]
+ },
+ "HmIP-MOD-HO": {
+  "type": "HmIP-MOD-HO",
+  "module": "hmip-mod-ho",
+  "target": "hmip-mod-ho",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "services",
+   "subtype",
+   "service-name",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "writes",
+   "editor-added"
+  ],
+  "scenarios": 1,
+  "first": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "2",
+   "generic": "1"
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "2",
+   "generic": "1"
+  },
+  "residual": [
+   "services",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "writes"
+  ]
+ },
+ "HmIP-MOD-OC8": {
+  "type": "HmIP-MOD-OC8",
+  "module": "hmip-mod-oc8",
+  "target": "hmip-mod-oc8",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "subtype",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor-added"
+  ],
+  "scenarios": 170,
+  "first": {
+   "scenario": "default",
+   "class": "subtype",
+   "path": ".structure[0].services[0].subtype",
+   "module": "\"0\"",
+   "generic": "\"10\""
+  },
+  "firstResidual": {
+   "scenario": "VCU8126977:10 type=Outlet",
+   "class": "characteristics",
+   "path": ".structure[0].services[0].characteristics.OutletInUse",
+   "generic": "{\"props\":{\"format\":\"bool\",\"perms\":[\"ev\",\"pr\"]},\"get\":1,\"set\":0}"
+  },
+  "residual": [
+   "characteristics",
+   "subscriptions",
+   "values"
+  ]
+ },
+ "HmIP-MOD-TM": {
+  "type": "HmIP-MOD-TM",
+  "module": "hmip-mod-tm",
+  "target": "hmip-mod-ho",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "services",
+   "subtype",
+   "service-name",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "writes",
+   "editor-added"
+  ],
+  "scenarios": 1,
+  "first": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "2",
+   "generic": "1"
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "2",
+   "generic": "1"
+  },
+  "residual": [
+   "services",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "writes"
+  ]
+ },
+ "HmIP-PCBS": {
+  "type": "HmIP-PCBS",
+  "module": "hmip-pcbs",
+  "target": "hmip-pcbs",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "services",
+   "subtype",
+   "service-name",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "writes",
+   "editor-fixed",
+   "editor-added"
+  ],
+  "scenarios": 7,
+  "first": {
+   "scenario": "default",
+   "class": "subtype",
+   "path": ".structure[0].services[0].subtype",
+   "module": "\"0\"",
+   "generic": "\"3\""
+  },
+  "firstResidual": {
+   "scenario": "VCU3830359:3 type=Outlet",
+   "class": "services",
+   "path": ".structure[0].services[0].type",
+   "module": "\"Switch\"",
+   "generic": "\"Outlet\""
+  },
+  "residual": [
+   "services",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "writes"
+  ]
+ },
+ "HmIP-PCBS-BAT": {
+  "type": "HmIP-PCBS-BAT",
+  "module": "hmip-pcbs-bat",
+  "target": "hmip-pcbs-bat",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "services",
+   "subtype",
+   "service-name",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "writes",
+   "editor-fixed",
+   "editor-added"
+  ],
+  "scenarios": 7,
+  "first": {
+   "scenario": "default",
+   "class": "subtype",
+   "path": ".structure[0].services[0].subtype",
+   "module": "\"1\"",
+   "generic": "\"battery\""
+  },
+  "firstResidual": {
+   "scenario": "VCU9341719:3 type=Outlet",
+   "class": "services",
+   "path": ".structure[0].services[1].type",
+   "module": "\"Switch\"",
+   "generic": "\"Outlet\""
+  },
+  "residual": [
+   "services",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "writes"
+  ]
+ },
+ "HmIP-PCBS2": {
+  "type": "HmIP-PCBS2",
+  "module": "hmip-pcbs2",
+  "target": "hmip-pcbs2",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "services",
+   "subtype",
+   "service-name",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "writes",
+   "editor-fixed",
+   "editor-added"
+  ],
+  "scenarios": 13,
+  "first": {
+   "scenario": "default",
+   "class": "subtype",
+   "path": ".structure[0].services[0].subtype",
+   "module": "\"0\"",
+   "generic": "\"4\""
+  },
+  "firstResidual": {
+   "scenario": "VCU8775962:4 type=Outlet",
+   "class": "services",
+   "path": ".structure[0].services[0].type",
+   "module": "\"Switch\"",
+   "generic": "\"Outlet\""
+  },
+  "residual": [
+   "services",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "writes"
+  ]
+ },
+ "HmIP-PDT": {
+  "type": "HmIP-PDT",
+  "module": "hmip-pdt",
+  "target": "hmip-pdt",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "identity",
+   "services",
+   "subtype",
+   "service-name",
+   "characteristics",
+   "values",
+   "writes",
+   "editor-added"
+  ],
+  "scenarios": 4,
+  "first": {
+   "scenario": "default",
+   "class": "subtype",
+   "path": ".structure[0].services[0].subtype",
+   "module": "\"0\"",
+   "generic": "\"3\""
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "characteristics",
+   "path": ".structure[0].services[0].characteristics.Name",
+   "generic": "{\"props\":{\"format\":\"string\",\"perms\":[\"pr\"],\"maxLen\":64},\"get\":0,\"set\":0}"
+  },
+  "residual": [
+   "identity",
+   "services",
+   "characteristics",
+   "values",
+   "writes"
+  ]
+ },
+ "HmIP-SAM": {
+  "type": "HmIP-SAM",
+  "module": "hmip-sam",
+  "target": "hmip-sam",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "services",
+   "subtype",
+   "service-name",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "writes",
+   "editor",
+   "editor-fixed",
+   "editor-added"
+  ],
+  "scenarios": 5,
+  "first": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services[1].type",
+   "module": "\"ContactSensor\"",
+   "generic": "\"MotionSensor\""
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services[1].type",
+   "module": "\"ContactSensor\"",
+   "generic": "\"MotionSensor\""
+  },
+  "residual": [
+   "services",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "writes",
+   "editor"
+  ]
+ },
+ "HmIP-SCI": {
+  "type": "HmIP-SCI",
+  "module": "hmip-sci",
+  "target": "hmip-sci",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "subtype",
+   "service-name",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor-fixed",
+   "editor-added"
+  ],
+  "scenarios": 5,
+  "first": {
+   "scenario": "default",
+   "class": "subtype",
+   "path": ".structure[0].services[0].subtype",
+   "module": "\"1\"",
+   "generic": "\"battery\""
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "subscriptions",
+   "path": ".subscriptions.length",
+   "module": "7",
+   "generic": "6"
+  },
+  "residual": [
+   "characteristics",
+   "subscriptions",
+   "values"
+  ]
+ },
+ "HmIP-SLO": {
+  "type": "HmIP-SLO",
+  "module": "hmip-slo",
+  "target": "hmip-slo",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "subtype",
+   "service-name",
+   "editor-added"
+  ],
+  "scenarios": 1,
+  "first": {
+   "scenario": "default",
+   "class": "subtype",
+   "path": ".structure[0].services[0].subtype",
+   "module": "\"1\"",
+   "generic": "\"battery\""
+  },
+  "residual": []
+ },
+ "HmIP-SMI": {
+  "type": "HmIP-SMI",
+  "module": "hmip-smi",
+  "target": "hmip-smi",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "subtype",
+   "service-name",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor-added"
+  ],
+  "scenarios": 2,
+  "first": {
+   "scenario": "default",
+   "class": "subtype",
+   "path": ".structure[0].services[0].subtype",
+   "module": "\"1\"",
+   "generic": "\"battery\""
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "characteristics",
+   "path": ".structure[0].services[2].characteristics.StatusTampered",
+   "module": "{\"props\":{\"format\":\"uint8\",\"perms\":[\"ev\",\"pr\"],\"minValue\":0,\"maxValue\":1,\"minStep\":1,\"validValues\":[0,1]},\"get\":1,\"set\":0}"
+  },
+  "residual": [
+   "characteristics",
+   "subscriptions",
+   "values"
+  ]
+ },
+ "HmIP-SMI55": {
+  "type": "HmIP-SMI55",
+  "module": "hmip-smi55",
+  "target": "hmip-smi55",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "services",
+   "subtype",
+   "service-name",
+   "characteristics",
+   "subscriptions",
+   "init",
+   "values",
+   "editor-added"
+  ],
+  "scenarios": 2,
+  "first": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "3",
+   "generic": "6"
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "3",
+   "generic": "6"
+  },
+  "residual": [
+   "services",
+   "characteristics",
+   "subscriptions",
+   "init",
+   "values"
+  ]
+ },
+ "HmIP-SMO": {
+  "type": "HmIP-SMO",
+  "module": "hmip-smo",
+  "target": "hmip-smi",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "subtype",
+   "service-name",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor-added"
+  ],
+  "scenarios": 2,
+  "first": {
+   "scenario": "default",
+   "class": "subtype",
+   "path": ".structure[0].services[0].subtype",
+   "module": "\"1\"",
+   "generic": "\"battery\""
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "characteristics",
+   "path": ".structure[0].services[2].characteristics.StatusTampered",
+   "module": "{\"props\":{\"format\":\"uint8\",\"perms\":[\"ev\",\"pr\"],\"minValue\":0,\"maxValue\":1,\"minStep\":1,\"validValues\":[0,1]},\"get\":1,\"set\":0}"
+  },
+  "residual": [
+   "characteristics",
+   "subscriptions",
+   "values"
+  ]
+ },
+ "HmIP-SMO-A": {
+  "type": "HmIP-SMO-A",
+  "module": "hmip-smo-a",
+  "target": "hmip-smi",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "subtype",
+   "service-name",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor-added"
+  ],
+  "scenarios": 2,
+  "first": {
+   "scenario": "default",
+   "class": "subtype",
+   "path": ".structure[0].services[0].subtype",
+   "module": "\"1\"",
+   "generic": "\"battery\""
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "characteristics",
+   "path": ".structure[0].services[2].characteristics.StatusTampered",
+   "module": "{\"props\":{\"format\":\"uint8\",\"perms\":[\"ev\",\"pr\"],\"minValue\":0,\"maxValue\":1,\"minStep\":1,\"validValues\":[0,1]},\"get\":1,\"set\":0}"
+  },
+  "residual": [
+   "characteristics",
+   "subscriptions",
+   "values"
+  ]
+ },
+ "HmIP-SPDR": {
+  "type": "HmIP-SPDR",
+  "module": "hmip-spdr",
+  "target": "hmip-spdr",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "unsupported"
+  ],
+  "scenarios": 0,
+  "reason": "generic mapping finds nothing to publish"
+ },
+ "HmIP-SPI": {
+  "type": "HmIP-SPI",
+  "module": "hmip-spi",
+  "target": "hmip-spi",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "services",
+   "subtype",
+   "service-name",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor-added"
+  ],
+  "scenarios": 2,
+  "first": {
+   "scenario": "default",
+   "class": "subtype",
+   "path": ".structure[0].services[0].subtype",
+   "module": "\"1\"",
+   "generic": "\"battery\""
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "characteristics",
+   "path": ".structure[0].services[2].characteristics.StatusTampered",
+   "module": "{\"props\":{\"format\":\"uint8\",\"perms\":[\"ev\",\"pr\"],\"minValue\":0,\"maxValue\":1,\"minStep\":1,\"validValues\":[0,1]},\"get\":1,\"set\":0}"
+  },
+  "residual": [
+   "services",
+   "characteristics",
+   "subscriptions",
+   "values"
+  ]
+ },
+ "HmIP-SRH": {
+  "type": "HmIP-SRH",
+  "module": "hmip-srh",
+  "target": "hmip-srh",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "services",
+   "subtype",
+   "service-name",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "writes",
+   "editor",
+   "editor-fixed",
+   "editor-added"
+  ],
+  "scenarios": 4,
+  "first": {
+   "scenario": "default",
+   "class": "subtype",
+   "path": ".structure[0].services[0].subtype",
+   "module": "\"1\"",
+   "generic": "\"battery\""
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "characteristics",
+   "path": ".structure[0].services[1].characteristics.StatusTampered",
+   "module": "{\"props\":{\"format\":\"uint8\",\"perms\":[\"ev\",\"pr\"],\"minValue\":0,\"maxValue\":1,\"minStep\":1,\"validValues\":[0,1]},\"get\":1,\"set\":0}"
+  },
+  "residual": [
+   "services",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "writes",
+   "editor"
+  ]
+ },
+ "HmIP-STE2-PCB": {
+  "type": "HmIP-STE2-PCB",
+  "module": "hmip-ste2-pcb",
+  "target": "hmip-ste2-pcb",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "services",
+   "subtype",
+   "service-name",
+   "characteristics",
+   "props",
+   "subscriptions",
+   "values",
+   "editor-added"
+  ],
+  "scenarios": 4,
+  "first": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "3",
+   "generic": "4"
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "3",
+   "generic": "4"
+  },
+  "residual": [
+   "services",
+   "characteristics",
+   "props",
+   "subscriptions",
+   "values"
+  ]
+ },
+ "HmIP-STH": {
+  "type": "HmIP-STH",
+  "module": "hmip-sth",
+  "target": "hmip-sth",
+  "verdict": "not replaceable",
+  "delegate": "hmip-wth",
+  "classes": [
+   "services",
+   "subtype",
+   "service-name",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "writes",
+   "editor"
+  ],
+  "scenarios": 4,
+  "first": {
+   "scenario": "default",
+   "class": "subtype",
+   "path": ".structure[0].services[0].subtype",
+   "module": "\"2\"",
+   "generic": "\"1\""
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "editor",
+   "path": ".editor.options.Thermostat",
+   "module": "true"
+  },
+  "residual": [
+   "services",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "writes",
+   "editor"
+  ]
+ },
+ "HmIP-STHD": {
+  "type": "HmIP-STHD",
+  "module": "hmip-sthd",
+  "target": "hmip-sth",
+  "verdict": "not replaceable",
+  "delegate": "hmip-wth",
+  "classes": [
+   "services",
+   "subtype",
+   "service-name",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "writes",
+   "editor"
+  ],
+  "scenarios": 4,
+  "first": {
+   "scenario": "default",
+   "class": "subtype",
+   "path": ".structure[0].services[0].subtype",
+   "module": "\"2\"",
+   "generic": "\"1\""
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "editor",
+   "path": ".editor.options.Thermostat",
+   "module": "true"
+  },
+  "residual": [
+   "services",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "writes",
+   "editor"
+  ]
+ },
+ "HmIP-STHO": {
+  "type": "HmIP-STHO",
+  "module": "hmip-stho",
+  "target": "hmip-stho",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "subtype",
+   "service-name",
+   "props",
+   "values",
+   "editor-added"
+  ],
+  "scenarios": 2,
+  "first": {
+   "scenario": "default",
+   "class": "subtype",
+   "path": ".structure[0].services[0].subtype",
+   "module": "\"1\"",
+   "generic": "\"battery\""
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "props",
+   "path": ".structure[0].services[2].characteristics.CurrentTemperature.props.maxValue",
+   "module": "80",
+   "generic": "1000"
+  },
+  "residual": [
+   "props",
+   "values"
+  ]
+ },
+ "HmIP-STHO-A": {
+  "type": "HmIP-STHO-A",
+  "module": "hmip-stho-a",
+  "target": "hmip-stho",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "subtype",
+   "service-name",
+   "props",
+   "values",
+   "editor-added"
+  ],
+  "scenarios": 2,
+  "first": {
+   "scenario": "default",
+   "class": "subtype",
+   "path": ".structure[0].services[0].subtype",
+   "module": "\"1\"",
+   "generic": "\"battery\""
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "props",
+   "path": ".structure[0].services[2].characteristics.CurrentTemperature.props.maxValue",
+   "module": "80",
+   "generic": "1000"
+  },
+  "residual": [
+   "props",
+   "values"
+  ]
+ },
+ "HmIP-SWD": {
+  "type": "HmIP-SWD",
+  "module": "hmip-swd",
+  "target": "hmip-swd",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "subtype",
+   "service-name",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor-added"
+  ],
+  "scenarios": 1,
+  "first": {
+   "scenario": "default",
+   "class": "subtype",
+   "path": ".structure[0].services[0].subtype",
+   "module": "\"1\"",
+   "generic": "\"battery\""
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "characteristics",
+   "path": ".structure[0].services[1].characteristics.StatusTampered",
+   "module": "{\"props\":{\"format\":\"uint8\",\"perms\":[\"ev\",\"pr\"],\"minValue\":0,\"maxValue\":1,\"minStep\":1,\"validValues\":[0,1]},\"get\":1,\"set\":0}"
+  },
+  "residual": [
+   "characteristics",
+   "subscriptions",
+   "values"
+  ]
+ },
+ "HmIP-SWDM": {
+  "type": "HmIP-SWDM",
+  "module": "hmip-swdm",
+  "target": "hmip-swdo",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "subtype",
+   "service-name",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor-fixed",
+   "editor-added"
+  ],
+  "scenarios": 5,
+  "first": {
+   "scenario": "default",
+   "class": "subtype",
+   "path": ".structure[0].services[0].subtype",
+   "module": "\"1\"",
+   "generic": "\"battery\""
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "characteristics",
+   "path": ".structure[0].services[1].characteristics.StatusTampered",
+   "module": "{\"props\":{\"format\":\"uint8\",\"perms\":[\"ev\",\"pr\"],\"minValue\":0,\"maxValue\":1,\"minStep\":1,\"validValues\":[0,1]},\"get\":1,\"set\":0}"
+  },
+  "residual": [
+   "characteristics",
+   "subscriptions",
+   "values"
+  ]
+ },
+ "HmIP-SWDM-B2": {
+  "type": "HmIP-SWDM-B2",
+  "module": "hmip-swdm-b2",
+  "target": "hmip-swdo",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "subtype",
+   "service-name",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor-fixed",
+   "editor-added"
+  ],
+  "scenarios": 5,
+  "first": {
+   "scenario": "default",
+   "class": "subtype",
+   "path": ".structure[0].services[0].subtype",
+   "module": "\"1\"",
+   "generic": "\"battery\""
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "characteristics",
+   "path": ".structure[0].services[1].characteristics.StatusTampered",
+   "module": "{\"props\":{\"format\":\"uint8\",\"perms\":[\"ev\",\"pr\"],\"minValue\":0,\"maxValue\":1,\"minStep\":1,\"validValues\":[0,1]},\"get\":1,\"set\":0}"
+  },
+  "residual": [
+   "characteristics",
+   "subscriptions",
+   "values"
+  ]
+ },
+ "HmIP-SWDO-I": {
+  "type": "HmIP-SWDO-I",
+  "module": "hmip-swdo-i",
+  "target": "hmip-swdo",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "subtype",
+   "service-name",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor-fixed",
+   "editor-added"
+  ],
+  "scenarios": 5,
+  "first": {
+   "scenario": "default",
+   "class": "subtype",
+   "path": ".structure[0].services[0].subtype",
+   "module": "\"1\"",
+   "generic": "\"battery\""
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "subscriptions",
+   "path": ".subscriptions.length",
+   "module": "7",
+   "generic": "6"
+  },
+  "residual": [
+   "characteristics",
+   "subscriptions",
+   "values"
+  ]
+ },
+ "HmIP-SWO-B": {
+  "type": "HmIP-SWO-B",
+  "module": "hmip-swo-b",
+  "target": "hmip-swo-b",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "subtype",
+   "service-name",
+   "props",
+   "values",
+   "editor-added"
+  ],
+  "scenarios": 3,
+  "first": {
+   "scenario": "default",
+   "class": "subtype",
+   "path": ".structure[0].services[0].subtype",
+   "module": "\"1\"",
+   "generic": "\"battery\""
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "props",
+   "path": ".structure[0].services[3].characteristics.CurrentTemperature.props.maxValue",
+   "module": "80",
+   "generic": "1000"
+  },
+  "residual": [
+   "props",
+   "values"
+  ]
+ },
+ "HmIP-SWO-PL": {
+  "type": "HmIP-SWO-PL",
+  "module": "hmip-swo-pl",
+  "target": "hmip-swo-b",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "subtype",
+   "service-name",
+   "props",
+   "values",
+   "editor-added"
+  ],
+  "scenarios": 3,
+  "first": {
+   "scenario": "default",
+   "class": "subtype",
+   "path": ".structure[0].services[0].subtype",
+   "module": "\"1\"",
+   "generic": "\"battery\""
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "props",
+   "path": ".structure[0].services[3].characteristics.CurrentTemperature.props.maxValue",
+   "module": "80",
+   "generic": "1000"
+  },
+  "residual": [
+   "props",
+   "values"
+  ]
+ },
+ "HmIP-SWO-PR": {
+  "type": "HmIP-SWO-PR",
+  "module": "hmip-swo-pr",
+  "target": "hmip-swo-b",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "subtype",
+   "service-name",
+   "props",
+   "values",
+   "editor-added"
+  ],
+  "scenarios": 3,
+  "first": {
+   "scenario": "default",
+   "class": "subtype",
+   "path": ".structure[0].services[0].subtype",
+   "module": "\"1\"",
+   "generic": "\"battery\""
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "props",
+   "path": ".structure[0].services[3].characteristics.CurrentTemperature.props.maxValue",
+   "module": "80",
+   "generic": "1000"
+  },
+  "residual": [
+   "props",
+   "values"
+  ]
+ },
+ "HmIP-SWSD": {
+  "type": "HmIP-SWSD",
+  "module": "hmip-swsd",
+  "target": "hmip-swsd",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "services",
+   "subtype",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor-added"
+  ],
+  "scenarios": 1,
+  "first": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "1",
+   "generic": "2"
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "1",
+   "generic": "2"
+  },
+  "residual": [
+   "services",
+   "characteristics",
+   "subscriptions",
+   "values"
+  ]
+ },
+ "HmIP-WHS2": {
+  "type": "HmIP-WHS2",
+  "module": "hmip-whs2",
+  "target": "hmipw-drs4",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "subtype",
+   "characteristics",
+   "subscriptions",
+   "values"
+  ],
+  "scenarios": 44,
+  "first": {
+   "scenario": "default",
+   "class": "subtype",
+   "path": ".structure[0].services[0].subtype",
+   "module": "\"0\"",
+   "generic": "\"2\""
+  },
+  "firstResidual": {
+   "scenario": "VCU2913614:2 type=Outlet",
+   "class": "characteristics",
+   "path": ".structure[0].services[0].characteristics.OutletInUse",
+   "generic": "{\"props\":{\"format\":\"bool\",\"perms\":[\"ev\",\"pr\"]},\"get\":1,\"set\":0}"
+  },
+  "residual": [
+   "characteristics",
+   "subscriptions",
+   "values"
+  ]
+ },
+ "HmIP-WTH-2": {
+  "type": "HmIP-WTH-2",
+  "module": "hmip-wth-2",
+  "target": "hmip-wth",
+  "verdict": "replaceable",
+  "delegate": "hmip-wth",
+  "classes": [],
+  "scenarios": 3,
+  "residual": []
+ },
+ "HmIP-eTRV-2": {
+  "type": "HmIP-eTRV-2",
+  "module": "hmip-etrv-2",
+  "target": "hmip-etrv",
+  "verdict": "replaceable",
+  "delegate": "hmip-etrv",
+  "classes": [],
+  "scenarios": 2,
+  "residual": []
+ },
+ "HmIP-eTRV-B": {
+  "type": "HmIP-eTRV-B",
+  "module": "hmip-etrv-b",
+  "target": "hmip-etrv",
+  "verdict": "replaceable",
+  "delegate": "hmip-etrv",
+  "classes": [],
+  "scenarios": 2,
+  "residual": []
+ },
+ "HmIP-eTRV-B1": {
+  "type": "HmIP-eTRV-B1",
+  "module": "hmip-etrv-b1",
+  "target": "hmip-etrv",
+  "verdict": "replaceable",
+  "delegate": "hmip-etrv",
+  "classes": [],
+  "scenarios": 2,
+  "residual": []
+ },
+ "HmIPW-DRBL4": {
+  "type": "HmIPW-DRBL4",
+  "module": "hmipw-drbl4",
+  "target": "lib/generic-hmip-blind",
+  "verdict": "replaceable, editor additions",
+  "delegate": "lib/generic-hmip-blind",
+  "classes": [
+   "editor-added"
+  ],
+  "scenarios": 37,
+  "first": {
+   "scenario": "default",
+   "class": "editor-added",
+   "path": ".editor.options.SingleAccessory",
+   "generic": "true"
+  },
+  "residual": []
+ },
+ "HmIPW-DRD3": {
+  "type": "HmIPW-DRD3",
+  "module": "hmipw-drd3",
+  "target": "hmipw-drd3",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "subtype",
+   "writes"
+  ],
+  "scenarios": 11,
+  "first": {
+   "scenario": "default",
+   "class": "subtype",
+   "path": ".structure[0].services[0].subtype",
+   "module": "\"2\"",
+   "generic": "\"10\""
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "writes",
+   "path": ".writes[0].calls[0].value",
+   "module": "1",
+   "generic": "1.01"
+  },
+  "residual": [
+   "writes"
+  ]
+ },
+ "HmIPW-DRI16": {
+  "type": "HmIPW-DRI16",
+  "module": "hmipw-dri16",
+  "target": "hmipw-dri16",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "subtype",
+   "values",
+   "editor"
+  ],
+  "scenarios": 66,
+  "first": {
+   "scenario": "default",
+   "class": "subtype",
+   "path": ".structure[0].services[0].subtype",
+   "module": "\"0\"",
+   "generic": "\"1\""
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "editor",
+   "path": ".editor.options.SingleAccessory",
+   "module": "true"
+  },
+  "residual": [
+   "values",
+   "editor"
+  ]
+ },
+ "HmIPW-DRI32": {
+  "type": "HmIPW-DRI32",
+  "module": "hmipw-dri32",
+  "target": "hmipw-dri16",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "subtype",
+   "values",
+   "editor"
+  ],
+  "scenarios": 130,
+  "first": {
+   "scenario": "default",
+   "class": "subtype",
+   "path": ".structure[0].services[0].subtype",
+   "module": "\"0\"",
+   "generic": "\"1\""
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "editor",
+   "path": ".editor.options.SingleAccessory",
+   "module": "true"
+  },
+  "residual": [
+   "values",
+   "editor"
+  ]
+ },
+ "HmIPW-DRS8": {
+  "type": "HmIPW-DRS8",
+  "module": "hmipw-drs8",
+  "target": "hmipw-drs4",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "subtype",
+   "characteristics",
+   "subscriptions",
+   "values"
+  ],
+  "scenarios": 170,
+  "first": {
+   "scenario": "default",
+   "class": "subtype",
+   "path": ".structure[0].services[0].subtype",
+   "module": "\"2\"",
+   "generic": "\"10\""
+  },
+  "firstResidual": {
+   "scenario": "VCU1891174:2 type=Outlet",
+   "class": "characteristics",
+   "path": ".structure[0].services[0].characteristics.OutletInUse",
+   "generic": "{\"props\":{\"format\":\"bool\",\"perms\":[\"ev\",\"pr\"]},\"get\":1,\"set\":0}"
+  },
+  "residual": [
+   "characteristics",
+   "subscriptions",
+   "values"
+  ]
+ },
+ "HmIPW-FIO6": {
+  "type": "HmIPW-FIO6",
+  "module": "hmipw-fio6",
+  "target": "hmipw-fio6",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "subtype",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor"
+  ],
+  "scenarios": 152,
+  "first": {
+   "scenario": "default",
+   "class": "subtype",
+   "path": ".structure[0].services[0].subtype",
+   "module": "\"0\"",
+   "generic": "\"1\""
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "editor",
+   "path": ".editor.rows.VCU1673350:1.dropdowns.type.length",
+   "module": "3",
+   "generic": "4"
+  },
+  "residual": [
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor"
+  ]
+ },
+ "HmIPW-SMI55": {
+  "type": "HmIPW-SMI55",
+  "module": "hmipw-smi55",
+  "target": "hmip-smi55",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "services",
+   "subtype",
+   "service-name",
+   "characteristics",
+   "subscriptions",
+   "init",
+   "values",
+   "editor-added"
+  ],
+  "scenarios": 1,
+  "first": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "3",
+   "generic": "5"
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "3",
+   "generic": "5"
+  },
+  "residual": [
+   "services",
+   "characteristics",
+   "subscriptions",
+   "init",
+   "values"
+  ]
+ },
+ "HmIPW-WTH": {
+  "type": "HmIPW-WTH",
+  "module": "hmipw-wth",
+  "target": "hmip-wth",
+  "verdict": "replaceable, editor additions",
+  "delegate": "hmip-wth",
+  "classes": [
+   "editor-added"
+  ],
+  "scenarios": 1,
+  "first": {
+   "scenario": "default",
+   "class": "editor-added",
+   "path": ".editor.options.BoostSwitch",
+   "generic": "true"
+  },
+  "residual": []
+ },
+ "ZEL STG RM FEP 230V": {
+  "type": "ZEL STG RM FEP 230V",
+  "module": "zel_stg_rm_fep_230v",
+  "target": "hm-lc-bl1-fm",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "subtype",
+   "service-name",
+   "subscriptions",
+   "writes",
+   "editor-added"
+  ],
+  "scenarios": 1,
+  "first": {
+   "scenario": "default",
+   "class": "subtype",
+   "path": ".structure[0].services[0].subtype",
+   "module": "\"0\"",
+   "generic": "\"1\""
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "subscriptions",
+   "path": ".subscriptions.length",
+   "module": "5",
+   "generic": "4"
+  },
+  "residual": [
+   "subscriptions",
+   "writes"
+  ]
+ },
+ "ZEL STG RM FFK": {
+  "type": "ZEL STG RM FFK",
+  "module": "zel_stg_rm_ffk",
+  "target": "hm-sec-sc",
+  "verdict": "not replaceable",
+  "delegate": null,
+  "classes": [
+   "services",
+   "subtype",
+   "service-name",
+   "characteristics",
+   "subscriptions",
+   "values",
+   "editor-fixed",
+   "editor-added"
+  ],
+  "scenarios": 5,
+  "first": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "1",
+   "generic": "2"
+  },
+  "firstResidual": {
+   "scenario": "default",
+   "class": "services",
+   "path": ".structure[0].services.length",
+   "module": "1",
+   "generic": "2"
+  },
+  "residual": [
+   "services",
+   "characteristics",
+   "subscriptions",
+   "values"
+  ]
+ },
+ "module:hb-lc-sw2-fm": {
+  "module": "hb-lc-sw2-fm",
+  "target": "lib/generic-switch",
+  "verdict": "not proven",
+  "reason": "no fixture"
+ },
+ "module:hb-uni-dmx-master": {
+  "module": "hb-uni-dmx-master",
+  "target": "hb-uni-dmx-master",
+  "verdict": "not proven",
+  "reason": "no fixture"
+ },
+ "module:hb-uni-sen-press-sc": {
+  "module": "hb-uni-sen-press-sc",
+  "target": "hb-uni-sen-press-sc",
+  "verdict": "not proven",
+  "reason": "no fixture"
+ },
+ "module:hb-uni-sen-temp-ir": {
+  "module": "hb-uni-sen-temp-ir",
+  "target": "hb-uni-sen-temp-ir",
+  "verdict": "not proven",
+  "reason": "no fixture"
+ },
+ "module:hb-uni-sen-wea": {
+  "module": "hb-uni-sen-wea",
+  "target": "hb-uni-sen-wea",
+  "verdict": "not proven",
+  "reason": "no fixture"
+ },
+ "module:hb-uni-senact-4-4-rc": {
+  "module": "hb-uni-senact-4-4-rc",
+  "target": "hb-uni-senact-4-4-rc",
+  "verdict": "not proven",
+  "reason": "no fixture"
+ },
+ "module:hb-uni-senact-4-4-rc-bat": {
+  "module": "hb-uni-senact-4-4-rc-bat",
+  "target": "hb-uni-senact-4-4-rc-bat",
+  "verdict": "not proven",
+  "reason": "no fixture"
+ },
+ "module:hb-uni-senact-4-4-sc": {
+  "module": "hb-uni-senact-4-4-sc",
+  "target": "hb-uni-senact-4-4-sc",
+  "verdict": "not proven",
+  "reason": "no fixture"
+ },
+ "module:hb-uni-senact-4-4-sc-bat": {
+  "module": "hb-uni-senact-4-4-sc-bat",
+  "target": "hb-uni-senact-4-4-sc-bat",
+  "verdict": "not proven",
+  "reason": "no fixture"
+ },
+ "module:hb-uni-senact-8-8-rc": {
+  "module": "hb-uni-senact-8-8-rc",
+  "target": "hb-uni-senact-8-8-rc",
+  "verdict": "not proven",
+  "reason": "no fixture"
+ },
+ "module:hb-uni-senact-8-8-rc-bat": {
+  "module": "hb-uni-senact-8-8-rc-bat",
+  "target": "hb-uni-senact-8-8-rc-bat",
+  "verdict": "not proven",
+  "reason": "no fixture"
+ },
+ "module:hb-uni-senact-8-8-sc": {
+  "module": "hb-uni-senact-8-8-sc",
+  "target": "hb-uni-senact-8-8-sc",
+  "verdict": "not proven",
+  "reason": "no fixture"
+ },
+ "module:hb-uni-senact-8-8-sc-bat": {
+  "module": "hb-uni-senact-8-8-sc-bat",
+  "target": "hb-uni-senact-8-8-sc-bat",
+  "verdict": "not proven",
+  "reason": "no fixture"
+ },
+ "module:hm-ws550st-io": {
+  "module": "hm-ws550st-io",
+  "target": "hm-ws550sth-i",
+  "verdict": "not proven",
+  "reason": "no fixture"
+ },
+ "module:hm-ws550sth-i": {
+  "module": "hm-ws550sth-i",
+  "target": "hm-ws550sth-i",
+  "verdict": "not proven",
+  "reason": "no fixture"
+ },
+ "module:hm-ws550sth-o": {
+  "module": "hm-ws550sth-o",
+  "target": "hm-ws550sth-i",
+  "verdict": "not proven",
+  "reason": "no fixture"
+ },
+ "module:hmip-bbl": {
+  "module": "hmip-bbl",
+  "target": "lib/generic-hmip-blind",
+  "verdict": "not proven",
+  "reason": "no fixture"
+ },
+ "module:hmip-bwth24": {
+  "module": "hmip-bwth24",
+  "target": "hmip-bwth",
+  "verdict": "not proven",
+  "reason": "no fixture"
+ },
+ "module:hmip-etrv-c": {
+  "module": "hmip-etrv-c",
+  "target": "hmip-etrv",
+  "verdict": "not proven",
+  "reason": "no fixture"
+ },
+ "module:hmip-fsm": {
+  "module": "hmip-fsm",
+  "target": "hmip-fsm",
+  "verdict": "not proven",
+  "reason": "no fixture"
+ },
+ "module:hmip-psm-ch": {
+  "module": "hmip-psm-ch",
+  "target": "hmip-psm",
+  "verdict": "not proven",
+  "reason": "no fixture"
+ },
+ "module:hmip-psm-it": {
+  "module": "hmip-psm-it",
+  "target": "hmip-psm",
+  "verdict": "not proven",
+  "reason": "no fixture"
+ },
+ "module:hmip-psm-pe": {
+  "module": "hmip-psm-pe",
+  "target": "hmip-psm",
+  "verdict": "not proven",
+  "reason": "no fixture"
+ },
+ "module:hmip-psm-uk": {
+  "module": "hmip-psm-uk",
+  "target": "hmip-psm",
+  "verdict": "not proven",
+  "reason": "no fixture"
+ },
+ "module:hmip-swdm-b": {
+  "module": "hmip-swdm-b",
+  "target": "hmip-swdo",
+  "verdict": "not proven",
+  "reason": "no fixture"
+ },
+ "module:hmip-swdm-b1": {
+  "module": "hmip-swdm-b1",
+  "target": "hmip-swdo",
+  "verdict": "not proven",
+  "reason": "no fixture"
+ },
+ "module:hmip-swdo-pl": {
+  "module": "hmip-swdo-pl",
+  "target": "hmip-swdo-pl",
+  "verdict": "not proven",
+  "reason": "no fixture"
+ },
+ "module:hmip-wth-b": {
+  "module": "hmip-wth-b",
+  "target": "hmip-wth",
+  "verdict": "not proven",
+  "reason": "no fixture"
+ },
+ "module:hmipw-drs4": {
+  "module": "hmipw-drs4",
+  "target": "hmipw-drs4",
+  "verdict": "not proven",
+  "reason": "no fixture"
+ }
+}

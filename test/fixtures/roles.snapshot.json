@@ -1075,6 +1075,12 @@
   "1:key",
   "2:key"
  ],
+ "HMIP-WTH": [
+  "1:thermostat_hmip"
+ ],
+ "HMIP-eTRV": [
+  "1:thermostat_hmip"
+ ],
  "HMW-IO-12-FM": [
   "1:key",
   "2:key",
