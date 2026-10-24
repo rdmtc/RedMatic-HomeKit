@@ -5,6 +5,25 @@ Notable changes to redmatic-homekit. Format follows
 user-visible change and the reason, not the commit list (the release notes
 append commits automatically).
 
+## 4.1.3 — 2026-10-24
+
+### Fixed
+
+- **HmIP-DRBLI4: the device list offered its inputs as blind rows.** The
+  editor entry for the HmIP-DRBLI4 had been copied from the HmIPW-DRBL4,
+  whose blinds start at channel 2; on the DRBLI4 the channels 1-8 are the
+  inputs and the four blinds are the channels 10, 14, 18 and 22. The list
+  showed VerticalTilt rows for the inputs 2-4 and 6-8, which did nothing,
+  next to the real blind rows. It lists the blinds only now; what was saved
+  for the blind rows keeps its meaning, and settings saved for the input rows
+  stay in the flow without effect, as before.
+- **Generic mapping: a contact sensor on a channel of the type `SENSOR`**
+  (the HMW-Sen-SC-12-DR/-FM's channels) **never updated** - the mapping
+  looked for a `STATE` datapoint these channels do not have and subscribed
+  nothing usable. These two types are published by their own module, so no
+  installed device was affected; the rule itself works now for any such
+  channel.
+
 ## 4.1.2 — 2026-10-24
 
 ### Fixed
