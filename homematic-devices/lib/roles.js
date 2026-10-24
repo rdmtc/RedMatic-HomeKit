@@ -136,7 +136,8 @@ const DATAPOINTS = {
     blind: {level: ['LEVEL'], direction: ['DIRECTION'], working: ['WORKING']},
     jalousie: {level: ['LEVEL'], tilt: ['LEVEL_SLATS'], direction: ['DIRECTION'], working: ['WORKING']},
     window: {level: ['LEVEL'], direction: ['DIRECTION'], working: ['WORKING']},
-    contact: {state: ['STATE']},
+    // SENSOR: the HMW-Sen-SC-12's channels (TYPE SENSOR) report their contact as SENSOR, not STATE
+    contact: {state: ['STATE', 'SENSOR']},
     rotary_handle: {state: ['STATE']},
     motion: {state: ['MOTION_DETECTION_STATE', 'MOTION'], illumination: ['ILLUMINATION', 'BRIGHTNESS']},
     presence: {state: ['PRESENCE_DETECTION_STATE'], illumination: ['ILLUMINATION']},

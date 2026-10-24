@@ -4493,7 +4493,6 @@
   "delegate": null,
   "classes": [
    "subtype",
-   "subscriptions",
    "values",
    "editor"
   ],
@@ -4507,13 +4506,11 @@
   },
   "firstResidual": {
    "scenario": "default",
-   "class": "subscriptions",
-   "path": ".subscriptions[12].datapointName",
-   "module": "\"BidCos-Wired.VCU0000015:1.SENSOR\"",
-   "generic": "\"BidCos-Wired.VCU0000015:1.undefined\""
+   "class": "editor",
+   "path": ".editor.options.SingleAccessory",
+   "module": "true"
   },
   "residual": [
-   "subscriptions",
    "values",
    "editor"
   ]
@@ -4526,7 +4523,6 @@
   "delegate": null,
   "classes": [
    "subtype",
-   "subscriptions",
    "values",
    "editor"
   ],
@@ -4540,13 +4536,11 @@
   },
   "firstResidual": {
    "scenario": "default",
-   "class": "subscriptions",
-   "path": ".subscriptions[12].datapointName",
-   "module": "\"BidCos-Wired.VCU0000016:1.SENSOR\"",
-   "generic": "\"BidCos-Wired.VCU0000016:1.undefined\""
+   "class": "editor",
+   "path": ".editor.options.SingleAccessory",
+   "module": "true"
   },
   "residual": [
-   "subscriptions",
    "values",
    "editor"
   ]

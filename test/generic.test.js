@@ -5,6 +5,7 @@ const path = require('node:path');
 const fixtures = require('./helpers/fixtures');
 const {createHarness, tick} = require('./helpers/harness');
 const catalogue = require('../homematic-devices/lib/catalogue');
+const generic = require('../homematic-devices/lib/generic');
 
 function service(h, accessoryName, type) {
     const acc = h.bridgeConfig.bridge.bridgedAccessories.find((a) => a.displayName === accessoryName);
@@ -48,6 +49,42 @@ test('HmIP-DLD becomes a LockMechanism with battery (#328)', async () => {
 
     ccu.emitValue(dp(1, 'LOCK_STATE'), 2); // UNLOCKED
     assert.equal(lock.getCharacteristic(h.hap.Characteristic.LockCurrentState).value, 0);
+    assert.equal(h.node.logged.error.length, 0, JSON.stringify(h.node.logged.error));
+    h.cleanup();
+});
+
+test('generic contact on a SENSOR channel follows SENSOR (HMW-Sen-SC-12)', async () => {
+    // the channel TYPE SENSOR has no STATE: before, the role subscribed `<channel>.undefined` and the contact never moved
+    const ccu = fixtures.ccuFor('HMW-Sen-SC-12-DR');
+    const iface = ccu.enabledIfaces[0];
+    const dp = (index, name) => `${iface}.${ccu.address}:${index}.${name}`;
+    ccu.values[dp(1, 'SENSOR')] = {value: true, stable: true}; // open
+    const h = createHarness(ccu);
+    new generic.GenericDevice(
+        {
+            name: ccu.channelNames[ccu.address],
+            iface,
+            deviceAddress: iface + '.' + ccu.address,
+            description: ccu.metadata.devices[iface][ccu.address],
+            options: {},
+        },
+        h.node,
+    );
+    await tick();
+    await tick();
+
+    const subscribed = ccu.subscriptions.map((s) => s.filter.datapointName);
+    assert.ok(subscribed.includes(dp(1, 'SENSOR')), JSON.stringify(subscribed));
+    assert.ok(
+        !subscribed.some((name) => name.endsWith('.undefined')),
+        'a role without a datapoint: ' + JSON.stringify(subscribed),
+    );
+
+    const contact = service(h, 'HMW-Sen-SC-12-DR', 'ContactSensor');
+    const state = contact.getCharacteristic(h.hap.Characteristic.ContactSensorState);
+    assert.equal(state.value, 1, 'CONTACT_NOT_DETECTED while SENSOR is true');
+    ccu.emitValue(dp(1, 'SENSOR'), false);
+    assert.equal(state.value, 0, 'CONTACT_DETECTED after SENSOR false');
     assert.equal(h.node.logged.error.length, 0, JSON.stringify(h.node.logged.error));
     h.cleanup();
 });

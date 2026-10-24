@@ -105,6 +105,21 @@ test('homebrew sensors map through datapoint names', () => {
     assert.deepEqual(rolesOf('HB-LC-Sw1PBU-FM'), ['1:switch', '2:key', '3:key']);
 });
 
+test('a SENSOR channel reads its contact from SENSOR, not STATE (HMW-Sen-SC-12)', () => {
+    const ccu = fixtures.ccuFor('HMW-Sen-SC-12-DR');
+    const iface = ccu.enabledIfaces[0];
+    const channels = roles.deviceRoles(
+        ccu.device,
+        (address) => ccu.metadata.devices[iface][address],
+        (channel) => ccu.getParamsetDescription(iface, channel, 'VALUES'),
+    );
+    const sensor = channels.find((c) => c.index === 1);
+    assert.equal(sensor.role, 'contact');
+    assert.deepEqual(sensor.datapoints, {state: 'SENSOR'});
+    // a channel that has STATE keeps it
+    assert.deepEqual(roles.roleDatapoints('contact', {STATE: {}, SENSOR: {}}), {state: 'STATE'});
+});
+
 test('every fixture type: no exceptions, snapshot of the role coverage', () => {
     const snapshotFile = path.join(__dirname, 'fixtures', 'roles.snapshot.json');
     const snapshot = {};
