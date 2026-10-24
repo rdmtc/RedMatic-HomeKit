@@ -24,8 +24,9 @@
                 this.devices = {};
             }
 
+            // for text and for double-quoted attribute values (a CCU name may carry quotes)
             function escape(text) {
-                return $('<div>').text(String(text)).html();
+                return $('<div>').text(String(text)).html().replace(/"/g, '&quot;').replace(/'/g, '&#39;');
             }
 
             function dropdownHtml(ch, dropdowns) {
@@ -85,7 +86,7 @@
                         that.devices[ch] = {};
                     }
                     const $row = $(channelRow(addr, ch, option, 'channel-enabled', '', false));
-                    $row.find('input').prop('checked', !that.devices[ch].disabled);
+                    $row.find('input[type="checkbox"]').prop('checked', !that.devices[ch].disabled);
                     $('#devices').append($row);
                 });
 
@@ -98,11 +99,11 @@
                     if (channel.virtual) {
                         // HmIP virtual receiver channels are opt-in (stored as enabled: true)
                         const $row = $(channelRow(addr, ch, channel.name, 'vchannel-enabled', html, true));
-                        $row.find('input').prop('checked', Boolean(that.devices[ch].enabled));
+                        $row.find('input[type="checkbox"]').prop('checked', Boolean(that.devices[ch].enabled));
                         $('#devices').append($row);
                     } else {
                         const $row = $(channelRow(addr, ch, channel.name, 'channel-enabled', html, true));
-                        $row.find('input').prop('checked', !that.devices[ch].disabled).prop('disabled', Boolean(channel.fixed));
+                        $row.find('input[type="checkbox"]').prop('checked', !that.devices[ch].disabled).prop('disabled', Boolean(channel.fixed));
                         $('#devices').append($row);
                     }
                 });
@@ -114,6 +115,15 @@
                 $.getJSON('redmatic-homekit/homematic-devices?config=' + this.ccuConfig, devices => {
                     devices.forEach(addDevice);
                     $('.homekit-name').on('input', checkName).each(checkName);
+                    // Enter in a name field must not submit Node-RED's edit form: the form's
+                    // implicit submission "clicks" its first submit button, which was
+                    // "disable all" in 4.1.0 and unchecked every device (#388)
+                    $('.homekit-name').on('keydown', function (event) {
+                        if (event.key === 'Enter') {
+                            event.preventDefault();
+                            $(this).blur();
+                        }
+                    });
 
                     $('.option-hide').each(function () {
                         $(this).change(function () {
@@ -253,8 +263,10 @@
             <img id="spinner" src="red/images/spin.svg" style="margin: auto; display: none;">
         </div>
         <div class="config" style="width: 100%; display: none">
-            <button id="disable-all" style="margin-right: 12px;">disable all</button>
-            <button id="enable-all">enable all</button>
+            <!-- type="button": inside Node-RED's edit form a button without a type is a submit button,
+                 and Enter in a text field would "click" the first one - 4.1.0's "disable all" (#388) -->
+            <button type="button" id="disable-all" style="margin-right: 12px;">disable all</button>
+            <button type="button" id="enable-all">enable all</button>
         </div>
         <table class="config" id="devices"></table>
     </div>
