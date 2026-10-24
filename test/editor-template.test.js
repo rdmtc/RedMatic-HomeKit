@@ -45,3 +45,42 @@ test('attribute values are escaped including quotes (a CCU name may carry them)'
     const escape = script.match(/function escape\(text\) \{([\s\S]*?)\n\s*\}/)[1];
     assert.match(escape, /&quot;/);
 });
+
+/* The HomeKit name field's width and height (#388, the follow-up): the field takes the width
+   its column gets from the tray and the height of the dropdowns next to it. Node-RED styles
+   .red-ui-editor input[type=text] (34px high, 70% wide), which outranks a bare class selector,
+   so the list's rules carry the #devices id; the columns come from a <colgroup> with
+   table-layout: fixed, so the name column gets the leftover width and never the row's overflow. */
+
+const style = template.match(/<style>([\s\S]*?)<\/style>/)[1];
+
+function rule(selector) {
+    const match = style.match(new RegExp(selector.replace(/[.#]/g, '\\$&') + '\\s*\\{([^}]*)\\}'));
+    assert.ok(match, 'a rule for ' + selector);
+    return match[1];
+}
+
+test("the name field is styled with the #devices id, above Node-RED's input[type=text] rule", () => {
+    assert.equal(
+        style.match(/^\s*input\.homekit-name\s*\{/m),
+        null,
+        'a bare input.homekit-name rule loses to Node-RED',
+    );
+    const input = rule('#devices input.homekit-name');
+    assert.match(input, /width:\s*100%/);
+    assert.match(input, /box-sizing:\s*border-box/);
+    assert.match(input, /height:\s*18px/);
+    assert.equal(rule('#devices select.small').match(/height:\s*(\d+px)/)[1], '18px', 'as high as the dropdowns');
+});
+
+test('the device table has a fixed layout with a column per cell, the HomeKit name column taking the rest', () => {
+    assert.match(rule('#devices'), /table-layout:\s*fixed/);
+    const cols = template.match(/<col class="([^"]+)">/g).map((col) => col.match(/class="([^"]+)"/)[1]);
+    assert.deepEqual(cols, ['col-enabled', 'col-ccu-name', 'col-homekit-name', 'col-address', 'col-type']);
+    for (const col of cols.filter((name) => name !== 'col-homekit-name')) {
+        assert.match(rule('#devices col.' + col), /width:/, col + ' has a width');
+    }
+    assert.equal(style.includes('col-homekit-name'), false, 'the name column has no width: it takes the rest');
+    // the device row and the channel row have five cells each, the "not ready" message row one
+    assert.equal((script.match(/<td/g) || []).length, 11, 'cells in the rows the script renders');
+});
