@@ -5,6 +5,26 @@ Notable changes to redmatic-homekit. Format follows
 user-visible change and the reason, not the commit list (the release notes
 append commits automatically).
 
+## 4.1.1 — 2026-10-24
+
+### Fixed
+
+- **Enter in a HomeKit name field unchecked every device** (#388, @jp112sdl):
+  Node-RED renders a node's edit dialog inside a form, and the device list's
+  "disable all" button had no `type`, which makes it the form's submit
+  button. 4.1.0 put the first text fields into that form, so pressing Enter
+  after typing a HomeKit name submitted the form - and that "clicked"
+  _disable all_: every device was unchecked, and the next deploy published
+  nothing. Both buttons are plain buttons now, and Enter in a name field only
+  leaves the field. A selection lost this way is not restored by the update:
+  Node-RED keeps the flows from before the last deploy in
+  `.flows.json.backup` in its user directory (on RedMatic
+  `/usr/local/addons/redmatic/var/`), otherwise re-check the devices in the
+  editor ("enable all", then uncheck what was off) and deploy.
+- A CCU name containing quotes broke the HomeKit name field next to it (the
+  placeholder was cut off), and a fixed channel's name field was disabled
+  along with its checkbox.
+
 ## 4.1.0 — 2026-10-17
 
 ### Added
