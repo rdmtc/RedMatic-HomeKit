@@ -144,9 +144,11 @@ module.exports = class Accessory {
             .setCharacteristic(hap.Characteristic.SerialNumber, config.description.ADDRESS)
             .setCharacteristic(hap.Characteristic.FirmwareRevision, config.description.FIRMWARE);
 
-        this.acc.on('identify', (paired, callback) => {
+        const onIdentify = (paired, callback) => {
             this.identify(paired, callback);
-        });
+        };
+
+        this.acc.on('identify', onIdentify);
 
         this.listeners = [];
         this.subscriptions = [];
@@ -154,7 +156,8 @@ module.exports = class Accessory {
 
         node.on('close', () => {
             node.debug('removing listeners ' + config.description.TYPE + ' ' + config.name);
-            this.acc.removeListener('identify', () => this.identify());
+            this.closed = true;
+            this.acc.removeListener('identify', onIdentify);
             this.removeListeners();
             this.removeSubscriptions();
         });
@@ -164,7 +167,10 @@ module.exports = class Accessory {
                 'init accessory ' + config.description.ADDRESS + ' ' + config.description.TYPE + ' ' + config.name,
             );
             setImmediate(() => {
-                this.init(config, node);
+                // closed before init ran: its listeners would outlive the node
+                if (!this.closed && !node.closed) {
+                    this.init(config, node);
+                }
             });
         }
     }

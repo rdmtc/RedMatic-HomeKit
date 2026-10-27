@@ -88,6 +88,32 @@ function createFakeRED({userDir} = {}) {
             config = {type, ...config};
             return new Class(config);
         },
+        /**
+         * Close a node the way Node-RED does on a deploy: every 'close'
+         * listener is called by its arity - (removed, done), (done) or () -
+         * and the node is closed once all of them have called done.
+         */
+        close(node, removed = false) {
+            const listeners = node.listeners('close');
+            return Promise.all(
+                listeners.map(
+                    (listener) =>
+                        new Promise((resolve) => {
+                            if (listener.length > 1) {
+                                listener.call(node, removed, resolve);
+                            } else if (listener.length === 1) {
+                                listener.call(node, resolve);
+                            } else {
+                                listener.call(node);
+                                resolve();
+                            }
+                        }),
+                ),
+            ).then(() => {
+                node.removeAllListeners('close');
+                delete nodes[node.id];
+            });
+        },
         cleanup() {
             fs.rmSync(userDir, {recursive: true, force: true});
         },

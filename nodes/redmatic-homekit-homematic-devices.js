@@ -26,6 +26,14 @@ module.exports = function (RED) {
             RED.nodes.createNode(this, config);
 
             this.homematicDevices = {};
+            this.closed = false;
+            // a deploy closes the node: stop waiting and publishing, let go of the
+            // ccu-connection. The accessories' own close listeners remove their HAP
+            // listeners; whatever this node would still publish after the close
+            // would leave listeners on the bridge's accessories that nobody removes,
+            // doubling every get/set of the next node (forum report, 2026-10-27).
+            this.on('close', (removed, done) => this._destructor(done));
+
             this.bridgeConfig = RED.nodes.getNode(config.bridgeConfig);
 
             if (!this.bridgeConfig) {
@@ -58,6 +66,10 @@ module.exports = function (RED) {
         }
 
         publishDevices(callback) {
+            if (this.closed) {
+                return;
+            }
+
             if (!this.ccu.channelNames) {
                 this.error('ccu.channelNames missing');
                 return;
@@ -104,9 +116,14 @@ module.exports = function (RED) {
 
                         const description = this.ccu.metadata.devices[iface][address];
                         queue.push(() =>
-                            this.channelModes(iface, description).then(
+                            (this.closed ? Promise.resolve(null) : this.channelModes(iface, description)).then(
                                 (channelModes) =>
                                     new Promise((resolve) => {
+                                        if (this.closed) {
+                                            resolve();
+                                            return;
+                                        }
+
                                         this.createHomematicDevice({
                                             name: this.ccu.channelNames[address],
                                             iface,
@@ -128,7 +145,9 @@ module.exports = function (RED) {
             queue
                 .reduce((p, task) => p.then(task), Promise.resolve())
                 .then(() => {
-                    callback();
+                    if (!this.closed) {
+                        callback();
+                    }
                 });
         }
 
@@ -194,6 +213,10 @@ module.exports = function (RED) {
         }
 
         createHomematicDevice(dev) {
+            if (this.closed) {
+                return;
+            }
+
             const rawType = dev && dev.description && dev.description.TYPE;
             if (!rawType) {
                 this.error('invalid homematic device type ' + rawType);
@@ -241,6 +264,10 @@ module.exports = function (RED) {
         }
 
         setStatus(data) {
+            if (this.closed) {
+                return;
+            }
+
             this.ccuStatus = data;
             let status = 0;
             Object.keys(data.ifaceStatus).forEach((s) => {
@@ -273,6 +300,10 @@ module.exports = function (RED) {
          * after the limit and publish whatever is there.
          */
         publishWhenReady(attempt = 0, seen = null, stableFor = 0) {
+            if (this.closed) {
+                return;
+            }
+
             const devices = (this.ccu.metadata && this.ccu.metadata.devices) || {};
             const count = this.ccu.enabledIfaces.reduce((n, iface) => n + Object.keys(devices[iface] || {}).length, 0);
             const names = Object.keys(this.ccu.channelNames || {}).length;
@@ -324,9 +355,12 @@ module.exports = function (RED) {
         }
 
         _destructor(done) {
+            this.closed = true;
             clearTimeout(this.readyTimer);
-            this.ccu.deregister(this);
-            this.ccu.unsubscribe(this.idSubscription);
+            if (this._ccu) {
+                this._ccu.deregister(this);
+            }
+
             done();
         }
     }
