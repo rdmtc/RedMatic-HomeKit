@@ -5,6 +5,28 @@ Notable changes to redmatic-homekit. Format follows
 user-visible change and the reason, not the commit list (the release notes
 append commits automatically).
 
+## 4.1.4 — 2026-10-27
+
+### Fixed
+
+- **Node-RED could crash after a deploy** with "This callback function has
+  already been called by someone else; it can only be called one time"
+  (reported in the homematic-forum). The homematic devices node did not stop
+  when Node-RED stopped it: a deploy while it was still waiting for the
+  CCU's device list let the old node publish its devices anyway, after the
+  new one had started. Every HomeKit device then had its handlers twice,
+  each read and write ran through both, and the first write the CCU did not
+  accept terminated Node-RED. The node now stops waiting and publishing when
+  it is stopped and lets go of the CCU connection, and a redeploy no longer
+  adds a device's identify handler a second time. If Node-RED did crash this
+  way, a restart of Node-RED (not a deploy) cleared the doubled handlers.
+- **HmIP blinds and shutters: the second and third virtual receiver** (when
+  enabled in the device list) **moved the first one.** The command went to
+  the channel address with the channel number appended twice (e.g.
+  `…:4:5` instead of `…:5`), which the CCU reads as the first receiver;
+  the log showed such addresses for the first receiver as well
+  (`…:4:4`). Position and tilt are sent to the receiver's own channel now.
+
 ## 4.1.3 — 2026-10-24
 
 ### Fixed
