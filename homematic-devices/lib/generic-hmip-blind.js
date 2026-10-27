@@ -71,18 +71,12 @@ function createService(channel) {
                     ' (WindowCovering) TargetPosition ' +
                     value +
                     ' -> ' +
-                    this.config.description.ADDRESS +
-                    ':' +
-                    channelIndex +
+                    channel.channel +
                     ' ' +
                     JSON.stringify(params),
             );
             this.ccu
-                .methodCall(this.config.iface, 'putParamset', [
-                    this.config.description.ADDRESS + ':' + channelIndex,
-                    'VALUES',
-                    params,
-                ])
+                .methodCall(this.config.iface, 'putParamset', [channel.channel, 'VALUES', params])
                 .then(() => {
                     callback();
                 })
@@ -138,18 +132,12 @@ function createService(channel) {
                         ' (WindowCovering) TargetVerticalTiltAngle ' +
                         value +
                         ' -> ' +
-                        this.config.description.ADDRESS +
-                        ':' +
-                        channelIndex +
+                        channel.channel +
                         ' ' +
                         JSON.stringify(params),
                 );
                 this.ccu
-                    .methodCall(this.config.iface, 'putParamset', [
-                        this.config.description.ADDRESS + ':' + channelIndex,
-                        'VALUES',
-                        params,
-                    ])
+                    .methodCall(this.config.iface, 'putParamset', [channel.channel, 'VALUES', params])
                     .then(() => {
                         callback();
                     })
