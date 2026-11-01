@@ -5,6 +5,22 @@ Notable changes to redmatic-homekit. Format follows
 user-visible change and the reason, not the commit list (the release notes
 append commits automatically).
 
+## Unreleased
+
+### Changed
+
+- **HAP library: `@homebridge/hap-nodejs` 2.2.3 → 2.3.0.** It is an ES module
+  now, which Node.js 22.12 or newer and 24 load through `require()`; the
+  supported Node.js versions stay as they are. Existing pairings, the bridge
+  identity and the ids of accessories and services carry over unchanged. The
+  release also closes a number of ways a malformed request could crash
+  Node-RED, and the installed package needs 13 fewer dependencies.
+- A HomeKit name of a single letter or digit is valid now; the editor no
+  longer marks it and hap-nodejs no longer warns about it.
+- Sending new properties to the universal node's characteristic while the
+  bridge is published now makes HomeKit re-read the accessory's configuration,
+  so a changed range reaches the Home app without a restart.
+
 ## 4.1.4 — 2026-10-27
 
 ### Fixed

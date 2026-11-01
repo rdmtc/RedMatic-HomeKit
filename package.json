@@ -68,6 +68,6 @@
     "prettier": "^3.9.6"
   },
   "dependencies": {
-    "@homebridge/hap-nodejs": "^2.2.3"
+    "@homebridge/hap-nodejs": "^2.3.0"
   }
 }

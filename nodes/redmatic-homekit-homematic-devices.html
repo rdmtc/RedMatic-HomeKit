@@ -45,8 +45,8 @@
                 return html;
             }
 
-            // hap-nodejs' name check: first and last character a letter or digit
-            const homekitName = /^[\p{L}\p{N}][\p{L}\p{N}\p{Zs}\u2019'&!._:;()/,-]*[\p{L}\p{N}]$/u;
+            // hap-nodejs' name check: first and last character a letter or digit, a single one is fine
+            const homekitName = /^[\p{L}\p{N}](?:[\p{L}\p{N}\p{Zs}\u2019'&!._:;()/,-]*[\p{L}\p{N}])?$/u;
 
             // HomeKit name of a device or channel (#388): empty = the CCU name, shown as placeholder
             function nameInput(addr, ccuName) {

@@ -10,8 +10,8 @@
    itself is never changed, and neither is any identity: accessory UUIDs
    and service subtypes come from addresses and channel indexes (D-4). */
 
-/** hap-nodejs' check (lib/util/checkName.js): first and last character a letter or digit */
-const HOMEKIT_NAME = /^[\p{L}\p{N}][\p{L}\p{N}\p{Zs}’'&!._:;()/,-]*[\p{L}\p{N}]$/u;
+/** hap-nodejs' check (lib/util/checkName.js): first and last character a letter or digit, a single one is fine */
+const HOMEKIT_NAME = /^[\p{L}\p{N}](?:[\p{L}\p{N}\p{Zs}’'&!._:;()/,-]*[\p{L}\p{N}])?$/u;
 
 /**
  * The HomeKit name stored for an address, or undefined.

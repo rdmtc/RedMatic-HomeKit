@@ -114,3 +114,27 @@ test('a homematic device module wires services against hap-nodejs 2.x', async ()
     assert.equal(node.logged.error.length, 0, JSON.stringify(node.logged.error));
     RED.cleanup();
 });
+
+test('hap-nodejs loads through require() and the advertiser deep import still resolves', async () => {
+    const hap = require('@homebridge/hap-nodejs');
+    assert.equal(typeof hap.Bridge, 'function');
+    assert.equal(typeof hap.Service.Lightbulb, 'function');
+    assert.equal(typeof hap.Characteristic.On, 'function');
+    // nodes/redmatic-homekit-bridge.js resolves the 'auto' advertiser through this path
+    const {AvahiAdvertiser} = require('@homebridge/hap-nodejs/dist/lib/Advertiser');
+    assert.equal(typeof AvahiAdvertiser.isAvailable, 'function');
+});
+
+test('persisted keys of an earlier hap-nodejs (tweetnacl: seed + public key) still sign', () => {
+    const {ed25519Sign, ed25519Verify} = require('@homebridge/hap-nodejs/dist/lib/util/hapCrypto');
+    // RFC 8032 test vector 1, in the 64-byte form AccessoryInfo.<username>.json holds as signSk
+    const seed = '9d61b19deffd5a60ba844af492ec2cc44449c5697b326919703bac031cae7f60';
+    const pub = 'd75a980182b10ab7d54bfed3c964073a0ee172f3daa62325af021a68f707511a';
+    const sk = Buffer.from(seed + pub, 'hex');
+    const signature = ed25519Sign(Buffer.alloc(0), sk);
+    assert.equal(
+        signature.toString('hex'),
+        'e5564300c360ac729086e2cc806e828a84877f1eb8e5d974d873e065224901555fb8821590a33bacc61e39701cf9b46bd25bf5f0595bbe24655141438e7a100b',
+    );
+    assert.ok(ed25519Verify(Buffer.alloc(0), signature, Buffer.from(pub, 'hex')));
+});

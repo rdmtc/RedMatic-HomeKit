@@ -47,7 +47,9 @@ test("isValidHomeKitName follows hap-nodejs' check", () => {
     assert.equal(names.isValidHomeKitName('Küche (Decke) Süd'), true, 'brackets and umlauts in the middle');
     assert.equal(names.isValidHomeKitName('(Flur'), false);
     assert.equal(names.isValidHomeKitName('Bad 2.'), false);
-    assert.equal(names.isValidHomeKitName('A'), false, 'hap-nodejs wants two characters');
+    assert.equal(names.isValidHomeKitName('A'), true, 'hap-nodejs 2.3 takes a single letter or digit');
+    assert.equal(names.isValidHomeKitName('1'), true);
+    assert.equal(names.isValidHomeKitName('('), false);
 });
 
 test('withNameOverrides: the override wins, the CCU name stays untouched, methods run on the ccu', () => {
