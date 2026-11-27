@@ -5,6 +5,18 @@ Notable changes to redmatic-homekit. Format follows
 user-visible change and the reason, not the commit list (the release notes
 append commits automatically).
 
+## 4.2.1 — 2026-11-27
+
+### Fixed
+
+- **homematic devices node on openccu-lite: the Homematic devices could stay
+  missing from HomeKit.** The node waits until the CCU connection reports all
+  its interfaces as connected, and it counted openccu-lite's metadata stream,
+  which is no interface, as one more. Depending on the order in which the
+  interfaces came up the node then stayed "partly connected" and never
+  published its devices; the bridge started without them. It now counts the
+  enabled interfaces only.
+
 ## 4.2.0 — 2026-11-01
 
 ### Changed
