@@ -269,16 +269,14 @@ module.exports = function (RED) {
             }
 
             this.ccuStatus = data;
-            let status = 0;
-            Object.keys(data.ifaceStatus).forEach((s) => {
-                if (data.ifaceStatus[s]) {
-                    status += 1;
-                }
-            });
+            // count the enabled interfaces only: ifaceStatus also carries pseudo-interfaces such as
+            // openccu-lite's Metadata stream, which enabledIfaces leaves out (3 + 1 never equalled 3)
+            const enabled = this.ccu.enabledIfaces || [];
+            const status = enabled.filter((iface) => data.ifaceStatus && data.ifaceStatus[iface]).length;
             this.debug(JSON.stringify(data));
             if (status < 1) {
                 this.status({fill: 'red', shape: 'dot', text: 'disconnected'});
-            } else if (status === this.ccu.enabledIfaces.length) {
+            } else if (status === enabled.length) {
                 this.status({fill: 'green', shape: 'dot', text: 'connected'});
                 if (!this.ccuConnected) {
                     this.ccuConnected = true;

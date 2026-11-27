@@ -201,3 +201,19 @@ test('a redeploy does not double the HAP listeners, and a set the CCU refuses do
     assert.deepEqual(thrown, [], 'nothing thrown');
     assert.equal(listenerCounts(h), listeners, 'HAP listeners of one node, not of three');
 });
+
+test('homematic-devices node publishes when openccu-lite also reports its Metadata stream as connected', async () => {
+    const ccu = fixtures.ccuFor('HmIP-BDT');
+    const h = createHarness(ccu);
+    const iface = ccu.enabledIfaces[0];
+    h.node.readyInterval = 10;
+
+    // ccu-connection keeps the Metadata pseudo-interface in ifaceStatus but not in enabledIfaces
+    h.node.setStatus({ifaceStatus: {[iface]: true, Metadata: true}});
+    await wait(250);
+    assert.equal(h.node.ccuConnected, true, 'counted as connected');
+    assert.equal(h.bridgeConfig.bridge.bridgedAccessories.length, 1, 'published');
+    assert.equal(h.bridgeConfig.waitForHomematic, false);
+    clearTimeout(h.node.readyTimer);
+    h.cleanup();
+});
